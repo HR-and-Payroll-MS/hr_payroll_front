@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+.bgx{
+    background-color: #121828;
+    color:white;
+}
+.bgx2{
+    background-color:#329A75;
+}
+@layer utilities{
+    .scrollbar-hidden::-webkit-scrollbar{
+        display:none;
+    }
+    .scrollbar-hidden{
+        scrollbar-width:none;
+    }
+    .scrollbar-hidden{
+        -ms-overflow-style:none;
+    }
+}
