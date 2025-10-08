@@ -100,7 +100,7 @@ export default function Setting(){
                         <div className=" flex rounded-md shadow flex-1 h-fit bg-white "> 
                             {/* <CompanyInfo/> */}
                             {/* <ChangePassword/> */}
-                            {/* <WorkSchedule/> */}
+                            <WorkSchedule/>
                         </div>
                 </div>
     </div>)

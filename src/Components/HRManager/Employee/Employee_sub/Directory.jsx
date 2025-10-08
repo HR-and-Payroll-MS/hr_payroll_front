@@ -25,7 +25,7 @@ export default function Directory(){
     const List= <div id="left" className="flex py-2.5 flex-wrap flex-2 gap-5  justify-start items-center  ">
             
             {fruit.map(fruit=>
-            <div className="flex shadow bg-white max-w-64  flex-1 flex-col  text-gray-700 border border-gray-100 rounded-xl items-center  justify-start gap-5 px-5 py-4 ">
+            <div className="flex shadow dark:bg-slate-800 bg-white max-w-64  flex-1 flex-col  text-gray-700 border border-gray-100 rounded-xl items-center  justify-start gap-5 px-5 py-4 ">
                     <div className="flex flex-col  w-full justify-center gap-2 items-center">
                         <img className="w-12 m-4 h-12 object-fill rounded-full " src="\pic\download (48).png" alt="" />
                         <p className="text-lg font-bold">Angeline Beier</p>
@@ -71,7 +71,7 @@ export default function Directory(){
 
 
     return (
-        <div className="bg-gray-50 h-full w-full">
+        <div className="bg-gray-50 dark:bg-slate-900 h-full w-full">
             {Header}
             {List}
         </div>

@@ -1,47 +1,47 @@
 export default function TeamAttendance(){
           const fruit=[1,2,3,4,5]
-    const table_header=<thead className="bg-slate-100 rounded-xl">
+    const table_header=<thead className={`bg-slate-100 rounded-xl dark dark:bg-slate-700`}>
             <tr className="justify-evenly  ">
                 
                 <th className=" px-4 py-3">
                     <div className="flex w-full justify-between items-center ">
                         <div className="flex gap-1.5">
                             <input className="" type="checkbox" name="remember me" id="rememberme" />
-                            <p className="font-semibold text-gray-500  text-xs">Employee Name</p>
+                            <p className={`font-semibold text-gray-500  text-xs dark dark:text-slate-200`}>Employee Name</p>
                         </div>    
                             <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
                     </div>
                 </th>
                 <th className=" px-4 py-3">
                     <div className="flex w-full justify-between items-center ">
-                        <p className="font-semibold text-gray-500  text-xs">Employee Type</p>
+                        <p className={`font-semibold text-gray-500  text-xs dark dark:text-slate-200`}>Employee Type</p>
                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
                     </div>
                 </th>
                 <th className=" px-4 py-3">
                     <div className="flex w-full justify-between items-center ">
-                            <p className="font-semibold text-gray-500  text-xs">Paid Time/ Work Schedule</p>
+                            <p className={`font-semibold text-gray-500  text-xs dark dark:text-slate-200`}>Paid Time/ Work Schedule</p>
                     </div>
                 </th>
                 <th className=" px-4 py-3">
                     <div className="flex w-full justify-between items-center ">
-                            <p className="font-semibold text-gray-500  text-xs">Overtime</p>
+                            <p className={`font-semibold text-gray-500  text-xs dark dark:text-slate-200`}>Overtime</p>
                             <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
                     </div>
                 </th>
                 <th className=" px-4 py-3">
                     <div className="flex w-full justify-between items-center ">
-                            <p className="font-semibold text-gray-500  text-xs">Status</p>
+                            <p className={`font-semibold text-gray-500  text-xs dark dark:text-slate-200`}>Status</p>
                     </div>
                 </th>
                 <th className=" px-4 py-3">
                     <div className="flex w-full justify-between items-center ">
-                            <p className="font-semibold text-gray-500  text-xs">11 Apr</p>
+                            <p className={`font-semibold text-gray-500  text-xs dark dark:text-slate-200`}>11 Apr</p>
                     </div>
                 </th>
                 <th className=" px-4 py-3">
                     <div className="flex w-full justify-between items-center ">
-                            <p className="font-semibold text-gray-500  text-xs">Action</p>
+                            <p className={`font-semibold text-gray-500  text-xs dark dark:text-slate-200`}>Action</p>
                     </div>
                 </th>
                
@@ -89,21 +89,25 @@ export default function TeamAttendance(){
             }
             
         </tbody>
-    const pagination=<div id="middle" className="flex flex-1 justify-between py-4 items-start ">
+    const pagination=<div id="middle" className="flex flex-1 justify-between  items-start ">
                 
                 <div className="flex items-center  gap-1.5">
-                    <div className="py-1.5 px-1 border-gray-100 shadow-2xl border h-full">
+                    <div className={`dark dark:border-slate-700 py-1.5 px-1 border-gray-100 shadow-2xl border h-full`}>
                         <img className="h-3" src="\svg\left-chevron-svgrepo-com.svg" alt="" />
                     </div>
-                    <p className="font-semibold py-1 px-2 border-gray-100 shadow-2xl border text-gray-500  text-xs">1</p>
-                    <p className="font-semibold py-1 px-2 border-gray-100 shadow-2xl border text-gray-500  text-xs items-center">...</p>
-                    <p className="font-semibold py-1 px-2 border-gray-100 shadow-2xl border text-gray-700  text-xs">2</p>
-                    <div className="py-1.5 px-1 border-gray-100 shadow-2xl border h-full"> 
+                    <p className={` dark dark:border-slate-700 dark:text-slate-300 font-semibold py-1 px-2 border-gray-100 shadow-2xl border text-gray-500  text-xs`}>1</p>
+                    <p className={` dark dark:border-slate-700 dark:text-slate-300 font-semibold py-1 px-2 border-gray-100 shadow-2xl border text-gray-500  text-xs items-center`}>...</p>
+                    <p className={` dark dark:border-slate-700 dark:text-slate-300 font-semibold py-1 px-2 border-gray-100 shadow-2xl border text-gray-700  text-xs`}>2</p>
+                    <div className={` dark dark:border-slate-700 dark:text-slate-300 py-1.5 px-1 border-gray-100 shadow-2xl border h-full`}> 
                         <img className="h-3 rotate-180" src="\svg\left-chevron-svgrepo-com.svg" alt="" />
                     </div>
                 </div>
                 <div className="flex items-center gap-1.5">
-                    <p className="font-semibold text-gray-500  text-xs">5 Result</p>
+                    <p className={`dark dark:text-slate-300 font-semibold text-gray-500  text-xs`}>Showing 1 to 8 of 8 entries</p>
+                    <div className={`dark dark:border-slate-700 flex items-center py-1.5 px-2 border border-gray-100 rounded`}>
+                        <p className={`dark dark:text-slate-300 font-semibold text-gray-700  text-xs`}>Show 8</p>
+                        <img className="h-4 rotate-180" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
+                    </div>
                 </div>
         </div>
     const left= <div id="left" className="flex py-2.5 flex-2 gap-3  justify-between items-center  ">
@@ -130,9 +134,9 @@ export default function TeamAttendance(){
     const Header= <div id="left" className="flex py-2.5 flex-2 gap-3  justify-between items-center  ">
             
             
-            <div className="flex flex-1 flex-col text-gray-700 items-start  justify-start  rounded-md">
+            <div className={`flex flex-1 flex-col text-gray-700 items-start  justify-start  rounded-md dark dark:text-slate-300`}>
                     <p className="text-xl font-bold">Team Attendance</p>
-                    <p className="text-xs text-gray-500 font-semibold">Manage Your Team Attendance</p>
+                    <p className={`text-xs text-gray-500 font-semibold dark`}>Manage Your Team Attendance</p>
             </div>
             
            
@@ -149,11 +153,11 @@ export default function TeamAttendance(){
 
         </div>
     return  (
-    <div className="flex flex-col w-full h-full bg-gray-50 ">
+    <div className={`flex flex-col w-full h-full bg-gray-50 dark dark:bg-slate-900 `}>
                 <div className=" flex justify-evenly  gap-3 "> 
                             {Header}
                         </div>
-                <div className="flex shadow bg-white flex-col  h-full p-4 rounded-md">
+                <div className={`flex dark dark:bg-slate-800 shadow bg-white flex-col  h-full p-4 rounded-md`}>
        
                     <div className=" flex justify-evenly h-14 gap-3 "> 
                             {warning}

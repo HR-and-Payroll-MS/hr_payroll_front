@@ -83,7 +83,7 @@ export default function Table(){
             }
             
         </tbody>
-    const left=        <div id="left" className="flex py-2.5 flex-2 gap-3  justify-between items-center p-4 ">
+    const left=<div id="left" className="flex py-2.5 flex-2 gap-3  justify-between items-center p-4 ">
             <div className={`flex flex-1 items-center dark dark:bg-slate-700  bg-gray-100 w-full h-full px-1.5 rounded-md`}>
                 <div className="flex  w-full items-center justify-between px-2.5 py-2 h-full">
                     <input className=" h-full  rounded w-full" type="email" name="email" id="email" placeholder="search what you need" />

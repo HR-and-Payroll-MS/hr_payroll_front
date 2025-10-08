@@ -286,7 +286,7 @@ export default function DetailEmployee(){
                         
                 </div> 
     return (
-          <div className="flex flex-col gap-4 w-full h-full justify-start  bg-gray-50 dark:bg-gray-300 ">
+          <div className="flex flex-col gap-4 w-full h-full justify-start  bg-gray-50 dark:bg-slate-900 ">
                 <div className=" flex justify-evenly  "> 
                             {Header}
                 </div>
@@ -297,7 +297,7 @@ export default function DetailEmployee(){
                         <div className=" flex flex-col rounded-md shadow h-full flex-1 gap-8  p-4 bg-white "> 
                             {top}
                             {/* {General} */}
-                            {Job}
+                            {/* {Job} */}
                         </div>
                 </div>
     </div>
