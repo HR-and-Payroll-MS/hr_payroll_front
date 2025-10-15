@@ -1,6 +1,11 @@
+import { useContext } from "react"
+import { UserContext } from "../../App"
+
 export default function Login(){
+    const {darklight , setdarklight}=useContext(UserContext)
+    console.log(darklight)
     return (
-        <div className="flex-1 py-5 px-48 h-full w-full flex justify-center">
+        <div className={`${darklight.Magic_Word}  flex-1 py-5 px-48 h-screen dark:bg-slate-800 bg-slate-100 w-full flex justify-center`}>
             <div className="flex h-full w-full bg-amber-700   bgx sm:flex-col lg:flex-row rounded shadow-sm"> 
                     <div id="image_div" className=" sm:hidden md:hidden lg:flex flex-col flex-1  ">
                         <img src="/pic/image.png" alt="hr" className="flex-3 overflow-hidden"/>

@@ -1,3 +1,5 @@
+import { NavLink, Outlet } from "react-router-dom";
+
 export default function DetailEmployee(){
 
 
@@ -98,12 +100,17 @@ export default function DetailEmployee(){
     const top=   <div id="left" className="flex px-4 py-0 m-0 *:h-12 min-h-fit max-h-fit flex-1 gap-5 border-b border-gray-200 justify-start items-start  ">
                 
                 
-                        <div className=" flex gap-2 border-green-700 px-2.5 border-b-3 items-center">
-                                <p className="text-sm  font-semibold text-green-800">General</p>
+                                <NavLink to="General" className={({ isActive }) => `flex gap-2 px-2.5 border-b-3 items-center ${isActive ? " border-green-700 text-green-800" : "border-white" }`}>
+                        <div className=" ">
+                                    <p className="text-sm  font-semibold ">General</p>
                         </div>
-                        <div className=" flex gap-2 border-white px-2.5 border-b-3 items-center">
-                                <p className="text-sm  font-semibold text-gray-800">Job</p>
+                                </NavLink>
+                       
+                                <NavLink to="Job" className={({ isActive }) => `flex gap-2 px-2.5 border-b-3 items-center ${isActive ? " border-green-700 text-green-800" : "border-white" }`}>
+                        <div className=" ">
+                                    <p className="text-sm  font-semibold">Job</p>
                         </div>
+                                </NavLink>
                         <div className=" flex gap-2 border-white px-2.5 border-b-3 items-center">
                                 <p className="text-sm  font-semibold text-gray-800">Payroll</p>
                         </div>
@@ -260,16 +267,8 @@ export default function DetailEmployee(){
                          
                         
                 </div></div> 
-    const General=<div className="flex flex-col gap-8 scrollbar-hidden overflow-y-scroll">
-        {Personal_info}
-        {Address}
-        {Emergency_Contact}
-    </div>
-    const Job=<div className="flex flex-col gap-8 scrollbar-hidden overflow-y-scroll">
-        {employment_info}
-        {Job_Timeline}
-        {Job_Timeline}
-    </div>
+
+
 
     const bottom= <div id="left" className="flex border border-gray-200 rounded-md flex-1 gap-5 p-4 justify-between items-center  ">
                 
@@ -296,6 +295,7 @@ export default function DetailEmployee(){
                         </div>
                         <div className=" flex flex-col rounded-md shadow h-full flex-1 gap-8  p-4 bg-white "> 
                             {top}
+                            <Outlet/>
                             {/* {General} */}
                             {/* {Job} */}
                         </div>

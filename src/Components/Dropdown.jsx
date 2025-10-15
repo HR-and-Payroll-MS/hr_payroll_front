@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 function Drop({ targetRef, onClose, children }) {
   const rect = targetRef.current?.getBoundingClientRect();
+  console.log(targetRef.current)
 
   if (!rect) return null;
 
@@ -48,11 +49,6 @@ function Drop({ targetRef, onClose, children }) {
 function Dropdown() {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
-//   const [count, setCount]=useState(0);
-//   useEffect(()=>{
-//     let timer=setTimeout(() => {
-//     setCount(count+1)
-//   }, 1000) ;return ()=>clearTimeout(timer) },[open])
   return (
     <div style={{ padding: "100px" }}>
             <button ref={buttonRef} onClick={() => setOpen(prev => !prev)} style={{ padding: "10px 15px", cursor: "pointer" }}>
@@ -63,8 +59,18 @@ function Dropdown() {
                         <div style={{ padding: "8px 12px", cursor: "pointer" }}>Profile</div>
                         <div style={{ padding: "8px 12px", cursor: "pointer" }}>Settings</div>
                         <div style={{ padding: "8px 12px", cursor: "pointer" }}>Logout</div>
+                        <div style={{ padding: "8px 12px", cursor: "pointer" }}>Logout</div>
+                        <div style={{ padding: "8px 12px", cursor: "pointer" }}>Logout</div>
+                        <div style={{ padding: "8px 12px", cursor: "pointer" }}>Logout</div>
+                        <div style={{ padding: "8px 12px", cursor: "pointer" }}>Logout</div>
+                        <div style={{ padding: "8px 12px", cursor: "pointer" }}>Logout</div>
             </Drop>)}
     </div>
+//   const [count, setCount]=useState(0);
+//   useEffect(()=>{
+//     let timer=setTimeout(() => {
+//     setCount(count+1)
+//   }, 1000) ;return ()=>clearTimeout(timer) },[open])
     // <div>
     //     <button onClick={()=>setOpen(!open)}>
     //             change btn

@@ -1,3 +1,4 @@
+import { NavLink, Outlet } from "react-router-dom";
 import ChangePassword from "./SubSettings/ChangePassword";
 import CompanyInfo from "./SubSettings/CompanyInfo";
 import WorkSchedule from "./SubSettings/WorkSchedule";
@@ -28,10 +29,12 @@ export default function Setting(){
         </div>
     const middle=<div id="middle" className="flex bg-white w-full  flex-col  h-full  p-2 gap-4">    
                 <div id="child1" >
+                    <NavLink to="CompanyInfo"  className={({ isActive }) => `flex rounded-md w-full justify-between items-center  ${isActive ? "bg-slate-50 dark:bg-slate-700 " : "" }`}>
                         <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
                             <img className="h-5 opacity-25" src="\svg\music-library-svgrepo-com.svg" alt="" />
                             <p className="font-bold text-gray-700  text-xs">Company info</p>
                         </div>
+                    </NavLink>
                 </div>  
                 <div id="child1" >
                         <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
@@ -52,10 +55,12 @@ export default function Setting(){
                         </div>
                 </div>  
                 <div id="child1" >
+                    <NavLink to="WorkSchedule" className={({ isActive }) => `flex rounded-md w-full justify-between items-center  ${isActive ? "bg-slate-50 dark:bg-slate-700 " : "" }`}>
                         <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
                             <img className="h-5 opacity-25" src="\svg\music-library-svgrepo-com.svg" alt="" />
                             <p className="font-bold text-gray-700  text-xs">Work Schedule</p>
                         </div>
+                    </NavLink>
                 </div>  
                 <div id="child1" >
                         <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
@@ -76,10 +81,12 @@ export default function Setting(){
                         </div>
                 </div>  
                 <div id="child1" >
+                    <NavLink to="ChangePassword" className={({ isActive }) => `flex rounded-md w-full justify-between items-center  ${isActive ? "bg-slate-50 dark:bg-slate-700 " : "" }`}>
                         <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
                             <img className="h-5 opacity-25" src="\svg\music-library-svgrepo-com.svg" alt="" />
                             <p className="font-bold text-gray-700  text-xs">Password</p>
                         </div>
+                    </NavLink>
                 </div>  
                 <div id="child1" >
                         <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
@@ -100,7 +107,8 @@ export default function Setting(){
                         <div className=" flex rounded-md shadow flex-1 h-fit bg-white "> 
                             {/* <CompanyInfo/> */}
                             {/* <ChangePassword/> */}
-                            <WorkSchedule/>
+                            {/* <WorkSchedule/> */}
+                            <Outlet/>
                         </div>
                 </div>
     </div>)
