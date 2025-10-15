@@ -1,0 +1,23 @@
+components are reusable UI building blocks
+these are my small , reusable pieces --buttons, forms, cards, modals, headers, etc
+they don't depend on a specific page - they can be used anywhere in your app
+
+************** example 1 button *****************
+
+export default function Button({children, onClick,type = "button"}){
+    return (
+        <button
+            onClick={onClick}
+            type={type}
+            className="............"
+        >
+        {children}
+        </button>
+    )
+}
+
+
+so that we can use it like the code below does
+
+import Button from "../components/Button";
+<Button onClick={handleLogin}>Login</Button>
