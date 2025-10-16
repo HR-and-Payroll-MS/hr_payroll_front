@@ -1,5 +1,5 @@
-import React from 'react'
-import useAuth from './useAuth'
+import React, { useEffect } from 'react'
+import useAuth from '../Context/useAuth'
 
 const BASE = "http://localhost:5000"
 function useAxiosPrivate() {
@@ -48,6 +48,8 @@ function useAxiosPrivate() {
                 return Promise.reject(error)
             }
         );
+        
+
 
         return () => {
             axiosPrivate.interceptors.request.eject(reqInterceptor);
@@ -59,6 +61,9 @@ function useAxiosPrivate() {
     return axiosPrivate;
 
 }
+const a=10
+
+useEffect(()=>{},[a,])
 
 export default useAxiosPrivate
 
