@@ -20,6 +20,22 @@ import DetailEmployee from "./Components/HRManager/Employee/Employee_sub/DetailE
 import { Job } from "./Components/HRManager/Employee/Employee_sub/Job";
 import { General } from "./Components/HRManager/Employee/Employee_sub/General";
 import { DirectoryList } from "./Components/HRManager/Employee/Employee_sub/DirectoryList";
+import MyCalendar from "./Components/MyCalendar";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const UserContext = createContext();
 
@@ -52,7 +68,7 @@ function App() {
                   <Route path="WorkSchedule" element={<WorkSchedule/>}/>
               </Route>
               {/* <Route path="directory" element={<Directory/>} /> */}
-              <Route path="org-chart" element={<h1>Org Chart Page</h1>} />
+              <Route path="org-chart" element={<MyCalendar/>} />
         </Route>
       </>
     )

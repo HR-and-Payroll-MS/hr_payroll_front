@@ -3,24 +3,26 @@ import { UserContext } from '../../App';
 
 import useAuth from '../../Context/useAuth';
 import useForm from '../../Hooks/useForm';
-
+import axios from 'axios';
 export default function Login() {
   const { login } = useAuth();
   const darklight = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const handleLogin = async (formData) => {
+    console.log(formData);
     setLoading(true);
     setMessage('');
     try {
       // login returns accessToken and user, and backend sets refresh cookie
-      const res = await axios.post('http://localhost:4000/login', formData, {
+      const res = await axios.post('https://hr-payroll-django-v1-0-0.onrender.com/api/v1/auth/jwt/create', formData, {
         withCredentials: true,
       });
       const { accessToken, user } = res.data;
       login({ accessToken, user });
       message('Login successfull');
     } catch (err) {
+      console.log(err);
       setMessage(err.response?.data?.message || err.message);
     } finally {
       setLoading(false);
