@@ -7,16 +7,17 @@ import useAuth from '../Context/AuthContext';
 export default function Sidebar() {
   const {auth} = useAuth();
   const role=auth?.user?.role;
-  const [list, setList] = useState(sidebarList[role]);
-  const isAct = (label) => {
-    const updatedlists = list.map((lists) => {
-      lists.label === label
-        ? { ...lists, Visible: !lists.Visible, path: null }
-        : list;
-    });
+  const [list, setList] = useState(sidebarList[role] || []);
 
-    setList(updatedlists);
-  };
+const isAct = (label) =>
+  setList((prev) =>
+    prev.map((item) =>
+      item.label === label
+        ? { ...item, Visible: !item.Visible, path: null }
+        : item
+    )
+  );
+
   const { theme, changeTheme } = useTheme();
 
   const top1 = (

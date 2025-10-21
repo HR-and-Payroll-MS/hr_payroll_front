@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../App';
 
 import useAuth from '../Context/AuthContext';
@@ -15,15 +15,18 @@ export default function Login() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+  if (auth?.user?.role === 'hr') navigate('/hr');
+  else if (auth?.user?.role === 'manager') navigate('/manager');
+}, [auth, navigate]);
+
   const handleLogin = async (formData) => {
     console.log(formData);
     setLoading(true);
     setMessage('');
     try {
       await login(data);
-      if (auth.user.role === 'hr') navigate('/hr');
-      if (auth.user.role === 'manager') navigate('/manager');
-      navigate('/hr')
+      
       console.log('auth:', auth);
       //   const res = await axios.post(
       //     'https://hr-payroll-django-v1-0-0.onrender.com/api/v1/auth/jwt/create',
