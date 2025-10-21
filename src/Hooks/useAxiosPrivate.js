@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import useAuth from '../Context/useAuth'
+import {axios as axiosPrivate} from '../api/axios';
 
 const BASE = "http://localhost:5000"
 function useAxiosPrivate() {
     const {auth, setAccessToken, logout } = useAuth()
 
-    const axiosPrivate = axios.create({
-        baseURL:BASE,
-        withCredentials: true,
-    });
+    // const axiosPrivate = axios.create({
+    //     baseURL:BASE,
+    //     withCredentials: true,
+    // });
 
     useEffect(()=>{
     
@@ -61,9 +62,6 @@ function useAxiosPrivate() {
     return axiosPrivate;
 
 }
-const a=10
-
-useEffect(()=>{},[a,])
 
 export default useAxiosPrivate
 

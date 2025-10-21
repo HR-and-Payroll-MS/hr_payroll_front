@@ -36,7 +36,7 @@ function MyCalendar() {
   ];
 
   return (
-    <div style={{ height: '500px' }}> {/* Must set height */}
+    <div className='h-3/12'> 
       <ResponsiveCalendar
         data={data}
         from="2025-09-17"
@@ -44,9 +44,9 @@ function MyCalendar() {
         emptyColor="#eeeeee"
         margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
         yearSpacing={40}
-        monthBorderColor="#ffffff"
+        monthBorderColor="white"
         dayBorderWidth={2}
-        dayBorderColor="#ffffff"
+        dayBorderColor="white"
         legends={[
           {
             anchor: 'bottom-right',

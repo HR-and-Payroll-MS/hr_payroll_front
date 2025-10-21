@@ -1,36 +1,23 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useTheme } from '../Context/ThemeContext';
+import { sidebarList } from '../Hooks/useSidebarContent';
+import useAuth from '../Context/AuthContext';
 
-export default function Sidebar({ darklight, setdarklight }) {
-  const [sub, setSub] = useState({
-    Employee: false,
-    Checklist: false,
-    Time_Off: false,
-    Attendance: false,
-    Payroll: false,
-    Performance: false,
-    Recruitment: false,
-  });
+export default function Sidebar() {
+  const {auth} = useAuth();
+  const role=auth?.user?.role;
+  const [list, setList] = useState(sidebarList[role]);
+  const isAct = (label) => {
+    const updatedlists = list.map((lists) => {
+      lists.label === label
+        ? { ...lists, Visible: !lists.Visible, path: null }
+        : list;
+    });
 
-  function changeSub(key, value) {
-    setSub((current) => ({ ...current, [key]: value }));
-  }
-
-  function changetheme(type) {
-    if (type === true) {
-      setdarklight({
-        light: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
-        dark: "bg-gray-50 dark:bg-slate-900",
-        Magic_Word: "",
-      });
-    } else {
-      setdarklight({
-        dark: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
-        light: "bg-gray-50 dark:bg-slate-900",
-        Magic_Word: "dark",
-      });
-    }
-  }
+    setList(updatedlists);
+  };
+  const { theme, changeTheme } = useTheme();
 
   const top1 = (
     <div
@@ -47,7 +34,11 @@ export default function Sidebar({ darklight, setdarklight }) {
           HRDashboard
         </p>
       </div>
-      <img className="h-5" src="/svg/fullscreen-exit-alt-svgrepo-com.svg" alt="" />
+      <img
+        className="h-5"
+        src="/svg/fullscreen-exit-alt-svgrepo-com.svg"
+        alt=""
+      />
     </div>
   );
 
@@ -59,57 +50,97 @@ export default function Sidebar({ darklight, setdarklight }) {
       <div className="flex items-center justify-center">
         <p className="font-semibold text-white text-xs">Dashboard</p>
       </div>
-      <img className="h-5 opacity-45" src="/svg/dashboard-svgrepo-com.svg" alt="" />
+      <img
+        className="h-5 opacity-45"
+        src="/svg/dashboard-svgrepo-com.svg"
+        alt=""
+      />
     </div>
   );
-
-  const middle = (
+  const middle1 = (
     <div
       id="middle"
-      className="flex flex-col w-full flex-1 my-4 overflow-y-scroll scrollbar-hidden gap-2"
+      className="flex flex-col w-full flex-1  my-4 overflow-y-scroll scrollbar-hidden gap-2"
     >
-      <div id="child1" className="*:cursor-pointer">
-        <div
-          onClick={() => changeSub("Employee", !sub.Employee)}
-          className={`hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}
-        >
-          <div className="flex items-center gap-1.5 justify-center">
-            <img className="h-5 opacity-25" src="/svg/profile-circle-svgrepo-com.svg" alt="" />
-            <p
-              className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700 text-sm`}
+      {' '}
+      {list.map((lists, index) =>
+        lists.path ? (
+          <div key={index} className="*:cursor-pointer">
+            <NavLink
+              to={lists.path}
+              end
+              className={({ isActive }) =>
+                `flex gap-1.5 rounded-md w-full justify-start items-center px-2.5 py-1.5 ${
+                  isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
+                }`
+              }
             >
-              Employee
-            </p>
+              <img
+                className="h-5 opacity-25"
+                src="/svg/profile-circle-svgrepo-com.svg"
+                alt=""
+              />
+              <p className="dark:text-slate-300 flex-1 font-semibold text-gray-700 text-sm">
+                {lists.label}
+              </p>
+              <img
+                className="h-5 opacity-0"
+                src="/svg/down-arrow-5-svgrepo-com.svg"
+                alt=""
+              />
+            </NavLink>{' '}
           </div>
-          <img className="h-5 opacity-25" src="/svg/down-arrow-5-svgrepo-com.svg" alt="" />
-        </div>
-        <div
-          className={`${
-            sub.Employee ? "flex" : "hidden"
-          } *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}
-        >
-          <NavLink to="/Employee/ManageEmployee" end 
-            className={({ isActive }) => `flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive ? "bg-slate-200 dark:bg-slate-700 " : "" }`}>
-            <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
-              Manage Employees
-            </p>
-          </NavLink>
-
-          <NavLink to="/Employee/Directory"
-            className={({ isActive }) =>`flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive ? "bg-slate-200 dark:bg-slate-700 " : ""}`}>
-            <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
-              Directory
-            </p>
-          </NavLink>
-
-          <NavLink to="/org-chart"
-            className={({ isActive }) =>`flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive ? "bg-slate-200 dark:bg-slate-700 " : ""}`}>
-            <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
-              ORG Chart
-            </p>
-          </NavLink>
-        </div>
-      </div>
+        ) : (
+          <div key={index} className="*:cursor-pointer">
+            <div
+              onClick={() => isAct(lists.label)}
+              className={`hover:bg-slate-50  dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}
+            >
+              <div className="flex items-center gap-1.5 justify-center">
+                <img
+                  className="h-5 opacity-25"
+                  src="/svg/profile-circle-svgrepo-com.svg"
+                  alt=""
+                />
+                <p
+                  className={` dark:text-slate-300 font-semibold text-gray-700 text-sm`}
+                >
+                  {lists.label}
+                </p>
+              </div>
+              <img
+                className="h-5 opacity-25"
+                src="/svg/down-arrow-5-svgrepo-com.svg"
+                alt=""
+              />
+            </div>
+            <div
+              className={`${
+                lists.Visible ? 'flex' : 'hidden'
+              } *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}
+            >
+              {lists.sub
+                ? lists.sub.map((subs) => (
+                    <NavLink
+                      key={subs.label}
+                      to={subs.subPath}
+                      end
+                      className={({ isActive }) =>
+                        `flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${
+                          isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
+                        }`
+                      }
+                    >
+                      <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
+                        {subs.label}
+                      </p>
+                    </NavLink>
+                  ))
+                : []}
+            </div>
+          </div>
+        )
+      )}
     </div>
   );
 
@@ -117,7 +148,11 @@ export default function Sidebar({ darklight, setdarklight }) {
     <div id="bottom" className="w-full flex flex-col items-center py-3.5">
       <div className="flex w-full justify-between items-center m-0.5">
         <div className="flex items-center gap-1.5 justify-center py-2.5">
-          <img className="h-5 opacity-25" src="/svg/settings-svgrepo-com.svg" alt="" />
+          <img
+            className="h-5 opacity-25"
+            src="/svg/settings-svgrepo-com.svg"
+            alt=""
+          />
           <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
             Help Center
           </p>
@@ -129,34 +164,46 @@ export default function Sidebar({ darklight, setdarklight }) {
 
       <div className="flex w-full justify-between items-center m-0.5">
         <div className="flex items-center gap-1.5 justify-center py-2.5">
-          <img className="h-5 opacity-25" src="/svg/settings-svgrepo-com.svg" alt="" />
-          <NavLink to="/Setting">
+          <img
+            className="h-5 opacity-25"
+            src="/svg/settings-svgrepo-com.svg"
+            alt=""
+          />
+          <NavLink to="Setting">
             <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
               Settings
             </p>
           </NavLink>
         </div>
-        <img className="h-5 opacity-0" src="/svg/down-arrow-5-svgrepo-com.svg" alt="" />
+        <img
+          className="h-5 opacity-0"
+          src="/svg/down-arrow-5-svgrepo-com.svg"
+          alt=""
+        />
       </div>
 
       <div
         className={`dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50 h-fit w-full justify-around items-center m-0.5`}
       >
         <div
-          onClick={() => changetheme(true)}
+          onClick={() => changeTheme('')}
           id="Light"
-          className={`flex flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5 ${darklight.light}`}
+          className={`flex flex-1 ${theme.light} rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
         >
           <img className="h-4" src="/svg/sun-2-svgrepo-com.svg" alt="" />
-          <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">Light</p>
+          <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
+            Light
+          </p>
         </div>
         <div
-          onClick={() => changetheme(false)}
+          onClick={() => changeTheme('false')}
           id="dark"
-          className={`flex flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5 ${darklight.dark}`}
+          className={`flex ${theme.dark} flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5 `}
         >
           <img className="h-4" src="/svg/night-svgrepo-com.svg" alt="" />
-          <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">Dark</p>
+          <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
+            Dark
+          </p>
         </div>
       </div>
     </div>
@@ -168,68 +215,26 @@ export default function Sidebar({ darklight, setdarklight }) {
     >
       {top1}
       {top2}
-      {middle}
+      {/* {middle} */}
+      {middle1}
       {bottom}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //*********************************first working code of sidebar****************************************
 
 // import { useState } from "react";
 // import { LuSun } from 'react-icons/lu'
 // import { FaBeer } from 'react-icons/fa';
-                 
+
 // export default function Sidebar({darklight,setdarklight}){
 //     // const [darklight,setdarklight]=useState({light:"bg-white shadow dark:bg-slate-700 drop-shadow-2xl",dark:"bg-gray-50 dark:bg-slate-900 ",Magic_Word:""});
 //     const [sub,setSub]=useState({Employee:false,Checklist:false,Time_Off:false,Attendance:false,Payroll:false,Performance:false,Recruitment:false})
 //     function changeSub(key,value){
 //             setSub(current=>{ return {...current,[key]:value}})
 //             console.log(typeof(key),key,typeof(value),value)
-            
+
 //     }
 //     function changetheme(type){
 //         if(type===true){
@@ -253,8 +258,8 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                 </div>
 //                 <img className="h-5 opacity-45" src="\svg\dashboard-svgrepo-com.svg" alt="" />
 //             </div>;
-//     const middle=<div id="middle" className="flex flex-col w-full flex-1 my-4 overflow-y-scroll scrollbar-hidden gap-2">  
-//                 {/* this will contain a group of single side bar characters */}    
+//     const middle=<div id="middle" className="flex flex-col w-full flex-1 my-4 overflow-y-scroll scrollbar-hidden gap-2">
+//                 {/* this will contain a group of single side bar characters */}
 //                 <div id="child1" className={`*:cursor-pointer `}>
 //                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
 //                     <div onClick={()=>{changeSub("Employee",!sub.Employee)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
@@ -275,7 +280,7 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
 //                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
 //                         </div>
-                        
+
 //                     </div>
 //                 </div>
 //                 <div id="child2" className={`*:cursor-pointer `}>
@@ -298,7 +303,7 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
 //                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
 //                         </div>
-                        
+
 //                     </div>
 //                 </div>
 //                 <div id="child3" className={`*:cursor-pointer `}>
@@ -321,7 +326,7 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
 //                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
 //                         </div>
-                        
+
 //                     </div>
 //                 </div>
 //                 <div id="child4" className={`*:cursor-pointer `}>
@@ -344,7 +349,7 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
 //                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
 //                         </div>
-                        
+
 //                     </div>
 //                 </div>
 //                 <div id="child5" className={`*:cursor-pointer `}>
@@ -367,7 +372,7 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
 //                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
 //                         </div>
-                        
+
 //                     </div>
 //                 </div>
 //                 <div id="child6" className={`*:cursor-pointer `}>
@@ -390,7 +395,7 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
 //                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
 //                         </div>
-                        
+
 //                     </div>
 //                 </div>
 //                 <div id="child7" className={`*:cursor-pointer `}>
@@ -413,12 +418,12 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
 //                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
 //                         </div>
-                        
+
 //                     </div>
 //                 </div>
 
 //              </div>  ;
-//     const bottom=<div id="bottom" className="w-full flex flex-col items-center py-3.5 ">  
+//     const bottom=<div id="bottom" className="w-full flex flex-col items-center py-3.5 ">
 //                 <div className="flex w-full justify-between items-center m-0.5">
 //                     <div className="flex items-center gap-1.5 justify-center py-2.5">
 //                         <img className="h-5 opacity-25" src="\svg\settings-svgrepo-com.svg" alt="" />
@@ -427,14 +432,14 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                     {/* <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" /> */}
 //                     <div className="text-xs rounded-full font-semibold items-center bg-red-500 text-white px-1 "><p className="m-0.5">8</p></div>
 
-//                 </div>   
+//                 </div>
 //                 <div className="flex w-full justify-between items-center m-0.5">
 //                     <div className="flex items-center gap-1.5 justify-center py-2.5">
 //                         <img className="h-5 opacity-25" src="\svg\settings-svgrepo-com.svg" alt="" />
 //                         <p className={`font-semibold text-gray-700  text-sm  dark:text-slate-300`}>Setting</p>
 //                     </div>
 //                     <img className="h-5 opacity-0" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                 </div>  
+//                 </div>
 //                 <div className={` dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50  h-fit w-full justify-around items-center m-0.5`}>
 //                     <div onClick={()=>{changetheme(true)}} id="Light" className={`flex flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5   ${darklight.light}`} >
 //                     <img className={`h-4`} src="\svg\sun-2-svgrepo-com.svg" alt="" />
@@ -444,14 +449,14 @@ export default function Sidebar({ darklight, setdarklight }) {
 //                     <img className={`h-4`} src="\svg\night-svgrepo-com.svg" alt="" />
 //                     <p className={` dark:text-slate-100 font-semibold text-gray-700  text-sm`}>Dark</p>
 //                     </div>
-//                 </div>   
+//                 </div>
 //              </div>;
 //     return(
 //         <div className={`bg-white  dark:bg-slate-800 dark:text-white flex h-full w-64 flex-col items-center shadow px-2.5 py-0.5`}>
-//           {top1}    
-//           {top2}    
-//           {middle}    
-//           {bottom}    
+//           {top1}
+//           {top2}
+//           {middle}
+//           {bottom}
 //         </div>
 //     )
 // }

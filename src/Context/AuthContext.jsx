@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
-const AuthContext=createContext(null);
+const Authcontext=createContext(null);
 
-export function AuthProvider({children}) 
+export function AuthContext({children}) 
     {
         const [auth, setAuth] = useState({
             user:null,
@@ -29,14 +29,14 @@ export function AuthProvider({children})
         };
 
         return(
-            <AuthContext.Provider value={{auth, login, logout,setAccessToken}}>
+            <Authcontext.Provider value={{auth, login, logout,setAccessToken}}>
             {children}
-            </AuthContext.Provider>
+            </Authcontext.Provider>
         )
     }
 
 
 export default function useAuth()
     {
-        return useContext(AuthContext)
+        return useContext(Authcontext)
     }

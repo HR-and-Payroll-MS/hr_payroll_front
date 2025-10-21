@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
-import ChangePassword from "./SubSettings/ChangePassword";
-import CompanyInfo from "./SubSettings/CompanyInfo";
-import WorkSchedule from "./SubSettings/WorkSchedule";
+import ChangePassword from "./sub/ChangePassword";
+import CompanyInfo from "./sub/CompanyInfo";
+import WorkSchedule from "./sub/WorkSchedule";
 
 export default function Setting(){
 
