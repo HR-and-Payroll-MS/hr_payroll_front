@@ -1,12 +1,12 @@
 export const sidebarList={
     hr:[
-        {path:null,label:"Employee",Visible:true ,sub:[
+        {path:null,label:"Employee",Visible:false ,sub:[
             {subPath:"Employee/ManageEmployee",label:"Manage Employee"},
             {subPath:"Employee/Directory",label:"Directory"},
             {subPath:"org-chart",label:"ORG Chart"},
         ]},
         {path:null,label:"Checklist",Visible:false ,sub:[
-            {subPath:"/",label:"To-Do"},
+            {subPath:"checklist",label:"To-Do"},
             {subPath:"/",label:"Onboarding"},
             {subPath:"/",label:"Offboarding"},
             {subPath:"/",label:"Setting"},

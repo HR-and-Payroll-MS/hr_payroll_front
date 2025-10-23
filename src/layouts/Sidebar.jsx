@@ -5,18 +5,18 @@ import { sidebarList } from '../Hooks/useSidebarContent';
 import useAuth from '../Context/AuthContext';
 
 export default function Sidebar() {
-  const {auth} = useAuth();
-  const role=auth?.user?.role;
+  const { auth } = useAuth();
+  const role = auth?.user?.role;
   const [list, setList] = useState(sidebarList[role] || []);
 
-const isAct = (label) =>
-  setList((prev) =>
-    prev.map((item) =>
-      item.label === label
-        ? { ...item, Visible: !item.Visible, path: null }
-        : item
-    )
-  );
+  const isAct = (label) =>
+    setList((prev) =>
+      prev.map((item) =>
+        item.label === label
+          ? { ...item, Visible: !item.Visible, path: null }
+          : item
+      )
+    );
 
   const { theme, changeTheme } = useTheme();
 

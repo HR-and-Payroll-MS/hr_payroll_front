@@ -26,6 +26,7 @@ import CompanyInfo from './Pages/settings/sub/CompanyInfo';
 import ChangePassword from './Pages/settings/sub/ChangePassword';
 import WorkSchedule from './Pages/settings/sub/WorkSchedule';
 import useAuth from './Context/AuthContext';
+import Checklist from './Pages/HR_Manager/Checklist/Checklist';
 
 export const UserContext = createContext();
 
@@ -53,6 +54,7 @@ function App() {
             </Route>
 
             <Route path="attendance" element={<Attendance />} />
+            <Route path="checklist" element={<Checklist />} />
 
              <Route path="setting" element={<Settingz/>}>
               <Route path="CompanyInfo" element={<CompanyInfo />} />

@@ -3,7 +3,12 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 function Modal({ isOpen, onClose, children}){
     if(!isOpen) return null;
-    return createPortal(<div onClick={onClose} className='bg-gray-900/40 flex z-50 w-full h-full justify-end items-center absolute top-0 '><p className='p-32 flex w-2/6 justify-center items-center text-center  h-full bg-pink-100'>hello bitch{children}</p></div>,document.body)
+    return createPortal(
+    <div onClick={onClose} className='bg-gray-900/40 flex z-50 w-full h-full justify-end items-center absolute top-0 '>
+        <p className='p-32 flex w-2/6 justify-center items-center text-center  h-full bg-pink-100'>
+            hello bitch{children}
+        </p>
+    </div>,document.body)
 
 
 

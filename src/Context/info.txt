@@ -1,1 +1,0 @@
-context holds files which are used to share state across the entire app --- like authentication , theme , language , user preferences, etc
