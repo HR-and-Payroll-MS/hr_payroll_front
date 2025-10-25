@@ -44,7 +44,7 @@ export default function Sidebar() {
   );
 
   const top2 = (
-    <div
+    <NavLink to=""
       id="top2"
       className="bg-green-600 rounded-md p-2.5 px-5 flex w-full justify-between items-center"
     >
@@ -56,7 +56,7 @@ export default function Sidebar() {
         src="/svg/dashboard-svgrepo-com.svg"
         alt=""
       />
-    </div>
+    </NavLink>
   );
   const middle1 = (
     <div

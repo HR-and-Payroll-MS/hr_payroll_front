@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import useAuth from '../Context/useAuth'
 import {axios as axiosPrivate} from '../api/axios';
 
-const BASE = "http://localhost:5000"
+const BASE = "172.16.27.124:3000"
 function useAxiosPrivate() {
     const {auth, setAccessToken, logout } = useAuth()
 

@@ -1,42 +1,40 @@
 export const sidebarList={
     hr:[
-        {path:null,label:"Employee",Visible:false ,sub:[
-            {subPath:"Employee/ManageEmployee",label:"Manage Employee"},
-            {subPath:"Employee/Directory",label:"Directory"},
-            {subPath:"org-chart",label:"ORG Chart"},
-        ]},
-        {path:null,label:"Checklist",Visible:false ,sub:[
-            {subPath:"checklist",label:"To-Do"},
-            {subPath:"/",label:"Onboarding"},
-            {subPath:"/",label:"Offboarding"},
-            {subPath:"/",label:"Setting"},
-        ]},
-        {path:null,label:"Time Off",Visible:false ,sub:[
-            {subPath:"/",label:"My Time Off"},
-            {subPath:"/",label:"Team Time Off"},
-            {subPath:"/",label:"Employee Time Off"},
-            {subPath:"/",label:"Settings"},
+        {path:null,label:"Employee Management",Visible:false ,sub:[
+            {subPath:"AddEmployee",label:"Add Employee"},
+            {subPath:"",label:"Update Employee information"},
+            {subPath:"",label:"Manage Employee Accounts"},
+            {subPath:"org-chart",label:"Upload Documents"},
         ]},
         {path:null,label:"Attendance",Visible:false ,sub:[
-            {subPath:"/",label:"My Attendance"},
-            {subPath:"/",label:"Team Attendance"},
-            {subPath:"/",label:"Employee Attendance"},
-            {subPath:"/",label:"Settings"},
+            {subPath:"checklist",label:"View Attendance"},
+            {subPath:"/",label:"Track Employee Accounts"},
         ]},
-        {path:"null",label:"Payroll",Visible:false ,sub:[
-            {subPath:"/",label:"Manage Employee"},
-            {subPath:"/",label:"Directory"},
-            {subPath:"/",label:"ORG Chart"},
+        {path:null,label:"Leave Management",Visible:false ,sub:[
+            {subPath:"Employee/ManageEmployee",label:"Approve/Reject Leave Requests"},
+            {subPath:"Employee/Directory",label:"Manage Holidays"},
+            {subPath:"org-chart",label:"Manage Time Off Requests"},
         ]},
-        {path:"null",label:"Performance",Visible:false ,sub:[
-            {subPath:"/",label:"Manage Employee"},
-            {subPath:"/",label:"Directory"},
-            {subPath:"/",label:"ORG Chart"},
+        {path:null,label:"Payroll Management",Visible:false ,sub:[
+            {subPath:"/",label:"View Payroll Reports"},
+            {subPath:"/",label:"Manage Payroll System"},
+            {subPath:"/",label:"Generate Payroll"},
         ]},
-        {path:null,label:"Recruitment",Visible:false ,sub:[
-            {subPath:"/",label:"Jobs"},
-            {subPath:"/",label:"Candidates"},
-            {subPath:"/",label:"Settings"},
+        {path:null,label:"Reports",Visible:false ,sub:[
+            {subPath:"/",label:"View Employee Reports"},
+            {subPath:"/",label:"View Tax Reports"},
+        ]},
+        {path:null,label:"System Admin",Visible:false ,sub:[
+            {subPath:"/",label:"Assign Roles & Permissions"},
+            {subPath:"/",label:"Manage Departments"},
+        ]},
+        {path:null,label:"Notifications",Visible:false ,sub:[
+            {subPath:"/",label:"View Notifications"},
+            {subPath:"/",label:"Send Notifications"},
+        ]},
+        {path:null,label:"Profile",Visible:false ,sub:[
+            {subPath:"/",label:"Manage Profile"},
+            {subPath:"/",label:"logout"},
         ]},
     ],
     manager:[

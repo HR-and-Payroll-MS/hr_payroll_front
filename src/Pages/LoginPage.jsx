@@ -5,6 +5,12 @@ import useAuth from '../Context/AuthContext';
 import useForm from '../Hooks/useForm';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
+
+
+
+
+
+
 export default function Login() {
   const data = {
     accessToken: 'asdfwietqsdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsdfasdf',
@@ -16,8 +22,8 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-  if (auth?.user?.role === 'hr') navigate('/hr');
-  else if (auth?.user?.role === 'manager') navigate('/manager');
+  if (auth?.user?.role === 'hr') navigate('/hr_dashboard');
+  else if (auth?.user?.role === 'manager') navigate('/manager_dashboard');
 }, [auth, navigate]);
 
   const handleLogin = async (formData) => {
@@ -27,28 +33,27 @@ export default function Login() {
     try {
       await login(data);
       
-      console.log('auth:', auth);
-      //   const res = await axios.post(
-      //     'https://hr-payroll-django-v1-0-0.onrender.com/api/v1/auth/jwt/create',
-      //     formData,
-      //     {
-      //       withCredentials: true,
-      // }
-      //   );
-      //   const { accessToken, user } = res.data;
-      //   login({ accessToken, user });
-      //   message('Login successfull');
+        // const res = await axios.post(
+        //   'http://localhost:3000/api/v1/auth/jwt/create/',
+        //   formData,
+        //   { withCredentials: true,}
+        // );
+        // const { accessToken, user } = res.data;
+        // console.log('login res:', res.data);
+
+        //await???? login({ accessToken, user });
+        // setMessage('Login successfull');
     } catch (err) {
-      //   console.log(err);
-      //   setMessage(err.response?.data?.message || err.message);
-      // } finally {
-      //   setLoading(false);
-      console.log('err:', err, '\n Auth:', auth);
+        console.log(err);
+        // setMessage(err.response?.data?.message || err.message);
+      } finally {
+        // setLoading(false);
+        // console.log('auth:', auth);
     }
   };
 
   const { values, handleChange, handleSubmit } = useForm(
-    { email: '', password: '' },
+    { username: '', password: '' },
     handleLogin
   );
   const formContainer = (
@@ -74,7 +79,7 @@ export default function Login() {
               type="email"
               onChange={handleChange}
               value={values.email}
-              name="email"
+              name="username"
               id="email"
               placeholder="enter your name"
             />
