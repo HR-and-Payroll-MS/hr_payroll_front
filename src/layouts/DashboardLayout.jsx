@@ -3,6 +3,9 @@ import SummaryCard from '../Components/SummaryCard'
 import {table} from '../Hooks/useTableStructure'
 import Table from '../Components/Table';
 import Modal from '../Components/Modal'
+import BarChartExample from '../Example/BarChartExample';
+import LineChartExample from '../Example/LineChartExample';
+import PieChartExample from '../Example/PieChartExample';
 function DashboardLayout() {
   const [isOpen,setClose]=useState(true)  
   const data=[1,2,2,2,3]
@@ -24,9 +27,9 @@ function DashboardLayout() {
             <SummaryCard/>
             </div>
         <div className='flex gap-4  w-full flex-2'>
-            <div className='bg-gray-50 h-full rounded flex-1 '></div>
-            <div className='bg-gray-50 h-full rounded flex-1 '></div>
-            <div className='bg-gray-50 h-full rounded flex-1 '></div>
+            <div className='bg-gray-50 h-full rounded flex-1 '><BarChartExample/></div>
+            <div className='bg-gray-50 h-full rounded flex-1 '><LineChartExample/></div>
+            <div className='bg-gray-50 h-full rounded flex-1 '><PieChartExample/></div>
             </div>
         <div className='flex gap-4 rounded flex-1 h-fit w-full bg-gray-50'>
             <Table data={data} bodyStructure={bodyStructure} headerStructure={headerStructure}/>
