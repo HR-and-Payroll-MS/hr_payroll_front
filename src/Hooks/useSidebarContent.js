@@ -34,7 +34,7 @@ export const sidebarList={
         ]},
         {Icons:"CircleUser",path:null,label:"Profile",Visible:false ,sub:[
             {subPath:"/",label:"Manage Profile"},
-            {subPath:"/",label:"logout"},
+            {subPath:"logout",label:"logout"},
         ]},
     ],
     manager:[

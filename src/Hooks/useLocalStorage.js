@@ -10,7 +10,15 @@ function useLocalStorage(key, initialValue) {
   return [storedValue, setValue];
 };
 
-export default useLocalStorage
+const getLocalData = (key)=>{
+  const data=localStorage.getItem(key);
+  return data;
+}
+const setLocalData = (key,value)=>{
+  const data=localStorage.detItem(key,value);
+  return data;
+}
+export  {useLocalStorage,getLocalData,setLocalData}
 
 
 

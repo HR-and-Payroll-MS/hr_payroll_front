@@ -5,6 +5,7 @@ import useAuth from '../Context/AuthContext';
 import useForm from '../Hooks/useForm';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { getLocalData } from '../Hooks/useLocalStorage';
 
 
 
@@ -16,7 +17,7 @@ export default function Login() {
     accessToken: 'asdfwietqsdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsdfasdf',
     user: { role: 'hr', id: 23 },
   };
-  const { login, auth } = useAuth();
+  const { login, auth, setUser ,logout } = useAuth();
   const darklight = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,12 +28,18 @@ export default function Login() {
 }, [auth, navigate]);
 
   const handleLogin = async (formData) => {
-    console.log(formData);
+    // console.log(formData);
     setLoading(true);
     setMessage('');
     try {
-      await login(data);
+      // await login(data);
+      console.log(getLocalData("role"))
+      logout();
+      console.log(getLocalData("role"))
       
+      await setUser(data);
+      console.log(getLocalData("role"))
+
         // const res = await axios.post(
         //   'http://localhost:3000/api/v1/auth/jwt/create/',
         //   formData,

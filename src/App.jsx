@@ -33,6 +33,7 @@ import Table from './Components/Table';
 import {table} from './Hooks/useTableStructure'
 import SummaryCard from './Components/SummaryCard';
 import AddEmployee from './Pages/HR_Manager/Employee Management/AddEmployee';
+import LogOut from './Pages/HR_Manager/Profile/LogOut';
 // import Table from './Pages/HR_Manager/Table';
 // rfce
 
@@ -54,6 +55,7 @@ function App() {
           {/* <Route path="hr_dashboard" element={<Table data={data} bodyStructure={bodyStructure} headerStructure={headerStructure}/>}> */}
             <Route index element={<DashboardLayout/>}/>
             <Route path='Addemployee' element={<AddEmployee/>}/>
+            <Route path='logout' element={<LogOut/>}/>
             <Route path="Employee" element={<Employee />}>
               <Route path="ManageEmployee" element={<ManageEmployee />} />
               <Route path="Directory" element={<Directory />}>
