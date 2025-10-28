@@ -1,38 +1,38 @@
 export const sidebarList={
     hr:[
-        {path:null,label:"Employee Management",Visible:false ,sub:[
+        {Icons:"Users",path:null,label:"Employee Management",Visible:false ,sub:[
             {subPath:"AddEmployee",label:"Add Employee"},
             {subPath:"",label:"Update Employee information"},
             {subPath:"",label:"Manage Employee Accounts"},
             {subPath:"org-chart",label:"Upload Documents"},
         ]},
-        {path:null,label:"Attendance",Visible:false ,sub:[
+        {Icons:"BookA",path:null,label:"Attendance",Visible:false ,sub:[
             {subPath:"checklist",label:"View Attendance"},
             {subPath:"/",label:"Track Employee Accounts"},
         ]},
-        {path:null,label:"Leave Management",Visible:false ,sub:[
+        {Icons:"Timer",path:null,label:"Leave Management",Visible:false ,sub:[
             {subPath:"Employee/ManageEmployee",label:"Approve/Reject Leave Requests"},
             {subPath:"Employee/Directory",label:"Manage Holidays"},
             {subPath:"org-chart",label:"Manage Time Off Requests"},
         ]},
-        {path:null,label:"Payroll Management",Visible:false ,sub:[
+        {Icons:"Calendar",path:null,label:"Payroll Management",Visible:false ,sub:[
             {subPath:"/",label:"View Payroll Reports"},
             {subPath:"/",label:"Manage Payroll System"},
             {subPath:"/",label:"Generate Payroll"},
         ]},
-        {path:null,label:"Reports",Visible:false ,sub:[
+        {Icons:"FlagTriangleRight",path:null,label:"Reports",Visible:false ,sub:[
             {subPath:"/",label:"View Employee Reports"},
             {subPath:"/",label:"View Tax Reports"},
         ]},
-        {path:null,label:"System Admin",Visible:false ,sub:[
+        {Icons:"ShieldAlert",path:null,label:"System Admin",Visible:false ,sub:[
             {subPath:"/",label:"Assign Roles & Permissions"},
             {subPath:"/",label:"Manage Departments"},
         ]},
-        {path:null,label:"Notifications",Visible:false ,sub:[
+        {Icons:"Megaphone",path:null,label:"Notifications",Visible:false ,sub:[
             {subPath:"/",label:"View Notifications"},
             {subPath:"/",label:"Send Notifications"},
         ]},
-        {path:null,label:"Profile",Visible:false ,sub:[
+        {Icons:"CircleUser",path:null,label:"Profile",Visible:false ,sub:[
             {subPath:"/",label:"Manage Profile"},
             {subPath:"/",label:"logout"},
         ]},

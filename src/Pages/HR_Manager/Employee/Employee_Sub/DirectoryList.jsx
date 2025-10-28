@@ -28,7 +28,7 @@ export const DirectoryList = () => {
             
             {fruit.map((fruit,i)=>
             <div key={i} className="flex shadow dark:bg-slate-800 bg-white max-w-64  flex-1 flex-col  text-gray-700 border border-gray-100 rounded-xl items-center  justify-start gap-5 px-5 py-4 ">
-                    <NavLink to="Detail"> <div className="flex flex-col  w-full justify-center gap-2 items-center">
+                    <NavLink to="Detail/General"> <div className="flex flex-col  w-full justify-center gap-2 items-center">
                         <img className="w-12 m-4 h-12 object-fill rounded-full " src="\pic\download (48).png" alt="" />
                         <p className="text-lg font-bold">Angeline Beier</p>
                         <p className="text-md text-gray-500  font-normal">Finance Manager</p>

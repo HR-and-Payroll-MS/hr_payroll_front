@@ -3,8 +3,10 @@ import { NavLink } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
 import { sidebarList } from '../Hooks/useSidebarContent';
 import useAuth from '../Context/AuthContext';
+import Icon from '../Components/Icon';
 
 export default function Sidebar() {
+
   const { auth } = useAuth();
   const role = auth?.user?.role;
   const [list, setList] = useState(sidebarList[role] || []);
@@ -35,11 +37,7 @@ export default function Sidebar() {
           HRDashboard
         </p>
       </div>
-      <img
-        className="h-5"
-        src="/svg/fullscreen-exit-alt-svgrepo-com.svg"
-        alt=""
-      />
+      <Icon name={"PanelLeft"} className="w-5 h-5"/>
     </div>
   );
 
@@ -51,11 +49,7 @@ export default function Sidebar() {
       <div className="flex items-center justify-center">
         <p className="font-semibold text-white text-xs">Dashboard</p>
       </div>
-      <img
-        className="h-5 opacity-45"
-        src="/svg/dashboard-svgrepo-com.svg"
-        alt=""
-      />
+      <Icon name={"LayoutDashboard"} className="w-4 h-4"/>
     </NavLink>
   );
   const middle1 = (
@@ -83,12 +77,7 @@ export default function Sidebar() {
               />
               <p className="dark:text-slate-300 flex-1 font-semibold text-gray-700 text-sm">
                 {lists.label}
-              </p>
-              <img
-                className="h-5 opacity-0"
-                src="/svg/down-arrow-5-svgrepo-com.svg"
-                alt=""
-              />
+              </p> 
             </NavLink>{' '}
           </div>
         ) : (
@@ -98,22 +87,14 @@ export default function Sidebar() {
               className={`hover:bg-slate-50  dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}
             >
               <div className="flex items-center gap-1.5 justify-center">
-                <img
-                  className="h-5 opacity-25"
-                  src="/svg/profile-circle-svgrepo-com.svg"
-                  alt=""
-                />
+                <Icon name={lists.Icons} className='w-4 h-4 text-slate-400'/>
                 <p
                   className={` dark:text-slate-300 font-semibold text-gray-700 text-sm`}
                 >
                   {lists.label}
                 </p>
               </div>
-              <img
-                className="h-5 opacity-25"
-                src="/svg/down-arrow-5-svgrepo-com.svg"
-                alt=""
-              />
+                <Icon name={"ChevronDown"} className={`w-4 h-4 text-slate-400  transition-transform ${lists.Visible? "rotate-180":""}`}/>
             </div>
             <div
               className={`${
