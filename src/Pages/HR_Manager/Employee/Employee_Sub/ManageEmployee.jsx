@@ -1,27 +1,12 @@
+import Header from "../../../../Components/Header"
+
 export default function ManageEmployee(){
     const fruit=[1,2,3,4,5,6,7,8,9]
-    const Header= <div id="left" className="flex py-2.5 gap-3  justify-between items-center  ">
-            
-            
-            <div className={`flex flex-1 flex-col  dark:text-slate-300 text-gray-700 items-start  justify-start  rounded-md`}>
-                    <p className="text-xl font-bold">My Attendance</p>
-                    <p className={`text-xs text-gray-500 font-semibold`}>Manage Your Attendance</p>
-            </div>
-            <div className={`flex border  text-slate-700 items-center  justify-center gap-1.5 px-5 py-2.5 rounded-md`}>
-                    <img className="h-4" src="\svg\clock.svg" alt="" />
-                    <p className="text-xs font-semibold">Download</p>
-            </div>
-            <div className={`flex bg-slate-800 text-white items-center  justify-center gap-1.5 px-5 py-3 rounded-md`}>
-                    <img className="h-4" src="\svg\clock.svg" alt="" />
-                    <p className="text-xs font-semibold">Add new</p>
-            </div>
-            
+    
            
-            
             
            
 
-        </div>
     const table_header=<thead className={`bg-slate-100 dark:bg-slate-700  rounded-xl`}>
             <tr className="justify-evenly  ">
                 
@@ -158,7 +143,16 @@ export default function ManageEmployee(){
     return <div className="flex flex-col gap-6 p-4 shadow  rounded-md h-full">
                 
             <div className={`bg-white flex-col  dark:bg-slate-800 flex justify-evenly h-fit  `}> 
-                {Header}
+                 <Header Title={"My Attendance"} Breadcrumb={"Manage your Attendance"}> 
+                    <div className={`flex border  text-slate-700 items-center  justify-center gap-1.5 px-5 py-2.5 rounded-md`}>
+                            <img className="h-4" src="\svg\clock.svg" alt="" />
+                            <p className="text-xs font-semibold">Download</p>
+                    </div>
+                    <div className={`flex bg-slate-800 text-white items-center  justify-center gap-1.5 px-5 py-3 rounded-md`}>
+                            <img className="h-4" src="\svg\clock.svg" alt="" />
+                            <p className="text-xs font-semibold">Add new</p>
+                    </div>
+                </Header>
                 {left}
             </div>
             <div className="flex-1 flex flex-col overflow-y-scroll scrollbar-hidden overflow-hidden">

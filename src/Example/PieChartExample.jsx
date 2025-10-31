@@ -1,12 +1,16 @@
 // PieChartExample.jsx
 import { ResponsivePie } from '@nivo/pie';
 
-export default function PieChartExample() {
+export default function PieChartExample({ theme = 'light' }) {
   const data = [
     { id: "javascript", label: "JavaScript", value: 45 },
     { id: "python", label: "Python", value: 30 },
     { id: "java", label: "Java", value: 25 },
   ];
+  const colors = theme === 'dark'
+    ? ['#ffb347', '#ffcc33', '#ff6699','#ffffff'] 
+    : ['#66c2a5', '#fc8d62', '#8da0cb','#ffffff']; 
+
 
   return (
     <div style={{ height: 400 }}>
@@ -17,14 +21,14 @@ export default function PieChartExample() {
         padAngle={2}
         cornerRadius={3}
         activeOuterRadiusOffset={8}
-        colors={{ scheme: 'category10' }}
-        borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+        colors={colors}
+        borderWidth={0}
+        borderColor={{ from: 'color', modifiers: [[theme==="dark"?'brighter':'darker', 100]]  }}
         arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
+        arcLinkLabelsTextColor= {theme === 'dark' ? '#fff' : '#000'}
+        arcLinkLabelsThickness={1}
         arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+        arcLabelsTextColor={{ from: 'color', modifiers: [[theme==="dark"?'brighter':'darker', 100]] }}
       />
     </div>
   );

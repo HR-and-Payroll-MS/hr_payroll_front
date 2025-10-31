@@ -6,12 +6,13 @@ import useAuth from '../Context/AuthContext';
 import Icon from '../Components/Icon';
 
 export default function Sidebar() {
-
   const { auth } = useAuth();
   const role = auth?.user?.role;
   const [list, setList] = useState(sidebarList[role] || []);
+  const [collapsed, setCollapsed] = useState(false); // 👈 NEW: collapse state
+  const { theme, changeTheme } = useTheme();
 
-  const isAct = (label) =>
+  const toggleVisible = (label) =>
     setList((prev) =>
       prev.map((item) =>
         item.label === label
@@ -20,8 +21,6 @@ export default function Sidebar() {
       )
     );
 
-  const { theme, changeTheme } = useTheme();
-
   const top1 = (
     <div
       id="top"
@@ -29,35 +28,47 @@ export default function Sidebar() {
     >
       <div className="flex items-center justify-center py-2.5">
         <img
-          className="h-9"
+          className={`h-9 transition-all duration-300 ${
+            collapsed ? 'hidden' : 'block'
+          }`}
           src="/pic/Robot Thumb Up with Artificial Intelligence.png"
           alt=""
         />
-        <p className="dark:bg-slate-800 dark:text-white font-bold text-gray-700 text-xl">
-          HRDashboard
-        </p>
+        {!collapsed && (
+          <p className="dark:bg-slate-800 dark:text-white font-bold text-gray-700 text-xl">
+            HRDashboard
+          </p>
+        )}
       </div>
-      <Icon name={"PanelLeft"} className="w-5 h-5"/>
+
+      <Icon
+        name="PanelLeft"
+        className="w-5 h-5 cursor-pointer"
+        onClick={() => setCollapsed(!collapsed)} // 👈 toggle
+      />
     </div>
   );
 
   const top2 = (
-    <NavLink to=""
+    <NavLink
+      to=""
       id="top2"
-      className="bg-green-600 rounded-md p-2.5 px-5 flex w-full justify-between items-center"
+      className={`bg-green-600 rounded-md p-2.5 px-5 flex w-full justify-between items-center ${
+        collapsed ? 'justify-center' : ''
+      }`}
     >
-      <div className="flex items-center justify-center">
+      {!collapsed && (
         <p className="font-semibold text-white text-xs">Dashboard</p>
-      </div>
-      <Icon name={"LayoutDashboard"} className="w-4 h-4"/>
+      )}
+      <Icon name="LayoutDashboard" className="w-4 h-4 text-white" />
     </NavLink>
   );
+
   const middle1 = (
     <div
       id="middle"
-      className="flex flex-col w-full flex-1  my-4 overflow-y-scroll scrollbar-hidden gap-2"
+      className="flex flex-col w-full flex-1 my-4 overflow-y-scroll scrollbar-hidden gap-2"
     >
-      {' '}
       {list.map((lists, index) =>
         lists.path ? (
           <div key={index} className="*:cursor-pointer">
@@ -65,61 +76,80 @@ export default function Sidebar() {
               to={lists.path}
               end
               className={({ isActive }) =>
-                `flex gap-1.5 rounded-md w-full justify-start items-center px-2.5 py-1.5 ${
+                `flex gap-1.5 rounded-md w-full items-center px-2.5 py-1.5 ${
                   isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
-                }`
+                } ${collapsed ? 'justify-center' : 'justify-start'}`
               }
             >
-              <img
-                className="h-5 opacity-25"
-                src="/svg/profile-circle-svgrepo-com.svg"
-                alt=""
+              <Icon
+                name={lists.Icons || 'User'}
+                className="w-5 h-5 text-slate-400"
               />
-              <p className="dark:text-slate-300 flex-1 font-semibold text-gray-700 text-sm">
-                {lists.label}
-              </p> 
-            </NavLink>{' '}
+              {!collapsed && (
+                <p className="dark:text-slate-300 flex-1 font-semibold text-gray-700 text-sm">
+                  {lists.label}
+                </p>
+              )}
+            </NavLink>
           </div>
         ) : (
           <div key={index} className="*:cursor-pointer">
             <div
-              onClick={() => isAct(lists.label)}
-              className={`hover:bg-slate-50  dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}
+              onClick={() => toggleVisible(lists.label)}
+              className={`hover:bg-slate-50 dark:hover:bg-slate-700 flex w-full ${
+                collapsed ? 'justify-center' : 'justify-between'
+              } items-center p-2.5`}
             >
-              <div className="flex items-center gap-1.5 justify-center">
-                <Icon name={lists.Icons} className='w-4 h-4 text-slate-400'/>
-                <p
-                  className={` dark:text-slate-300 font-semibold text-gray-700 text-sm`}
-                >
-                  {lists.label}
-                </p>
+              <div
+                className={`flex items-center gap-1.5 justify-center ${
+                  collapsed ? 'justify-center' : ''
+                }`}
+              >
+                <Icon
+                  name={lists.Icons}
+                  className="w-4 h-4 text-slate-400"
+                />
+                {!collapsed && (
+                  <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
+                    {lists.label}
+                  </p>
+                )}
               </div>
-                <Icon name={"ChevronDown"} className={`w-4 h-4 text-slate-400  transition-transform ${lists.Visible? "rotate-180":""}`}/>
+              {!collapsed && (
+                <Icon
+                  name="ChevronDown"
+                  className={`w-4 h-4 text-slate-400 transition-transform ${
+                    lists.Visible ? 'rotate-180' : ''
+                  }`}
+                />
+              )}
             </div>
-            <div
-              className={`${
-                lists.Visible ? 'flex' : 'hidden'
-              } *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}
-            >
-              {lists.sub
-                ? lists.sub.map((subs) => (
-                    <NavLink
-                      key={subs.label}
-                      to={subs.subPath}
-                      end
-                      className={({ isActive }) =>
-                        `flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${
-                          isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
-                        }`
-                      }
-                    >
-                      <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
-                        {subs.label}
-                      </p>
-                    </NavLink>
-                  ))
-                : []}
-            </div>
+
+            {/* Sub-items only visible when expanded */}
+            {!collapsed && (
+              <div
+                className={`${
+                  lists.Visible ? 'flex' : 'hidden'
+                } *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}
+              >
+                {lists.sub?.map((subs) => (
+                  <NavLink
+                    key={subs.label}
+                    to={subs.subPath}
+                    end
+                    className={({ isActive }) =>
+                      `flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${
+                        isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
+                      }`
+                    }
+                  >
+                    <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
+                      {subs.label}
+                    </p>
+                  </NavLink>
+                ))}
+              </div>
+            )}
           </div>
         )
       )}
@@ -128,317 +158,277 @@ export default function Sidebar() {
 
   const bottom = (
     <div id="bottom" className="w-full flex flex-col items-center py-3.5">
-      <div className="flex w-full justify-between items-center m-0.5">
-        <div className="flex items-center gap-1.5 justify-center py-2.5">
-          <img
-            className="h-5 opacity-25"
-            src="/svg/settings-svgrepo-com.svg"
-            alt=""
-          />
-          <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
-            Help Center
-          </p>
-        </div>
-        <div className="text-xs rounded-full font-semibold items-center bg-red-500 text-white px-1">
-          <p className="m-0.5">8</p>
-        </div>
-      </div>
+      {!collapsed && (
+        <>
+          <div className="flex w-full justify-between items-center m-0.5">
+            <div className="flex items-center gap-1.5 justify-center py-2.5">
+              <Icon name="Settings" className="w-5 h-5 text-slate-400" />
+              <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
+                Help Center
+              </p>
+            </div>
+            <div className="text-xs rounded-full font-semibold items-center bg-red-500 text-white px-1">
+              <p className="m-0.5">8</p>
+            </div>
+          </div>
 
-      <div className="flex w-full justify-between items-center m-0.5">
-        <div className="flex items-center gap-1.5 justify-center py-2.5">
-          <img
-            className="h-5 opacity-25"
-            src="/svg/settings-svgrepo-com.svg"
-            alt=""
-          />
-          <NavLink to="Setting">
-            <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
-              Settings
-            </p>
-          </NavLink>
-        </div>
-        <img
-          className="h-5 opacity-0"
-          src="/svg/down-arrow-5-svgrepo-com.svg"
-          alt=""
-        />
-      </div>
+          <div className="flex w-full justify-between items-center m-0.5">
+            <div className="flex items-center gap-1.5 justify-center py-2.5">
+              <Icon name="Settings" className="w-5 h-5 text-slate-400" />
+              <NavLink to="Setting">
+                <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
+                  Settings
+                </p>
+              </NavLink>
+            </div>
+          </div>
 
-      <div
-        className={`dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50 h-fit w-full justify-around items-center m-0.5`}
-      >
-        <div
-          onClick={() => changeTheme('')}
-          id="Light"
-          className={`flex flex-1 ${theme.light} rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
-        >
-          <img className="h-4" src="/svg/sun-2-svgrepo-com.svg" alt="" />
-          <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
-            Light
-          </p>
-        </div>
-        <div
-          onClick={() => changeTheme('false')}
-          id="dark"
-          className={`flex ${theme.dark} flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5 `}
-        >
-          <img className="h-4" src="/svg/night-svgrepo-com.svg" alt="" />
-          <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
-            Dark
-          </p>
-        </div>
-      </div>
+          <div
+            className={`dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50 h-fit w-full justify-around items-center m-0.5`}
+          >
+            <div
+              onClick={() => changeTheme('')}
+              className={`flex flex-1 ${theme.light} rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
+            >
+              <Icon name="Sun" className="w-4 h-4" />
+              <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
+                Light
+              </p>
+            </div>
+            <div
+              onClick={() => changeTheme('false')}
+              className={`flex ${theme.dark} flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
+            >
+              <Icon name="Moon" className="w-4 h-4" />
+              <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
+                Dark
+              </p>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 
   return (
     <div
-      className={`bg-white dark:bg-slate-800 dark:text-white flex h-full w-64 flex-col items-center shadow px-2.5 py-0.5`}
+      className={`bg-white dark:bg-slate-800 dark:text-white flex h-full ${
+        collapsed ? 'w-16' : 'w-64'
+      } transition-all duration-300 flex-col items-center shadow px-2.5 py-0.5`}
     >
       {top1}
       {top2}
-      {/* {middle} */}
       {middle1}
       {bottom}
     </div>
   );
 }
 
-//*********************************first working code of sidebar****************************************
 
-// import { useState } from "react";
-// import { LuSun } from 'react-icons/lu'
-// import { FaBeer } from 'react-icons/fa';
 
-// export default function Sidebar({darklight,setdarklight}){
-//     // const [darklight,setdarklight]=useState({light:"bg-white shadow dark:bg-slate-700 drop-shadow-2xl",dark:"bg-gray-50 dark:bg-slate-900 ",Magic_Word:""});
-//     const [sub,setSub]=useState({Employee:false,Checklist:false,Time_Off:false,Attendance:false,Payroll:false,Performance:false,Recruitment:false})
-//     function changeSub(key,value){
-//             setSub(current=>{ return {...current,[key]:value}})
-//             console.log(typeof(key),key,typeof(value),value)
 
-//     }
-//     function changetheme(type){
-//         if(type===true){
-//             setdarklight({light:"bg-white shadow dark:bg-slate-700 drop-shadow-2xl",dark:"bg-gray-50 dark:bg-slate-900"})
-//         }
-//         else{
-//             setdarklight({dark:"bg-white shadow dark:bg-slate-700 drop-shadow-2xl",light:"bg-gray-50 dark:bg-slate-900",Magic_Word:"dark"})
-//         }
-//     }
-//     const check=0;
-//     const top1=<div id="top" className="flex w-full justify-between items-center m-0.5 px-2.5">
-//                 <div className="flex items-center  justify-center py-2.5">
-//                     <img className="h-9" src="\pic\Robot Thumb Up with Artificial Intelligence.png" alt="" />
-//                     <p className={` dark:bg-slate-800 dark:text-white font-bold text-gray-700  text-xl`}>HRDashboard</p>
-//                 </div>
-//                 <img className="h-5" src="\svg\fullscreen-exit-alt-svgrepo-com.svg" alt="" />
-//             </div>;
-//     const top2=<div id="top2" className="bg-green-600 rounded-md p-2.5 px-5 flex w-full justify-between items-center ">
-//                 <div className="flex items-center  justify-center ">
-//                     <p className="font-semibold text-white  text-xs">Dashboard</p>
-//                 </div>
-//                 <img className="h-5 opacity-45" src="\svg\dashboard-svgrepo-com.svg" alt="" />
-//             </div>;
-//     const middle=<div id="middle" className="flex flex-col w-full flex-1 my-4 overflow-y-scroll scrollbar-hidden gap-2">
-//                 {/* this will contain a group of single side bar characters */}
-//                 <div id="child1" className={`*:cursor-pointer `}>
-//                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
-//                     <div onClick={()=>{changeSub("Employee",!sub.Employee)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
-//                         <div className="flex items-center gap-1.5 justify-center ">
-//                             <img className="h-5 opacity-25" src="\svg\profile-circle-svgrepo-com.svg" alt="" />
-//                             <p className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm`}>Employee</p>
-//                         </div>
-//                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                     </div>
-//                     <div className={` ${sub.Employee?"flex":"hidden"} *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}>
-//                         {/* dropdowns are inside this div */}
-//                         <div id="d1"  className="flex rounded-md w-full justify-between items-center dark:bg-slate-700 bg-gray-100 px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Manage Employees</p>
-//                         </div>
-//                         <div id="d2"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Directory</p>
-//                         </div>
-//                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
-//                         </div>
+// import { useState } from 'react';
+// import { NavLink } from 'react-router-dom';
+// import { useTheme } from '../Context/ThemeContext';
+// import { sidebarList } from '../Hooks/useSidebarContent';
+// import useAuth from '../Context/AuthContext';
+// import Icon from '../Components/Icon';
 
-//                     </div>
-//                 </div>
-//                 <div id="child2" className={`*:cursor-pointer `}>
-//                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
-//                     <div onClick={()=>{changeSub("Checklist",!sub.Checklist)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
-//                         <div className="flex items-center gap-1.5 justify-center ">
-//                             <img className="h-5 opacity-25" src="\svg\profile-circle-svgrepo-com.svg" alt="" />
-//                             <p className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm`}>Checklist</p>
-//                         </div>
-//                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                     </div>
-//                     <div className={` ${sub.Checklist?"flex":"hidden"} *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}>
-//                         {/* dropdowns are inside this div */}
-//                         <div id="d1"  className="flex rounded-md w-full justify-between items-center dark:bg-slate-700 bg-gray-100 px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Manage Employees</p>
-//                         </div>
-//                         <div id="d2"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Directory</p>
-//                         </div>
-//                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
-//                         </div>
+// export default function Sidebar() {
 
-//                     </div>
-//                 </div>
-//                 <div id="child3" className={`*:cursor-pointer `}>
-//                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
-//                     <div onClick={()=>{changeSub("Time_Off",!sub.Time_Off)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
-//                         <div className="flex items-center gap-1.5 justify-center ">
-//                             <img className="h-5 opacity-25" src="\svg\profile-circle-svgrepo-com.svg" alt="" />
-//                             <p className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm`}>Time Off</p>
-//                         </div>
-//                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                     </div>
-//                     <div className={` ${sub.Time_Off?"flex":"hidden"} *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}>
-//                         {/* dropdowns are inside this div */}
-//                         <div id="d1"  className="flex rounded-md w-full justify-between items-center dark:bg-slate-700 bg-gray-100 px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Manage Employees</p>
-//                         </div>
-//                         <div id="d2"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Directory</p>
-//                         </div>
-//                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
-//                         </div>
+//   const { auth } = useAuth();
+//   const role = auth?.user?.role;
+//   const [list, setList] = useState(sidebarList[role] || []);
 
-//                     </div>
-//                 </div>
-//                 <div id="child4" className={`*:cursor-pointer `}>
-//                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
-//                     <div onClick={()=>{changeSub("Attendance",!sub.Attendance)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
-//                         <div className="flex items-center gap-1.5 justify-center ">
-//                             <img className="h-5 opacity-25" src="\svg\profile-circle-svgrepo-com.svg" alt="" />
-//                             <p className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm`}>Attendance</p>
-//                         </div>
-//                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                     </div>
-//                     <div className={` ${sub.Attendance?"flex":"hidden"} *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}>
-//                         {/* dropdowns are inside this div */}
-//                         <div id="d1"  className="flex rounded-md w-full justify-between items-center dark:bg-slate-700 bg-gray-100 px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Manage Employees</p>
-//                         </div>
-//                         <div id="d2"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Directory</p>
-//                         </div>
-//                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
-//                         </div>
+//   const isAct = (label) =>
+//     setList((prev) =>
+//       prev.map((item) =>
+//         item.label === label
+//           ? { ...item, Visible: !item.Visible, path: null }
+//           : item
+//       )
+//     );
 
-//                     </div>
-//                 </div>
-//                 <div id="child5" className={`*:cursor-pointer `}>
-//                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
-//                     <div onClick={()=>{changeSub("Payroll",!sub.Payroll)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
-//                         <div className="flex items-center gap-1.5 justify-center ">
-//                             <img className="h-5 opacity-25" src="\svg\profile-circle-svgrepo-com.svg" alt="" />
-//                             <p className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm`}>Payroll</p>
-//                         </div>
-//                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                     </div>
-//                     <div className={` ${sub.Payroll?"flex":"hidden"} *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}>
-//                         {/* dropdowns are inside this div */}
-//                         <div id="d1"  className="flex rounded-md w-full justify-between items-center dark:bg-slate-700 bg-gray-100 px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Manage Employees</p>
-//                         </div>
-//                         <div id="d2"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Directory</p>
-//                         </div>
-//                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
-//                         </div>
+//   const { theme, changeTheme } = useTheme();
 
-//                     </div>
-//                 </div>
-//                 <div id="child6" className={`*:cursor-pointer `}>
-//                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
-//                     <div onClick={()=>{changeSub("Performance",!sub.Performance)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
-//                         <div className="flex items-center gap-1.5 justify-center ">
-//                             <img className="h-5 opacity-25" src="\svg\profile-circle-svgrepo-com.svg" alt="" />
-//                             <p className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm`}>Performance</p>
-//                         </div>
-//                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                     </div>
-//                     <div className={` ${sub.Performance?"flex":"hidden"} *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}>
-//                         {/* dropdowns are inside this div */}
-//                         <div id="d1"  className="flex rounded-md w-full justify-between items-center dark:bg-slate-700 bg-gray-100 px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Manage Employees</p>
-//                         </div>
-//                         <div id="d2"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Directory</p>
-//                         </div>
-//                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
-//                         </div>
+//   const top1 = (
+//     <div
+//       id="top"
+//       className="flex w-full justify-between items-center m-0.5 px-2.5"
+//     >
+//       <div className="flex items-center justify-center py-2.5">
+//         <img
+//           className="h-9"
+//           src="/pic/Robot Thumb Up with Artificial Intelligence.png"
+//           alt=""
+//         />
+//         <p className="dark:bg-slate-800 dark:text-white font-bold text-gray-700 text-xl">
+//           HRDashboard
+//         </p>
+//       </div>
+//       <Icon name={"PanelLeft"} className="w-5 h-5"/>
+//     </div>
+//   );
 
-//                     </div>
-//                 </div>
-//                 <div id="child7" className={`*:cursor-pointer `}>
-//                     {/* this will contain single side bar character like "employee" with it's own dropdown */}
-//                     <div onClick={()=>{changeSub("Recruitment",!sub.Recruitment)}} className={` hover:bg-slate-50 ${darklight.Magic_Word} dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}>
-//                         <div className="flex items-center gap-1.5 justify-center ">
-//                             <img className="h-5 opacity-25" src="\svg\profile-circle-svgrepo-com.svg" alt="" />
-//                             <p className={`${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm`}>Recruitment</p>
-//                         </div>
-//                         <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                     </div>
-//                     <div className={` ${sub.Recruitment?"flex":"hidden"} *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}>
-//                         {/* dropdowns are inside this div */}
-//                         <div id="d1"  className="flex rounded-md w-full justify-between items-center dark:bg-slate-700 bg-gray-100 px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Manage Employees</p>
-//                         </div>
-//                         <div id="d2"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>Directory</p>
-//                         </div>
-//                         <div id="d3"  className="flex rounded-md w-full justify-between items-center px-2.5 py-1.5">
-//                                 <p className={ `${darklight.Magic_Word} dark:text-slate-300 font-semibold text-gray-700  text-sm `}>ORG Chart</p>
-//                         </div>
+//   const top2 = (
+//     <NavLink to=""
+//       id="top2"
+//       className="bg-green-600 rounded-md p-2.5 px-5 flex w-full justify-between items-center"
+//     >
+//       <div className="flex items-center justify-center">
+//         <p className="font-semibold text-white text-xs">Dashboard</p>
+//       </div>
+//       <Icon name={"LayoutDashboard"} className="w-4 h-4"/>
+//     </NavLink>
+//   );
+//   const middle1 = (
+//     <div
+//       id="middle"
+//       className="flex flex-col w-full flex-1  my-4 overflow-y-scroll scrollbar-hidden gap-2"
+//     >
+//       {' '}
+//       {list.map((lists, index) =>
+//         lists.path ? (
+//           <div key={index} className="*:cursor-pointer">
+//             <NavLink
+//               to={lists.path}
+//               end
+//               className={({ isActive }) =>
+//                 `flex gap-1.5 rounded-md w-full justify-start items-center px-2.5 py-1.5 ${
+//                   isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
+//                 }`
+//               }
+//             >
+//               <img
+//                 className="h-5 opacity-25"
+//                 src="/svg/profile-circle-svgrepo-com.svg"
+//                 alt=""
+//               />
+//               <p className="dark:text-slate-300 flex-1 font-semibold text-gray-700 text-sm">
+//                 {lists.label}
+//               </p> 
+//             </NavLink>{' '}
+//           </div>
+//         ) : (
+//           <div key={index} className="*:cursor-pointer">
+//             <div
+//               onClick={() => isAct(lists.label)}
+//               className={`hover:bg-slate-50  dark:hover:bg-slate-700 flex w-full justify-between items-center p-2.5`}
+//             >
+//               <div className="flex items-center gap-1.5 justify-center">
+//                 <Icon name={lists.Icons} className='w-4 h-4 text-slate-400'/>
+//                 <p
+//                   className={` dark:text-slate-300 font-semibold text-gray-700 text-sm`}
+//                 >
+//                   {lists.label}
+//                 </p>
+//               </div>
+//                 <Icon name={"ChevronDown"} className={`w-4 h-4 text-slate-400  transition-transform ${lists.Visible? "rotate-180":""}`}/>
+//             </div>
+//             <div
+//               className={`${
+//                 lists.Visible ? 'flex' : 'hidden'
+//               } *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}
+//             >
+//               {lists.sub
+//                 ? lists.sub.map((subs) => (
+//                     <NavLink
+//                       key={subs.label}
+//                       to={subs.subPath}
+//                       end
+//                       className={({ isActive }) =>
+//                         `flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${
+//                           isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
+//                         }`
+//                       }
+//                     >
+//                       <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
+//                         {subs.label}
+//                       </p>
+//                     </NavLink>
+//                   ))
+//                 : []}
+//             </div>
+//           </div>
+//         )
+//       )}
+//     </div>
+//   );
 
-//                     </div>
-//                 </div>
-
-//              </div>  ;
-//     const bottom=<div id="bottom" className="w-full flex flex-col items-center py-3.5 ">
-//                 <div className="flex w-full justify-between items-center m-0.5">
-//                     <div className="flex items-center gap-1.5 justify-center py-2.5">
-//                         <img className="h-5 opacity-25" src="\svg\settings-svgrepo-com.svg" alt="" />
-//                         <p className={`font-semibold text-gray-700  text-sm  dark:text-slate-300`}>Help Center </p>
-//                     </div>
-//                     {/* <img className="h-5 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" /> */}
-//                     <div className="text-xs rounded-full font-semibold items-center bg-red-500 text-white px-1 "><p className="m-0.5">8</p></div>
-
-//                 </div>
-//                 <div className="flex w-full justify-between items-center m-0.5">
-//                     <div className="flex items-center gap-1.5 justify-center py-2.5">
-//                         <img className="h-5 opacity-25" src="\svg\settings-svgrepo-com.svg" alt="" />
-//                         <p className={`font-semibold text-gray-700  text-sm  dark:text-slate-300`}>Setting</p>
-//                     </div>
-//                     <img className="h-5 opacity-0" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-//                 </div>
-//                 <div className={` dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50  h-fit w-full justify-around items-center m-0.5`}>
-//                     <div onClick={()=>{changetheme(true)}} id="Light" className={`flex flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5   ${darklight.light}`} >
-//                     <img className={`h-4`} src="\svg\sun-2-svgrepo-com.svg" alt="" />
-//                     <p className={` dark:text-slate-100 font-semibold text-gray-700  text-sm`}>Light</p>
-//                     </div>
-//                     <div onClick={()=>{changetheme(false)}} id="dark" className={`flex flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5   ${darklight.dark}`}>
-//                     <img className={`h-4`} src="\svg\night-svgrepo-com.svg" alt="" />
-//                     <p className={` dark:text-slate-100 font-semibold text-gray-700  text-sm`}>Dark</p>
-//                     </div>
-//                 </div>
-//              </div>;
-//     return(
-//         <div className={`bg-white  dark:bg-slate-800 dark:text-white flex h-full w-64 flex-col items-center shadow px-2.5 py-0.5`}>
-//           {top1}
-//           {top2}
-//           {middle}
-//           {bottom}
+//   const bottom = (
+//     <div id="bottom" className="w-full flex flex-col items-center py-3.5">
+//       <div className="flex w-full justify-between items-center m-0.5">
+//         <div className="flex items-center gap-1.5 justify-center py-2.5">
+//           <img
+//             className="h-5 opacity-25"
+//             src="/svg/settings-svgrepo-com.svg"
+//             alt=""
+//           />
+//           <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
+//             Help Center
+//           </p>
 //         </div>
-//     )
+//         <div className="text-xs rounded-full font-semibold items-center bg-red-500 text-white px-1">
+//           <p className="m-0.5">8</p>
+//         </div>
+//       </div>
+
+//       <div className="flex w-full justify-between items-center m-0.5">
+//         <div className="flex items-center gap-1.5 justify-center py-2.5">
+//           <img
+//             className="h-5 opacity-25"
+//             src="/svg/settings-svgrepo-com.svg"
+//             alt=""
+//           />
+//           <NavLink to="Setting">
+//             <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
+//               Settings
+//             </p>
+//           </NavLink>
+//         </div>
+//         <img
+//           className="h-5 opacity-0"
+//           src="/svg/down-arrow-5-svgrepo-com.svg"
+//           alt=""
+//         />
+//       </div>
+
+//       <div
+//         className={`dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50 h-fit w-full justify-around items-center m-0.5`}
+//       >
+//         <div
+//           onClick={() => changeTheme('')}
+//           id="Light"
+//           className={`flex flex-1 ${theme.light} rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
+//         >
+//           <img className="h-4" src="/svg/sun-2-svgrepo-com.svg" alt="" />
+//           <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
+//             Light
+//           </p>
+//         </div>
+//         <div
+//           onClick={() => changeTheme('false')}
+//           id="dark"
+//           className={`flex ${theme.dark} flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5 `}
+//         >
+//           <img className="h-4" src="/svg/night-svgrepo-com.svg" alt="" />
+//           <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
+//             Dark
+//           </p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <div
+//       className={`bg-white dark:bg-slate-800 dark:text-white flex h-full w-64 flex-col items-center shadow px-2.5 py-0.5`}
+//     >
+//       {top1}
+//       {top2}
+//       {/* {middle} */}
+//       {middle1}
+//       {bottom}
+//     </div>
+//   );
 // }

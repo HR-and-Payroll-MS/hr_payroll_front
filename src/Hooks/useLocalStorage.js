@@ -15,7 +15,7 @@ const getLocalData = (key)=>{
   return data;
 }
 const setLocalData = (key,value)=>{
-  const data=localStorage.detItem(key,value);
+  const data=localStorage.setItem(key,value);
   return data;
 }
 export  {useLocalStorage,getLocalData,setLocalData}

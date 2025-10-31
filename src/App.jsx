@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, createContext, useContext, useEffect } from 'react';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -34,22 +34,37 @@ import {table} from './Hooks/useTableStructure'
 import SummaryCard from './Components/SummaryCard';
 import AddEmployee from './Pages/HR_Manager/Employee Management/AddEmployee';
 import LogOut from './Pages/HR_Manager/Profile/LogOut';
+import { getLocalData, setLocalData } from './Hooks/useLocalStorage';
 // import Table from './Pages/HR_Manager/Table';
 // rfce
 
 export const UserContext = createContext();
+ 
 
 function App() {
+//   const {setAuth}=useAuth()
+//  useEffect(() => {
+//   setLocalData("access","asdfasdfadtheiosu");
+//   setLocalData("role","Manager")
+//   setLocalData("id","seud")
+//       const data = {
+//         accessToken: localStorage.getItem('access'),
+//         user: {
+//           role: getLocalData('role'),
+//           id: getLocalData('id'),
+//         }
+//     }
+//        setAuth({accessToken:data.accessToken,user:data.user});
+//   }, []);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Login />} />
         <Route path="/unauthorized" element={<UnAuthorized />} />
 
       {/* ------------------------- hr ---------------------- */}
 
-        <Route element={<ProtectedRoutes allowedRoles={["hr"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["Manager"]} />}>
          {/* for check up i changed the element in the hr_dashboard Route from "MainLayout" to other change it later thanks */}
           <Route path="hr_dashboard" element={<MainLayout/>}>
           {/* <Route path="hr_dashboard" element={<Table data={data} bodyStructure={bodyStructure} headerStructure={headerStructure}/>}> */}
@@ -82,7 +97,7 @@ function App() {
 
         {/* ------------------------- manager ---------------------- */}
 
-        <Route element={<ProtectedRoutes allowedRoles={["manager"]} />}>
+        <Route element={<ProtectedRoutes allowedRoles={["Manager"]} />}>
           <Route path="manager_dashboard" element={<MainLayout />}>
             <Route path="Employee" element={<Employee />}>
               <Route path="ManageEmployee" element={<ManageEmployee />} />

@@ -1,5 +1,5 @@
 export const sidebarList={
-    hr:[
+    Manager:[
         {Icons:"Users",path:null,label:"Employee Management",Visible:false ,sub:[
             {subPath:"AddEmployee",label:"Add Employee"},
             {subPath:"",label:"Update Employee information"},
@@ -37,7 +37,7 @@ export const sidebarList={
             {subPath:"logout",label:"logout"},
         ]},
     ],
-    manager:[
+    hr:[
         {path:null,label:"M Employee",Visible:true ,sub:[
             {subPath:"Employee/ManageEmployee",label:"Manage Employee"},
             {subPath:"Employee/Directory",label:"Directory"},

@@ -1,12 +1,18 @@
 
 import {ThemeContext} from "./ThemeContext"
-import {AuthContext} from "./AuthContext"
+// import {AuthContext, AuthContextProvider} from "./AuthContext"
+import {AuthContextProvider} from "./AuthContext"
 
 export default function AppProvider({children})
 {
-    return <AuthContext>
+    return <AuthContextProvider>
                 <ThemeContext>
                     {children}
                 </ThemeContext>
-            </AuthContext>
+            </AuthContextProvider>
+    // return <AuthContext>
+    //             <ThemeContext>
+    //                 {children}
+    //             </ThemeContext>
+    //         </AuthContext>
 }

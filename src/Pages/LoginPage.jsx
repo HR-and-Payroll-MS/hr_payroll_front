@@ -6,6 +6,7 @@ import useForm from '../Hooks/useForm';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getLocalData } from '../Hooks/useLocalStorage';
+import Modal from '../Components/Modal';
 
 
 
@@ -17,44 +18,25 @@ export default function Login() {
     accessToken: 'asdfwietqsdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsdfasdf',
     user: { role: 'hr', id: 23 },
   };
-  const { login, auth, setUser ,logout } = useAuth();
+  const { login, auth } = useAuth();
   const darklight = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-  if (auth?.user?.role === 'hr') navigate('/hr_dashboard');
-  else if (auth?.user?.role === 'manager') navigate('/manager_dashboard');
+  if (auth?.user?.role === 'hr') navigate('/manager_dashboard');
+  else if (auth?.user?.role === 'Manager') navigate('/hr_dashboard');
 }, [auth, navigate]);
 
   const handleLogin = async (formData) => {
-    // console.log(formData);
     setLoading(true);
     setMessage('');
     try {
-      // await login(data);
-      console.log(getLocalData("role"))
-      logout();
-      console.log(getLocalData("role"))
-      
-      await setUser(data);
-      console.log(getLocalData("role"))
-
-        // const res = await axios.post(
-        //   'http://localhost:3000/api/v1/auth/jwt/create/',
-        //   formData,
-        //   { withCredentials: true,}
-        // );
-        // const { accessToken, user } = res.data;
-        // console.log('login res:', res.data);
-
-        //await???? login({ accessToken, user });
-        // setMessage('Login successfull');
+      await login(formData.username, formData.password)
     } catch (err) {
-        console.log(err);
-        // setMessage(err.response?.data?.message || err.message);
+        setMessage(err.response?.data?.message || err.message);
       } finally {
-        // setLoading(false);
+        setLoading(false);
         // console.log('auth:', auth);
     }
   };
@@ -68,6 +50,13 @@ export default function Login() {
       id="form_container"
       className="justify-center flex-1   flex flex-col p-8  bg-white text-black"
     >
+      <Modal isOpen={loading} location={'center'} ><div class="flex items-center justify-center h-screen">
+    <div class="relative">
+        <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+        <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+        </div>
+    </div>
+</div></Modal>
       <form
         onSubmit={handleSubmit}
         className="  flex-1 flex flex-col items-center p-7 "
@@ -104,9 +93,10 @@ export default function Login() {
               id="password"
               placeholder="enter your password"
             />
+            { message===''?"":
             <p className="text-red-500 text-xs ">
-              ② The email you entered is not registered. pleasecheck again
-            </p>
+              {message}
+            </p>}
           </div>
           <div className="py-2 flex justify-between  w-full">
             <div className="flex items-center justify-center">
