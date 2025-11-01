@@ -12,7 +12,7 @@ export default function MainLayout() {
       <div className="flex-1 h-full flex flex-col">
         <Header />
         <div className="h-full p-4 flex-1 overflow-y-scroll scrollbar-hidden">
-          <div className="h-full w-full bg-white rounded-md dark:bg-slate-800">
+          <div className="h-full w-full bg-white rounded-md overflow-hidden dark:bg-slate-800">
             <Outlet />
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../Context/ThemeContext';
 import { sidebarList } from '../Hooks/useSidebarContent';
 import useAuth from '../Context/AuthContext';
@@ -9,8 +9,9 @@ export default function Sidebar() {
   const { auth } = useAuth();
   const role = auth?.user?.role;
   const [list, setList] = useState(sidebarList[role] || []);
-  const [collapsed, setCollapsed] = useState(false); // 👈 NEW: collapse state
+  const [collapsed, setCollapsed] = useState(false);
   const { theme, changeTheme } = useTheme();
+  const location = useLocation(); // 👈 used to highlight active path
 
   const toggleVisible = (label) =>
     setList((prev) =>
@@ -20,6 +21,16 @@ export default function Sidebar() {
           : item
       )
     );
+
+  const handleIconClick = (path) => {
+    if (collapsed) {
+      // expand first if collapsed
+      setCollapsed(false);
+    } else {
+      // normal navigation if expanded
+      return path;
+    }
+  };
 
   const top1 = (
     <div
@@ -44,7 +55,7 @@ export default function Sidebar() {
       <Icon
         name="PanelLeft"
         className="w-5 h-5 cursor-pointer"
-        onClick={() => setCollapsed(!collapsed)} // 👈 toggle
+        onClick={() => setCollapsed(!collapsed)}
       />
     </div>
   );
@@ -73,17 +84,27 @@ export default function Sidebar() {
         lists.path ? (
           <div key={index} className="*:cursor-pointer">
             <NavLink
-              to={lists.path}
+              to={collapsed ? '#' : lists.path} // prevent navigation when collapsed
+              onClick={() => handleIconClick(lists.path)}
               end
               className={({ isActive }) =>
-                `flex gap-1.5 rounded-md w-full items-center px-2.5 py-1.5 ${
-                  isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
-                } ${collapsed ? 'justify-center' : 'justify-start'}`
+                `flex gap-1.5 rounded-md w-full items-center px-2.5 py-1.5 
+                ${
+                  isActive
+                    ? 'bg-slate-200 dark:bg-slate-700 text-blue-500'
+                    : ''
+                }
+                ${collapsed ? 'justify-center' : 'justify-start'}
+                transition-all`
               }
             >
               <Icon
                 name={lists.Icons || 'User'}
-                className="w-5 h-5 text-slate-400"
+                className={`w-5 h-5 ${
+                  location.pathname === lists.path
+                    ? 'text-blue-500'
+                    : 'text-slate-400'
+                }`}
               />
               {!collapsed && (
                 <p className="dark:text-slate-300 flex-1 font-semibold text-gray-700 text-sm">
@@ -95,19 +116,20 @@ export default function Sidebar() {
         ) : (
           <div key={index} className="*:cursor-pointer">
             <div
-              onClick={() => toggleVisible(lists.label)}
+              onClick={() => {
+                if (collapsed) setCollapsed(false);
+                else toggleVisible(lists.label);
+              }}
               className={`hover:bg-slate-50 dark:hover:bg-slate-700 flex w-full ${
                 collapsed ? 'justify-center' : 'justify-between'
-              } items-center p-2.5`}
+              } items-center p-2.5 transition-all`}
             >
-              <div
-                className={`flex items-center gap-1.5 justify-center ${
-                  collapsed ? 'justify-center' : ''
-                }`}
-              >
+              <div className="flex items-center gap-1.5 justify-center">
                 <Icon
                   name={lists.Icons}
-                  className="w-4 h-4 text-slate-400"
+                  className={`w-4 h-4 ${
+                    lists.Visible ? 'text-blue-500' : 'text-slate-400'
+                  }`}
                 />
                 {!collapsed && (
                   <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
@@ -125,7 +147,7 @@ export default function Sidebar() {
               )}
             </div>
 
-            {/* Sub-items only visible when expanded */}
+            {/* sub-items */}
             {!collapsed && (
               <div
                 className={`${
@@ -162,7 +184,7 @@ export default function Sidebar() {
         <>
           <div className="flex w-full justify-between items-center m-0.5">
             <div className="flex items-center gap-1.5 justify-center py-2.5">
-              <Icon name="Settings" className="w-5 h-5 text-slate-400" />
+              <Icon name="HelpCircle" className="w-5 h-5 text-slate-400" />
               <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
                 Help Center
               </p>
@@ -212,7 +234,7 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`bg-white dark:bg-slate-800 dark:text-white flex h-full ${
+      className={`bg-white dark:bg-slate-800 dark:text-white flex h-full  ${
         collapsed ? 'w-16' : 'w-64'
       } transition-all duration-300 flex-col items-center shadow px-2.5 py-0.5`}
     >

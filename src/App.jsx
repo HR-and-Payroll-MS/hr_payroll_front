@@ -42,20 +42,20 @@ export const UserContext = createContext();
  
 
 function App() {
-//   const {setAuth}=useAuth()
-//  useEffect(() => {
-//   setLocalData("access","asdfasdfadtheiosu");
-//   setLocalData("role","Manager")
-//   setLocalData("id","seud")
-//       const data = {
-//         accessToken: localStorage.getItem('access'),
-//         user: {
-//           role: getLocalData('role'),
-//           id: getLocalData('id'),
-//         }
-//     }
-//        setAuth({accessToken:data.accessToken,user:data.user});
-//   }, []);
+  const {setAuth}=useAuth()
+ useEffect(() => {
+  setLocalData("access","asdfasdfadtheiosu");
+  setLocalData("role","Manager")
+  setLocalData("id","seud")
+      const data = {
+        accessToken: localStorage.getItem('access'),
+        user: {
+          role: getLocalData('role'),
+          id: getLocalData('id'),
+        }
+    }
+       setAuth({accessToken:data.accessToken,user:data.user});
+  }, []);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
