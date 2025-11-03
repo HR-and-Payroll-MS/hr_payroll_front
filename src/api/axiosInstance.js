@@ -8,8 +8,8 @@ export const axiosPublic = axios.create({
 export function createAxiosPrivate({getAccessToken, onRefresh, onLogout}){
   const instance = axios.create({
     baseURL: BASE_URL,
-    withCredentials: true,
-    headers: { 'Content-Type': 'application/json' },
+    // withCredentials: true,
+    // headers: { 'Content-Type': 'application/json' },
   });
 
 const request = instance.interceptors.request.use(
