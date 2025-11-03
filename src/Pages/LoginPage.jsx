@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../App';
-
+// chigiren labirew abbeba desalegn
 import useAuth from '../Context/AuthContext';
 import useForm from '../Hooks/useForm';
 import axios from 'axios';
@@ -50,10 +50,11 @@ export default function Login() {
       id="form_container"
       className="justify-center flex-1   flex flex-col p-8  bg-white text-black"
     >
-      <Modal isOpen={loading} location={'center'} ><div class="flex items-center justify-center h-screen">
-    <div class="relative">
-        <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-        <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+      <Modal isOpen={loading} location={'center'} >
+        <div className="flex items-center justify-center h-screen">
+        <div className="relative">
+        <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+        <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
         </div>
     </div>
 </div></Modal>

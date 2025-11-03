@@ -209,7 +209,7 @@ export default function Sidebar() {
             className={`dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50 h-fit w-full justify-around items-center m-0.5`}
           >
             <div
-              onClick={() => changeTheme('')}
+              onClick={() => changeTheme('light')}
               className={`flex flex-1 ${theme.light} rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
             >
               <Icon name="Sun" className="w-4 h-4" />
@@ -218,7 +218,7 @@ export default function Sidebar() {
               </p>
             </div>
             <div
-              onClick={() => changeTheme('false')}
+              onClick={() => changeTheme('dark')}
               className={`flex ${theme.dark} flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
             >
               <Icon name="Moon" className="w-4 h-4" />

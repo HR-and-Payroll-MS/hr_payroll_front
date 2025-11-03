@@ -25,16 +25,12 @@ import Settingz from './Pages/settings/Settingz'
 import CompanyInfo from './Pages/settings/sub/CompanyInfo';
 import ChangePassword from './Pages/settings/sub/ChangePassword';
 import WorkSchedule from './Pages/settings/sub/WorkSchedule';
-import useAuth from './Context/AuthContext';
 import Checklist from './Pages/HR_Manager/Checklist/Checklist';
 import DashboardLayout from './layouts/DashboardLayout';
-import TeamAttendance from './Pages/HR_Manager/TeamAttendance';
-import Table from './Components/Table';
-import {table} from './Hooks/useTableStructure'
-import SummaryCard from './Components/SummaryCard';
 import AddEmployee from './Pages/HR_Manager/Employee Management/AddEmployee';
 import LogOut from './Pages/HR_Manager/Profile/LogOut';
 import { getLocalData, setLocalData } from './Hooks/useLocalStorage';
+import useAuth from './Context/AuthContext';
 // import Table from './Pages/HR_Manager/Table';
 // rfce
 
@@ -42,20 +38,20 @@ export const UserContext = createContext();
  
 
 function App() {
-  const {setAuth}=useAuth()
- useEffect(() => {
-  setLocalData("access","asdfasdfadtheiosu");
-  setLocalData("role","Manager")
-  setLocalData("id","seud")
-      const data = {
-        accessToken: localStorage.getItem('access'),
-        user: {
-          role: getLocalData('role'),
-          id: getLocalData('id'),
-        }
-    }
-       setAuth({accessToken:data.accessToken,user:data.user});
-  }, []);
+//   const {setAuth}=useAuth()
+//  useEffect(() => {
+//   setLocalData("access","asdfasdfadtheiosu");
+//   setLocalData("role","Manager")
+//   setLocalData("id","seud")
+//       const data = {
+//         accessToken: localStorage.getItem('access'),
+//         user: {
+//           role: getLocalData('role'),
+//           id: getLocalData('id'),
+//         }
+//     }
+//        setAuth({accessToken:data.accessToken,user:data.user});
+//   }, []);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>

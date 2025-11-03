@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { axiosPrivate } from "../../../api/axiosInstance";
+import useAuth from "../../../Context/AuthContext";
 import StepHeader from "../../../Components/forms/StepHeader";
 import StepDocument from "../../../Components/forms/StepDocument";
 import StepPayroll from "../../../Components/forms/StepPayroll";
@@ -11,6 +11,7 @@ import Modal from "../../../Components/Modal";
 const AddEmployee = () => {
   
   const [loading, setLoading] = useState(false);
+  const {axiosPrivate} = useAuth();
   const [formData, setFormData] = useState({
     general:{ fullname:"",gender:"",dateofbirth:"",maritalstatus:"",nationality:"",personaltaxid:"",emailaddress:"",socialinsurance:"",healthinsurance:"",phonenumber:"",
               primaryaddress:"",country:"",state:"",city:"",postcode:"",
@@ -114,9 +115,9 @@ const handleSubmit = async (e) => {
             onClick={handleSubmit}
             className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
           > <Modal isOpen={loading} location={'center'} ><div className="flex items-center justify-center h-screen">
-    <div class="relative">
-        <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-        <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+    <div className="relative">
+        <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+        <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
         </div>
     </div>
 </div></Modal>

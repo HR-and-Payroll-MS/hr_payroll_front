@@ -36,7 +36,7 @@ function DashboardLayout() {
           </button>
         </div>
       </Modal>
-      <div className="flex gap-4 flex-1 h-fit w-full">
+      <div className="flex animate-pulse gap-4 flex-1 h-fit w-full">
         <SummaryCard />
       </div>
       <div className="flex gap-4  w-full flex-2">
