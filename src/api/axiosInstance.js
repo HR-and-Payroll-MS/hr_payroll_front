@@ -8,13 +8,14 @@ export const axiosPublic = axios.create({
 export function createAxiosPrivate({getAccessToken, onRefresh, onLogout}){
   const instance = axios.create({
     baseURL: BASE_URL,
-    // withCredentials: true,
-    // headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+    headers: { 'Content-Type': 'application/json' },
   });
 
 const request = instance.interceptors.request.use(
   (config) => {
-    const token = tpeof (getAccessToken) === 'function' ? getAccessToken() : null;
+    // const token = tpeof getAccessToken === 'function' ? getAccessToken() : null;
+    const token = getAccessToken()
     if (token){
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
@@ -34,12 +35,13 @@ const response = instance.interceptors.response.use(
         try{
           const newAccess = await onRefresh();
           if ( newAccess){
+            console.log("just refreshed now because the access token has expired")
             originalRequest.headers = originalRequest.headers || {};
             originalRequest.headers.Authorization =  `Bearer ${newAccess}`;
             return instance(originalRequest);
           }
         } catch (e){
-
+                console.error(e)
         }
       }
       if(typeof onLogout === 'function') onLogout();

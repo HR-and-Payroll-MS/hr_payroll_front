@@ -49,7 +49,6 @@ export default function FileUploader({
 
   return (
     <div
-      onClick={handleClick}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -72,7 +71,7 @@ export default function FileUploader({
           {children ? <>
             {children}
          
-            <div className="flex items-center p-2.5 m-2  rounded-lg bg-slate-950 text-slate-100">
+            <div onClick={handleClick} className="flex hover:cursor-pointer items-center p-2.5 m-2  rounded-lg bg-slate-950 text-slate-100">
               <Icon name="FileText" className="h-4" />
               <p className="text-sm text-center px-2">{label}</p>
             </div>

@@ -85,6 +85,7 @@ const StepReview = ({ data }) => {
 
       {/* Documents */}
       <Section title="Documents">
+        {console.log(documents.files)}
         {documents.files?.length > 0 ? (
           <ul className="col-span-full list-disc ml-5 space-y-1">
             {documents.files.map((file, index) => (

@@ -6,11 +6,11 @@ export default function useRefreshToken(){
     try{
       const refreshToken = localStorage.getItem('refresh');
       if (!refreshToken) return null;
-      const res = await axiosPublic.post('/auth/jwt/refresh',{refresh: refreshToken ,})
+      const res = await axiosPublic.post('/auth/jwt/refresh/',{refresh: refreshToken ,})
       const newAccess = res?.data?.access;
       if(newAccess){
         localStorage.setItem('access',newAccess);
-        return newAccess;
+        return "newAccess";
       }
       return null;
     }

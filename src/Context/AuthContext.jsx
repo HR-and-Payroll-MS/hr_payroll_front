@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState,useCallback,useMemo } from 'react';
 import {setLocalData , getLocalData} from '../Hooks/useLocalStorage'
-import axios from 'axios';
 import useRefreshToken  from '../Hooks/useRefreshToken'
 import { createAxiosPrivate, axiosPublic } from '../api/axiosInstance'
 const AuthContext = createContext(null);
@@ -66,8 +65,10 @@ export function AuthContextProvider({ children }){
 
       setLocalData('access',access);
       setLocalData('refresh',refresh);
+      
+      console.log(getLocalData('access'),"<--- access \n",getLocalData('refresh'),"<-----refresh")
  
-      const userRes = await axiosPrivate.get('/auth/users/me/');
+      const userRes = await axiosPrivate.get('/users/me/');
       const userData = userRes.data;
 
       setUser(userData, access);
@@ -75,7 +76,7 @@ export function AuthContextProvider({ children }){
     } catch (error) {
       const status = error?.response?.status
       if (error.status === 400) throw new Error("Please check your imput fields and try again")
-      if (error.status === 401) throw new Error("Incorrect email or password. Please try again.")
+      // if (error.status === 401) throw new Error("Incorrect email or password. Please try again.")
       if (error.status === 403) throw new Error("You don't have permission to access this account.")
       if (error.status === 404) throw new Error("Server not found. Please try again later.")
       if (error.status === 500) throw new Error("Server error. Please try again later")
@@ -92,7 +93,7 @@ export function AuthContextProvider({ children }){
     const userId = getLocalData('id');
     const userRole = getLocalData('role');
     if(access && userId) {
-      setAuth({user:{username:userId,role:userRole}, accessToken:acess});
+      setAuth({user:{username:userId,role:userRole}, accessToken:access});
     }
     setIsAuthLoading(false);
   },[])
