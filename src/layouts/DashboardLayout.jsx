@@ -8,7 +8,7 @@ import LineChartExample from '../Example/LineChartExample';
 import PieChartExample from '../Example/PieChartExample';
 import { useTheme } from '../Context/ThemeContext';
 function DashboardLayout() {
-    const {theme}=useTheme();
+  const { theme } = useTheme();
   const [isOpen, setClose] = useState(true);
   const data = [1, 2, 2, 2, 3];
   const { bodyStructure, headerStructure } = table.Attendance;
@@ -43,13 +43,12 @@ function DashboardLayout() {
         <div className="bg-gray-50 h-full dark:bg-slate-700 rounded flex-1 ">
           {/* <BarChartExample themeMode={darkMode ? 'dark' : 'light'} /> */}
           <BarChartExample theme={theme.state} />
-
         </div>
         <div className="bg-gray-50 h-full dark:bg-slate-700 rounded flex-1 ">
-          <LineChartExample theme={theme.state}/>
+          <LineChartExample theme={theme.state} />
         </div>
         <div className="bg-gray-50 h-full dark:bg-slate-700 rounded flex-1 ">
-          <PieChartExample theme={theme.state}/>
+          <PieChartExample theme={theme.state} />
         </div>
       </div>
       <div className="flex gap-4 rounded flex-1 h-fit w-full bg-gray-50">

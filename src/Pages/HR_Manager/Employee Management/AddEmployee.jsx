@@ -7,6 +7,7 @@ import StepJob from "../../../Components/forms/StepJob";
 import StepGeneral from "../../../Components/forms/StepGeneral";
 import StepReview from "../../../Components/forms/StepReview";
 import Modal from "../../../Components/Modal";
+import ThreeDots from "../../../animations/ThreeDots";
 
 const AddEmployee = () => {
   
@@ -43,53 +44,23 @@ const AddEmployee = () => {
 const handleSubmit = async (e) => {
   e?.preventDefault(); 
   setLoading(true);
-  // "user": 1,
-  //   "employee_id": "",
-  //   "title": "",
-  //   "department_id": null,
-  //   "join_date": null,
-  //   "last_working_date": null,
-  //   "time_zone": "",
-  //   "office": "",
-  //   "health_care": "",
-  //   "is_active": false,
-  //   "photo": null
-  const fm = {"user":1 ,
-            "id": "1",
-            "photo": null,
-            "full_name": "",
-            "position": "",
-            "status": "INACTIVE",
-            "email": "eyob@hrpayroll.com",
-            "phone": "",
-            "timezone": "",
-            "department": "",
-            "office": "",
-            "line_manager": null,
-            "gender": "",
-            "date_of_birth": "",
-            "nationality": "",
-            "health_care": "",
-            "marital_status": "",
-            "personal_tax_id": "",
-            "social_insurance": "",
-            "employee_id": "",
-            "join_date": null,
-            "service_years": "",
-            "job_history": [],
-            "contracts": [],
-            "employment_type": "",
-            "job_title": "",
-            "last_working_date": null,
-            "total_compensation": "0.00",
-            "salary": "0.00",
-            "recurring": "0.00",
-            "one_off": "0.00",
-            "offset": "0.00",
-            "documents": []}
+//   const payload = {
+//   employee: 7,
+//   date: "2025-11-02",
+//   clock_in: "2025-11-02T21:11:00+03:00",
+//   clock_in_location: "fdsgh",
+//   clock_out: "2025-11-02T21:12:00+03:00",
+//   clock_out_location: "khjg",
+//   work_schedule_hours: 4,
+//   logged_time: "00:01:00",
+//   paid_time: "00:00:05",
+//   notes: "hkugyjfhg",
+//   status: "APPROVED"
+// };
+
 
   try {
-    const response = await axiosPrivate.post("/employees/", fm);
+    const response = await axiosPrivate.get("/employees/");
     console.log("Response:", response.data);
     return response.data;
   } catch (error) {
@@ -159,19 +130,10 @@ const handleSubmit = async (e) => {
             onClick={handleSubmit}
             className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
           > 
-          {/* {
-            loading && 
-          } */}
+          {
+            loading?<ThreeDots/>:"submit"
+          }
           
-          
-          <Modal isOpen={loading} location={'center'} ><div className="flex items-center justify-center h-screen">
-    <div className="relative">
-        <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-        <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
-        </div>
-    </div>
-</div></Modal>
-            Submit
           </button>
         )}
       </div>

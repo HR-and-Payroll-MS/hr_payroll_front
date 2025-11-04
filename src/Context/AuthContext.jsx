@@ -59,7 +59,7 @@ export function AuthContextProvider({ children }){
 
   const login = useCallback ( async (username, password) => {
     try {
-      const res = await axiosPublic.post('/auth/jwt/create/',{username, password});
+      const res = await axiosPublic.post('/auth/djoser/jwt/create/',{username, password});
       const { access, refresh } = res.data || {};
       if ( !access || !refresh ) throw new Error('Invalid auth response from server');
 
@@ -68,7 +68,9 @@ export function AuthContextProvider({ children }){
       
       console.log(getLocalData('access'),"<--- access \n",getLocalData('refresh'),"<-----refresh")
  
-      const userRes = await axiosPrivate.get('/users/me/');
+      const userRes = await axiosPublic.get('/users/me/', {
+      headers: { Authorization: `Bearer ${access}` },
+    });
       const userData = userRes.data;
 
       setUser(userData, access);
