@@ -6,7 +6,7 @@ export default function MainLayout() {
   const { theme } = useTheme();
   return (
     <div
-      className={`bg-gray-50 flex h-screen gap-0.5 ${theme.state} dark:bg-slate-900`}
+      className={`bg-gray-50 flex h-screen gap-0.5 ${theme} dark:bg-slate-900`}
     >
       <Sidebar />
       <div className="flex-1 h-full flex flex-col">

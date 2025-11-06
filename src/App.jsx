@@ -16,7 +16,7 @@ import DetailEmployee from './Pages/HR_Manager/Employee/Employee_Sub/DetailEmplo
 import { Job } from './Pages/HR_Manager/Employee/Employee_Sub/Job';
 import { General } from './Pages/HR_Manager/Employee/Employee_Sub/General';
 import { DirectoryList } from './Pages/HR_Manager/Employee/Employee_Sub/DirectoryList';
-import MyCalendar from './Components/MyCalendar';
+import MyCalendar from './Components/graphs/MyCalendar';
 import Routes from './routes/Routes';
 import UnAuthorized from './Pages/UnAuthorized';
 import NotFound from './Pages/NotFound';
@@ -29,9 +29,12 @@ import DashboardLayout from './layouts/DashboardLayout';
 import AddEmployee from './Pages/HR_Manager/Employee Management/AddEmployee';
 import LogOut from './Pages/HR_Manager/Profile/LogOut';
 import EmployeeDirectory from './Pages/HR_Manager/Employee Management/EmployeeDirectory';
+import { useTheme } from './Context/ThemeContext';
 
 export const UserContext = createContext();
+
  function App() {
+  const {theme} = useTheme()
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -102,9 +105,9 @@ export const UserContext = createContext();
   );
 
   return (
-    <>
+    <div className={theme}>
       <RouterProvider router={router} />
-    </>
+    </div>
   );
 }
 

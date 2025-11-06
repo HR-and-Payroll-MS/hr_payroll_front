@@ -10,26 +10,27 @@ export function ThemeContext({children})
 {
     const systemTheme = useSystemTheme();
 
-    const [theme,setTheme]= useState({  state:getLocalData('theme')?getLocalData('theme'):systemTheme,
-                                        light: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
-                                        dark: "bg-gray-50 dark:bg-slate-900",});
+    const [theme,setTheme]= useState( getLocalData('theme')? getLocalData('theme'):systemTheme
+                                        // light: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
+                                        // dark: "bg-gray-50 dark:bg-slate-900",
+                                        );
 
     const changeTheme = (variable,place="sidebar")=>{
       if(place==='sidebar') setLocalData('theme',variable)
-  // console.log(getLocalData('theme'))
+  console.log(getLocalData('theme'))
 
     if (variable === 'light') {
-      setTheme({
-        light: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
-        dark: "bg-gray-50 dark:bg-slate-900",
-        state: variable,
-      });
+      setTheme(
+        // light: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
+        // dark: "bg-gray-50 dark:bg-slate-900",
+        variable,
+      );
     } else {
-      setTheme({
-        dark: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
-        light: "bg-gray-50 dark:bg-slate-900",
-        state: "dark",
-      });
+      setTheme(
+        // dark: "bg-white shadow dark:bg-slate-700 drop-shadow-2xl",
+        // light: "bg-gray-50 dark:bg-slate-900",
+        "dark"
+      );
     }
   }
 

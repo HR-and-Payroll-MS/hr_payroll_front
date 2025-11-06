@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getLocalData } from '../Hooks/useLocalStorage';
 import Modal from '../Components/Modal';
+import Icon from '../Components/Icon';
 
 
 
@@ -43,7 +44,7 @@ export default function Login() {
   const formContainer = (
     <div
       id="form_container"
-      className="justify-center flex-1   flex flex-col p-8  bg-white text-black"
+      className="justify-center flex-1   flex flex-col p-8 dark:bg-slate-800  bg-white text-black"
     >
       <Modal isOpen={loading} location={'center'} >
         <div className="flex items-center justify-center h-screen">
@@ -59,29 +60,29 @@ export default function Login() {
         action=""
       >
         <div className=" flex flex-col justify-center  flex-1 w-full ">
-          <p className="py-2 flex justify-center font-semibold">
+          <p className="py-2 dark:text-slate-200 flex justify-center font-semibold">
             Login first to your account
           </p>
           <div className="py-2">
-            <label className="w-full text-xs font-semibold " htmlFor="email">
+            <label className="w-full dark:text-slate-200 text-xs font-semibold " htmlFor="email">
               Email Address <span className="text-red-700">*</span>
             </label>
             <input
-              className="my-1 border border-gray-300 p-2 rounded w-full"
+              className="my-1 border dark:text-slate-300 dark:border-slate-600 border-gray-300 p-2 rounded w-full"
               type="email"
               onChange={handleChange}
               value={values.email}
               name="username"
               id="email"
-              placeholder="enter your name"
+              placeholder="enter your email"
             />
           </div>
           <div className="py-2">
-            <label className="w-full text-xs font-semibold" htmlFor="password">
+            <label className="w-full dark:text-slate-200 text-xs font-semibold" htmlFor="password">
               Password <span className="text-red-700">*</span>
             </label>
             <input
-              className="my-1 border  border-gray-300  p-2 rounded w-full"
+              className="my-1 border dark:text-slate-300 dark:border-slate-600 border-gray-300  p-2 rounded w-full"
               type="password"
               name="password"
               onChange={handleChange}
@@ -117,11 +118,11 @@ export default function Login() {
             Login
           </button>
           <div className="flex items-center gap-1.5 py-2">
-            <hr className="flex-1 opacity-8" />
-            <p className="py-2  flex justify-center text-gray-500 text-xs font-semibold">
+            <hr className="flex-1 dark:text-slate-200 opacity-8" />
+            <p className="py-2 px-2  flex justify-center text-gray-500 text-xs font-semibold">
               Or login with
             </p>
-            <hr className="flex-1 opacity-8" />
+            <hr className="flex-1 dark:text-slate-200 opacity-8" />
           </div>
           <div id="Google_Apple" className="py-2 flex justify-evenly w-full">
             <div className="border inline-flex px-16 py-2  border-gray-300   rounded-md justify-center items-center">
@@ -130,15 +131,11 @@ export default function Login() {
                 src="/svg/google-color-svgrepo-com.svg"
                 alt=""
               />
-              <p className="ml-2.5 text-sm font-semibold">Google</p>
+              <p className="ml-2.5 dark:text-slate-200 text-sm font-semibold">Google</p>
             </div>
             <div className="border  border-gray-300  inline-flex px-16 py-2 rounded-md justify-center items-center">
-              <img
-                className="h-4"
-                src="public\svg\apple-173-svgrepo-com.svg"
-                alt=""
-              />
-              <p className="ml-2.5 text-sm font-semibold">Apple</p>
+             <Icon name="Github" className="text-slate-700 dark:text-slate-300 fill-slate-700 dark:fill-slate-300"/>
+              <p className="ml-2.5 dark:text-slate-200 text-sm font-semibold">GitHub</p>
             </div>
           </div>
           <p className=" py-2 flex justify-center text-gray-500 text-xs">
@@ -173,7 +170,7 @@ export default function Login() {
 
   return (
     <div
-      className={`  flex-1 py-5 px-48 h-screen dark:bg-slate-800 bg-slate-100 w-full flex justify-center`}
+      className={`  flex-1 py-5 px-48 h-screen dark:bg-slate-950 bg-slate-100 w-full flex justify-center`}
     >
       <div className="flex h-full w-full bg-amber-700   bgx sm:flex-col lg:flex-row rounded shadow-sm">
         {image_div}

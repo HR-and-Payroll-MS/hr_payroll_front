@@ -7,7 +7,7 @@ import Header from '../../../Components/Header'
 // import Table from '../Table'
 import {SearchStatus} from '../../../Components/Level2Hearder'
 import { table } from '../../../Hooks/useTableStructure'
-import Pagination from '../../../Components/Pagination'
+import {Pagination} from '../../../Components/Pagination'
 import useDropdown from '../../../Hooks/useDropdown'
 
 
@@ -28,14 +28,95 @@ const DirectoryTitles = [
 ];
 const DirectoryData = [
   [
-    { text: "Alice Johnson" },                 // [3]
-    { time: "+1 (555) 123-4567" },             // [1]
-    { time: "Finance" },                       // [1]
-    { time: "Female" },                        // [1]
-    { time: "Active" },                        // [1]
-    { time: "Full-time / Senior Accountant" }, // [1]
-    { time: "Yes" }                            // [1]
-  ]
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
+  [
+    { name: "Alice Johnson" ,email:"AliceJ123@hrpayroll.com"},                 // [3].
+    { time: "+1 (555) 123-4567" },             // [1].
+    { time: "Finance" },                       // [1].
+    { time: "Female" },                        // [1].
+    { time: "Active" },                        // [1].
+    { time: "Full-time / Senior Accountant" }, // [1].
+    { time: "Yes" }                            // [1].
+  ],
 ];
 
 
@@ -50,7 +131,7 @@ const DirectoryData = [
           Titles={DirectoryTitles}
         />
 
-        <Pagination/></div>
+        <Pagination  page={6} totalPages={9} onPageChange=""/></div>
   )
 }
 

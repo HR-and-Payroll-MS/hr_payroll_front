@@ -1,6 +1,6 @@
 import { ResponsiveCalendar } from '@nivo/calendar';
 import React from 'react';
-import { useTheme } from '../Context/ThemeContext';
+import { useTheme } from '../../Context/ThemeContext';
 
 function MyCalendar() {
   const {theme} =useTheme();

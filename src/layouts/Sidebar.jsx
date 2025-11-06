@@ -11,7 +11,7 @@ export default function Sidebar() {
   const role = auth?.user?.role;
   const [list, setList] = useState(sidebarList[role] || []);
   const [collapsed, setCollapsed] = useState(false);
-  const { theme, changeTheme } = useTheme();
+  const { changeTheme } = useTheme();
   const location = useLocation(); // 👈 used to highlight active path
 
   const toggleVisible = (label) =>
@@ -211,7 +211,7 @@ export default function Sidebar() {
           >
             <div
               onClick={() => changeTheme('light')}
-              className={`flex flex-1 ${theme.light} rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
+              className={`flex flex-1 bg-white shadow dark:bg-slate-900 drop-shadow-2xl  rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
             >
               <Icon name="Sun" className="w-4 h-4" />
               <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
@@ -219,8 +219,8 @@ export default function Sidebar() {
               </p>
             </div>
             <div
-              onClick={() => {changeTheme('dark');}}
-              className={`flex ${theme.dark} flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
+              onClick={() => changeTheme('dark')}
+              className={`flex bg-gray-50 dark:bg-slate-700 flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
             >
               <Icon name="Moon" className="w-4 h-4" />
               <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
