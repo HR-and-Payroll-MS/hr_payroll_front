@@ -219,7 +219,7 @@ export default function Sidebar() {
               </p>
             </div>
             <div
-              onClick={() => {changeTheme('dark');console.log(getLocalData('access')); setLocalData('access','adfasdfasdfasdfadfadfa.fafasdfadfasdfadfsdfad.adfadfasdfasdfasdfasdf.asdfasdfasdfadfadfadfasdf'); console.log(getLocalData('access'))}}
+              onClick={() => {changeTheme('dark');}}
               className={`flex ${theme.dark} flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
             >
               <Icon name="Moon" className="w-4 h-4" />

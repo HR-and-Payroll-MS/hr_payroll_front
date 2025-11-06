@@ -1,3 +1,5 @@
+import ToggleCheckbox from "../../../animations/ToggleCheckbox"
+
 export default function WorkSchedule(){
     const header=<div className="flex gap-2">
                     <p className="text-xl flex-1 font-semibold">Work Schedule</p>
@@ -21,9 +23,8 @@ export default function WorkSchedule(){
                                 <p className=" px-3 rounded-md text-xs py-1 text-gray-500 font-semibold bg-gray-100">Default</p>
                         </div>
                         <div className="flex jus items-center">                                
-                                <div className="flex py-0.5 px-1  bg-green-600 text-gray-700 w-10 border border-gray-100 items-center-safe  justify-end gap-1.5  rounded-xl">
-                                        <div className="bg-white rounded-full"><img className="h-4.5 rotate-12" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" /></div>
-                                </div>
+                                
+                                <ToggleCheckbox/>
                                 <img className="h-6" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
                         </div>  
                         

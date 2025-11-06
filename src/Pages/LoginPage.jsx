@@ -13,19 +13,15 @@ import Modal from '../Components/Modal';
 
 
 
-export default function Login() {
-  const data = {
-    accessToken: 'asdfwietqsdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsdfasdf',
-    user: { role: 'hr', id: 23 },
-  };
+export default function Login() {  
   const { login, auth } = useAuth();
-  const darklight = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
   if (auth?.user?.role === 'hr') navigate('/manager_dashboard');
   else if (auth?.user?.role === 'Manager') navigate('/hr_dashboard');
+  else {<>unknown Actor logged in</>}
 }, [auth, navigate]);
 
   const handleLogin = async (formData) => {
@@ -37,7 +33,6 @@ export default function Login() {
         setMessage(err.response?.data?.message || err.message);
       } finally {
         setLoading(false);
-        // console.log('auth:', auth);
     }
   };
 

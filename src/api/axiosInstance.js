@@ -15,7 +15,6 @@ export function createAxiosPrivate({getAccessToken, onRefresh, onLogout}){
 
 const request = instance.interceptors.request.use(
   (config) => {
-    // const token = tpeof getAccessToken === 'function' ? getAccessToken() : null;
     const token = getAccessToken()
     if (token){
       config.headers = config.headers || {};
@@ -24,7 +23,6 @@ const request = instance.interceptors.request.use(
     return config;
   },(error)=>Promise.reject(error)
 )
-
 const response = instance.interceptors.response.use(
   (res) => res,
   async (error) => {

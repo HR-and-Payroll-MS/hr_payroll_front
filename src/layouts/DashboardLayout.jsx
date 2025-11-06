@@ -7,16 +7,83 @@ import BarChartExample from '../Example/BarChartExample';
 import LineChartExample from '../Example/LineChartExample';
 import PieChartExample from '../Example/PieChartExample';
 import { useTheme } from '../Context/ThemeContext';
+import { useFormattedTableData } from '../utils/useFormattedTableData';
 function DashboardLayout() {
+
+const backendData = [
+    {
+      name: "Alice Brown",
+      email: "alice@company.com",
+      phone: "+1 (555) 123-4567",
+      department: "Finance",
+      gender: "Female",
+      status: "Active",
+      job: "Senior Accountant",
+    },
+    {
+      name: "James Lee",
+      email: "james@company.com",
+      phone: "+1 (555) 987-6543",
+      department: "Engineering",
+      gender: "Male",
+      status: "Inactive",
+      job: "Software Engineer",
+    },
+    {
+      name: "James Lee",
+      email: "james@company.com",
+      phone: "+1 (555) 987-6543",
+      department: "Engineering",
+      gender: "Male",
+      status: "Inactive",
+      job: "Software Engineer",
+    },
+    {
+      name: "James Lee",
+      email: "james@company.com",
+      phone: "+1 (555) 987-6543",
+      department: "Engineering",
+      gender: "Male",
+      status: "Inactive",
+      job: "Software Engineer",
+    },
+    {
+      name: "James Lee",
+      email: "james@company.com",
+      phone: "+1 (555) 987-6543",
+      department: "Engineering",
+      gender: "Male",
+      status: "Inactive",
+      job: "Software Engineer",
+    },
+  ];
+
+  const Directory = table.Dashboard
+
+  const Titles = [
+    "Username",
+    "Phone",
+    "Department",
+    "Gender",
+    "Status",
+    "Employment Type / Job Title",
+    "Recurring",
+  ];
+
+  const formattedData = useFormattedTableData(backendData, Directory.bodyStructure);
+
+
+
+
+
+
   const { theme } = useTheme();
   const [isOpen, setClose] = useState(true);
-  const data = [1, 2, 2, 2, 3];
-  const { bodyStructure, headerStructure } = table.Attendance;
   return (
     <div className="h-full scrollbar-hidden w-full p-2.5 flex overflow-y-scroll flex-col gap-4">
       <Modal isOpen={isOpen} location={'center'}>
         {/* transform -translate-x-full transition-transform duration-300 ease-in-out */}
-        <div className="  text-center justify-center  items-center rounded h-fit  lg:w-3/12  sm:w-3/5 md:w-5/12 p-6 bg-gray-50 flex flex-col">
+        <div className="  text-center justify-center  items-center rounded h-fit  lg:w-3/12  sm:w-3/5 md:w-5/12 p-6 dark:bg-slate-800 bg-amber-50 flex flex-col">
           <div className="flex-1 flex flex-col p-2  ">
             <img
               className="flex-1 m-1.5 max-h-28 object-cover"
@@ -53,10 +120,10 @@ function DashboardLayout() {
       </div>
       <div className="flex gap-4 rounded flex-1 h-fit w-full bg-gray-50">
         <Table
-          data={data}
-          bodyStructure={bodyStructure}
-          headerStructure={headerStructure}
-        />
+      data={formattedData}
+      Structure={Directory}
+      Titles={Titles}
+    />
       </div>
       <div className="h-fit flex w-full gap-4">
         <div className="bg-gray-50 h-full p-2 rounded flex-1 ">1</div>

@@ -17,8 +17,7 @@ import { Job } from './Pages/HR_Manager/Employee/Employee_Sub/Job';
 import { General } from './Pages/HR_Manager/Employee/Employee_Sub/General';
 import { DirectoryList } from './Pages/HR_Manager/Employee/Employee_Sub/DirectoryList';
 import MyCalendar from './Components/MyCalendar';
-import { useTheme } from './Context/ThemeContext';
-import ProtectedRoutes from './routes/ProtectedRoutes';
+import Routes from './routes/Routes';
 import UnAuthorized from './Pages/UnAuthorized';
 import NotFound from './Pages/NotFound';
 import Settingz from './Pages/settings/Settingz'
@@ -29,29 +28,10 @@ import Checklist from './Pages/HR_Manager/Checklist/Checklist';
 import DashboardLayout from './layouts/DashboardLayout';
 import AddEmployee from './Pages/HR_Manager/Employee Management/AddEmployee';
 import LogOut from './Pages/HR_Manager/Profile/LogOut';
-import { getLocalData, setLocalData } from './Hooks/useLocalStorage';
-import useAuth from './Context/AuthContext';
-// import Table from './Pages/HR_Manager/Table';
-// rfce
+import EmployeeDirectory from './Pages/HR_Manager/Employee Management/EmployeeDirectory';
 
 export const UserContext = createContext();
- 
-
-function App() {
-//   const {setAuth}=useAuth()
-//  useEffect(() => {
-//   setLocalData("access","asdfasdfadtheiosu");
-//   setLocalData("role","Manager")
-//   setLocalData("id","seud")
-//       const data = {
-//         accessToken: localStorage.getItem('access'),
-//         user: {
-//           role: getLocalData('role'),
-//           id: getLocalData('id'),
-//         }
-//     }
-//        setAuth({accessToken:data.accessToken,user:data.user});
-//   }, []);
+ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -60,11 +40,10 @@ function App() {
 
       {/* ------------------------- hr ---------------------- */}
 
-        <Route element={<ProtectedRoutes allowedRoles={["Manager"]} />}>
-         {/* for check up i changed the element in the hr_dashboard Route from "MainLayout" to other change it later thanks */}
+        <Route element={<Routes allowedRoles={["Manager"]} />}>
           <Route path="hr_dashboard" element={<MainLayout/>}>
-          {/* <Route path="hr_dashboard" element={<Table data={data} bodyStructure={bodyStructure} headerStructure={headerStructure}/>}> */}
             <Route index element={<DashboardLayout/>}/>
+            <Route path='Employee_Directory' element={<EmployeeDirectory/>}></Route>
             <Route path='Addemployee' element={<AddEmployee/>}/>
             <Route path='logout' element={<LogOut/>}/>
             <Route path="Employee" element={<Employee />}>
@@ -93,7 +72,7 @@ function App() {
 
         {/* ------------------------- manager ---------------------- */}
 
-        <Route element={<ProtectedRoutes allowedRoles={["Manager"]} />}>
+        <Route element={<Routes allowedRoles={["Manager"]} />}>
           <Route path="manager_dashboard" element={<MainLayout />}>
             <Route path="Employee" element={<Employee />}>
               <Route path="ManageEmployee" element={<ManageEmployee />} />

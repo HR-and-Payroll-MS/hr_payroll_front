@@ -399,7 +399,7 @@ export default function Attendance() {
       <div className=" flex justify-evenly  gap-3 ">{Header}</div>
       <div className=" flex justify-evenly  gap-3 ">{List}</div>
       <div
-        className={`flex flex-1 shadow   h-full dark:bg-slate-800 bg-white flex-col p-4 rounded-md`}
+        className={`flex flex-1 shadow overflow-scroll   dark:bg-slate-800 bg-white flex-col p-4 rounded-md`}
       >
         <div className=" flex justify-evenly h-14 gap-3 ">{warning}</div>
         <div className=" flex justify-evenly h-14 gap-3 ">{left}</div>
