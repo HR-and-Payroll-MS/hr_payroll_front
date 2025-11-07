@@ -3,7 +3,7 @@ export const sidebarList={
         {Icons:"Users",path:null,label:"Employee Management",Visible:false ,sub:[
             {subPath:"Employee_Directory",label:"Employee Directory"},
             {subPath:"AddEmployee",label:"Add Employee"},
-            {subPath:"",label:"Manage Employee Accounts"},
+            {subPath:"View_Employee",label:"Manage Employee Accounts"},
             {subPath:"org-chart",label:"Upload Documents"},
         ]},
         {Icons:"BookA",path:null,label:"Attendance",Visible:false ,sub:[

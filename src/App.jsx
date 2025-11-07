@@ -30,6 +30,7 @@ import AddEmployee from './Pages/HR_Manager/Employee Management/AddEmployee';
 import LogOut from './Pages/HR_Manager/Profile/LogOut';
 import EmployeeDirectory from './Pages/HR_Manager/Employee Management/EmployeeDirectory';
 import { useTheme } from './Context/ThemeContext';
+import ViewEmployee from './Pages/HR_Manager/Employee Management/ViewEmployee';
 
 export const UserContext = createContext();
 
@@ -47,6 +48,7 @@ export const UserContext = createContext();
           <Route path="hr_dashboard" element={<MainLayout/>}>
             <Route index element={<DashboardLayout/>}/>
             <Route path='Employee_Directory' element={<EmployeeDirectory/>}></Route>
+            <Route path='View_Employee' element={<ViewEmployee/>}></Route>
             <Route path='Addemployee' element={<AddEmployee/>}/>
             <Route path='logout' element={<LogOut/>}/>
             <Route path="Employee" element={<Employee />}>

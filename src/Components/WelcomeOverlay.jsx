@@ -2,16 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Modal from './Modal'
 import { getLocalData, setLocalData } from '../Hooks/useLocalStorage'
 
-function WelcomeOverlay(Title="No Title",subTitle="No sub title",isOpen, setClose) {
+function WelcomeOverlay({Title="No Title",subTitle="No sub title",isOpen, setClose}) {
     
-     const setFirstTime=()=>{
+  const setFirstTime=()=>{
     setLocalData("hi","true")
      setClose(false)
   }
- useEffect(()=>{
-//   if(getLocalData('hi') === "true")setClose(false)
-console.log("been here")
- },[])
 
   return (
     <Modal isOpen={isOpen} location={'center'}>
