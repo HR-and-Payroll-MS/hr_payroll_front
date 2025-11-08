@@ -3,32 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 export default function DetailEmployee(){
 
 
-    const fruit=[1,2]
-    const table_header=<thead className="bg-slate-50 rounded-xl w-full">
-            <tr className="rounded-2xl *:text-center text-gray-500 text-xs font-normal ">
-                
-                <th className=" px-4 py-3 rounded-l-2xl">Effective Date</th>
-                <th className=" px-4 py-3">Job Title</th>
-                <th className=" px-4 py-3">Position Type</th>
-                <th className=" px-4 py-3">Employment Type</th>
-                <th className=" px-4 py-3 rounded-r-2xl">Line Manager</th>
-               
-               
-            </tr>
-        </thead>
-    const table_content=<tbody className="w-full">
-            {
-                fruit.map(fruit=><tr className="hover:bg-slate-50 font-semibold *:text-center text-xs text-gray-700">
-                <td className="border-b border-gray-100 px-4 py-2">20 Aug 2023</td>
-                <td className="border-b border-gray-100 px-4 py-2 ">Web Dev</td>
-                <td className="border-b border-gray-100 px-4 py-2">-</td>
-                <td className="border-b border-gray-100 px-4 py-2">full time</td>
-                <td className="border-b border-gray-100 px-4 py-2">@skylar</td>
-               
-            </tr>)
-            }
-            
-        </tbody>
+ 
     const Header=   <div id="left" className="flex py-2.5 flex-2 gap-3  justify-between items-center  "> 
                         <div className="flex flex-1  text-gray-700 items-center  justify-start text-center">
                             <img className="h-8 rotate-90 opacity-25" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
@@ -123,21 +98,6 @@ export default function DetailEmployee(){
                           
                         
                 </div>
-
-    const bottom= <div id="left" className="flex border border-gray-200 rounded-md flex-1 gap-5 p-4 justify-between items-center  ">
-                
-                
-                        <div className="flex-1 flex gap-2 items-center">
-                                <p className="text-sm  font-semibold text-gray-800">Mon-Fri, Duration 35 hours/week</p>
-                        </div>
-                        <div className="flex jus items-center">                                
-                                <div className="flex py-0.5 px-1  bg-gray-300 text-gray-700 w-10 border border-gray-100 items-center-safe  justify-start gap-1.5  rounded-xl">
-                                        <div className="bg-white rounded-full"><img className="h-4.5 rotate-12" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" /></div>
-                                </div>
-                                <img className="h-6 rotate-180 opacity-35" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
-                        </div>  
-                        
-                </div> 
     return (
           <div className="flex flex-col gap-4 w-full h-full justify-start  bg-gray-50 dark:bg-slate-900 ">
                 <div className=" flex justify-evenly  "> 
