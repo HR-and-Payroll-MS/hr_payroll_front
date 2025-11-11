@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import useAuth from "../../../Context/AuthContext";
 import StepHeader from "../../../Components/forms/StepHeader";
 import ThreeDots from "../../../animations/ThreeDots";
@@ -8,6 +8,8 @@ import Header from "../../../Components/Header";
 
 const ViewEmployee = () => {
   const { id } = useParams();
+  const what = useLocation();
+  console.log(what);
   const { axiosPrivate } = useAuth();
 
   const steps = ["General", "Job", "Payroll", "Documents"];
@@ -25,15 +27,76 @@ const ViewEmployee = () => {
     documents: false,
   });
 
-  // Track documents marked for deletion
+  //to Track documents marked for deletion
   const [documentsToDelete, setDocumentsToDelete] = useState([]);
 
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        // Simulated response
-        const response = {
+        
+        const response = [
+          {
           id: 1,
+          general: {
+            fullname: "be Beso",
+            gender: "e",
+            dateofbirth: "7-04-15",
+            maritalstatus: "gle",
+            nationality: "iopian",
+            personaltaxid: "9584732",
+            emailaddress: "b.taye@example.com",
+            socialinsurance: "558932",
+            healthinsurance: "229584",
+            phonenumber: "+911223344",
+            primaryaddress: " Sunshine Avenue",
+            country: "Eopia",
+            state: "Ad Ababa",
+            city: "Ad Ababa",
+            postcode: "0",
+            emefullname: "ta Taye",
+            emephonenumber: "+254556677",
+            emestate: "Ad Ababa",
+            emecity: "Ad Ababa",
+            emepostcode: "1",
+          },
+          job: {
+            employeeid: "001",
+            serviceyear: "3",
+            joindate: "203-10",
+            jobtitle: "Frnd Developer",
+            positiontype: "Fuime",
+            employmenttype: "Pnent",
+            linemanager: "Sl Bekele",
+            contractnumber: "C42",
+            contractname: "Frod Developer Contract",
+            contracttype: "Indite",
+            startdate: "2022-0",
+            enddate: "",
+          },
+          payroll: {
+            employeestatus: "Ae",
+            employmenttype: "Pnent",
+            jobdate: "202-10",
+            lastworkingdate: "",
+            salary: 25000,
+            offset: 200,
+            onset: 100,
+          },
+          documents: {
+            files: [
+              {
+                name: "Empent Contract.pdf",
+                url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "ID .png",
+                url: "https://example.com/files/idcard.png",
+              },
+            ],
+          },
+        },
+          {
+          id: 2,
           general: {
             fullname: "Abebe Beso",
             gender: "Male",
@@ -91,8 +154,369 @@ const ViewEmployee = () => {
               },
             ],
           },
-        };
-        setEmployeeData(response);
+        },
+          {
+          id: 3,
+          general: {
+            fullname: "Beso",
+            gender: "Male",
+            dateofbirth: "15",
+            maritalstatus: "gle",
+            nationality: "Epian",
+            personaltaxid: "T4732",
+            emailaddress: "eyample.com",
+            socialinsurance: "S932",
+            healthinsurance: "H584",
+            phonenumber: "+223344",
+            primaryaddress: "1 Avenue",
+            country: "Eia",
+            state: "A",
+            city: "Add",
+            postcode: "100",
+            emefullname: "Marye",
+            emephonenumber: "+2516677",
+            emestate: "Aa",
+            emecity: "A.A",
+            emepostcode: "1000",
+          },
+          job: {
+            employeeid: "E01",
+            serviceyear: "3",
+            joindate: "200",
+            jobtitle: "Froper",
+            positiontype: "Full-Time",
+            employmenttype: "Pet",
+            linemanager: "Saele",
+            contractnumber: "C42",
+            contractname: "Frontract",
+            contracttype: "Inte",
+            startdate: "2020",
+            enddate: "",
+          },
+          payroll: {
+            employeestatus: "Ac",
+            employmenttype: "Pet",
+            jobdate: "2010",
+            lastworkingdate: "",
+            salary: 25000,
+            offset: 200,
+            onset: 100,
+          },
+          documents: {
+            files: [
+              {
+                name: "Emplo.pdf",
+                url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "IDpng",
+                url: "https://example.com/files/idcard.png",
+              },
+            ],
+          },
+        },
+          {
+          id: 4,
+          general: {
+            fullname: "Abeso",
+            gender: "Male",
+            dateofbirth: "15",
+            maritalstatus: "Se",
+            nationality: "Etan",
+            personaltaxid: "TX32",
+            emailaddress: "ey.com",
+            socialinsurance: "SI-558932",
+            healthinsurance: "HI-229584",
+            phonenumber: "+251911223344",
+            primaryaddress: "123 Sunshine Avenue",
+            country: "Ethiopia",
+            state: "Addis Ababa",
+            city: "Addis Ababa",
+            postcode: "1000",
+            emefullname: "Marta Taye",
+            emephonenumber: "+251944556677",
+            emestate: "Addis Ababa",
+            emecity: "Addis Ababa",
+            emepostcode: "1000",
+          },
+          job: {
+            employeeid: "EMP-001",
+            serviceyear: "3",
+            joindate: "2022-03-10",
+            jobtitle: "Frontend Developer",
+            positiontype: "Full-Time",
+            employmenttype: "Permanent",
+            linemanager: "Samuel Bekele",
+            contractnumber: "CN-8942",
+            contractname: "Frontend Developer Contract",
+            contracttype: "Indefinite",
+            startdate: "2022-03-10",
+            enddate: "",
+          },
+          payroll: {
+            employeestatus: "Active",
+            employmenttype: "Permanent",
+            jobdate: "2022-03-10",
+            lastworkingdate: "",
+            salary: 25000,
+            offset: 200,
+            onset: 100,
+          },
+          documents: {
+            files: [
+              {
+                name: "Employment Contract.pdf",
+                url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "ID Card.png",
+                url: "https://example.com/files/idcard.png",
+              },
+            ],
+          },
+        },
+          {
+          id: 5,
+          general: {
+            fullname: "Abebe Beso",
+            gender: "Male",
+            dateofbirth: "1997-04-15",
+            maritalstatus: "Single",
+            nationality: "Ethiopian",
+            personaltaxid: "TX-9584732",
+            emailaddress: "eyob.taye@example.com",
+            socialinsurance: "SI-558932",
+            healthinsurance: "HI-229584",
+            phonenumber: "+251911223344",
+            primaryaddress: "123 Sunshine Avenue",
+            country: "Ethiopia",
+            state: "Addis Ababa",
+            city: "Addis Ababa",
+            postcode: "1000",
+            emefullname: "Marta Taye",
+            emephonenumber: "+251944556677",
+            emestate: "Addis Ababa",
+            emecity: "Addis Ababa",
+            emepostcode: "1000",
+          },
+          job: {
+            employeeid: "EMP-001",
+            serviceyear: "3",
+            joindate: "2022-03-10",
+            jobtitle: "Frontend Developer",
+            positiontype: "Full-Time",
+            employmenttype: "Permanent",
+            linemanager: "Samuel Bekele",
+            contractnumber: "CN-8942",
+            contractname: "Frontend Developer Contract",
+            contracttype: "Indefinite",
+            startdate: "2022-03-10",
+            enddate: "",
+          },
+          payroll: {
+            employeestatus: "Active",
+            employmenttype: "Permanent",
+            jobdate: "2022-03-10",
+            lastworkingdate: "",
+            salary: 25000,
+            offset: 200,
+            onset: 100,
+          },
+          documents: {
+            files: [
+              {
+                name: "Employment Contract.pdf",
+                url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "ID Card.png",
+                url: "https://example.com/files/idcard.png",
+              },
+            ],
+          },
+        },
+          {
+          id: 6,
+          general: {
+            fullname: "Abebe Beso",
+            gender: "Male",
+            dateofbirth: "1997-04-15",
+            maritalstatus: "Single",
+            nationality: "Ethiopian",
+            personaltaxid: "TX-9584732",
+            emailaddress: "eyob.taye@example.com",
+            socialinsurance: "SI-558932",
+            healthinsurance: "HI-229584",
+            phonenumber: "+251911223344",
+            primaryaddress: "123 Sunshine Avenue",
+            country: "Ethiopia",
+            state: "Addis Ababa",
+            city: "Addis Ababa",
+            postcode: "1000",
+            emefullname: "Marta Taye",
+            emephonenumber: "+251944556677",
+            emestate: "Addis Ababa",
+            emecity: "Addis Ababa",
+            emepostcode: "1000",
+          },
+          job: {
+            employeeid: "EMP-001",
+            serviceyear: "3",
+            joindate: "2022-03-10",
+            jobtitle: "Frontend Developer",
+            positiontype: "Full-Time",
+            employmenttype: "Permanent",
+            linemanager: "Samuel Bekele",
+            contractnumber: "CN-8942",
+            contractname: "Frontend Developer Contract",
+            contracttype: "Indefinite",
+            startdate: "2022-03-10",
+            enddate: "",
+          },
+          payroll: {
+            employeestatus: "Active",
+            employmenttype: "Permanent",
+            jobdate: "2022-03-10",
+            lastworkingdate: "",
+            salary: 25000,
+            offset: 200,
+            onset: 100,
+          },
+          documents: {
+            files: [
+              {
+                name: "Employment Contract.pdf",
+                url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "ID Card.png",
+                url: "https://example.com/files/idcard.png",
+              },
+            ],
+          },
+        },
+          {
+          id: 7,
+          general: {
+            fullname: "Abebe Beso",
+            gender: "Male",
+            dateofbirth: "1997-04-15",
+            maritalstatus: "Single",
+            nationality: "Ethiopian",
+            personaltaxid: "TX-9584732",
+            emailaddress: "eyob.taye@example.com",
+            socialinsurance: "SI-558932",
+            healthinsurance: "HI-229584",
+            phonenumber: "+251911223344",
+            primaryaddress: "123 Sunshine Avenue",
+            country: "Ethiopia",
+            state: "Addis Ababa",
+            city: "Addis Ababa",
+            postcode: "1000",
+            emefullname: "Marta Taye",
+            emephonenumber: "+251944556677",
+            emestate: "Addis Ababa",
+            emecity: "Addis Ababa",
+            emepostcode: "1000",
+          },
+          job: {
+            employeeid: "EMP-001",
+            serviceyear: "3",
+            joindate: "2022-03-10",
+            jobtitle: "Frontend Developer",
+            positiontype: "Full-Time",
+            employmenttype: "Permanent",
+            linemanager: "Samuel Bekele",
+            contractnumber: "CN-8942",
+            contractname: "Frontend Developer Contract",
+            contracttype: "Indefinite",
+            startdate: "2022-03-10",
+            enddate: "",
+          },
+          payroll: {
+            employeestatus: "Active",
+            employmenttype: "Permanent",
+            jobdate: "2022-03-10",
+            lastworkingdate: "",
+            salary: 25000,
+            offset: 200,
+            onset: 100,
+          },
+          documents: {
+            files: [
+              {
+                name: "Employment Contract.pdf",
+                url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "ID Card.png",
+                url: "https://example.com/files/idcard.png",
+              },
+            ],
+          },
+        },
+          {
+          id: 8,
+          general: {
+            fullname: "Abebe Beso",
+            gender: "Male",
+            dateofbirth: "1997-04-15",
+            maritalstatus: "Single",
+            nationality: "Ethiopian",
+            personaltaxid: "TX-9584732",
+            emailaddress: "eyob.taye@example.com",
+            socialinsurance: "SI-558932",
+            healthinsurance: "HI-229584",
+            phonenumber: "+251911223344",
+            primaryaddress: "123 Sunshine Avenue",
+            country: "Ethiopia",
+            state: "Addis Ababa",
+            city: "Addis Ababa",
+            postcode: "1000",
+            emefullname: "Marta Taye",
+            emephonenumber: "+251944556677",
+            emestate: "Addis Ababa",
+            emecity: "Addis Ababa",
+            emepostcode: "1000",
+          },
+          job: {
+            employeeid: "EMP-001",
+            serviceyear: "3",
+            joindate: "2022-03-10",
+            jobtitle: "Frontend Developer",
+            positiontype: "Full-Time",
+            employmenttype: "Permanent",
+            linemanager: "Samuel Bekele",
+            contractnumber: "CN-8942",
+            contractname: "Frontend Developer Contract",
+            contracttype: "Indefinite",
+            startdate: "2022-03-10",
+            enddate: "",
+          },
+          payroll: {
+            employeestatus: "Active",
+            employmenttype: "Permanent",
+            jobdate: "2022-03-10",
+            lastworkingdate: "",
+            salary: 25000,
+            offset: 200,
+            onset: 100,
+          },
+          documents: {
+            files: [
+              {
+                name: "Employment Contract.pdf",
+                url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "ID Card.png",
+                url: "https://example.com/files/idcard.png",
+              },
+            ],
+          },
+        },
+      ];
+        setEmployeeData(response[id]);
       } catch (err) {
         setError("Failed to fetch employee details.");
       } finally {
@@ -100,8 +524,7 @@ const ViewEmployee = () => {
       }
     };
 
-    // if (id) 
-        fetchEmployee();
+    if (id) fetchEmployee();
   }, [axiosPrivate, id]);
 
   if (loading)
@@ -216,7 +639,7 @@ const handleCancel = (section) => {
                   onClick={() => handleDocumentDelete(index)}
                   className="text-sm px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                 >
-                  Delete
+                  <Icon className='w-4 h-4' name={'Trash'}/>
                 </button>
               )}
             </div>
@@ -243,8 +666,8 @@ const handleCancel = (section) => {
                                 </button>
                             </div>
                         ) : (
-                                <button onClick={() => handleEditToggle("general")} className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                    Edit
+                                <button onClick={() => handleEditToggle("general")} className="px-3 py-1  rounded hover:bg-slate-100 hover:cursor-pointer">
+                                    <Icon className='w-4 h-4' name={'Pen'}/>
                                 </button>
                         )}
                     </div>
@@ -275,9 +698,9 @@ const handleCancel = (section) => {
                 </div>
               ) : (<button
                   onClick={() => handleEditToggle("job")}
-                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100"
                 >
-                  Edit
+                  <Icon className='w-4 h-4' name={'Pen'}/>
                 </button>
               )}
             </div>
@@ -309,9 +732,9 @@ const handleCancel = (section) => {
               ) : (
                 <button
                   onClick={() => handleEditToggle("payroll")}
-                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100"
                 >
-                  Edit
+                  <Icon className='w-4 h-4' name={'Pen'}/>
                 </button>
               )}
             </div>
@@ -343,9 +766,9 @@ const handleCancel = (section) => {
               ) : (
                 <button
                   onClick={() => handleEditToggle("documents")}
-                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100"
                 >
-                  Edit
+                  <Icon className='w-4 h-4' name={'Pen'}/>
                 </button>
               )}
             </div>
@@ -379,18 +802,14 @@ const handleCancel = (section) => {
       </div>
 
       <div className="flex items-center gap-1.5 justify-center p-2 rounded hover:bg-slate-50">
-        <p className={`font-bold px-6 py-0.5 text-xs rounded-md ${
+        <p className={`font-bold px-6 py-1 text-xs rounded-md ${
           employeeData?.payroll?.employeestatus === "Active"
             ? "bg-green-50 text-green-800"
             : "bg-red-50 text-red-800"
         }`}>
           {employeeData?.payroll?.employeestatus || "Active"}
         </p>
-        <img
-          className="h-5 opacity-50"
-          src="\\svg\\down-arrow-5-svgrepo-com.svg"
-          alt=""
-        />
+       <Icon className='w-4 h-4' name={'ChevronDown'}/>
       </div>
     </div>
 
@@ -399,21 +818,21 @@ const handleCancel = (section) => {
     {/* MIDDLE SECTION */}
     <div id="middle" className="items-start flex flex-col flex-1">
       <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-        <img className="h-4 opacity-50" src="\\svg\\down-arrow-5-svgrepo-com.svg" alt="" />
+        <Icon className='w-4 h-4' name={'Mail'}/>
         <p className="font-semibold text-xs text-gray-700 rounded-md">
           {employeeData?.general?.emailaddress || "Some12email@gmail.com"}
         </p>
       </div>
 
       <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-        <img className="h-4 opacity-50" src="\\svg\\development-marketing-outline-svgrepo-com.svg" alt="" />
+        <Icon className='w-4 h-4' name={'Phone'}/>
         <p className="font-semibold text-xs text-gray-700 rounded-md">
           {employeeData?.general?.phonenumber || "0972334145"}
         </p>
       </div>
 
       <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-        <img className="h-4 opacity-50" src="\\svg\\home-1-svgrepo-com (1).svg" alt="" />
+        <Icon className='w-4 h-4' name={'MapPinned'}/>
         <p className="font-semibold text-xs text-gray-700 rounded-md">
           {employeeData?.general?.timezone || "GMT+07:00"}
         </p>
@@ -431,7 +850,7 @@ const handleCancel = (section) => {
             {employeeData?.job?.department || "Designer"}
           </p>
         </div>
-        <img className="h-5 rotate-270 opacity-25" src="\\svg\\down-arrow-5-svgrepo-com.svg" alt="" />
+        <Icon className='w-4 h-4' name={'ChevronRight'}/>
       </div>
 
       <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
@@ -441,29 +860,29 @@ const handleCancel = (section) => {
             {employeeData?.job?.office || "Unpixel Studio"}
           </p>
         </div>
-        <img className="h-5 rotate-270 opacity-25" src="\\svg\\down-arrow-5-svgrepo-com.svg" alt="" />
+        <Icon className='w-4 h-4' name={'ChevronRight'}/>
       </div>
 
       <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
         <div>
           <p className="font-semibold text-gray-400 text-xs">Line Manager</p>
           <div className="flex items-center gap-1.5 my-1.5">
-            <img
-              className="w-8 h-8 object-fill rounded-full"
-              src={employeeData?.job?.managerpic || "\\pic\\download (48).png"}
-              alt=""
-            />
+           <img
+          className="w-6 h-6 object-fill rounded-full"
+          src={employeeData?.general?.profilepicture || "\\pic\\download (48).png"}
+          alt="Profile"
+        />
             <p className="font-bold text-gray-700 text-xs">
               {employeeData?.job?.linemanager || "Skylar Catzoni"}
             </p>
           </div>
         </div>
-        <img className="h-5 rotate-270 opacity-25" src="\\svg\\down-arrow-5-svgrepo-com.svg" alt="" />
+        <Icon className='w-4 h-4' name={'ChevronRight'}/>
       </div>
 
       <div className="flex bg-slate-800 text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
         <p className="text-xs font-semibold">Action</p>
-        <img className="h-4" src="\\svg\\clock.svg" alt="" />
+        <Icon className='w-4 h-4' name={'Pen'}/>
       </div>
     </div>
   </div>

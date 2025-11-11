@@ -11,7 +11,10 @@ export function createAxiosPrivate({getAccessToken, onRefresh, onLogout}){
     baseURL: BASE_URL,
     withCredentials: true,
     headers: { 'Content-Type': 'application/json' },
-  });
+    timeout: 10000,
+  }
+
+);
 
 const request = instance.interceptors.request.use(
   (config) => {

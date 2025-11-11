@@ -37,7 +37,7 @@ export function useFormattedTableData(rawData, bodyStructure, keys) {
 
     return result;
   }, [rawData, bodyStructure, keys]);
-  console.log(collectedData)
+  // console.log(collectedData)
 
   return collectedData;
 }

@@ -8,6 +8,9 @@
 .bgx2{
     background-color:#329A75;
 }
+.goBeyond{
+    left: -30px;
+}
 @layer utilities{
     .scrollbar-hidden::-webkit-scrollbar{
         display:none;

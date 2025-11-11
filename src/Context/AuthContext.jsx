@@ -68,9 +68,7 @@ export function AuthContextProvider({ children }){
       
       console.log(getLocalData('access'),"<--- access \n",getLocalData('refresh'),"<-----refresh")
  
-      const userRes = await axiosPublic.get('/users/me/', {
-      headers: { Authorization: `Bearer ${access}` },
-    });
+      const userRes = await axiosPrivate.get('/users/me/');
       const userData = userRes.data;
 
       setUser(userData, access);

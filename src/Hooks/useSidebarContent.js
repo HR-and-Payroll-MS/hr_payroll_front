@@ -8,12 +8,12 @@ export const sidebarList={
         ]},
         {Icons:"BookA",path:null,label:"Attendance",Visible:false ,sub:[
             {subPath:"checklist",label:"View Attendance"},
-            {subPath:"/",label:"Track Employee Accounts"},
+            {subPath:"myattendance",label:"Track Employee Accounts"},
         ]},
         {Icons:"Timer",path:null,label:"Leave Management",Visible:false ,sub:[
             {subPath:"Employee/ManageEmployee",label:"Approve/Reject Leave Requests"},
             {subPath:"Employee/Directory",label:"Manage Holidays"},
-            {subPath:"org-chart",label:"Manage Time Off Requests"},
+            {subPath:"Modal_Test",label:"Manage Time Off Requests"},
         ]},
         {Icons:"Calendar",path:null,label:"Payroll Management",Visible:false ,sub:[
             {subPath:"/",label:"View Payroll Reports"},

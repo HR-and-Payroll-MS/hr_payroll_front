@@ -3,26 +3,10 @@ import Icon from "../Components/Icon"
 import Dropdown from "./Dropdown"
 import { useState } from "react"
 export  function SearchStatus() {
-//  const isprime=(n)=>{
-//   if(n<=1) return false
-//   for ( let i = 2; i*i <= n; i++){
-//     if(n%i == 0) return false
-//   }
-//   return true;
-//  }
-//   const prime =()=>{
-//     let n=500
-//     console.log("prime numbers up to ",n,"\n")
-//     for(let i = 2 ; i <= n; i++){
-//       if(isprime(i))
-//         console.log(i,"%d")
-//     }
-//     console.log("\n\n composite numbers upto ",n,":\n")
-//     for (let i = 4; i<= n;i++){
-//         if(!isprime(i))console.log('" ": %d', i)
-//     }
-//     console.log()
-//   }
+      const handleEmployeeSelect = (employee) => {
+        console.log('selected employee:', employee);
+      }
+
       const viewOptions = [
         {content:'Card View',svg:"Grip"},
         {content:'Tabular View',svg:"Grid3x3"}
@@ -54,7 +38,7 @@ export  function SearchStatus() {
       }
     const left = 
     <div id="left" className="flex py-2.5 gap-3  justify-between items-center  ">
-         <InputField placeholder={"Search Employee"}/>
+         <InputField  placeholder={"Search Employee"} apiEndpoint="/api/employees/search" displayKey="name" onSelect={handleEmployeeSelect}/>
           
 
           <div className={`flex dark:text-slate-300 dark:border-slate-700  text-gray-700  items-center  justify-between rounded-md`}>

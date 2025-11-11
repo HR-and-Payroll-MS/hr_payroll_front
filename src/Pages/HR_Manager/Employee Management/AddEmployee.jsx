@@ -20,7 +20,7 @@ const AddEmployee = () => {
             },
     job:{employeeid:"",serviceyear:"",joindate:"",jobtitle:"",positiontype:"",employmenttype:"",linemanager:"" ,contractnumber:"",contractname:"",contracttype:"",startDate:"",enddate:""},
     payroll:{employeestatus:"",employmenttype:"",jobdate:"",lastworkingdate:"",salary:"",offset:"",onset:""},
-    documents:{files:""},
+    documents:{files:null},
   });
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -44,31 +44,61 @@ const AddEmployee = () => {
 const handleSubmit = async (e) => {
   e?.preventDefault(); 
   setLoading(true);
-//   const payload = {
-//   employee: 7,
-//   date: "2025-11-02",
-//   clock_in: "2025-11-02T21:11:00+03:00",
-//   clock_in_location: "fdsgh",
-//   clock_out: "2025-11-02T21:12:00+03:00",
-//   clock_out_location: "khjg",
-//   work_schedule_hours: 4,
-//   logged_time: "00:01:00",
-//   paid_time: "00:00:05",
-//   notes: "hkugyjfhg",
-//   status: "APPROVED"
-// };
 
+const handleSubmit = async (e) => {
+  e?.preventDefault();
+  setLoading(true);
+
+  const uploadData = new FormData(); // 👈 renamed
+  uploadData.append("employee_id", "string");
+  uploadData.append("title", "string");
+  uploadData.append("department_id", 1);
+  uploadData.append("join_date", "2025-11-08");
+  uploadData.append("last_working_date", "2025-11-08");
+  uploadData.append("time_zone", "string");
+  uploadData.append("office", "string");
+  uploadData.append("health_care", "string");
+  uploadData.append("is_active", true);
+  uploadData.append("photo", formData.documents.files); // now refers to your React state
 
   try {
-    const response = await axiosPrivate.get("/employees/");
-    console.log("Response:", response.data);
+    const response = await axiosPrivate.post("/employees/", uploadData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("done")
     return response.data;
   } catch (error) {
-    console.error("Error submitting profile:", error.response || error);
+    console.error("Error submitting profile:", error.response?.data || error);
+  } finally {
+    setLoading(false)
   }
-  finally {
-    setLoading(false);
-  }
+};
+
+
+// const data = {
+ 
+//   "employee_id": "string",
+//   "title": "string",
+//   "department_id": 1,
+//   "join_date": "2025-11-08",
+//   "last_working_date": "2025-11-08",
+//   "time_zone": "string",
+//   "office": "string",
+//   "health_care": "string",
+//   "is_active": true,
+//   "photo": "string"};
+
+//   try {
+//     const response = await axiosPrivate.post("/employees/",data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error submitting profile:", error.response || error);
+//   }
+//   finally {
+//     setLoading(false);
+//   }
 };
 
 
@@ -142,3 +172,14 @@ const handleSubmit = async (e) => {
 };
 
 export default AddEmployee;
+
+
+
+
+
+
+
+
+
+
+

@@ -63,7 +63,7 @@ export default function FileUploader({
         ref={fileInputRef}
         onChange={handleFileChange}
         className="hidden"
-        accept="application/pdf" // 👈 Optional: limit to PDFs
+        // accept="application/pdf" 
       />
 
       {!selectedFile && (

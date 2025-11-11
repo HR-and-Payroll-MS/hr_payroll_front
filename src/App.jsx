@@ -31,6 +31,9 @@ import LogOut from './Pages/HR_Manager/Profile/LogOut';
 import EmployeeDirectory from './Pages/HR_Manager/Employee Management/EmployeeDirectory';
 import { useTheme } from './Context/ThemeContext';
 import ViewEmployee from './Pages/HR_Manager/Employee Management/ViewEmployee';
+import DocumentsPage from './Example/DocumentsPage';
+import EmployeeAttendanceDetail from './Example/AttendanceExample/EmployeeAttendaceDetail';
+import MyAttendance from './Example/AttendanceExample/MyAttendance';
 
 export const UserContext = createContext();
 
@@ -47,8 +50,9 @@ export const UserContext = createContext();
         <Route element={<Routes allowedRoles={["Manager"]} />}>
           <Route path="hr_dashboard" element={<MainLayout/>}>
             <Route index element={<DashboardLayout/>}/>
-            <Route path='Employee_Directory' element={<EmployeeDirectory/>}></Route>
-            <Route path='View_Employee' element={<ViewEmployee/>}></Route>
+            <Route path='Employee_Directory' element={<EmployeeDirectory/>}/>
+            <Route path='users/:id' element={<ViewEmployee/>}/>
+            <Route path='View_Employee' element={<ViewEmployee/>}/>
             <Route path='Addemployee' element={<AddEmployee/>}/>
             <Route path='logout' element={<LogOut/>}/>
             <Route path="Employee" element={<Employee />}>
@@ -63,7 +67,8 @@ export const UserContext = createContext();
             </Route>
 
             <Route path="attendance" element={<Attendance />} />
-            <Route path="checklist" element={<Checklist />} />
+            <Route path="checklist" element={<EmployeeAttendanceDetail />} />
+            <Route path="myattendance" element={<MyAttendance />} />
 
              <Route path="setting" element={<Settingz/>}>
               <Route path="CompanyInfo" element={<CompanyInfo />} />
@@ -71,7 +76,8 @@ export const UserContext = createContext();
               <Route path="WorkSchedule" element={<WorkSchedule />} />
             </Route> 
 
-            <Route path="org-chart" element={<MyCalendar />} />
+            <Route path="org-chart" element={<DocumentsPage />} />
+            <Route path="Modal_Test" element={<Checklist />} />
           </Route>
         </Route>
 

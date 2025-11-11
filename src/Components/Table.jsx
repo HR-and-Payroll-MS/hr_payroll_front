@@ -1,7 +1,21 @@
 import React from "react";
 import { useFormattedTableData } from "../utils/useFormattedTableData";
+import { useNavigate } from "react-router-dom";
 
-function Table({ data, Structure, ke ,title=[]}) {
+
+function Table({ data, Structure, ke ,title=[], onRowClick}) {
+  const navigate = useNavigate();
+
+  const handleRowClick = (rowData) => {
+    console.log(rowData)
+    navigate(`/hr_dashboard/users/${rowData}`, {state: rowData})
+    if (onRowClick) {
+      onRowClick(rowData)
+    } else if(rowData.id){
+      // navigate(`/users/${rowData.id}`, {state: rowData})
+      navigate(`/users/${rowData}`, {state: rowData})
+    }
+  }
   const bodyStructure = Structure;
 
   const tableStructure = (id, item) => {
@@ -62,7 +76,7 @@ function Table({ data, Structure, ke ,title=[]}) {
   const table_content = structuredData.length>0? (
     <tbody>
       {structuredData.map((i, index) => (
-        <tr key={index} className="hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-sm text-gray-700">
+        <tr onClick={()=>handleRowClick(index)} key={index} className="hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-sm text-gray-700">
           {i.map((j, jndex) => (
             <td key={jndex} className="border-b border-gray-100 dark:border-gray-600 px-4 py-2">
               
