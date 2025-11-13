@@ -25,6 +25,7 @@ function InputField({
 
   const fetchSuggestions = async (text) => {
     try {
+      console.log("apiEndpoint:", apiEndpoint)
       setLoading(true)
       setSuggestions([{ name: "name" }, { name: "nome" }, { name: "nami" }])
     } catch (err) {

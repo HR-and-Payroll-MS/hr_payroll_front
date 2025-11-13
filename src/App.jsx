@@ -35,8 +35,10 @@ import DocumentsPage from './Example/DocumentsPage';
 import EmployeeAttendanceDetail from './Example/AttendanceExample/EmployeeAttendaceDetail';
 import MyAttendance from './Example/AttendanceExample/MyAttendance';
 import CVReader from './Example/CVReader';
+import { setLocalData } from './Hooks/useLocalStorage';
 
 export const UserContext = createContext();
+
 
  function App() {
   const {theme} = useTheme()

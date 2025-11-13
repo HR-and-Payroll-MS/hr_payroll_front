@@ -1,6 +1,6 @@
 import axios from "axios";
-export const BASE_URL = 'http://localhost:3000/api/v1';
-// export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
+// export const BASE_URL = 'http://localhost:3000/api/v1';
+export const BASE_URL = 'http://172.19.224.1:3000/api/v1';
 export const axiosPublic = axios.create({
   baseURL:BASE_URL,
   headers: { 'Content-Type':'application/json' }
@@ -11,7 +11,7 @@ export function createAxiosPrivate({getAccessToken, onRefresh, onLogout}){
     baseURL: BASE_URL,
     withCredentials: true,
     headers: { 'Content-Type': 'application/json' },
-    timeout: 10000,
+    // timeout: 10000,
   }
 
 );

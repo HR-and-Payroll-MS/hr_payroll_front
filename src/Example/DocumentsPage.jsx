@@ -5,6 +5,7 @@ import DocumentsTable from './DocumentsTable';
 import PreviewModal from './PreviewModal';
 import { Plus } from 'lucide-react'
 import InputField from '../Components/InputField';
+import Table from '../Components/Table';
 
 export default function DocumentsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -137,7 +138,7 @@ export default function DocumentsPage() {
             </div>
           )}
         </div>
-
+          <Table data={documents} Structure={[1,1,1,1,1,1]} key={[["document"],["Type"],["UploadOn"],["UploadedBy"],["Notes"],["Actions"]] } title={["document","Type","UploadOn","UploadedBy","Notes","Actions"]} onRowClick={(data)=>console.log(data)}/>
         <DocumentsTable documents={documents} loading={loadingDocs} onPreview={(doc) => setPreviewDoc(doc)} onDelete={handleDelete}/>
       </main>
 
