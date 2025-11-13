@@ -45,10 +45,6 @@ const handleSubmit = async (e) => {
   e?.preventDefault(); 
   setLoading(true);
 
-const handleSubmit = async (e) => {
-  e?.preventDefault();
-  setLoading(true);
-
   const uploadData = new FormData(); // 👈 renamed
   uploadData.append("employee_id", "string");
   uploadData.append("title", "string");
@@ -74,7 +70,6 @@ const handleSubmit = async (e) => {
   } finally {
     setLoading(false)
   }
-};
 
 
 // const data = {
@@ -136,7 +131,7 @@ const handleSubmit = async (e) => {
     <div className="w-full h-full flex flex-col mx-auto p-6 bg-white rounded-2xl">
       <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
 
-      <div className="mt-6 overflow-y-auto max-h-full">{renderStep()}</div>
+      <div className="mt-6 overflow-y-auto flex-1 ">{renderStep()}</div>
 
       <div className="flex justify-between mt-8">
         {currentStep > 0 && (

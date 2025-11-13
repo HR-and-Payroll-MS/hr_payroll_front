@@ -25,10 +25,8 @@ export default function Sidebar() {
 
   const handleIconClick = (path) => {
     if (collapsed) {
-      // expand first if collapsed
       setCollapsed(false);
     } else {
-      // normal navigation if expanded
       return path;
     }
   };

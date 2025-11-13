@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import {
-  searchEmployees,
-  uploadDocuments,
-  fetchDocuments,
-  deleteDocument,
-} from './api';
+import { searchEmployees, uploadDocuments, fetchDocuments, deleteDocument, } from './api';
 import UploadDrawer from './UploadDrawer';
 import DocumentsTable from './DocumentsTable';
 import PreviewModal from './PreviewModal';
-import { Plus } from 'lucide-react'; // optional icon library
+import { Plus } from 'lucide-react'
+import InputField from '../Components/InputField';
 
 export default function DocumentsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -20,7 +16,7 @@ export default function DocumentsPage() {
   const [previewDoc, setPreviewDoc] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  // Debounced employee search
+  // Debounced employee search or checks out every 300ms
   useEffect(() => {
     if (!query) return setEmployeesOptions([]);
     const t = setTimeout(() => {
@@ -37,11 +33,13 @@ export default function DocumentsPage() {
   }, [query]);
 
   // Fetch documents for selected employee when it changes
+  // take the real employee id and search for any docs on the fetchdoc api end.
   const loadDocuments = useCallback(async (employeeId) => {
     setLoadingDocs(true);
     try {
-      const res = await fetchDocuments({ employeeId });
-      setDocuments(res || []);
+      // const res = await fetchDocuments({ employeeId });
+      // setDocuments(res || []);
+      console.log('loading docs for emp id:', employeeId);
     } catch (err) {
       console.error('fetch docs error', err);
       setDocuments([]);
@@ -49,7 +47,7 @@ export default function DocumentsPage() {
       setLoadingDocs(false);
     }
   }, []);
-
+//if employee is selected it will call loadDocuments. it watchs selectedEmployee and loadDocuments
   useEffect(() => {
     if (selectedEmployee?.id) {
       loadDocuments(selectedEmployee.id);
@@ -58,7 +56,9 @@ export default function DocumentsPage() {
     }
   }, [selectedEmployee, loadDocuments]);
 
-  // Handle upload result (optimistic or real)
+// Handle upload result (optimistic or real)
+//watch where the arguments came from other wise it will take array of files it append them all then if the backend returns array of docs it will set them to docs variable/state
+//how does the line 67th and 74th work ?file=files,type and notes ,onprogress is a function i guess it takes numbers as a parameter
   const handleUpload = async ({ files, type, notes, onProgress }) => {
     if (!selectedEmployee)
       throw new Error('Employee must be selected before uploading.');
@@ -79,9 +79,8 @@ export default function DocumentsPage() {
       setUploading(false);
     }
   };
-
+//it will do something on line 83 then send the doc id to the delete api end in order to delete overall it stores it to temp file and rolls back if there is an error
   const handleDelete = async (docId) => {
-    // optimistic remove
     const prev = documents;
     setDocuments((d) => d.filter((x) => x.id !== docId));
     try {
@@ -95,88 +94,40 @@ export default function DocumentsPage() {
   return (
     <div className="p-6">
       <header className="flex items-center justify-between mb-6">
+        {/* Header */}
         <div>
           <h1 className="text-2xl font-bold">Employee Documents</h1>
           <p className="text-sm text-slate-500">
             Upload and manage employee files
           </p>
         </div>
-
+              {/* the input part only put what you wrote. the other part will give you suggestions and if you click one employee it will 
+                  set selectedEmployee the employee object... and setEmployeeOptions which will contain array of employees that match the input to show as a suggustions
+              */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search employee by name or id..."
-              className="border rounded px-3 py-2 text-sm w-64"
-            />
-            <div className="relative">
-              {employeesOptions.length > 0 && query && (
-                <div className="absolute z-10 bg-white border rounded shadow mt-2 w-64 max-h-48 overflow-auto">
-                  {employeesOptions.map((emp) => (
-                    <button
-                      key={emp.id}
-                      className="w-full text-left px-3 py-2 hover:bg-slate-50"
-                      onClick={() => {
-                        setSelectedEmployee(emp);
-                        setQuery('');
-                        setEmployeesOptions([]);
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={emp.avatar || '/pic/default-avatar.png'}
-                          alt=""
-                          className="h-6 w-6 rounded-full"
-                        />
-                        <div className="text-sm">
-                          <div className="font-medium">{emp.name}</div>
-                          <div className="text-xs text-slate-500">
-                            {emp.department}
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          <InputField  placeholder={"Search Employee"} apiEndpoint="/api/employees/search" displayKey="name" onSelect={(item)=>loadDocuments(item)}/>
+          
 
-          <button
-            onClick={() => setDrawerOpen(true)}
-            disabled={!selectedEmployee}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded shadow-sm text-sm ${
-              selectedEmployee
-                ? 'bg-blue-600 text-white'
-                : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-            }`}
-          >
+          <button onClick={() => setDrawerOpen(true)} disabled={!selectedEmployee} className={`inline-flex items-center gap-2 px-4 py-2 rounded shadow-sm text-sm ${selectedEmployee? 'bg-blue-600 text-white': 'bg-slate-100 text-slate-400 cursor-not-allowed'}`}>
             <Plus className="h-4 w-4" />
             Upload Document
           </button>
         </div>
       </header>
+{/* overall it will check selected employee and if there is any it will render the firstdiv.id one shows personal infos like profile pics etc the other one is going to render employee docs via table */}
       <main>
-        <div className="mb-4">
+        <div id='firstdiv' className="mb-4">
           <p className="text-sm">Selected Employee:</p>
           {selectedEmployee ? (
             <div className="flex items-center gap-3 mt-2">
-              <img
-                src={selectedEmployee.avatar || '/pic/default-avatar.png'}
-                alt=""
-                className="h-10 w-10 rounded-full"
-              />
+              <img src={selectedEmployee.avatar || '/pic/default-avatar.png'} alt="" className="h-10 w-10 rounded-full"/>
               <div>
                 <div className="font-semibold">{selectedEmployee.name}</div>
                 <div className="text-xs text-slate-500">
                   {selectedEmployee.department || selectedEmployee.email}
                 </div>
               </div>
-              <button
-                className="ml-4 text-sm text-slate-500"
-                onClick={() => setSelectedEmployee(null)}
-              >
+              <button className="ml-4 text-sm text-slate-500" onClick={() => setSelectedEmployee(null)}>
                 Change
               </button>
             </div>
@@ -187,18 +138,11 @@ export default function DocumentsPage() {
           )}
         </div>
 
-        <DocumentsTable
-          documents={documents}
-          loading={loadingDocs}
-          onPreview={(doc) => setPreviewDoc(doc)}
-          onDelete={handleDelete}
-        />
+        <DocumentsTable documents={documents} loading={loadingDocs} onPreview={(doc) => setPreviewDoc(doc)} onDelete={handleDelete}/>
       </main>
 
-      <UploadDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        employee={selectedEmployee}
+
+      <UploadDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} employee={selectedEmployee} 
         onUpload={async (payload) => {
           await handleUpload(payload);
           setDrawerOpen(false);
@@ -210,6 +154,43 @@ export default function DocumentsPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React, { useEffect, useState } from 'react'
 // import Icon from './Icon'

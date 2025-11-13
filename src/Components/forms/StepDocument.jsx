@@ -1,12 +1,13 @@
 import FileUploader from '../FileUploader';
+import Icon from '../Icon';
 const StepDocument = ({ data , onChange }) => {
     const handleFileSelect = (file) => {
         onChange({ files: file });
       }
-    const employmentInfo= <div className="border h-full p-2 rounded-lg border-gray-200">
+    const employmentInfo= <div className="border flex-1 p-2 rounded-lg border-gray-200">
                         <div className="flex mx-4 py-4 border-b border-gray-200">
                             <p className="flex-1 text-xl font-semibold text-gray-700">Personal Documents</p>
-                            <img className="h-5 opacity-25" src="\svg\fullscreen-exit-alt-svgrepo-com.svg" alt="" />
+                            <Icon name={"FileUp"}/>
                         </div>
                     
                         <FileUploader onFileSelect={handleFileSelect} className="flex flex-col gap-2 p-4 justify-center  items-center  ">

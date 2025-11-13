@@ -13,9 +13,9 @@ export default function Drawer({ isOpen, onClose, children, width = "w-1/2" }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
         >
-          {/* Drawer content */}
+          {/* Drawer content max-w-lg*/}
           <motion.div
-            className={`relative bg-white dark:bg-slate-800 h-full ${width} max-w-lg p-6 shadow-2xl`}
+            className={`relative bg-white dark:bg-slate-800 h-full ${width}  p-6 shadow-2xl`}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}

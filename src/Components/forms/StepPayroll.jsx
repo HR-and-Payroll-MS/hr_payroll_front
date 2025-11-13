@@ -1,5 +1,5 @@
 const StepPayroll = ({ data , onChange }) => {
-    const employmentInfo= <div className="border p-2 rounded-lg border-gray-200">
+    const employmentInfo= <div className="border p-2  rounded-lg border-gray-200">
                     
                    <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap  ">
                             <div className="w-96 flex gap-2   text-nowrap">

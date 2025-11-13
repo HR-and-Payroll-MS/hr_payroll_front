@@ -34,6 +34,7 @@ import ViewEmployee from './Pages/HR_Manager/Employee Management/ViewEmployee';
 import DocumentsPage from './Example/DocumentsPage';
 import EmployeeAttendanceDetail from './Example/AttendanceExample/EmployeeAttendaceDetail';
 import MyAttendance from './Example/AttendanceExample/MyAttendance';
+import CVReader from './Example/CVReader';
 
 export const UserContext = createContext();
 
@@ -77,7 +78,8 @@ export const UserContext = createContext();
             </Route> 
 
             <Route path="org-chart" element={<DocumentsPage />} />
-            <Route path="Modal_Test" element={<Checklist />} />
+            {/* <Route path="Modal_Test" element={<Checklist />} /> */}
+            <Route path="Modal_Test" element={<CVReader />} />
           </Route>
         </Route>
 
