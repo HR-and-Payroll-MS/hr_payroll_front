@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import { axiosPublic } from "../api/axiosInstance";
-import { setLocalData } from "./useLocalStorage";
+import { getLocalData, setLocalData } from "./useLocalStorage";
 
 export default function useRefreshToken(){
   const refresh = useCallback(async () => {
     try{
-      const refreshToken = localStorage.getItem('refresh');
+      const refreshToken = getLocalData('refresh');
       if (!refreshToken) return null;
+      console.log(refreshToken)
       const res = await axiosPublic.post('/auth/djoser/jwt/refresh/',{refresh: refreshToken ,})
       const newAccess = res?.data?.access;
       const newrefresh = res?.data?.refresh;
@@ -19,6 +20,7 @@ export default function useRefreshToken(){
       return null;
     }
     catch( error ){
+      console.log(getLocalData('refresh'))
       console.error('useRefreshToken: refresh failed """ useRefreshToken.js .18', error);
       return null;
     }

@@ -1,26 +1,37 @@
 import { useEffect, useState } from "react"
+import useAuth from "../Context/AuthContext";
 
-export const usePagination = (url, limit=10) =>{
+export const usePagination = (url, limit=10,exdata,totPag) =>{
     const [data, setData] = useState([]);
+    const {axiosPrivate} = useAuth()
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
     const [loading, setLoading] = useState(false);
-
     useEffect(()=>{
+        // const fetchData =  () => {
         const fetchData = async () => {
             setLoading(true);
             try{
-                const res = await axios.get(`${url}?page=${page}&limit=${limit}`)
-                setData(res.data.data)
-                setTotalPages(res.data.totalPages)
+                // console.log(exdata)
+                setTotalPages(totPag)
+                if(url){
+                // const res = await axios.get(`${url}?page=${page}&limit=${limit}`)
+                const res = await axiosPrivate.get(url)
+                // const res = await axiosPrivate.get(`${url}?page=${page}&limit=${limit}`)
+                setData(res.data.results)
+                // console.log(res.data)
+                }
+                else{
+                setData(exdata)}
+                // setTotalPages(res.data.totalPages)
             } catch (err) {
                 console.error(err)
             } finally {
                 setLoading(false)
             }
-            fetchData()
         }
-    },[url,page,limit])
+            fetchData()
+    },[url,page,exdata,limit])
 
 
 return {data, page, setPage, totalPages, loading}

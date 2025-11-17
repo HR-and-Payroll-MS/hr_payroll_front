@@ -12,7 +12,7 @@ function FileDrawer({ isModalOpen, closeModal ,children }) {
         }, 400);
       }
   return (
-    <Modal isOpen={isModalOpen} >
+    <Modal location='center' isOpen={isModalOpen} >
       <Drawer isOpen={isDrawerOpen} onClose={() => close()}>
         {children}
       </Drawer>

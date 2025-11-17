@@ -86,14 +86,14 @@ const StepReview = ({ data }) => {
       {/* Documents */}
       <Section title="Documents">
         {/* {console.log(documents.files)} */}
-        {documents.files?.length > 0 ? (
+        {documents.files? (
           <ul className="col-span-full list-disc ml-5 space-y-1">
-            {documents.files.map((file, index) => (
-              <li key={index} className="flex items-center gap-2">
+            {/* {documents.files.map((file, index) => ( */}
+              <li className="flex items-center gap-2">
                 <Icon name="FileText" className="text-blue-600 h-4 w-4" />
-                <span>{file.name || `File ${index + 1}`}</span>
+                <span>{documents.files.name || `File `}</span>
               </li>
-            ))}
+            {/* ))} */}
           </ul>
         ) : (
           <p className="col-span-full text-gray-400 italic">

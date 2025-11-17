@@ -6,8 +6,12 @@ const StepGeneral = ({ data , onChange }) => {
                     </div>
                    <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap  ">
                             <div className="w-96 flex gap-2   text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Full Name</p>
-                                <input type="text" value={data.fullname} onChange={(e) => onChange({ fullname: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
+                                <p className="min-w-40 text-gray-400 ">First Name</p>
+                                <input type="text" value={data.firstname} onChange={(e) => onChange({ firstname: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
+                            </div>
+                            <div className="w-96 flex gap-2   text-nowrap">
+                                <p className="min-w-40 text-gray-400 ">Last Name</p>
+                                <input type="text" value={data.lastname} onChange={(e) => onChange({ lastname: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
                             </div>
                             <div className="w-96 flex gap-2  text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Gender</p>

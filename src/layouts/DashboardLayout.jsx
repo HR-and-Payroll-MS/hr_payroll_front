@@ -71,6 +71,7 @@ const ke=[
   ["gender"], 
   ["status"],
   ["job_title"], 
+  ["id"], 
 ]
 
   // const formattedData = useFormattedTableData(backendData, Directory.bodyStructure);
@@ -102,7 +103,7 @@ const ke=[
         </div>
       </div>
       <div className="flex gap-4 rounded flex-1 h-fit w-full bg-gray-50">
-         <Table data={data} title={title} Structure={structure} ke={ke}/>
+         <Table Data={data} URL={"/employees/"} title={title} Structure={structure} ke={ke}/>
       </div>
       <div className="h-fit flex w-full gap-4">
         <div className="bg-gray-50 h-full p-2 rounded flex-1 ">1</div>

@@ -17,7 +17,7 @@ export function ThemeContext({children})
 
     const changeTheme = (variable,place="sidebar")=>{
       if(place==='sidebar') setLocalData('theme',variable)
-  console.log(getLocalData('theme'))
+  // console.log(getLocalData('theme'))
 
     if (variable === 'light') {
       setTheme(

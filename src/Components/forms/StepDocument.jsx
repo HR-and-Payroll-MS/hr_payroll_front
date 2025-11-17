@@ -10,7 +10,7 @@ const StepDocument = ({ data , onChange }) => {
                             <Icon name={"FileUp"}/>
                         </div>
                     
-                        <FileUploader onFileSelect={handleFileSelect} className="flex flex-col gap-2 p-4 justify-center  items-center  ">
+                        <FileUploader data={data} onFileSelect={handleFileSelect} className="flex flex-col gap-2 p-4 justify-center  items-center  ">
                     
                             <img className="object-center" src="\pic\F2.png" alt="" />
                             <p className="flex-1 text-xl font-semibold text-gray-700">Drag & Drop here to upload</p>

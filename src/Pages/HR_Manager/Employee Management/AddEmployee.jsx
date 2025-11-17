@@ -10,16 +10,24 @@ import Modal from "../../../Components/Modal";
 import ThreeDots from "../../../animations/ThreeDots";
 
 const AddEmployee = () => {
+  //           "position": "",
+  //           "timezone": "",
+  //           "office": "",
+  //           "job_history": [],
+  //           "contracts": [],
+  //           "total_compensation": "0.00",
+  //           "recurring": "0.00",
+  //           "documents": []
   
   const [loading, setLoading] = useState(false);
   const {axiosPrivate} = useAuth();
   const [formData, setFormData] = useState({
-    general:{ fullname:"",gender:"",dateofbirth:"",maritalstatus:"",nationality:"",personaltaxid:"",emailaddress:"",socialinsurance:"",healthinsurance:"",phonenumber:"",
+    general:{ firstname:"",lastname:"",gender:"",dateofbirth:"",maritalstatus:"",nationality:"",personaltaxid:"",emailaddress:"",socialinsurance:"",healthinsurance:"",phonenumber:"",
               primaryaddress:"",country:"",state:"",city:"",postcode:"",
               emefullname:"",emephonenumber:"",emestate:"",emecity:"",emepostcode:"" 
             },
     job:{employeeid:"",serviceyear:"",joindate:"",jobtitle:"",positiontype:"",employmenttype:"",linemanager:"" ,contractnumber:"",contractname:"",contracttype:"",startDate:"",enddate:""},
-    payroll:{employeestatus:"",employmenttype:"",jobdate:"",lastworkingdate:"",salary:"",offset:"",onset:""},
+    payroll:{employeestatus:"",employmenttype:"",jobdate:"",lastworkingdate:"",salary:"",offset:"",oneoff:""},
     documents:{files:null},
   });
   const [currentStep, setCurrentStep] = useState(0);
@@ -44,26 +52,86 @@ const AddEmployee = () => {
 const handleSubmit = async (e) => {
   e?.preventDefault(); 
   setLoading(true);
+  const uploadData = new FormData();
+   
+// General
+uploadData.append("first_name", formData.general.firstname);
+uploadData.append("last_name", formData.general.lastname);
+uploadData.append("gender", formData.general.gender);
+//primaryaddress
+//country
+//state
+//city
+// postcodeemefullname
+// emephonenumber
+// emestateemecity
+// emepostcode
+uploadData.append("date_of_birth", formData.general.dateofbirth);
+uploadData.append("marital_status", formData.general.maritalstatus);
+uploadData.append("nationality", formData.general.nationality);
+uploadData.append("personal_tax_id", formData.general.personaltaxid);
+uploadData.append("social_insurance", formData.general.socialinsurance);
+uploadData.append("health_care", formData.general.healthinsurance);
+uploadData.append("phone", formData.general.phonenumber);
 
-  const uploadData = new FormData(); // 👈 renamed
-  uploadData.append("employee_id", "string");
-  uploadData.append("title", "string");
-  uploadData.append("department_id", 1);
-  uploadData.append("join_date", "2025-11-08");
-  uploadData.append("last_working_date", "2025-11-08");
-  uploadData.append("time_zone", "string");
-  uploadData.append("office", "string");
-  uploadData.append("health_care", "string");
-  uploadData.append("is_active", true);
-  uploadData.append("photo", formData.documents.files); // now refers to your React state
+// Job
+uploadData.append("line_manager", formData.job.linemanager);
+uploadData.append("position", formData.job.positiontype);
+uploadData.append("employment_type", formData.job.employmenttype);
+uploadData.append("job_title", formData.job.jobtitle);
+uploadData.append("join_date", formData.job.joindate);
+uploadData.append("service_years", formData.job.serviceyear);
+// employeeid
+// contractnumber
+// contractname
+// contracttype
+// startDate
+// enddate
+
+// Payroll
+uploadData.append("status", formData.payroll.employeestatus);
+uploadData.append("last_working_date", formData.payroll.lastworkingdate);
+uploadData.append("offset", formData.payroll.offset);
+uploadData.append("one_off", formData.payroll.oneoff);
+uploadData.append("salary", formData.payroll.salary);
+// jobdate
+
+// DOCUMENTS
+if (formData.documents.files) {
+  // if (formData.documents.files instanceof File) {
+    console.log("herererereererer")
+    uploadData.append("documents", formData.documents.files);
+  // } else {
+  //   Array.from(formData.documents.files).forEach((file) => {
+  //     uploadData.append("documents", file);
+  //   });
+  // }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   try {
+  console.log("going")
     const response = await axiosPrivate.post("/employees/", uploadData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
     console.log("done")
+    console.log(response.data.credentials)
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("Error submitting profile:", error.response?.data || error);
@@ -118,7 +186,7 @@ const handleSubmit = async (e) => {
           return <StepPayroll  data={formData.payroll}
           onChange={(newData) => handleDataChange("payroll", newData)} />;
           case 3:
-            return <StepDocument  data={formData.general}
+            return <StepDocument  data={formData.documents}
             onChange={(newData) => handleDataChange("documents", newData)} />;
         case 4:
           return <StepReview data={formData} />;

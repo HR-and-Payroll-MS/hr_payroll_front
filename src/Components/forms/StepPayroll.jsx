@@ -32,7 +32,7 @@ const StepPayroll = ({ data , onChange }) => {
                             </div>                            
                             <div className="w-96 flex gap-2  text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Onset</p>
-                                <input type="number" value={data.onset} onChange={(e) => onChange({ onset: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
+                                <input type="number" value={data.oneoff} onChange={(e) => onChange({ oneoff: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
                             </div>                            
                         </div>
                     </div>

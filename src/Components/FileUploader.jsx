@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "./Icon";
 import FileDrawer from "./FileDrawer";
 import PDFViewer from "./PDFViewer";
@@ -8,9 +8,12 @@ export default function FileUploader({
   label = "Upload File",
   className = "flex flex-col items-center justify-center cursor-pointer transition-all duration-200",
   children,
+  data
 }) {
+  
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  useEffect(()=>{setSelectedFile(data.files)},[data])
   const fileInputRef = useRef(null);
   const [isModalOpen,closeModal] =useState(false);
 // i don't know what the below line of code is saying 
@@ -51,7 +54,7 @@ export default function FileUploader({
 
   return (
     <div onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className={`${className} rounded-2xl p-4 ${isDragging ? "border-2 border-dashed border-green-600 bg-green-50": ""}`}>
-      <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="application/pdf"/>
+      <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=""/>
 
       {!selectedFile && (
         <>
