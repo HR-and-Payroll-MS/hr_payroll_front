@@ -7,7 +7,7 @@ export const sidebarList={
             {subPath:"org-chart",label:"Upload Documents"},
         ]},
         {Icons:"BookA",path:null,label:"Attendance",Visible:false ,sub:[
-            {subPath:"checklist",label:"View Attendance"},
+            {subPath:"Employee_Attendance",label:"View Attendance"},
             {subPath:"myattendance",label:"Track Employee Accounts"},
         ]},
         {Icons:"Timer",path:null,label:"Leave Management",Visible:false ,sub:[

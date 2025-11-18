@@ -279,7 +279,7 @@ const title=['USER','PHONE','JOIN DATE','GENDER','STATUS','MARITAL STATUS']
 
   return (
     <div className='p-4 flex flex-col h-full'>
-        <Header Title={"Employee Directory"} Breadcrumb={"view all employees and click to view detail "}/>
+        <Header Title={"Employee Directory"} subTitle={"view all employees and click to view detail "}/>
         <SearchStatus/>
         <Table URL={"/employees/"} Data={rawData} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10}/>
     </div>

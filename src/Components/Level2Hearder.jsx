@@ -1,7 +1,8 @@
 import InputField from "./InputField"
 import Icon from "../Components/Icon"
 import Dropdown from "./Dropdown"
-import { useState } from "react"
+// import { useState } from "react"
+// import { Input } from "postcss"
 export  function SearchStatus() {
       const handleEmployeeSelect = (employee) => {
         console.log('selected employee:', employee);
@@ -103,3 +104,174 @@ export  function DateStatus() {
     <>{left}</>
   )
 }
+export function AttendanceFilterBar({ filters, setFilters }) {
+  const months = [
+    {content:"January"},{content:"February"},{content:"March"},{content:"April"},{content:"May"},{content:"June"},
+    {content:"July"},{content:"August"},{content:"September"},{content:"October"},{content:"November"},{content:"December"}
+  ];
+  const years = Array.from({ length: 5 }, (_, i) =>{ const yearz =new Date().getFullYear() - i;return {content:yearz}});
+  const statuses = [{content:"All"}, {content:"Present"}, {content:"Absent"}, {content:"Late"}, {content:"Leave"}];
+  
+  return (
+    <div className="flex gap-3 max-w-2/3 items-center bg-white border rounded p-3">
+      <Dropdown placeholder="Month" options={months} onChange={(e) => setFilters((f) => ({ ...f, month: e }))}/>
+      <Dropdown placeholder="Year" options={years} onChange={(e) => setFilters((f) => ({ ...f, year: e }))}/>
+      <Dropdown placeholder="status" options={statuses}  onChange={(e) => setFilters((f) => ({ ...f, status: e}))}/>
+    </div>
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* <div>
+        <label className="text-xs block">Month</label>
+        <select
+          value={filters.month}
+          onChange={(e) => setFilters((f) => ({ ...f, month: +e.target.value }))}
+          className="border rounded px-2 py-1 text-sm"
+        >
+          {months.map((m, i) => (
+            <option key={m} value={i + 1}>{m}</option>
+          ))}
+        </select>
+      </div> */}
+
+      {/* <div>
+        <label className="text-xs block">Year</label>
+        <select
+          value={filters.year}
+          onChange={(e) => setFilters((f) => ({ ...f, year: +e.target.value }))}
+          className="border rounded px-2 py-1 text-sm"
+        >
+          {years.map((y) => (
+            <option key={y}>{y}</option>
+          ))}
+        </select>
+      </div> */}
+
+      {/* <div>
+        <label className="text-xs block">Status</label>
+        <select
+          value={filters.status}
+          onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}
+          className="border rounded px-2 py-1 text-sm"
+        >
+          {statuses.map((s) => (
+            <option key={s}>{s}</option>
+          ))}
+        </select>
+      </div> */}

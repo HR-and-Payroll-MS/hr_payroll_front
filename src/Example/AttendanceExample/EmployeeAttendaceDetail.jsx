@@ -4,6 +4,8 @@ import { fetchEmployeeAttendance, fetchAttendanceSummary } from "../api";
 import AttendanceSummaryCards from "./AttendanceSummaryCards";
 import AttendanceTable from "./AttendanceTable";
 import AttendanceFilterBar from "./AttendanceFilterBar";
+import { AttendanceFilterBar as Filters } from "../../Components/Level2Hearder";
+
 
 export default function EmployeeAttendanceDetail() {
   const { id } = useParams(); // /attendance/:id
@@ -38,12 +40,14 @@ export default function EmployeeAttendanceDetail() {
     (async () => {
       setLoading(true);
       try {
-        const [sum, att] = await Promise.all([
-          fetchAttendanceSummary(employee.id),
-          fetchEmployeeAttendance({ employeeId: employee.id, ...filters }),
-        ]);
+        // const [sum, att] = await Promise.all([
+        //   // fetchAttendanceSummary(employee.id),
+        //   // fetchEmployeeAttendance({ employeeId: employee.id, ...filters }),
+        // ]);
         setSummary(sum);
         setAttendance(att);
+
+        console.log(files)
       } catch (err) {
         console.error("Failed to load attendance", err);
       } finally {
@@ -64,7 +68,7 @@ export default function EmployeeAttendanceDetail() {
           ← Back
         </button>
         <img
-          src={employee.avatar}
+          src={"/pic/avatar.jpg"}
           alt={employee.name}
           className="h-16 w-16 rounded-full object-cover"
         />
@@ -80,7 +84,8 @@ export default function EmployeeAttendanceDetail() {
       {summary && <AttendanceSummaryCards data={summary} />}
 
       {/* Filters */}
-      <AttendanceFilterBar filters={filters} setFilters={setFilters} />
+      {/* <AttendanceFilterBar filters={filters} setFilters={setFilters} /> */}
+      <Filters filters={filters} setFilters={setFilters}/>
 
       {/* Table */}
       <AttendanceTable data={attendance} loading={loading} />

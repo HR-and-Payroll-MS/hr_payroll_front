@@ -36,6 +36,7 @@ import EmployeeAttendanceDetail from './Example/AttendanceExample/EmployeeAttend
 import MyAttendance from './Example/AttendanceExample/MyAttendance';
 import CVReader from './Example/CVReader';
 import { setLocalData } from './Hooks/useLocalStorage';
+import EmployeeAttendanceList from './Pages/HR_Manager/Attendance/EmployeeAttendanceList';
 
 export const UserContext = createContext();
 
@@ -69,7 +70,8 @@ function App() {
             </Route>
 
             <Route path="attendance" element={<Attendance />} />
-            <Route path="checklist" element={<EmployeeAttendanceDetail />} />
+            <Route path="Employee_Attendance" element={<EmployeeAttendanceList />} />
+            <Route path="Employee_Attendance/:id" element={<EmployeeAttendanceDetail />} />
             <Route path="myattendance" element={<MyAttendance />} />
 
             <Route path="setting" element={<Settingz />}>

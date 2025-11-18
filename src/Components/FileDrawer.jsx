@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Drawer from './Drawer'
 import Modal from './Modal'
 
@@ -11,6 +11,9 @@ function FileDrawer({ isModalOpen, closeModal ,children }) {
           
         }, 400);
       }
+      useEffect(()=>{
+        setTimeout(()=>{setDrawerOpen(true)},400)
+      },[])
   return (
     <Modal location='center' isOpen={isModalOpen} >
       <Drawer isOpen={isDrawerOpen} onClose={() => close()}>

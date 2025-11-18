@@ -103,7 +103,7 @@ export default function UploadDocuments() {
               */}
         <div className="flex items-center gap-3">
           <InputField placeholder={'Search Employee'} apiEndpoint="/api/employees/search" displayKey="name" onSelect={(item) => handleEmployeeSelect(item)} />          
-          <button onClick={() => setDrawerOpen(true)} disabled={!selectedEmployee} className={`inline-flex items-center gap-2 px-4 py-2 rounded shadow-sm text-sm ${ selectedEmployee ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}`}>
+          <button onClick={() => setDrawerOpen(true)} disabled={!selectedEmployee} className={`inline-flex items-center gap-2 px-4 py-2 rounded shadow-sm text-sm ${ selectedEmployee ? 'bg-slate-800 hover:bg-slate-950 hover:cursor-pointer dark:text-slate-700 dark:bg-slate-300 dark:hover:bg-slate-50 text-white' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}`}>
             <Icon name={"Plus"} className="h-4 w-4" />
             Upload Document
           </button>
@@ -112,11 +112,11 @@ export default function UploadDocuments() {
       {/* overall it will check selected employee and if there is any it will render the firstdiv.id one shows personal infos like profile pics etc the other one is going to render employee docs via table */}
       <main>
         <div id="firstdiv" className="mb-4">
-          <p className="text-sm">Selected Employee:</p>
+          <p className="text-sm dark:text-slate-300">Selected Employee:</p>
           {selectedEmployee ? (
             <div className="flex items-center gap-3 mt-2">
               <img
-                src={selectedEmployee.avatar || '/pic/default-avatar.png'}
+                src={selectedEmployee.avatar || '/pic/avatar.jpg'}
                 alt=""
                 className="h-10 w-10 rounded-full"
               />
@@ -127,7 +127,7 @@ export default function UploadDocuments() {
                 </div>
               </div>
               <button
-                className="ml-4 text-sm text-slate-500"
+                className="ml-4 hover:cursor-pointer dark:hover:text-slate-50 hover:text-slate-950 text-sm text-slate-500"
                 onClick={() => setSelectedEmployee(null)}
               >
                 Change
@@ -144,7 +144,7 @@ export default function UploadDocuments() {
         {/* <DocumentsTable documents={documents} loading={loadingDocs} onPreview={(doc) => setPreviewDoc(doc)} onDelete={handleDelete}/> */}
       </main>
 
-      <UploadDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} employee={selectedEmployee} onUpload={async (payload) => { await handleUpload(payload); setDrawerOpen(false);}} uploading={uploading} />
+      <UploadDrawer open={drawerOpen} onClose={setDrawerOpen} employee={selectedEmployee} onUpload={async (payload) => { await handleUpload(payload); setDrawerOpen(false);}} uploading={uploading} />
       <PreviewModal doc={previewDoc} onClose={() => setPreviewDoc(null)} />
     </div>
   );

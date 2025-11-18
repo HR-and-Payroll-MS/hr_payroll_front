@@ -125,7 +125,7 @@ function Table({ Data,URL, Structure, ke ,title=[], onRowClick,totPage=1}) {
 
   return (
     <div className="flex-1 flex flex-col overflow-y-scroll scrollbar-hidden overflow-hidden">
-      <table className="bg-white dark:bg-slate-800 border-b border-gray-300 w-full">
+      <table className="bg-white  dark:bg-slate-800 border-b border-gray-300 w-full">
         {table_header}
         {table_content}
       </table> 
