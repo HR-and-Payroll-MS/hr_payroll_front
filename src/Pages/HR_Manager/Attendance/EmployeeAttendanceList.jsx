@@ -15,6 +15,9 @@ import { useNavigate } from "react-router-dom";
 
 function EmployeeAttendanceList() {
 
+useEffect(()=>{
+
+});
 const navigate = useNavigate();
 const onRowClick=(id)=>{
     navigate(`/hr_dashboard/Employee_Attendance/${id}`, {state: id})
@@ -39,7 +42,7 @@ const title=['EMPLOYEE','DATE','CLOCK IN','CLOCK IN LOCATION','CLOCK OUT','CLOCK
     <div className='p-4 flex flex-col h-full'>
         <Header Title={"Employee Attendance"} subTitle={"view all employee's Attendance and click to view detail "}/>
         <SearchStatus/>
-        <Table URL={"/employees/"} Data={[]}  title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10}/>
+        <Table URL={"/attendances/"} Data={[]}  title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10}/>
     </div>
   )
 }

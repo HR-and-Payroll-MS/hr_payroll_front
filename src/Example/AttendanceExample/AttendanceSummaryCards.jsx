@@ -1,25 +1,20 @@
 import React from "react";
+import SummaryCard from "../../Components/SummaryCard";
 
 export default function AttendanceSummaryCards({ data }) {
   const cards = [
-    { label: "Total Days", value: data.totalDays },
-    { label: "Present", value: data.present },
-    { label: "Absent", value: data.absent },
-    { label: "Late", value: data.late },
-    { label: "Leave", value: data.leave },
+    { Title: "Total Days", and:"days",color:"bg-indigo-500",logo:"Calendar", data: 1232 },
+    { Title: "Present", and:"days",color:"bg-amber-500",logo:"Calendar", data: 1231 },
+    { Title: "Absent", and:"days",color:"bg-yellow-500",logo:"Calendar", data: 1 },
+    { Title: "Late", and:"days",color:"bg-green-500",logo:"Calendar", data: 4 },
+    { Title: "Leave", and:"days",color:"bg-blue-500",logo:"Calendar", data: 6 },
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-      {cards.map((c) => (
-        <div
-          key={c.label}
-          className="bg-white border rounded p-4 text-center shadow-sm"
-        >
-          <div className="text-sm text-slate-500">{c.label}</div>
-          <div className="text-xl font-semibold mt-1">{c.value}</div>
-        </div>
-      ))}
+    <div className="flex  md:grid-cols-5 gap-4">
+      <SummaryCard data={cards}/>
     </div>
+
   );
+  
 }

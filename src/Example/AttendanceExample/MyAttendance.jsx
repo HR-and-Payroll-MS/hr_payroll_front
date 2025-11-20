@@ -4,7 +4,7 @@ import AttendanceSummaryCards from "./AttendanceSummaryCards";
 import AttendanceHeatmap from "./AttendanceHeatmap";
 import AttendanceTrendChart from "./AttendanceTrendChart";
 
-export default function MyAttendance() {
+export default function  MyAttendance() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 

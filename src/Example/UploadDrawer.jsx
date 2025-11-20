@@ -11,7 +11,7 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
   const [notes, setNotes] = useState('');
   const [files, setFiles] = useState([]);
   const [progress, setProgress] = useState(0);
-  const fileRef = useRef();
+  // const fileRef = useRef();
 
   //reset when open/close generally it sets every state in this component to their initial value most probably null all states not userefs though
   useEffect(() => {

@@ -3,7 +3,7 @@ import React from 'react'
 import Icon from './Icon'
 
 function SummaryCard({data,classname="bg-white text-slate-800"}) {
-     data=[
+     data=data?data:[
         {
             Title:"Total Employee",
             data:234234,

@@ -23,7 +23,7 @@ export default function Dropdown({
   };
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
+    <div className="relative  w-full" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className={`w-full ${text} flex text-slate-700 dark:text-slate-200 items-center gap-1 justify-between ${border} rounded-lg px-4 py-2.5 hover:border-slate-400 transition`}
@@ -40,7 +40,7 @@ export default function Dropdown({
       </button>
 
       {isOpen && (
-        <ul className="absolute z-10 text-nowrap mt-2 w-full min-w-fit bg-white dark:bg-slate-700 rounded-sm shadow-lg max-h-56 overflow-y-auto">
+        <ul className="absolute z-10 text-nowrap mt-2 w-full min-w-fit bg-white dark:bg-slate-700 rounded-sm shadow-lg max-h-56 overflow-y-auto scrollbar-hidden">
           {options.length > 0 ? (
             options.map((item, index) => (
               <li
