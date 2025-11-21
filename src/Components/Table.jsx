@@ -8,11 +8,11 @@ import ThreeDots from "../animations/ThreeDots";
 
 function Table({ Data,URL, Structure, ke ,title=[], onRowClick,totPage=1}) {
   // const navigate = useNavigate();
-  // console.log(Data)
+  console.log(URL)
   const { data, page,setPage, totalPages, loading } = usePagination(URL,10,Data?Data:[],totPage)
 
   const handleRowClick = (rowData,index) => {
-    console.log("id: ",rowData,"  ,  index:",index)
+    // console.log("id: ",rowData,"  ,  index:",index)
 
     // navigate(`/hr_dashboard/users/${rowData}`, {state: rowData})
     if (onRowClick) {
@@ -78,7 +78,7 @@ function Table({ Data,URL, Structure, ke ,title=[], onRowClick,totPage=1}) {
       </thead>
     );
   const structuredData = useFormattedTableData(data, Structure, ke);
-
+console.log("Structured Data:", structuredData);
  const table_content = loading ? (
   <tbody>
     <tr>

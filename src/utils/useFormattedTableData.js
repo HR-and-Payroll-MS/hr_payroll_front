@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { flattenObject } from "./flattenObject";
 
 export function useFormattedTableData(rawData, bodyStructure, keys) {
     // console.log(rawData)
@@ -27,17 +28,15 @@ export function useFormattedTableData(rawData, bodyStructure, keys) {
   const collectedData = useMemo(() => {
     let result = [];  
     rawData.forEach((i) => {
+    let flat = flattenObject(i);
       let rowResult = [];
       bodyStructure.forEach((j, iny) => {
-        const resultForThisBody = output(i, j, keys[iny]);
+        const resultForThisBody = output(flat, j, keys[iny]);
         rowResult.push(resultForThisBody);
       });
       
-      rowResult.push(i?.id) 
+      rowResult.push(flat?.id) 
       result.push(rowResult);
-      // console.log("this is hi .........",i.id);
-      
-// console.log(rowResult); 
     });
     return result;
   }, [rawData, bodyStructure, keys]);

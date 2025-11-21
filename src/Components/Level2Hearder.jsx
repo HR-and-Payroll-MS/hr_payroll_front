@@ -1,70 +1,76 @@
 import InputField from "./InputField"
-import Icon from "../Components/Icon"
 import Dropdown from "./Dropdown"
-// import { useState } from "react"
-// import { Input } from "postcss"
-export  function SearchStatus() {
-      const handleEmployeeSelect = (employee) => {
-        console.log('selected employee:', employee);
-      }
 
-      const viewOptions = [
-        {content:'Card View',svg:"Grip"},
-        {content:'Tabular View',svg:"Grid3x3"}
-      ]
-      const depOptions = [
-        {content:'Human Resource',svg:null},
-        {content:'Finance',svg:null},
-        {content:'IT',svg:null},
+export function SearchStatus({ onFiltersChange }) {
 
-      ]
-      const genderOptions = [
-        {content:'Female',svg:null},
-        {content:'Male',svg:null},
-        {content:'What else ?',svg:null},
+  const handleFilter = (item, key) => {
+  if (!item) return;
+  console.log("Dropdown selected:", item, "key:", key);
+  onFiltersChange({ [key]: item.content || item });
+};
 
-      ]
-      const jobOptions = [
-        {content:'fullTime',svg:null},
-        {content:'PartTime',svg:null},
+  const handleEmployeeSelect = (employee) => {
+    onFiltersChange({ employee: employee.name });
+  };
 
-      ]
-      const statOptions = [
-        {content:'Active',svg:null},
-        {content:'InActive',svg:null},
+  const viewOptions = [
+    {content:'Card View',svg:"Grip"},
+    {content:'Tabular View',svg:"Grid3x3"}
+  ];
+  const depOptions = [
+    {content:'Human Resource',svg:null},
+    {content:'Finance',svg:null},
+    {content:'IT',svg:null},
+  ];
+  const genderOptions = [
+    {content:'Female',svg:null},
+    {content:'Male',svg:null},
+    {content:'What else ?',svg:null},
+  ];
+  const jobOptions = [
+    {content:'fullTime',svg:null},
+    {content:'PartTime',svg:null},
+  ];
+  const statOptions = [
+    {content:'Active',svg:null},
+    {content:'InActive',svg:null},
+  ];
 
-      ]
-      const handleView=(item)=>{
-        console.log(item)
-      }
-    const left = 
-    <div id="left" className="flex py-2.5 gap-3  justify-between items-center  ">
-         <InputField  placeholder={"Search Employee"} apiEndpoint="/api/employees/search" displayKey="name" onSelect={handleEmployeeSelect}/>
-          
-
-          <div className={`flex dark:text-slate-300 dark:border-slate-700  text-gray-700  items-center  justify-between rounded-md`}>
-            <Dropdown onChange={handleView} options={jobOptions} text="text-xs  font-semibold" placeholder="Job Type"  border="border gap-1 border-gray-100"/>
-          </div>
-          <div className={`flex dark:text-slate-300 dark:border-slate-700  text-gray-700  items-center  justify-between rounded-md`}>
-            <Dropdown onChange={handleView} options={genderOptions} text="text-xs  font-semibold" placeholder="Gender"  border="border gap-1 border-gray-100"/>
-          </div>
-          <div className={`flex dark:text-slate-300 dark:border-slate-700  text-gray-700  items-center  justify-between rounded-md`}>
-            <Dropdown onChange={handleView} options={depOptions} text="text-xs  font-semibold" placeholder="Department"  border="border gap-1 border-gray-100"/>
-          </div>
-          
-          
-          
-          <div className={`flex dark:text-slate-300 dark:border-slate-700  text-gray-700  items-center  justify-between rounded-md`}>
-            <Dropdown onChange={handleView} options={statOptions} text="text-xs  font-semibold" placeholder="All Status"  border="border gap-1 border-gray-100"/>
-          </div>
-          <div className={`flex dark:text-slate-300 dark:border-slate-700  text-gray-700  items-center  justify-between rounded-md`}>
-            <Dropdown onChange={handleView} options={viewOptions} text="text-xs font-semibold" placeholder="View" showIcons={true} Svg={"AlignEndVertical"} border="border gap-1 border-gray-100"/>
-          </div>
-        </div>
   return (
-    <>{left}</>
-  )
+    <div id="left" className="flex py-2.5 gap-3 justify-between items-center">
+
+      <InputField  
+        placeholder={"Search Employee"}
+        apiEndpoint="/api/employees/search"
+        displayKey="name"
+        onSelect={handleEmployeeSelect}
+      />
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown onChange={(i) => handleFilter(i,"job_type")} options={jobOptions} text="text-xs font-semibold" placeholder="Job Type" border="border gap-1 border-gray-100"/>
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown onChange={(i) => handleFilter(i,"gender")} options={genderOptions} text="text-xs font-semibold" placeholder="Gender" border="border gap-1 border-gray-100"/>
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown onChange={(i) => handleFilter(i,"department")} options={depOptions} text="text-xs font-semibold" placeholder="Department" border="border gap-1 border-gray-100"/>
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown onChange={(i) => handleFilter(i,"status")} options={statOptions} text="text-xs font-semibold" placeholder="All Status" border="border gap-1 border-gray-100"/>
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown onChange={(i) => handleFilter(i,"view")} options={viewOptions} text="text-xs font-semibold" placeholder="View" showIcons Svg={"AlignEndVertical"} border="border gap-1 border-gray-100"/>
+      </div>
+
+    </div>
+  );
 }
+
+
 export  function DateStatus() {
     const left = <div
           id="left"
