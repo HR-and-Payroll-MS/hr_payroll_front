@@ -8,6 +8,7 @@ function InputField({
   apiEndpoint = "/api/search",
   displayKey = "name",
   onSelect,
+  value=""//the input text that is inserted inside the inputfield
 }) {
   const [query, setQuery] = useState("")
   const [suggestions, setSuggestions] = useState([])
@@ -37,11 +38,13 @@ function InputField({
     }
   }
 
-  const handleSelect = (item) => {
+  const handleSelect = (item) => { 
+    value=item
     setQuery(item[displayKey] || "")
     setSuggestions([])
     if (onSelect) onSelect(item)
   }
+// check here there is some thing wrong
 
   return (
     <div className="relative flex-1"> 

@@ -5,8 +5,9 @@ export function SearchStatus({ onFiltersChange }) {
 
   const handleFilter = (item, key) => {
   if (!item) return;
-  console.log("Dropdown selected:", item, "key:", key);
-  onFiltersChange({ [key]: item.content || item });
+  // console.log("Dropdown selected:", item, "key:", key);
+   if(item==="Job Type"||item === "Department"||item === "Gender" || item === "Status") onFiltersChange({ [key]: "" });
+   else onFiltersChange({ [key]: item.content || item });
 };
 
   const handleEmployeeSelect = (employee) => {
@@ -18,20 +19,24 @@ export function SearchStatus({ onFiltersChange }) {
     {content:'Tabular View',svg:"Grid3x3"}
   ];
   const depOptions = [
+    {content:'Department',svg:null,placeholder:true},
     {content:'Human Resource',svg:null},
     {content:'Finance',svg:null},
     {content:'IT',svg:null},
   ];
   const genderOptions = [
+    {content:'Gender',svg:null,placeholder:true},
     {content:'Female',svg:null},
     {content:'Male',svg:null},
     {content:'What else ?',svg:null},
   ];
   const jobOptions = [
+    {content:'Job Type',svg:null,placeholder:true},
     {content:'fullTime',svg:null},
     {content:'PartTime',svg:null},
   ];
   const statOptions = [
+    {content:'Status',svg:null,placeholder:true},
     {content:'Active',svg:null},
     {content:'InActive',svg:null},
   ];
@@ -39,12 +44,7 @@ export function SearchStatus({ onFiltersChange }) {
   return (
     <div id="left" className="flex py-2.5 gap-3 justify-between items-center">
 
-      <InputField  
-        placeholder={"Search Employee"}
-        apiEndpoint="/api/employees/search"
-        displayKey="name"
-        onSelect={handleEmployeeSelect}
-      />
+      <InputField  placeholder={"Search Employee"} apiEndpoint="/api/employees/search" displayKey="name" onSelect={handleEmployeeSelect} />
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown onChange={(i) => handleFilter(i,"job_type")} options={jobOptions} text="text-xs font-semibold" placeholder="Job Type" border="border gap-1 border-gray-100"/>
@@ -63,7 +63,7 @@ export function SearchStatus({ onFiltersChange }) {
       </div>
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-        <Dropdown onChange={(i) => handleFilter(i,"view")} options={viewOptions} text="text-xs font-semibold" placeholder="View" showIcons Svg={"AlignEndVertical"} border="border gap-1 border-gray-100"/>
+        <Dropdown onChange={(i) => console.log(i)} options={viewOptions} text="text-xs font-semibold" placeholder="View" showIcons Svg={"AlignEndVertical"} border="border gap-1 border-gray-100"/>
       </div>
 
     </div>

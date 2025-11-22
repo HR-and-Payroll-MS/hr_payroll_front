@@ -11,23 +11,27 @@ function EmployeeDirectory() {
     navigate(`/hr_dashboard/users/${id}`, { state: id });
   };
 
-  const [filters, setFilters] = useState({});
-
-const updateFilters = (value) => {
-  setFilters(prev => {
-    const updated = { ...prev, ...value };
-    // console.log("Filters updated:", updated);
-    return updated;
-  });
-};
-
-
-  const queryString = new URLSearchParams(
-    Object.entries(filters).filter(([k,v]) => v && v !== "")
-  ).toString();
-
-  const dynamicURL = queryString ? `/employees/?${queryString}` : "/employees/";
-  // console.log("Dynamic URL:", dynamicURL);
+const [filters, setFilters] = useState({});
+    
+    function updateFilter(obj){
+        const key = Object.keys(obj)[0];
+        const value = obj[key]
+        setFilters(prev =>{
+            if(value == null || value === "" ){
+                const {[key]:removed, ...rest}=prev;
+                return rest;
+            }
+            return {...prev,[key]:value};
+        });
+    }
+    
+    
+      const queryString = new URLSearchParams(
+        Object.entries(filters).filter(([k,v]) => v && v !== "")
+      ).toString();
+    
+      const dynamicURL = queryString ? `/employees/?${queryString}` : "/employees/";
+      console.log("Dynamic URL:", dynamicURL);
 
   const structure = [3,1,1,1,1,1];
   const ke2 = [
@@ -43,17 +47,9 @@ const updateFilters = (value) => {
   return (
     <div className='p-4 flex flex-col h-full'>
       <Header Title="Employee Directory" subTitle="view all employees and click to view detail"/>
-      <SearchStatus onFiltersChange={updateFilters} />
+      <SearchStatus onFiltersChange={updateFilter} />
 
-      <Table
-        Data={[]}
-        URL={dynamicURL}
-        title={title}
-        Structure={structure}
-        ke={ke2}
-        onRowClick={onRowClick}
-        totPage={10}
-      />
+      <Table Data={[]} URL={dynamicURL} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10} />
     </div>
   );
 }

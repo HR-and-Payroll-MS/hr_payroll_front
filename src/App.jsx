@@ -37,7 +37,7 @@ import MyAttendance from './Example/AttendanceExample/MyAttendance';
 import CVReader from './Example/CVReader';
 import { setLocalData } from './Hooks/useLocalStorage';
 import EmployeeAttendanceList from './Pages/HR_Manager/Attendance/EmployeeAttendanceList';
-import Checkup from './Example/checkup';
+import {Checkup3} from './Example/checkup';
 
 export const UserContext = createContext();
 
@@ -46,7 +46,7 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-       <Route path="/" element={<Checkup/>}/>
+       <Route path="/" element={<Checkup3/>}/>
       </>
     )
   );
