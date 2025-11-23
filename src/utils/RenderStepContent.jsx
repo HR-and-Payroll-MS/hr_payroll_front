@@ -113,7 +113,7 @@ case 2:
             )}
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 ">
             <DocumentList files={employeeData?.documents?.files || []} isEditing={!!editMode?.documents} onChange={handleDocumentUpdate} />
           </div>
         </div>

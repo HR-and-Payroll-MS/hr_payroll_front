@@ -4,15 +4,28 @@ export default function PDFViewer({ file, url, onClose }) {
   const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {
-    if (file) {
-      const localUrl = URL.createObjectURL(file);
-      setPdfUrl(localUrl);
-      return () => URL.revokeObjectURL(localUrl);
-    } else if (url) {
-      setPdfUrl(url);
-    } else {
-      setPdfUrl(null);
+    let localUrl = null;
+
+    if(file instanceof Blob){
+      localUrl = URL.createObjectURL(file)
+      setPdfUrl(localUrl)
+    } else if(typeof url === "string") {
+      setPdfUrl(url)
+    }else{
+      setPdfUrl(null)
     }
+
+
+    return () => { if (localUrl) URL.revokeObjectURL(localUrl)}
+    // if (file) {
+    //   const localUrl = URL.createObjectURL(file);
+    //   setPdfUrl(localUrl);
+    //   return () => URL.revokeObjectURL(localUrl);
+    // } else if (url) {
+    //   setPdfUrl(url);
+    // } else {
+    //   setPdfUrl(null);
+    // }
   }, [file, url]);
 
   if (!pdfUrl)

@@ -2,18 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import FileDrawer from '../Components/FileDrawer';
 import Dropdown from '../Components/Dropdown';
 import FileUploader from '../Components/FileUploader';
-
-
 const DOC_TYPES = [{svg:null,content:'ID Card'}, {svg:null,content:'Contract'}, {svg:null,content:'Tax Form'}, {svg:null,content:'Certificate'}, {svg:null,content:'Other'}];
 export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}) {
-  
   const [type, setType] = useState(DOC_TYPES[0].content);
   const [notes, setNotes] = useState('');
   const [files, setFiles] = useState([]);
+  const [hasFile, setHasFile] = useState(false);
   const [progress, setProgress] = useState(0);
-  // const fileRef = useRef();
-
-  //reset when open/close generally it sets every state in this component to their initial value most probably null all states not userefs though
   useEffect(() => {
     if (!open) {
       setType(DOC_TYPES[0].content);
@@ -22,12 +17,6 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
       setProgress(0);
     }
   }, [open]);
-
-  useEffect(()=>{console.log(files)},[files])
-  // will search for the file and delete it or remove from the array
-  const removeFile = (idx) => setFiles((f) => f.filter((_, i) => i !== idx));
-  
-  //check if there is employee ,valid type ,if there is file selected then upload the files,type,notes to the backend there is onProgress and something like that check what it is
   const handleSubmit = async () => {
     if (!employee) {
       alert('Please select an employee before uploading.');
@@ -41,29 +30,22 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
       alert('Please pick at least one file to upload.');
       return;
     }
-
     try {
-      await onUpload({ files, type, notes, onProgress: (p) => setProgress(p),});
+      await onUpload({ files, type, notes , onProgress: (p) => setProgress(p),});
+      //  console.log({ files, type, notes , onProgress: (p) => setProgress(p),});
       // optional: success toast
     } catch (err) {
       console.error('upload err', err);
       alert('Upload failed');
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
+  const hi = (file) => {
+  setFiles(prev => ({
+    ...prev,
+    files: [file]   // or [...prev.files, file] for multiple uploads
+  }));
+  setHasFile(true)
+};
   return (open && <FileDrawer isModalOpen={open} closeModal={onClose} >
               {/* <PDFViewer file={selectedFile}/> */}
         <aside className="ml-auto -z-50 w-full  text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800 h-full p-6  overflow-auto">
@@ -92,8 +74,6 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
                 )}
             </div>
           </div>
-              
-              
               {/* makes me chose file type from the above keys its like a selector thing  */}
               <div className='py-1.5'>Document Type</div>
           <Dropdown placeholder='Document Type' options={DOC_TYPES} onChange={(e)=>setType(e)}/>
@@ -102,25 +82,15 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
              <label className="text-sm py-1.5 block mb-1">Notes (optional)</label>
              <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full border border-slate-300 outline-none rounded p-2 text-sm" rows={3} />
            </div>
-
-
-
           <div>
             <label className="text-sm block mb-1">Files</label>
             {/* div for dragging and droping file or simply selecting files */}
-            <FileUploader data={files} onFileSelect={(e)=>console.log(e)} className="flex flex-col gap-2 p-4 justify-center  items-center  ">
+            <FileUploader data={files} onFileSelect={(e)=>hi(e)} className="flex flex-col gap-2 p-4 justify-center  items-center  ">
                 <img className="object-center" src="\pic\F2.png" alt="" />
                 <div className="text-sm text-slate-500">
                   Drop files here or click to pick. Allowed: pdf, png, jpg, docx
                 </div>
             </FileUploader>
-            
-            <div> 
-              <button onClick={() => removeFile(i)} className="text-red-500 text-sm" >
-                Remove
-              </button>
-            </div>
-
             {progress > 0 && (
               <div className="mt-3">
                 <div className="h-2 bg-slate-200 rounded overflow-hidden">
@@ -130,23 +100,19 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
               </div>
             )}
           </div>
-
-
-
-          <div className="flex justify-end gap-3">
-            <button onClick={onClose} className="px-4 py-2 rounded border">
-              Cancel
-            </button>
-            <button onClick={handleSubmit} disabled={uploading || !employee || files.length === 0} className={`px-4 py-2 rounded text-white ${uploading ? 'bg-slate-400' : 'bg-blue-600'}`}>
-              {uploading ? 'Uploading...' : 'Upload'}
-            </button>
-          </div>
-
-
-
-
-
-
+          {hasFile && (
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={handleSubmit}
+                disabled={uploading}
+                className={`px-4 py-2 rounded text-white ${
+                  uploading ? "bg-slate-400" : "bg-blue-600"
+                }`}
+              >
+                {uploading ? "Uploading..." : "Upload"}
+              </button>
+            </div>
+          )}
 
         </aside>
       </FileDrawer>)

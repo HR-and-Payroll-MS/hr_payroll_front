@@ -13,7 +13,11 @@ export default function FileUploader({
   
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  useEffect(()=>{setSelectedFile(data.files)},[data])
+  useEffect(()=>{
+    console.log(data)
+  setSelectedFile(Array.isArray(data.files) ? data.files[0] : data.files);
+}, [data]);
+
   const fileInputRef = useRef(null);
   const [isModalOpen,closeModal] =useState(false);
 // i don't know what the below line of code is saying 

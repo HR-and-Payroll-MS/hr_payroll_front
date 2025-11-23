@@ -38,6 +38,9 @@ import CVReader from './Example/CVReader';
 import { setLocalData } from './Hooks/useLocalStorage';
 import EmployeeAttendanceList from './Pages/HR_Manager/Attendance/EmployeeAttendanceList';
 import {Checkup3} from './Example/checkup';
+import ViewEmployeeDetail from './Pages/HR_Manager/Employee Management/singleEmployee/ViewEmployeeDetail';
+import ClockIn from './Pages/clockIn_out/ClockIn';
+import UploadDocuments from './Pages/HR_Manager/Employee Management/UploadDocuments';
 
 export const UserContext = createContext();
 
@@ -46,7 +49,7 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-       <Route path="/" element={<Checkup3/>}/>
+       <Route path="/" element={<UploadDocuments/>}/>
       </>
     )
   );
