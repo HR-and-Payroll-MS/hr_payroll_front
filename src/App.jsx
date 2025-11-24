@@ -33,7 +33,7 @@ import { useTheme } from './Context/ThemeContext';
 import ViewEmployee from './Pages/HR_Manager/Employee Management/ViewEmployee';
 import DocumentsPage from './Pages/HR_Manager/Employee Management/UploadDocuments';
 import EmployeeAttendanceDetail from './Example/AttendanceExample/EmployeeAttendaceDetail';
-import MyAttendance from './Example/AttendanceExample/MyAttendance';
+// import MyAttendance from './Example/AttendanceExample/MyAttendance';
 import CVReader from './Example/CVReader';
 import { setLocalData } from './Hooks/useLocalStorage';
 import EmployeeAttendanceList from './Pages/HR_Manager/Attendance/EmployeeAttendanceList';
@@ -41,6 +41,8 @@ import {Checkup3} from './Example/checkup';
 import ViewEmployeeDetail from './Pages/HR_Manager/Employee Management/singleEmployee/ViewEmployeeDetail';
 import ClockIn from './Pages/clockIn_out/ClockIn';
 import UploadDocuments from './Pages/HR_Manager/Employee Management/UploadDocuments';
+import MyAttendance from './Pages/HR_Manager/Attendance/MyAttendance';
+import Policy from './Pages/HR_Manager/Policy/Policy';
 
 export const UserContext = createContext();
 
@@ -49,7 +51,7 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-       <Route path="/" element={<EmployeeAttendanceList/>}/>
+       <Route path="/" element={<Policy/>}/>
        {/* <Route path="/" element={<EmployeeDirectory/>}/> */}
       </>
     )

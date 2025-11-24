@@ -11,7 +11,7 @@ export default function AttendanceSummaryCards({ data }) {
   ];
 
   return (
-    <div className="flex  md:grid-cols-5 gap-4">
+    <div className="">
       <SummaryCard data={cards}/>
     </div>
 

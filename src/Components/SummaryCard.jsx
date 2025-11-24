@@ -34,10 +34,10 @@ function SummaryCard({data,classname="bg-white text-slate-800"}) {
         },
     ]
 
-  const List =<div id="left" className="flex py-2.5 flex-2 gap-3  justify-between items-center  ">
+  const List =<div id="left" className="flex py-2.5 flex-2  gap-3   justify-around items-center  ">
     { data.map((info ,index)=>
 
-      <div key={index}  className={` group flex ${classname}  overflow-hidden hover:cursor-pointer  dark:bg-slate-800  shadow flex-1 flex-col dark:text-slate-300 text-gray-700 border dark:border-slate-700 border-gray-100 items-start  justify-start gap-5 px-5 py-4 rounded-md relative`}>
+      <div key={index}  className={` group flex ${classname} overflow-hidden hover:cursor-pointer  dark:bg-slate-800  shadow flex-1 flex-col dark:text-slate-300 text-gray-700 border dark:border-slate-700 border-gray-100 items-start  justify-start gap-5 px-5 py-4 rounded-md relative  `}>
         <div className="flex  w-full justify-between ">
           <p className="text-md font-bold">{info.Title}</p>
           <Icon name={info.logo}/>
