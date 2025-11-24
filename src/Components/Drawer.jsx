@@ -30,7 +30,7 @@ export default function Drawer({ isOpen, onClose, children, width = "w-1/2" }) {
             </button>
 
             {/* Drawer children (your content inside the modal) */}
-            <div className="h-full overflow-y-auto">{children}</div>
+            <div className="h-full scrollbar-hidden overflow-y-auto">{children}</div>
           </motion.div>
         </motion.div>
       )}

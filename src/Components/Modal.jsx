@@ -7,7 +7,7 @@ function Modal({children ,isOpen,location="left",className="",transparency="bg-s
    const Location=location==="left"?"justify-start":location==="right"?"justify-end":"justify-center";
    if(!isOpen) return null; 
     return createPortal (
-        <div className= {`${theme} ${transparency} flex z-50 w-screen h-screen ${Location} ${className} items-center absolute top-0     `}>
+        <div className= {`${theme} ${transparency} flex z-50 w-screen h-screen ${Location} ${className} items-center  absolute top-0     `}>
             {children}
         </div>,document.body
     )

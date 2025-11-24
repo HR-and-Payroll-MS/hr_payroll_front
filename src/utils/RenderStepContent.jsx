@@ -1,6 +1,6 @@
 import DocumentList from "../Components/DocumentList";
 import Icon from "../Components/Icon";
-import { RenderFields } from "./RenderFields";
+import { RenderFields } from "./renderFields";
 
 export const RenderStepContent = ({
   currentStep,

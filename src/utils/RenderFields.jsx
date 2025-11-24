@@ -1,4 +1,5 @@
 import { formatDateForInput } from "./formatDateForInput"; 
+const deletableFields = ["clockIn","clockOut"];
 export const RenderFields = ({ handleInputChange, sectionKey, sectionData, editMode }) => {
   if (!sectionData) return null;
 
@@ -6,18 +7,30 @@ export const RenderFields = ({ handleInputChange, sectionKey, sectionData, editM
 
   return Object.entries(sectionData).map(([key, value]) => {
     const label = key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase());
-
+    const showDelete = deletableFields.includes(key)
     return (
       <div key={key} className="w-96 flex gap-2 justify-between text-nowrap">
         <p className="flex w-full">
           <span className="min-w-40 text-gray-400 mr-3">{label}</span>
           {isEditing ? (
+            <>
             <input
-              type={key.toLowerCase().includes("date") ? "date" : "text"}
+              type={key.toLowerCase().includes("date") ? "date" :showDelete?"time":"text"}
               value={key.toLowerCase().includes("date") ? formatDateForInput(value) : value || ""}
               onChange={(e) => handleInputChange(sectionKey, key, e.target.value)}
               className="w-full border outline-none border-slate-300 rounded px-3 mt-1 py-1 focus:ring-1 focus:ring-green-500"
             />
+
+            { showDelete && (<button 
+                type="button"
+                className="ml-2 text-red-500 px-2 py-1 text-sm border border-red-300 rounded hover:bg-red-100"
+                onClick={()=>handleInputChange(sectionKey,key,"")}
+              >
+              Delete</button>
+              )
+            }
+</>
+
           ) : (
             <span className="text-gray-700 font-semibold">
               {value || <span className="text-gray-400 italic">Not provided</span>}

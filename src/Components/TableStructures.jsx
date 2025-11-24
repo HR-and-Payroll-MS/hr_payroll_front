@@ -4,7 +4,7 @@ import FileDrawer from './FileDrawer';
 import Drawer from './Drawer';
 import AttendanceCorrectionPage from '../Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
 
-function TableStructures({id, item}) {
+function TableStructures({data="",id, item}) {
     
   const [isModalOpen,closeModal] =useState(false);
     // (console.log("id ------>",id,"item------------->",item))
@@ -45,12 +45,11 @@ function TableStructures({id, item}) {
       case 61:
         return(
             <div className="flex w-full justify-center gap-1.5 items-center ">
-                            <div onClick={()=>closeModal(true)} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer">
+                            <div onClick={()=>closeModal(true)} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
                                 <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/>
-                                <FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={closeModal}>
-                                         <AttendanceCorrectionPage/>
-    
-                                </FileDrawer>
+                                { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={closeModal}>
+                                         <AttendanceCorrectionPage staticUserData={data}/>
+                                </FileDrawer>)}
                                 {/* <Drawer width='w-1/3' isOpen={[]}/> */}
                             </div>
                             
