@@ -5,9 +5,11 @@ import { sidebarList } from '../Hooks/useSidebarContent';
 import useAuth from '../Context/AuthContext';
 import Icon from '../Components/Icon';
 import { getLocalData  } from '../Hooks/useLocalStorage';
+import { useNetwork } from '../Context/NetworkContext';
 
 export default function Sidebar() {
   const { auth } = useAuth();
+  const {isLocal, checking} = useNetwork()
   const role = auth?.user?.role;
   const [list, setList] = useState(sidebarList[role] || []);
   const [collapsed, setCollapsed] = useState(false);
@@ -75,13 +77,10 @@ export default function Sidebar() {
   );
 
   const middle1 = (
-    <div
-      id="middle"
-      className="flex flex-col w-full flex-1 my-4 overflow-y-scroll scrollbar-hidden gap-2"
-    >
+    <div id="middle" className="flex relative flex-col w-full flex-1 my-4 overflow-y-scroll scrollbar-hidden gap-2" >
       {list.map((lists, index) =>
         lists.path ? (
-          <div key={index} className="*:cursor-pointer">
+          <div key={index} className="cursor-pointer">
             <NavLink
               to={collapsed ? '#' : lists.path} // prevent navigation when collapsed
               onClick={() => handleIconClick(lists.path)}
@@ -113,23 +112,12 @@ export default function Sidebar() {
             </NavLink>
           </div>
         ) : (
-          <div key={index} className="*:cursor-pointer">
-            <div
-              onClick={() => {
-                if (collapsed) setCollapsed(false);
-                else toggleVisible(lists.label);
-              }}
-              className={`hover:bg-slate-50 dark:hover:bg-slate-700 flex w-full ${
-                collapsed ? 'justify-center' : 'justify-between'
-              } items-center p-2.5 transition-all`}
-            >
+          <div key={index} className="cursor-pointer">
+            <div 
+              onClick={() => { if (collapsed) setCollapsed(false); else toggleVisible(lists.label);}}
+              className={` ${lists.Visible ?"":'hover:bg-slate-50 dark:hover:bg-slate-700'} flex w-full ${collapsed ? 'justify-center' : 'justify-between'} items-center p-2.5 transition-all`}>
               <div className="flex items-center gap-1.5 justify-center">
-                <Icon
-                  name={lists.Icons}
-                  className={`w-4 h-4 ${
-                    lists.Visible ? 'text-blue-500' : 'text-slate-400'
-                  }`}
-                />
+                <Icon name={lists.Icons} className={`w-4 h-4 ${lists.Visible ? 'text-blue-500' : 'text-slate-400'}`}/>
                 {!collapsed && (
                   <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
                     {lists.label}
@@ -137,37 +125,37 @@ export default function Sidebar() {
                 )}
               </div>
               {!collapsed && (
-                <Icon
-                  name="ChevronDown"
-                  className={`w-4 h-4 text-slate-400 transition-transform ${
-                    lists.Visible ? 'rotate-180' : ''
-                  }`}
-                />
+                <Icon name="ChevronDown" className={`w-4 h-4 text-slate-400 transition-transform ${lists.Visible ? 'rotate-180' : ''}`}/>
               )}
             </div>
 
             {/* sub-items */}
             {!collapsed && (
-              <div
-                className={`${
-                  lists.Visible ? 'flex' : 'hidden'
-                } *:hover:bg-slate-50 dark:*:hover:bg-slate-700 dark:border-slate-500 ml-4 my-1.5 px-4.5 border-l rounded border-gray-300 flex-col gap-1.5`}
-              >
-                {lists.sub?.map((subs) => (
-                  <NavLink
-                    key={subs.label}
-                    to={subs.subPath}
-                    end
-                    className={({ isActive }) =>
-                      `flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${
-                        isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ''
-                      }`
-                    }
-                  >
-                    <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
-                      {subs.label}
+              <div className={`${lists.Visible ? 'flex' : 'hidden'}  dark:border-slate-500 ml-4 my-1.5  border-l  relative rounded border-gray-300 flex-col gap-1.5`}>
+                {(lists.label === "Attendance")?( <>{
+                checking ? (
+          <div className="px-3 py-1 rounded bg-yellow-50 text-sm text-yellow-800">Checking network...</div>
+        ) : (isLocal) ? (
+          <NavLink to={'clock_in'} end className={({ isActive }) => `relative z-10 flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive? 'bg-slate-200 dark:bg-slate-700' : 'hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
+                  <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
+                      Clock In
                     </p>
-                  </NavLink>
+          </NavLink>
+        ) : (
+          <div className="px-3 py-1 hover:cursor-not-allowed rounded text-sm text-gray-400">Clock In</div>
+        ) }<div className={`px-4 flex gap-1 items-center hover:bg-slate-50 text-xs font-light ${checking ? 'text-gray-400' : isLocal ? 'text-green-500' : 'text-amber-400'}`}>
+          <Icon name="ShieldAlert" className={`w-3 h-3 ${checking ? 'text-gray-400' : isLocal ? 'text-green-500' : 'text-amber-400'}`}/>
+           {checking ? 'checking...' : isLocal ? 'office network' : 'external network'}</div></>
+):("")}
+                {lists.sub?.map((subs) => (
+                  <div className='relative px-4.5 '>
+                    <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1 border-slate-300 dark:border-slate-500 rounded-full z-0 '></div>
+                    <NavLink key={subs.label} to={subs.subPath} end className={({ isActive }) => `relative z-10 flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ' bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
+                      <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
+                        {subs.label}
+                      </p>
+                    </NavLink>
+                    </div>
                 ))}
               </div>
             )}

@@ -40,7 +40,7 @@ const DocumentList = ({ files = [], isEditing = false, onChange }) => {
       {files.length === 0 && <p className="text-sm text-gray-500">No documents</p>}
       {isModalOpen && selectedFile &&( <FileDrawer isModalOpen={isModalOpen} closeModal={setIsModalOpen} >
                  <PDFViewer file={selectedFile}/>
-                 {/* {console.log(selectedFile)} */}
+                 {console.log("selected file ",selectedFile)}
                  </FileDrawer>)}
     </div>
   );

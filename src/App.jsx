@@ -43,6 +43,8 @@ import ClockIn from './Pages/clockIn_out/ClockIn';
 import UploadDocuments from './Pages/HR_Manager/Employee Management/UploadDocuments';
 import MyAttendance from './Pages/HR_Manager/Attendance/MyAttendance';
 import Policy from './Pages/HR_Manager/Policy/Policy';
+import AttendanceCorrectionPage from './Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
+import AccessDenied from './Pages/clockIn_out/AccessDenied';
 
 export const UserContext = createContext();
 
@@ -50,8 +52,78 @@ function App() {
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <>
-       <Route path="/" element={<Policy/>}/>
+      <> <Route path="/login" element={<Login />} />
+        <Route path="/unauthorized" element={<UnAuthorized />} />
+        <Route path="/access-denied" element={<AccessDenied />} />
+
+        {/* ------------------------- hr ---------------------- */}
+
+        <Route element={<Routes allowedRoles={['Manager']} />}>
+          <Route path="hr_dashboard" element={<MainLayout />}>
+            <Route index element={<DashboardLayout />} />
+            <Route path="Employee_Directory" element={<EmployeeDirectory />} />
+            {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
+            <Route path="users/:id" element={<ViewEmployeeDetail />} />
+            <Route path="View_Employee" element={<ViewEmployee />} />
+            <Route path="Addemployee" element={<AddEmployee />} />
+            <Route path="logout" element={<LogOut />} />
+            <Route path="Employee" element={<Employee />}>
+              <Route path="ManageEmployee" element={<ManageEmployee />} />
+              <Route path="Directory" element={<Directory />}>
+                <Route index element={<DirectoryList />} />
+                <Route path="Detail" element={<DetailEmployee />}>
+                  <Route path="General" element={<General />} />
+                  <Route path="Job" element={<Job />} />
+                </Route>
+              </Route>
+            </Route>
+
+            <Route path="attendance" element={<Attendance />} />
+            <Route path="clock_in" element={<ClockIn />} />
+            <Route path="Employee_Attendance" element={<EmployeeAttendanceList />} />
+            <Route path="Employee_Attendance/:id" element={<EmployeeAttendanceDetail />} />
+            <Route path="myattendance" element={<MyAttendance />} />
+
+            <Route path="setting" element={<Settingz />}>
+              <Route path="CompanyInfo" element={<CompanyInfo />} />
+              <Route path="ChangePassword" element={<ChangePassword />} />
+              <Route path="WorkSchedule" element={<WorkSchedule />} />
+            </Route>
+
+            <Route path="org-chart" element={<DocumentsPage />} />
+            {/* <Route path="Modal_Test" element={<Checklist />} /> */}
+            <Route path="Modal_Test" element={<CVReader />} />
+          </Route>
+        </Route>
+
+        {/* ------------------------- manager ---------------------- */}
+
+        <Route element={<Routes allowedRoles={['Manager']} />}>
+          <Route path="manager_dashboard" element={<MainLayout />}>
+            <Route path="Employee" element={<Employee />}>
+              <Route path="ManageEmployee" element={<ManageEmployee />} />
+              <Route path="Directory" element={<Directory />}>
+                <Route index element={<DirectoryList />} />
+                <Route path="Detail" element={<DetailEmployee />}>
+                  <Route path="General" element={<General />} />
+                  <Route path="Job" element={<Job />} />
+                </Route>
+              </Route>
+            </Route>
+
+            <Route path="attendance" element={<Attendance />} />
+
+            <Route path="setting" element={<Settingz />}>
+              <Route path="CompanyInfo" element={<CompanyInfo />} />
+              <Route path="ChangePassword" element={<ChangePassword />} />
+              <Route path="WorkSchedule" element={<WorkSchedule />} />
+            </Route>
+
+            <Route path="org-chart" element={<MyCalendar />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+       {/* <Route path="/" element={<ViewEmployeeDetail/>}/> */}
        {/* <Route path="/" element={<EmployeeDirectory/>}/> */}
       </>
     )
@@ -65,71 +137,3 @@ function App() {
 }
 
 export default App;
-//  <Route path="/login" element={<Login />} />
-//         <Route path="/unauthorized" element={<UnAuthorized />} />
-
-//         {/* ------------------------- hr ---------------------- */}
-
-//         <Route element={<Routes allowedRoles={['Manager']} />}>
-//           <Route path="hr_dashboard" element={<MainLayout />}>
-//             <Route index element={<DashboardLayout />} />
-//             <Route path="Employee_Directory" element={<EmployeeDirectory />} />
-//             <Route path="users/:id" element={<ViewEmployee />} />
-//             <Route path="View_Employee" element={<ViewEmployee />} />
-//             <Route path="Addemployee" element={<AddEmployee />} />
-//             <Route path="logout" element={<LogOut />} />
-//             <Route path="Employee" element={<Employee />}>
-//               <Route path="ManageEmployee" element={<ManageEmployee />} />
-//               <Route path="Directory" element={<Directory />}>
-//                 <Route index element={<DirectoryList />} />
-//                 <Route path="Detail" element={<DetailEmployee />}>
-//                   <Route path="General" element={<General />} />
-//                   <Route path="Job" element={<Job />} />
-//                 </Route>
-//               </Route>
-//             </Route>
-
-//             <Route path="attendance" element={<Attendance />} />
-//             <Route path="Employee_Attendance" element={<EmployeeAttendanceList />} />
-//             <Route path="Employee_Attendance/:id" element={<EmployeeAttendanceDetail />} />
-//             <Route path="myattendance" element={<MyAttendance />} />
-
-//             <Route path="setting" element={<Settingz />}>
-//               <Route path="CompanyInfo" element={<CompanyInfo />} />
-//               <Route path="ChangePassword" element={<ChangePassword />} />
-//               <Route path="WorkSchedule" element={<WorkSchedule />} />
-//             </Route>
-
-//             <Route path="org-chart" element={<DocumentsPage />} />
-//             {/* <Route path="Modal_Test" element={<Checklist />} /> */}
-//             <Route path="Modal_Test" element={<CVReader />} />
-//           </Route>
-//         </Route>
-
-//         {/* ------------------------- manager ---------------------- */}
-
-//         <Route element={<Routes allowedRoles={['Manager']} />}>
-//           <Route path="manager_dashboard" element={<MainLayout />}>
-//             <Route path="Employee" element={<Employee />}>
-//               <Route path="ManageEmployee" element={<ManageEmployee />} />
-//               <Route path="Directory" element={<Directory />}>
-//                 <Route index element={<DirectoryList />} />
-//                 <Route path="Detail" element={<DetailEmployee />}>
-//                   <Route path="General" element={<General />} />
-//                   <Route path="Job" element={<Job />} />
-//                 </Route>
-//               </Route>
-//             </Route>
-
-//             <Route path="attendance" element={<Attendance />} />
-
-//             <Route path="setting" element={<Settingz />}>
-//               <Route path="CompanyInfo" element={<CompanyInfo />} />
-//               <Route path="ChangePassword" element={<ChangePassword />} />
-//               <Route path="WorkSchedule" element={<WorkSchedule />} />
-//             </Route>
-
-//             <Route path="org-chart" element={<MyCalendar />} />
-//           </Route>
-//         </Route>
-//         <Route path="*" element={<NotFound />} />

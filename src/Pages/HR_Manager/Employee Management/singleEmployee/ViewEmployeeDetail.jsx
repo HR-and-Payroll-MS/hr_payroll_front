@@ -6,6 +6,7 @@ import Header from '../../../../Components/Header';
 import StepHeader from '../../../../Components/forms/StepHeader';
 import { RenderStepContent } from '../../../../utils/RenderStepContent';
 import EmployeeProfile from './EmployeeProfile';
+import { useParams } from 'react-router-dom';
 
 function ViewEmployeeDetail() {
     
@@ -17,16 +18,18 @@ function ViewEmployeeDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [editMode, setEditMode] = useState({general: false, job: false, payroll: false, documents: false,});
-  const employeeId = 33;
+  const employeeId = useParams().id;
 
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
+         const daattaa = await axiosPrivate.get(`/employees/${employeeId}`);
+         console.log(daattaa.data.general.photo);
+
          const response = [
           {
           id: 1,
           general: {
-            fullname: "be Beso",
             gender: "e",
             dateofbirth: "7-04-15",
             maritalstatus: "gle",
@@ -48,6 +51,7 @@ function ViewEmployeeDetail() {
             emepostcode: "1",
           },
           job: {
+            fullname: "be Beso",
             employeeid: "001",
             serviceyear: "3",
             joindate: "203-10",
@@ -87,8 +91,8 @@ function ViewEmployeeDetail() {
           },
         }
       ];
-        setEmployeeData(response[0]);
-        setOriginalData(response[0]);
+        setEmployeeData(daattaa.data);
+        setOriginalData(daattaa.data);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch employee details.");
@@ -132,8 +136,8 @@ function ViewEmployeeDetail() {
       setEmployeeData(data);
       setOriginalData(data);
       setEditMode((prev) => ({ ...prev, [section]: false }));
-
-      console.log("Saved successfully (simulated):", data);
+      const res= await axiosPrivate.put(`/employees/${employeeId}`, data);
+      console.log("Saved successfully (simulated):", data," Response:", res.data);
     } catch (err) {
       console.error("Save failed:", err);
       setError("Failed to save. Try again.");

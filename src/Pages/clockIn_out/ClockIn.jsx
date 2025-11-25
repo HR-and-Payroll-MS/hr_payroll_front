@@ -10,7 +10,7 @@ export default function ClockIn() {
   const { loading, punches, error, refresh } = useAttendanceToday();
   const [actionLoading, setActionLoading] = useState(false);
   const [actionError, setActionError] = useState(null);
-
+  const navigate = useNavigate();
   const lastPunch = punches[punches.length - 1] || null;
   const isClockedIn = lastPunch?.type === "check_in";
   const hasCheckedOut = punches.some((p) => p.type === "check_out");

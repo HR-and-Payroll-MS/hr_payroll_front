@@ -16,7 +16,7 @@ export default function useAttendanceToday() {
       const json = {
         punches: [
           { type: 'check_in', time: '2025-11-18T08:00:00Z', location: 'Office' },
-          { type: 'check_out', time: '2025-11-18T08:59:00Z', location: 'Office' }
+          // { type: 'check_out', time: '2025-11-18T08:09:00Z', location: 'Office' }
         ]
       };
 

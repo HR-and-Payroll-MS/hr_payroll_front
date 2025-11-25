@@ -12,7 +12,7 @@ function TableStructures({data="",id, item}) {
       case 1:
         return (
           <div className="flex w-full justify-between dark:text-slate-300 items-center">
-            <p className="font-normal">{item[0]||"-"}</p>
+            <p className="font-semibold font-normal">{item[0]||"-"}</p>
           </div>
         );
 
@@ -21,7 +21,12 @@ function TableStructures({data="",id, item}) {
           <div className="flex w-full justify-start items-center gap-2">
             <img
               className="h-6 w-6 rounded-full"
-              src={item[0] || "/pic/download (48).png"}
+              // src={item[0] || "/pic/download (48).png"}
+              src={
+    item[0]
+      ? `http://172.16.27.124:3000${item[0]}`
+      : "/pic/download (48).png"
+  }
               alt=""
             />
             <div className="flex flex-col items-start">
@@ -37,7 +42,7 @@ function TableStructures({data="",id, item}) {
       case 11:
         return (
           <div className="flex w-full justify-start items-center">
-            <p className="font-semibold text-gray-500 text-xs dark:text-slate-100">
+            <p className="font-semibold text-gray-500  text-xs  dark:text-slate-200">
               {item[0] || "Header"}
             </p>
           </div>

@@ -1,99 +1,66 @@
-import axios from "axios";
+import axios from 'axios';
 export const BASE_URL = 'http://localhost:3000/api/v1';
 // export const BASE_URL = 'http://192.168.114.173:3000/api/v1';
+// Alx.....................
 // export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
+// export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
+
 export const axiosPublic = axios.create({
-  baseURL:BASE_URL,
-  headers: { 'Content-Type':'application/json' }
+  baseURL: BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
 });
 
-export function createAxiosPrivate({getAccessToken, onRefresh, onLogout}){
+export function createAxiosPrivate({ getAccessToken, onRefresh, onLogout }) {
   const instance = axios.create({
     baseURL: BASE_URL,
     withCredentials: true,
     headers: { 'Content-Type': 'application/json' },
     // timeout: 10000,
-  }
+  });
 
-);
-
-const request = instance.interceptors.request.use(
-  (config) => {
-    const token = getAccessToken()
-    if (token){
-      config.headers = config.headers || {};
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },(error)=>Promise.reject(error)
-)
-const response = instance.interceptors.response.use(
-  (res) => res,
-  async (error) => {
-    const originalRequest = error?.config;
-    if(!originalRequest) return Promise.reject(error);
-    if(error.response?.status === 401 && !originalRequest._retry){
-      originalRequest._retry = true;
-      if(typeof onRefresh === 'function'){
-        try{
-          const newAccess = await onRefresh();
-          if ( newAccess){
-            console.log("just refreshed now because the access token has expired")
-            originalRequest.headers = originalRequest.headers || {};
-            originalRequest.headers.Authorization =  `Bearer ${newAccess}`;
-            return instance(originalRequest);
-          }
-        } catch (e){
-                console.error(e)
-        }
+  const request = instance.interceptors.request.use(
+    (config) => {
+      const token = getAccessToken();
+      if (token) {
+        config.headers = config.headers || {};
+        config.headers.Authorization = `Bearer ${token}`;
       }
-      if(typeof onLogout === 'function') onLogout();
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+  const response = instance.interceptors.response.use(
+    (res) => res,
+    async (error) => {
+      const originalRequest = error?.config;
+      if (!originalRequest) return Promise.reject(error);
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        if (typeof onRefresh === 'function') {
+          try {
+            const newAccess = await onRefresh();
+            if (newAccess) {
+              console.log(
+                'just refreshed now because the access token has expired'
+              );
+              originalRequest.headers = originalRequest.headers || {};
+              originalRequest.headers.Authorization = `Bearer ${newAccess}`;
+              return instance(originalRequest);
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        if (typeof onLogout === 'function') onLogout();
+      }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
-);
+  );
 
-instance._ejectInterceptors = () =>{
-  instance.interceptors.request.eject(request);
-  instance.interceptors.response.eject(response)
+  instance._ejectInterceptors = () => {
+    instance.interceptors.request.eject(request);
+    instance.interceptors.response.eject(response);
+  };
+
+  return instance;
 }
-
-return instance;
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

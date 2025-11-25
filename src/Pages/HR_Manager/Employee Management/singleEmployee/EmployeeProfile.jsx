@@ -7,7 +7,11 @@ function EmployeeProfile({employeeData}) {
           <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
             <img
               className="w-20 h-20 object-fill rounded-full"
-              src={employeeData?.general?.profilepicture || "\\pic\\download (48).png"}
+                src={
+    employeeData?.general?.photo
+      ? `http://172.16.27.124:3000${employeeData.general.photo}`
+      : "/pic/download (48).png"
+  }
               alt="Profile"
             />
           </div>
