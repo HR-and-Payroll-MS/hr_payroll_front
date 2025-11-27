@@ -6,13 +6,15 @@ import AttendanceCorrectionPage from '../Pages/HR_Manager/Attendance/AttendanceC
 
 function TableStructures({data="",id, item}) {
     
-  const [isModalOpen,closeModal] =useState(false);
+  const [isModalOpen,setModalOpen] =useState(false);
+  const openModal =()=>setModalOpen(true);
+  const deleteItem = () => console.log("deleted",data)
     // (console.log("id ------>",id,"item------------->",item))
     switch (id) {
       case 1:
         return (
           <div className="flex w-full justify-between dark:text-slate-300 items-center">
-            <p className="font-semibold font-normal">{item[0]||"-"}</p>
+            <p className="font-semibold">{item[0]||"-"}</p>
           </div>
         );
 
@@ -50,12 +52,29 @@ function TableStructures({data="",id, item}) {
       case 61:
         return(
             <div className="flex w-full justify-center gap-1.5 items-center ">
-                            <div onClick={()=>closeModal(true)} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
+                            <div onClick={openModal} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
                                 <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/>
-                                { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={closeModal}>
+                                { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
                                          <AttendanceCorrectionPage staticUserData={data}/>
                                 </FileDrawer>)}
-                                {/* <Drawer width='w-1/3' isOpen={[]}/> */}
+                            </div>
+                            
+                    </div>
+        );
+      case 62:
+        return(
+            <div className="flex w-full  gap-1.5 items-center ">
+                            <div onClick={deleteItem} className="p-1.5 bg-red-600 rounded-md hover:bg-red-900 hover:cursor-pointer *:scrollbar-hidden">
+                                <Icon name={"Trash"} className="text-slate-50 h-4 w-4"/>
+                            </div>
+
+
+
+                             <div onClick={openModal} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
+                                <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/>
+                                { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
+                                         <AttendanceCorrectionPage staticUserData={data}/>
+                                </FileDrawer>)}
                             </div>
                             
                     </div>

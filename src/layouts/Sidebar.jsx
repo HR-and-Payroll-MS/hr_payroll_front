@@ -90,7 +90,7 @@ export default function Sidebar() {
                 ${
                   isActive
                     ? 'bg-slate-200 dark:bg-slate-700 text-blue-500'
-                    : ''
+                    : 'hover:bg-slate-50 hover:dark:bg-slate-700'
                 }
                 ${collapsed ? 'justify-center' : 'justify-start'}
                 transition-all`
@@ -134,21 +134,29 @@ export default function Sidebar() {
               <div className={`${lists.Visible ? 'flex' : 'hidden'}  dark:border-slate-500 ml-4 my-1.5  border-l  relative rounded border-gray-300 flex-col gap-1.5`}>
                 {(lists.label === "Attendance")?( <>{
                 checking ? (
-          <div className="px-3 py-1 rounded bg-yellow-50 text-sm text-yellow-800">Checking network...</div>
-        ) : (isLocal) ? (
-          <NavLink to={'clock_in'} end className={({ isActive }) => `relative z-10 flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive? 'bg-slate-200 dark:bg-slate-700' : 'hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
+        <div className='relative px-4.5'>
+          <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1  border-slate-300 dark:border-slate-500 rounded-full z-0 '/>
+          <div className="relative z-10 px-3 py-1 rounded bg-yellow-50 text-sm text-yellow-800">Checking network...</div>
+        </div>
+        ) : (isLocal) ? (<div className='relative px-4.5 '>
+                    <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1 border-slate-300 dark:border-slate-500 rounded-full z-0 '/>
+          <NavLink to={'clock_in'} end className={({ isActive }) => `relative z-10  flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive? 'bg-slate-200 dark:bg-slate-700' : 'hover:bg-slate-50 bg-white dark:bg-slate-800  dark:hover:bg-slate-700'}`}>
                   <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
                       Clock In
                     </p>
-          </NavLink>
-        ) : (
-          <div className="px-3 py-1 hover:cursor-not-allowed rounded text-sm text-gray-400">Clock In</div>
-        ) }<div className={`px-4 flex gap-1 items-center hover:bg-slate-50 text-xs font-light ${checking ? 'text-gray-400' : isLocal ? 'text-green-500' : 'text-amber-400'}`}>
+          </NavLink></div>
+        ) : (<div className='relative px-4.5 '>
+                    <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1  border-slate-300 dark:border-slate-500 rounded-full z-0 '/>
+          
+          <div className="relative z-10 px-3 bg-white dark:bg-slate-800  py-1 hover:cursor-not-allowed rounded text-sm text-gray-400">Clock In</div></div>
+        ) }
+          <div className={`px-5 flex gap-1 items-center  text-xs font-light ${checking ? 'text-gray-400' : isLocal ? 'text-green-500' : 'text-amber-400'}`}>
           <Icon name="ShieldAlert" className={`w-3 h-3 ${checking ? 'text-gray-400' : isLocal ? 'text-green-500' : 'text-amber-400'}`}/>
-           {checking ? 'checking...' : isLocal ? 'office network' : 'external network'}</div></>
+           {checking ? 'checking...' : isLocal ? 'office network' : 'external network'}
+           </div></>
 ):("")}
-                {lists.sub?.map((subs) => (
-                  <div className='relative px-4.5 '>
+                {lists.sub?.map((subs,index) => (
+                  <div key={index} className='relative px-4.5 '>
                     <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1 border-slate-300 dark:border-slate-500 rounded-full z-0 '></div>
                     <NavLink key={subs.label} to={subs.subPath} end className={({ isActive }) => `relative z-10 flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ' bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
                       <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">

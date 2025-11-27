@@ -94,7 +94,7 @@ const queryString = new URLSearchParams(
       // console.log("Dynamic URL:", dynamicURL);
 const title=['EMPLOYEE','DATE','CLOCK IN','CLOCK IN LOCATION','CLOCK OUT','STATUS','CLOCK OUT LOCATION','WORK SCHEDULES','PAID TIME','NOTES',"ACTION"]
     return (
-    <div className='p-4 flex flex-col h-full'>
+    <div className='p-4 flex flex-col  overflow-hidden h-full'>
         <Header Title={"Employee Attendance"} subTitle={"view all employee's Attendance and click to view detail "}/>
         <SearchStatus onFiltersChange={updateFilter} />
         {/* <Table URL={"/attendances/"} Data={[]}  title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10}/> */}

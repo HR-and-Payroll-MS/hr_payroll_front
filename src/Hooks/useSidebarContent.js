@@ -29,11 +29,11 @@ export const sidebarList = {
       Visible: false,
       sub: [
         {
-          subPath: 'Employee/ManageEmployee',
-          label: 'Approve/Reject Leave Requests',
+          subPath: 'Approve_Reject',
+          label: 'Approve/Reject Requests',
         },
-        { subPath: 'Employee/Directory', label: 'Manage Holidays' },
-        { subPath: 'Modal_Test', label: 'Manage Time Off Requests' },
+        // { subPath: 'Employee/Directory', label: 'Manage Holidays' },
+        // { subPath: 'Modal_Test', label: 'Manage Time Off Requests' },
       ],
     },
     {
@@ -59,14 +59,21 @@ export const sidebarList = {
     },
     {
       Icons: 'ShieldAlert',
-      path: null,
-      label: 'System Admin',
+      path: 'policies',
+      label: 'Policy',
       Visible: false,
-      sub: [
-        { subPath: '/', label: 'Assign Roles & Permissions' },
-        { subPath: '/', label: 'Manage Departments' },
-      ],
+      sub: null
     },
+    // {
+    //   Icons: 'ShieldAlert',
+    //   path: null,
+    //   label: 'System Admin',
+    //   Visible: false,
+    //   sub: [
+    //     { subPath: '/', label: 'Assign Roles & Permissions' },
+    //     { subPath: '/', label: 'Manage Departments' },
+    //   ],
+    // },
     {
       Icons: 'Megaphone',
       path: null,

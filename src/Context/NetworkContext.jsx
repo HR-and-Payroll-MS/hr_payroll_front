@@ -3,8 +3,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 const NetworkContext = createContext(null);
 
 export function NetworkProvider({ children }) {
-  const [isLocal, setIsLocal] = useState(true); //default = null = loading, true/false = known
-  const [checking, setChecking] = useState(false);//default = true don't forget
+  const [isLocal, setIsLocal] = useState(null); //default = null = loading, true/false = known
+  const [checking, setChecking] = useState(true);//default = true don't forget
   const [error, setError] = useState(null);//nothing changed now
 
   useEffect(() => {
