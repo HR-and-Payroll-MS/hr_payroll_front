@@ -58,14 +58,6 @@ const handleSubmit = async (e) => {
 uploadData.append("first_name", formData.general.firstname);
 uploadData.append("last_name", formData.general.lastname);
 uploadData.append("gender", formData.general.gender);
-//primaryaddress
-//country
-//state
-//city
-// postcodeemefullname
-// emephonenumber
-// emestateemecity
-// emepostcode
 uploadData.append("date_of_birth", formData.general.dateofbirth);
 uploadData.append("marital_status", formData.general.maritalstatus);
 uploadData.append("nationality", formData.general.nationality);
@@ -81,13 +73,6 @@ uploadData.append("employment_type", formData.job.employmenttype);
 uploadData.append("job_title", formData.job.jobtitle);
 uploadData.append("join_date", formData.job.joindate);
 uploadData.append("service_years", formData.job.serviceyear);
-// employeeid
-// contractnumber
-// contractname
-// contracttype
-// startDate
-// enddate
-
 // Payroll
 uploadData.append("status", formData.payroll.employeestatus);
 uploadData.append("last_working_date", formData.payroll.lastworkingdate);
@@ -96,16 +81,21 @@ uploadData.append("one_off", formData.payroll.oneoff);
 uploadData.append("salary", formData.payroll.salary);
 // jobdate
 
-// DOCUMENTS
-if (formData.documents.files) {
-  // if (formData.documents.files instanceof File) {
-    console.log("herererereererer")
-    uploadData.append("documents", formData.documents.files);
-  // } else {
-  //   Array.from(formData.documents.files).forEach((file) => {
-  //     uploadData.append("documents", file);
-  //   });
-  // }
+// const docs = formData.documents?.files;
+
+// if (docs) {
+//   const files = docs instanceof File ? [docs] : Array.from(docs);
+//   files.forEach(file => uploadData.append("documents", file));
+// }
+//_______________________________________________
+
+const photos = formData.documents?.files;
+console.log(photos)
+if (photos) {
+const photosArray = photos instanceof File ? [photos] : Array.from(photos);
+photosArray.forEach(photo => {
+uploadData.append("photo", photo);
+});
 }
 
 
@@ -120,10 +110,13 @@ if (formData.documents.files) {
 
 
 
-  
+
+
+
 
   try {
   console.log("going")
+  console.log(uploadData)
     const response = await axiosPrivate.post("/employees/", uploadData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -140,28 +133,6 @@ if (formData.documents.files) {
   }
 
 
-// const data = {
- 
-//   "employee_id": "string",
-//   "title": "string",
-//   "department_id": 1,
-//   "join_date": "2025-11-08",
-//   "last_working_date": "2025-11-08",
-//   "time_zone": "string",
-//   "office": "string",
-//   "health_care": "string",
-//   "is_active": true,
-//   "photo": "string"};
-
-//   try {
-//     const response = await axiosPrivate.post("/employees/",data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error submitting profile:", error.response || error);
-//   }
-//   finally {
-//     setLoading(false);
-//   }
 };
 
 

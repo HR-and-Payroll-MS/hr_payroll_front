@@ -114,8 +114,13 @@ case 2:
           </div>
 
           <div className="space-y-2 ">
-            <DocumentList files={employeeData?.documents?.files || []} isEditing={!!editMode?.documents} onChange={handleDocumentUpdate} />
-          </div>
+            {console.log("documents", employeeData?.documents?.files || [])}
+           <DocumentList 
+  files={employeeData?.documents?.files || []} 
+  isEditing={!!editMode?.documents} 
+  onChange={handleDocumentUpdate} 
+/>
+</div>
         </div>
       );
 

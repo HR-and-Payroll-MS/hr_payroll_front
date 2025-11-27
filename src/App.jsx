@@ -46,6 +46,9 @@ import Policy from './Pages/HR_Manager/Policy/Policy';
 import AttendanceCorrectionPage from './Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
 import AccessDenied from './Pages/clockIn_out/AccessDenied';
 import LeaveApprovalPage from './Pages/HR_Manager/LeaveApproval/LeaveApprovalPage';
+import AnnouncementsPage from './Pages/HR_Manager/Announcement/AnnouncementPage';
+import PayrollReportsPage from './Pages/HR_Manager/payroll_management/PayrollReportsPage';
+import MyPayrollPage from './Pages/HR_Manager/payroll_management/MyPayrollPage';
 
 export const UserContext = createContext();
 
@@ -68,6 +71,9 @@ function App() {
             <Route path="View_Employee" element={<ViewEmployee />} />
             <Route path="Addemployee" element={<AddEmployee />} />
             <Route path="Approve_Reject" element={<LeaveApprovalPage />} />
+            <Route path="Announcement" element={<AnnouncementsPage />} />
+            <Route path="Payroll_report" element={<PayrollReportsPage/>} />
+            <Route path="MyPayroll" element={<MyPayrollPage/>} />
             <Route path="policies" element={<Policy/>} />
             <Route path="logout" element={<LogOut />} />
             <Route path="Employee" element={<Employee />}>

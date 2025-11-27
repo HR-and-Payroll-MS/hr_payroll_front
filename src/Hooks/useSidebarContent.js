@@ -37,14 +37,20 @@ export const sidebarList = {
       ],
     },
     {
+      Icons: 'Timer',
+      path: "Announcement",
+      label: 'Announcement',
+      Visible: false,
+      sub:false
+    },
+    {
       Icons: 'Calendar',
       path: null,
       label: 'Payroll Management',
       Visible: false,
       sub: [
-        { subPath: '/', label: 'View Payroll Reports' },
-        { subPath: '/', label: 'Manage Payroll System' },
-        { subPath: '/', label: 'Generate Payroll' },
+        { subPath: 'Payroll_report', label: 'View Payroll Reports' },
+        { subPath: 'MyPayroll', label: 'My Payroll' },
       ],
     },
     {
@@ -53,8 +59,12 @@ export const sidebarList = {
       label: 'Reports',
       Visible: false,
       sub: [
-        { subPath: '/', label: 'View Employee Reports' },
-        { subPath: '/', label: 'View Tax Reports' },
+        { subPath: '/', label: 'Payroll Reports' },
+        { subPath: '/', label: 'Attendance Reports' },
+        { subPath: '/', label: 'Leave Reports' },
+        { subPath: '/', label: 'Overtime Reports' },
+        { subPath: '/', label: 'employee efficiency Reports' },
+        { subPath: '/', label: 'Employee Compliant Report' },
       ],
     },
     {
@@ -95,6 +105,42 @@ export const sidebarList = {
       ],
     },
   ],
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Maager: [
     {
       Icons: 'Users',

@@ -26,7 +26,7 @@ function TableStructures({data="",id, item}) {
               // src={item[0] || "/pic/download (48).png"}
               src={
     item[0]
-      ? `http://172.16.27.124:3000${item[0]}`
+      ? `http://172.16.0.181:3000${item[0]}`
       : "/pic/download (48).png"
   }
               alt=""
