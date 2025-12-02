@@ -45,10 +45,12 @@ import MyAttendance from './Pages/HR_Manager/Attendance/MyAttendance';
 import Policy from './Pages/HR_Manager/Policy/Policy';
 import AttendanceCorrectionPage from './Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
 import AccessDenied from './Pages/clockIn_out/AccessDenied';
+import MyProfile from './Pages/HR_Manager/Profile/MyProfile'
 import LeaveApprovalPage from './Pages/HR_Manager/LeaveApproval/LeaveApprovalPage';
 import AnnouncementsPage from './Pages/HR_Manager/Announcement/AnnouncementPage';
 import PayrollReportsPage from './Pages/HR_Manager/payroll_management/PayrollReportsPage';
 import MyPayrollPage from './Pages/HR_Manager/payroll_management/MyPayrollPage';
+import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
 
@@ -76,6 +78,10 @@ function App() {
             <Route path="MyPayroll" element={<MyPayrollPage/>} />
             <Route path="policies" element={<Policy/>} />
             <Route path="logout" element={<LogOut />} />
+            <Route path="profile" element={<MyProfile/>} />
+            <Route path="send_notification_page" element={<SendNotificationPage/>} />
+            <Route path="notification_bell" element={<NotificationBell/>} />
+            <Route path="notification_center_page" element={<NotificationCenterPage/>} />
             <Route path="Employee" element={<Employee />}>
               <Route path="ManageEmployee" element={<ManageEmployee />} />
               <Route path="Directory" element={<Directory />}>

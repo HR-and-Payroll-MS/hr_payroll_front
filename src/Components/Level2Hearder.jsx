@@ -59,7 +59,7 @@ export function SearchStatus({ onFiltersChange }) {
       </div>
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-        <Dropdown onChange={(i) => handleFilter(i,"status")} options={statOptions} text="text-xs font-semibold" placeholder="All Status" border="border gap-1 border-gray-100"/>
+        <Dropdown onChange={(i) => handleFilter(i,"is_active")} options={statOptions} text="text-xs font-semibold" placeholder="All Status" border="border gap-1 border-gray-100"/>
       </div>
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
@@ -72,10 +72,10 @@ export function SearchStatus({ onFiltersChange }) {
 
 
 export  function DateStatus() {
-    const left = <div
-          id="left"
-          className="flex py-2.5 gap-3  justify-between items-center  "
-        >
+  const left = <div
+  id="left"
+  className="flex py-2.5 gap-3  justify-between items-center  "
+  >
           <div
             className={`flex  dark:text-slate-300 dark:border-slate-700 flex-1  text-gray-700 border border-gray-100 items-center  justify-between gap-1.5 px-5 py-2.5 rounded-md`}
           >
@@ -90,13 +90,13 @@ export  function DateStatus() {
           </div>
           <div
             className={`flex  dark:text-slate-300 dark:border-slate-700  text-gray-700 border border-gray-100 items-center  justify-between gap-1.5 px-5 py-2.5 rounded-md`}
-          >
+            >
             <p className="text-xs font-semibold">All Location</p>
             <img className="h-4" src="\svg\down-arrow-5-svgrepo-com.svg" alt="" />
           </div>
           <div
             className={`flex dark:text-slate-300 dark:border-slate-700  text-gray-700 border border-gray-100 items-center  justify-between gap-1.5 px-5 py-2.5 rounded-md`}
-          >
+            >
             <div
               onClick={() => setOpen((set) => !set)}
               className="text-xs cursor-pointer  font-semibold"
@@ -125,6 +125,71 @@ export function AttendanceFilterBar({ filters, setFilters }) {
       <Dropdown placeholder="status" options={statuses}  onChange={(e) => setFilters((f) => ({ ...f, status: e}))}/>
     </div>
   )
+}
+
+export function ApproveReject({ FiltersChange }) {
+
+  const handleFilter = (employee) => {
+    console.log("search",employee) // prints status like all, pending,approval,denied
+  FiltersChange((prev) => ({ ...prev, status: employee }));
+};
+
+  const handleEmployeeSelect = (employee) => {
+  console.log("search", employee);//prints what we've put in the input field
+  FiltersChange((prev) => ({ ...prev, q: employee }));
+};
+
+
+   const status = [
+    {content:'all',svg:null,placeholder:true},
+    {content:'pending',svg:null},
+    {content:'approved',svg:null},
+    {content:'denied',svg:null},
+  ];
+
+  return (
+    <div id="left" className="flex py-2.5 gap-3 w-full justify-between items-center">
+
+      <InputField  placeholder={"Search Employee"} displayKey="name" onSelect={handleEmployeeSelect} />
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown onChange={(i) => handleFilter(i)} options={status} text="text-xs font-semibold" placeholder="all" border="border gap-1 border-gray-100"/>
+      </div>
+
+    </div>
+  );
+}
+export function AnnouncementSearch({ setQ,setPriority }) {
+
+  const handleFilter = (employee) => {
+    console.log("search",employee)
+  setPriority(employee)
+};
+
+  const handleEmployeeSelect = (employee) => {
+  setQ(employee)
+};
+
+
+   const status = [
+    {content:'All Priority',svg:null,placeholder:true},
+    {content:'Low',svg:null},
+    {content:'Normal',svg:null},
+    {content:'High',svg:null},
+    {content:'Urgent',svg:null},
+  ];
+
+  return (
+    <div id="left" className="flex py-2.5 gap-3 w-full justify-between items-center">
+
+      <InputField  placeholder={"Search title or content..."} displayKey="name" onSelect={handleEmployeeSelect} />
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown onChange={(i) => handleFilter(i)} options={status} text="text-xs font-semibold" placeholder="All Priority" border="border gap-1 border-gray-100"/>
+      </div>
+
+    </div>
+  );
 }
 
 

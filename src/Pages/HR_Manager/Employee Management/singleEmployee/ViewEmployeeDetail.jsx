@@ -24,73 +24,73 @@ function ViewEmployeeDetail() {
     const fetchEmployee = async () => {
       try {
          const daattaa = await axiosPrivate.get(`/employees/${employeeId}`);
-         console.log(daattaa.data.general.photo);
+         console.log(daattaa.data.documents[0]);
 
-         const response = [
-          {
-          id: 1,
-          general: {
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            fullname: "be Beso",
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "tailwind_cheat_sheet.pdf",
-                url: "https://example.com/files/idcard.png",
-                type: "application/pdf",
-                size: 3717,
-                webkitRelativePath: ""
-              },
-            ],
-          },
-        }
-      ];
+      //    const response = [
+      //     {
+      //     id: 1,
+      //     general: {
+      //       gender: "e",
+      //       dateofbirth: "7-04-15",
+      //       maritalstatus: "gle",
+      //       nationality: "iopian",
+      //       personaltaxid: "9584732",
+      //       emailaddress: "b.taye@example.com",
+      //       socialinsurance: "558932",
+      //       healthinsurance: "229584",
+      //       phonenumber: "+911223344",
+      //       primaryaddress: " Sunshine Avenue",
+      //       country: "Eopia",
+      //       state: "Ad Ababa",
+      //       city: "Ad Ababa",
+      //       postcode: "0",
+      //       emefullname: "ta Taye",
+      //       emephonenumber: "+254556677",
+      //       emestate: "Ad Ababa",
+      //       emecity: "Ad Ababa",
+      //       emepostcode: "1",
+      //     },
+      //     job: {
+      //       fullname: "be Beso",
+      //       employeeid: "001",
+      //       serviceyear: "3",
+      //       joindate: "203-10",
+      //       jobtitle: "Frnd Developer",
+      //       positiontype: "Fuime",
+      //       employmenttype: "Pnent",
+      //       linemanager: "Sl Bekele",
+      //       contractnumber: "C42",
+      //       contractname: "Frod Developer Contract",
+      //       contracttype: "Indite",
+      //       startdate: "2022-0",
+      //       enddate: "",
+      //     },
+      //     payroll: {
+      //       employeestatus: "Ae",
+      //       employmenttype: "Pnent",
+      //       jobdate: "202-10",
+      //       lastworkingdate: "",
+      //       salary: 25000,
+      //       offset: 200,
+      //       onset: 100,
+      //     },
+      //     documents: {
+      //       files: [
+      //         {
+      //           name: "Empent Contract.pdf",
+      //           url: "https://example.com/files/contract.pdf",
+      //         },
+      //         {
+      //           name: "tailwind_cheat_sheet.pdf",
+      //           url: "https://example.com/files/idcard.png",
+      //           type: "application/pdf",
+      //           size: 3717,
+      //           webkitRelativePath: ""
+      //         },
+      //       ],
+      //     },
+      //   }
+      // ];
         setEmployeeData(daattaa.data);
         setOriginalData(daattaa.data);
       } catch (err) {

@@ -35,12 +35,12 @@ const [filters, setFilters] = useState({});
 
   const structure = [3,1,1,1,1,1];
   const ke2 = [
-    ["general_photo", "general_full_name", "email"],
+    ["general_photo", "general_fullname", "general_emailaddress"],
     ["general_phonenumber"],
     ["job_joindate"],
     ["general_gender"],
-    ["status"],
-    ["marital_status"],
+    ["payroll_employeestatus"],
+    ["general_maritalstatus"],
   ];
   const title = ['USER','PHONE','JOIN DATE','GENDER','STATUS','MARITAL STATUS'];
 
@@ -48,7 +48,7 @@ const [filters, setFilters] = useState({});
     <div className='p-4 flex flex-col h-full'>
       <Header Title="Employee Directory" subTitle="view all employees and click to view detail"/>
       <SearchStatus onFiltersChange={updateFilter} />
-
+        {console.log(dynamicURL)}
       <Table Data={[]} URL={dynamicURL} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10} />
     </div>
   );

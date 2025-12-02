@@ -10,7 +10,7 @@ export default function AnnouncementDetails({ announcement, onDelete }) {
   const { title, body, priority, audience, createdAt, reads, totalRecipients } = announcement;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 flex h-full flex-col">
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-xl font-semibold">{title}</h2>
@@ -24,11 +24,11 @@ export default function AnnouncementDetails({ announcement, onDelete }) {
         </div>
       </div>
 
-      <div className="prose max-w-none text-sm">
-        <p>{body}</p>
+      <div className="prose overflow-y-auto scrollbar-hidden  flex-1d max-w-none text-sm">
+        {/* <p>{body}</p> */}
+         <div dangerouslySetInnerHTML={{ __html: body }}/>
       </div>
 
-      {/* attachments area (static for now). Replace with real list when you have upload API */}
       <div>
         <h4 className="font-medium">Attachments</h4>
         <div className="text-sm text-gray-500">No attachments</div>

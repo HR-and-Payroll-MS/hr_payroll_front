@@ -1,6 +1,12 @@
 import React from 'react'
 import Icon from '../../../../Components/Icon';
-function EmployeeProfile({employeeData}) {     
+import useAuth from '../../../../Context/AuthContext';
+function EmployeeProfile({employeeData}) {  
+  const {axiosPrivate} = useAuth();
+  const handleDelete = () => {
+    // Implement delete functionality here
+    console.log("Delete user:", employeeData?.general?.fullname);
+  }
   return ( <div id="left" className="flex bg-white w-full flex-col h-full p-2 px-4 gap-4">
         {/* TOP SECTION */}
         <div id="top" className="items-center justify-center flex flex-col flex-2">
@@ -100,7 +106,7 @@ function EmployeeProfile({employeeData}) {
             </div>
           </div>
     
-          <div className="flex bg-red-800 text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
+          <div  onClick={handleDelete} className="flex bg-red-800 hover:cursor-pointer text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
             <p className="text-xs font-semibold">Delete User</p>
             <Icon className='w-4 h-4' name={'Trash'}/>
           </div>

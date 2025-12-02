@@ -2,9 +2,9 @@ import axios from 'axios';
 // export const BASE_URL = 'http://localhost:3000/api/v1';
 // export const BASE_URL = 'http://192.168.114.173:3000/api/v1';
 //B3Library...........................
-export const BASE_URL = 'http://172.16.0.181:3000/api/v1';
+// export const BASE_URL = 'http://172.16.0.181:3000/api/v1';
 // Alx.....................
-// export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
+export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
 // export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
 
 export const axiosPublic = axios.create({
@@ -17,7 +17,7 @@ export function createAxiosPrivate({ getAccessToken, onRefresh, onLogout }) {
     baseURL: BASE_URL,
     withCredentials: true,
     headers: { 'Content-Type': 'application/json' },
-    // timeout: 10000,
+    timeout: 10000,
   });
 
   const request = instance.interceptors.request.use(

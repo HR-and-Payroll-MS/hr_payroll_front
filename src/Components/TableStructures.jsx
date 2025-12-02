@@ -3,9 +3,11 @@ import Icon from './Icon';
 import FileDrawer from './FileDrawer';
 import Drawer from './Drawer';
 import AttendanceCorrectionPage from '../Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
+// import { BASE_URL } from '../api/axiosInstance';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 function TableStructures({data="",id, item}) {
-    
+
   const [isModalOpen,setModalOpen] =useState(false);
   const openModal =()=>setModalOpen(true);
   const deleteItem = () => console.log("deleted",data)
@@ -17,21 +19,26 @@ function TableStructures({data="",id, item}) {
             <p className="font-semibold">{item[0]||"-"}</p>
           </div>
         );
-
       case 3:
         return (
           <div className="flex w-full justify-start items-center gap-2">
-            <img
-              className="h-6 w-6 rounded-full"
-              // src={item[0] || "/pic/download (48).png"}
-              src={
-    item[0]
-      ? `http://172.16.0.181:3000${item[0]}`
-      : "/pic/download (48).png"
-  }
+
+            {item[0]?(
+              <img className="h-6 w-6 rounded-full" 
+              src={`${BASE_URL}${item[0]}`}
+  
               alt=""
-            />
-            <div className="flex flex-col items-start">
+            />):(
+            
+            <div className='rounded-full bg-slate-800 dark:bg-slate-600 text-slate-100 h-7 w-7 text-center items-center flex justify-center' >
+                  {(item[1] ?? "")
+                    .split(" ")
+                    .map(n => n[0])
+                    .slice(0, 2)
+                    .join("") || "NA"}
+                            
+              </div>)}
+            <div className="flex flex-col items-start ">
               <p className="font-semibold text-gray-700 dark:text-slate-200 text-sm">
                 {item[1]}
               </p>
@@ -40,6 +47,28 @@ function TableStructures({data="",id, item}) {
               </p>
             </div>
           </div>
+
+
+
+//   <div className="flex w-full justify-start items-center gap-2">
+
+//            {item[0] ? (
+//   <img
+//     className="h-6 w-6 rounded-full"
+//     src={`${BASE_URL}${item[0]}`}
+//     alt=""
+//   />
+// ) : (
+//   <div className="rounded-full bg-slate-800 dark:bg-slate-600 text-slate-100 h-7 w-7 text-center items-center flex justify-center">
+//     {(item[1] ?? "")
+//       .split(" ")
+//       .map(n => n[0])
+//       .slice(0, 2)
+//       .join("") || "NA"}
+//   </div>
+// )}
+
+
         );
       case 11:
         return (

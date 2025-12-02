@@ -5,9 +5,11 @@ import useAuth from '../Context/AuthContext'
 
 function InputField({
   placeholder = "Search...",
-  apiEndpoint = "/api/search",
+  apiEndpoint ,
   displayKey = "name",
   onSelect,
+  icon=true,
+  border="border",
   value=""//the input text that is inserted inside the inputfield
 }) {
   const [query, setQuery] = useState("")
@@ -16,10 +18,14 @@ function InputField({
   const {axiosPrivate} = useAuth();
   useEffect(() => {
     const delay = setTimeout(() => {
-      if (query.trim().length > 1) {
-        fetchSuggestions(query)
-      } else {
-        setSuggestions([])
+      if(apiEndpoint){
+            if (query.trim().length > 1) {
+              fetchSuggestions(query)
+            } else {
+              setSuggestions([])
+            }
+    } else{
+        onSelect(query)
       }
     }, 400)
     return () => clearTimeout(delay)
@@ -48,7 +54,7 @@ function InputField({
 
   return (
     <div className="relative flex-1"> 
-      <div className="flex text-slate-700 dark:text-slate-200 flex-1 border rounded items-center justify-between px-2.5 py-1.5 dark:border-slate-500 border-slate-300">
+      <div className={ `flex text-slate-700 dark:text-slate-200 flex-1 ${border} rounded items-center justify-between px-2.5 py-1.5 dark:border-slate-500 border-slate-300`}>
         <input
           onChange={(e) => setQuery(e.target.value)}
           value={query}
@@ -56,7 +62,7 @@ function InputField({
           type="text"
           placeholder={placeholder}
         />
-        <Icon name="Search" className="text-slate-400 w-4 h-4" />
+        {icon && <Icon name="Search" className="text-slate-400 w-4 h-4" />}
       </div>
       {loading && (
         <div className="absolute right-3 top-2 text-gray-400 text-sm">...</div>

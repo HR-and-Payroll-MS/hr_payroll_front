@@ -90,8 +90,8 @@ export const sidebarList = {
       label: 'Notifications',
       Visible: false,
       sub: [
-        { subPath: '/', label: 'View Notifications' },
-        { subPath: '/', label: 'Send Notifications' },
+        { subPath: 'notification_center_page', label: 'View Notifications' },
+        { subPath: 'send_notification_page', label: 'Send Notifications' },
       ],
     },
     {

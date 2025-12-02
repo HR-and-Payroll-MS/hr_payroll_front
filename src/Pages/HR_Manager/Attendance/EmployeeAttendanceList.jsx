@@ -31,7 +31,7 @@ const attendanceData = [
     employee: {
       name: "John Doe",
       email: "john.doe@example.com",
-      pic: "https://randomuser.me/api/portraits/men/32.jpg"
+      pic: ""
     },
     attendance:{
     date: "2025-11-23",
@@ -47,7 +47,7 @@ const attendanceData = [
     employee: {
       name: "Sarah Johnson",
       email: "sarah.johnson@example.com",
-      pic: "https://randomuser.me/api/portraits/women/45.jpg"
+      pic: ""
     },
     
     attendance:{date: "2025-11-23",
@@ -63,7 +63,7 @@ const attendanceData = [
     employee: {
       name: "Daniel Mekonnen",
       email: "daniel.mekonnen@example.com",
-      pic: "https://randomuser.me/api/portraits/men/83.jpg"
+      pic: ""
     },
     attendance:{date: "2025-11-23",
     clockIn: "07:55 AM",

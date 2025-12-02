@@ -3,8 +3,8 @@ import CreateAnnouncement from "./CreateAnnouncement";
 import AnnouncementList from "./AnnouncementList";
 import AnnouncementDetails from "./AnnouncementDetails";
 import Toast from "./Toast";
-import Drawer from "./Drawer";
-
+import Header from "../../../Components/Header"
+import FileDrawer from "../../../Components/FileDrawer";
 const MOCK_ANNOUNCEMENTS = [
   {
     id: "a1",
@@ -67,26 +67,22 @@ export default function AnnouncementsPage() {
   }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-semibold">Announcements</h1>
-          <p className="text-sm text-gray-600">Create and broadcast announcements to employees.</p>
-        </div>
-        <div className="flex items-center gap-3">
+    <div className="p-6 flex flex-col min-h-screen">
+      <div className="flex items-center justify-between mb-6">  
+        <Header  Title={"Announcements"} subTitle={"Create and broadcast announcements to employees."}>
           <CreateAnnouncement onCreate={handleCreate} />
-        </div>
+        </Header>
       </div>
+        
 
       <AnnouncementList announcements={announcements} onOpen={openDetails} />
 
-      <Drawer open={drawerOpen} onClose={closeDetails}>
+
+        {drawerOpen && <FileDrawer isModalOpen={drawerOpen} closeModal={closeDetails}>
         {selected && (
-          <div className="p-4">
             <AnnouncementDetails announcement={selected} onDelete={() => handleDelete(selected.id)} />
-          </div>
         )}
-      </Drawer>
+            </FileDrawer>}
 
       {toast && <Toast type={toast.type} message={toast.msg} /> }
     </div>

@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@cyntler/react-doc-viewer": "^1.17.1",
+    "@lexical/html": "^0.38.2",
+    "@lexical/react": "^0.38.2",
     "@nivo/bar": "^0.99.0",
     "@nivo/calendar": "^0.99.0",
     "@nivo/core": "^0.99.0",
@@ -18,11 +20,13 @@
     "@nivo/pie": "^0.99.0",
     "@react-pdf/renderer": "^4.3.1",
     "@tailwindcss/vite": "^4.1.12",
+    "@tinymce/tinymce-react": "^6.3.0",
     "autoprefixer": "^10.4.21",
     "axios": "^1.12.2",
     "d3-scale": "^4.0.2",
     "framer-motion": "^12.23.24",
     "js-cookie": "^3.0.5",
+    "lexical": "^0.38.2",
     "lucide-react": "^0.542.0",
     "pdfjs-dist": "^5.4.296",
     "postcss": "^8.5.6",
@@ -32,7 +36,8 @@
     "react-pdf": "^10.2.0",
     "react-router-dom": "^7.9.3",
     "recharts": "^3.5.0",
-    "tailwindcss": "^4.1.14"
+    "tailwindcss": "^4.1.14",
+    "tinymce": "^8.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

@@ -193,10 +193,10 @@ if (loading)
     <div className="flex flex-col px-4 w-full h-full justify-start bg-gray-50 dark:bg-slate-900">
       <Header Title={"Policy"} subTitle={"Company Policies"} />
       <div className="flex flex-1 gap-5 overflow-y-scroll scrollbar-hidden rounded-md h-full">
-        <div className="h-full flex flex-col shadow rounded-md overflow-clip w-1/4">
+        <div className="h-full flex flex-col shadow rounded-md overflow-clip w-fit">
           <StepHeader
-            childclassname="flex rounded-md text-md w-full p-2 justify-between items-center"
-            classname="flex bg-white w-full  flex-col  h-full  p-2 "
+            childclassname="flex rounded-md text-md w-fit p-2 justify-between items-center"
+            classname="flex bg-white w-fit px-6 flex-col  h-full  p-2 "
             steps={steps}
             iscurrentstyle="bg-slate-50 dark:bg-slate-700 shadow "
             currentStep={currentStep}
