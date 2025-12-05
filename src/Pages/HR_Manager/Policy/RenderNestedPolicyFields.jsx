@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Dropdown from "../../../Components/Dropdown";
 import DocumentList from "../../../Components/DocumentList";
 import AddNewItemModal from "../../../utils/AddNewItemModal";
+
 /**
  * Props (extended from previous):
  *  - data
@@ -9,7 +10,7 @@ import AddNewItemModal from "../../../utils/AddNewItemModal";
  *  - path
  *  - handleInputChange(section, path, value)
  *  - editMode
- *  - handleAddItem(section, path, defaultValue)  <-- will still be used after modal saves
+ *  - handleAddItem(section, path, defaultValue)
  *  - handleRemoveItem(section, path, index)
  *  - formSchemas: { [sectionKey]: { [arrayKey]: { fieldKey: fieldDef } } }
  */
@@ -36,9 +37,11 @@ const RenderNestedPolicyFields = ({
   const isEditing = !!editMode?.[sectionKey];
 
   const openAddModalFor = (arrayKey, arrayPath, fieldsSchema) => {
+    // make fields stable by copying once here
+    const stableFields = { ...fieldsSchema };
     setModalConfig({
       title: `Add to ${humanLabel(arrayKey)}`,
-      fields: fieldsSchema,
+      fields: stableFields,
       arrayPath,
     });
     setModalOpen(true);
@@ -46,7 +49,6 @@ const RenderNestedPolicyFields = ({
 
   const onModalSave = (newItem) => {
     if (!modalConfig) return;
-    // call the provided handleAddItem(section, path, defaultValue)
     handleAddItem(sectionKey, modalConfig.arrayPath, newItem);
     setModalOpen(false);
     setModalConfig(null);
@@ -62,11 +64,11 @@ const RenderNestedPolicyFields = ({
         // nested object
         if (value && typeof value === "object" && !Array.isArray(value) && !value.__type) {
           return (
-            <div key={fullPath} className="w-full  rounded p-3 bg-slate-50">{/*border was deleted */}
+            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-semibold">{humanLabel(key)}</h3>
               </div>
-<RenderNestedPolicyFields
+              <RenderNestedPolicyFields
                 data={value}
                 sectionKey={sectionKey}
                 path={fullPath}
@@ -80,14 +82,13 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-        // array handling (with Add button that opens modal)
+        // array handling
         if (Array.isArray(value)) {
-          // determine form schema for this array if available
           const sectionSchemas = formSchemas?.[sectionKey] ?? {};
           const arraySchema = sectionSchemas?.[key]; // shape: { fieldKey: fieldDef }
 
           return (
-            <div key={fullPath} className="w-full  rounded p-3 bg-slate-50">{/* border deleted here too */}
+            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-semibold">{humanLabel(key)}</h3>
                 {isEditing && (
@@ -96,10 +97,8 @@ const RenderNestedPolicyFields = ({
                       className="px-2 py-1 bg-green-100 text-sm rounded"
                       onClick={() => {
                         if (arraySchema) {
-                          // open modal with schema
                           openAddModalFor(key, fullPath, arraySchema);
                         } else {
-                          // fallback: add empty (old behavior)
                           handleAddItem(sectionKey, fullPath, {});
                         }
                       }}
@@ -116,7 +115,7 @@ const RenderNestedPolicyFields = ({
                   const itemPath = `${fullPath}[${idx}]`;
                   if (item && typeof item === "object") {
                     return (
-                      <div key={itemPath} className="p-3 bg-white  rounded flex flex-col gap-3">{/* border deleted here too */}
+                      <div key={itemPath} className="p-3 bg-white rounded flex flex-col gap-3">
                         <div className="flex justify-end gap-2">
                           {isEditing && (
                             <button
@@ -127,7 +126,6 @@ const RenderNestedPolicyFields = ({
                             </button>
                           )}
                         </div>
-
                         <RenderNestedPolicyFields
                           data={item}
                           sectionKey={sectionKey}
@@ -139,9 +137,8 @@ const RenderNestedPolicyFields = ({
                           formSchemas={formSchemas}
                         />
                       </div>
-                      );
+                    );
                   } else {
-                    // primitive list
                     return (
                       <div key={itemPath} className="flex items-center gap-3">
                         <div className="flex-1">{String(item)}</div>
@@ -162,9 +159,8 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-        // primitive or typed field (render same as before)
+        // typed field (dropdown/documents)
         if (value && typeof value === "object" && value.__type) {
-          // typed wrappers (dropdown/documents)
           if (value.__type === "dropdown") {
             return (
               <div key={fullPath} className="w-full flex gap-3 items-center">
@@ -212,8 +208,14 @@ const RenderNestedPolicyFields = ({
                   onChange={(e) => handleInputChange(sectionKey, fullPath, e.target.value)}
                   className="w-full border rounded px-2 py-1"
                 />
-                ) : (
-                <div className="font-semibold">{value === "" || value === undefined ? <span className="text-gray-400 italic">Not provided</span> : String(value)}</div>
+              ) : (
+                <div className="font-semibold">
+                  {value === "" || value === undefined ? (
+                    <span className="text-gray-400 italic">Not provided</span>
+                  ) : (
+                    String(value)
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -230,7 +232,7 @@ const RenderNestedPolicyFields = ({
           }}
           onSave={onModalSave}
           title={modalConfig.title}
-          fields={modalConfig.fields}
+          fields={modalConfig.fields} // stable reference
         />
       )}
     </div>
@@ -238,6 +240,295 @@ const RenderNestedPolicyFields = ({
 };
 
 export default RenderNestedPolicyFields;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState } from "react";
+// import Dropdown from "../../../Components/Dropdown";
+// import DocumentList from "../../../Components/DocumentList";
+// import AddNewItemModal from "../../../utils/AddNewItemModal";
+// /**
+//  * Props (extended from previous):
+//  *  - data
+//  *  - sectionKey
+//  *  - path
+//  *  - handleInputChange(section, path, value)
+//  *  - editMode
+//  *  - handleAddItem(section, path, defaultValue)  <-- will still be used after modal saves
+//  *  - handleRemoveItem(section, path, index)
+//  *  - formSchemas: { [sectionKey]: { [arrayKey]: { fieldKey: fieldDef } } }
+//  */
+// const humanLabel = (key) =>
+//   String(key)
+//     .replace(/([A-Z])/g, " $1")
+//     .replace(/_/g, " ")
+//     .replace(/^./, (str) => str.toUpperCase());
+
+// const RenderNestedPolicyFields = ({
+//   data,
+//   sectionKey,
+//   path = "",
+//   handleInputChange,
+//   editMode = {},
+//   handleAddItem,
+//   handleRemoveItem,
+//   formSchemas = {},
+// }) => {
+//   const [modalOpen, setModalOpen] = useState(false);
+//   const [modalConfig, setModalConfig] = useState(null); // { title, fields, arrayPath }
+
+//   if (!data) return <div className="text-sm text-gray-500">No data</div>;
+//   const isEditing = !!editMode?.[sectionKey];
+
+//   const openAddModalFor = (arrayKey, arrayPath, fieldsSchema) => {
+//     setModalConfig({
+//       title: `Add to ${humanLabel(arrayKey)}`,
+//       fields: fieldsSchema,
+//       arrayPath,
+//     });
+//     setModalOpen(true);
+//   };
+
+//   const onModalSave = (newItem) => {
+//     if (!modalConfig) return;
+//     // call the provided handleAddItem(section, path, defaultValue)
+//     handleAddItem(sectionKey, modalConfig.arrayPath, newItem);
+//     setModalOpen(false);
+//     setModalConfig(null);
+//   };
+
+//   const entries = Object.entries(data);
+
+//   return (
+//     <div className="w-full flex flex-col gap-4">
+//       {entries.map(([key, value]) => {
+//         const fullPath = path ? `${path}.${key}` : key;
+
+//         // nested object
+//         if (value && typeof value === "object" && !Array.isArray(value) && !value.__type) {
+//           return (
+//             <div key={fullPath} className="w-full  rounded p-3 bg-slate-50">{/*border was deleted */}
+//               <div className="flex justify-between items-center mb-2">
+//                 <h3 className="font-semibold">{humanLabel(key)}</h3>
+//               </div>
+// <RenderNestedPolicyFields
+//                 data={value}
+//                 sectionKey={sectionKey}
+//                 path={fullPath}
+//                 handleInputChange={handleInputChange}
+//                 editMode={editMode}
+//                 handleAddItem={handleAddItem}
+//                 handleRemoveItem={handleRemoveItem}
+//                 formSchemas={formSchemas}
+//               />
+//             </div>
+//           );
+//         }
+
+//         // array handling (with Add button that opens modal)
+//         if (Array.isArray(value)) {
+//           // determine form schema for this array if available
+//           const sectionSchemas = formSchemas?.[sectionKey] ?? {};
+//           const arraySchema = sectionSchemas?.[key]; // shape: { fieldKey: fieldDef }
+
+//           return (
+//             <div key={fullPath} className="w-full  rounded p-3 bg-slate-50">{/* border deleted here too */}
+//               <div className="flex justify-between items-center mb-2">
+//                 <h3 className="font-semibold">{humanLabel(key)}</h3>
+//                 {isEditing && (
+//                   <div className="flex items-center gap-2">
+//                     <button
+//                       className="px-2 py-1 bg-green-100 text-sm rounded"
+//                       onClick={() => {
+//                         if (arraySchema) {
+//                           // open modal with schema
+//                           openAddModalFor(key, fullPath, arraySchema);
+//                         } else {
+//                           // fallback: add empty (old behavior)
+//                           handleAddItem(sectionKey, fullPath, {});
+//                         }
+//                       }}
+//                     >
+//                       + Add
+//                     </button>
+//                   </div>
+//                 )}
+//               </div>
+
+//               <div className="flex flex-col gap-3">
+//                 {value.length === 0 && <div className="text-sm text-gray-500">No items</div>}
+//                 {value.map((item, idx) => {
+//                   const itemPath = `${fullPath}[${idx}]`;
+//                   if (item && typeof item === "object") {
+//                     return (
+//                       <div key={itemPath} className="p-3 bg-white  rounded flex flex-col gap-3">{/* border deleted here too */}
+//                         <div className="flex justify-end gap-2">
+//                           {isEditing && (
+//                             <button
+//                               className="text-red-500 px-2 py-1 border rounded"
+//                               onClick={() => handleRemoveItem(sectionKey, fullPath, idx)}
+//                             >
+//                               Delete
+//                             </button>
+//                           )}
+//                         </div>
+
+//                         <RenderNestedPolicyFields
+//                           data={item}
+//                           sectionKey={sectionKey}
+//                           path={itemPath}
+//                           handleInputChange={handleInputChange}
+//                           editMode={editMode}
+//                           handleAddItem={handleAddItem}
+//                           handleRemoveItem={handleRemoveItem}
+//                           formSchemas={formSchemas}
+//                         />
+//                       </div>
+//                       );
+//                   } else {
+//                     // primitive list
+//                     return (
+//                       <div key={itemPath} className="flex items-center gap-3">
+//                         <div className="flex-1">{String(item)}</div>
+//                         {isEditing && (
+//                           <button
+//                             className="text-red-500 px-2 py-1 border rounded"
+//                             onClick={() => handleRemoveItem(sectionKey, fullPath, idx)}
+//                           >
+//                             Delete
+//                           </button>
+//                         )}
+//                       </div>
+//                     );
+//                   }
+//                 })}
+//               </div>
+//             </div>
+//           );
+//         }
+
+//         // primitive or typed field (render same as before)
+//         if (value && typeof value === "object" && value.__type) {
+//           // typed wrappers (dropdown/documents)
+//           if (value.__type === "dropdown") {
+//             return (
+//               <div key={fullPath} className="w-full flex gap-3 items-center">
+//                 <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
+//                 <div className="flex-1">
+//                   {isEditing ? (
+//                     <Dropdown
+//                       options={value.options || []}
+//                       placeholder={humanLabel(key)}
+//                       value={value.value}
+//                       onChange={(v) => handleInputChange(sectionKey, fullPath + ".value", v)}
+//                     />
+//                   ) : (
+//                     <div className="font-semibold">{String(value.value)}</div>
+//                   )}
+//                 </div>
+//               </div>
+//             );
+//           }
+
+//           if (value.__type === "documents") {
+//             return (
+//               <div key={fullPath} className="w-full flex gap-3 items-start">
+//                 <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
+//                 <div className="flex-1">
+//                   <DocumentList
+//                     files={value.value || []}
+//                     isEditing={isEditing}
+//                     onChange={(files) => handleInputChange(sectionKey, fullPath + ".value", files)}
+//                   />
+//                 </div>
+//               </div>
+//             );
+//           }
+//         }
+
+//         // fallback primitive
+//         return (
+//           <div key={fullPath} className="w-full flex gap-3 items-center">
+//             <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
+//             <div className="flex-1">
+//               {isEditing ? (
+//                 <input
+//                   value={value ?? ""}
+//                   onChange={(e) => handleInputChange(sectionKey, fullPath, e.target.value)}
+//                   className="w-full border rounded px-2 py-1"
+//                 />
+//                 ) : (
+//                 <div className="font-semibold">{value === "" || value === undefined ? <span className="text-gray-400 italic">Not provided</span> : String(value)}</div>
+//               )}
+//             </div>
+//           </div>
+//         );
+//       })}
+
+//       {/* Add New Item Modal */}
+//       {modalConfig && (
+//         <AddNewItemModal
+//           isOpen={modalOpen}
+//           onClose={() => {
+//             setModalOpen(false);
+//             setModalConfig(null);
+//           }}
+//           onSave={onModalSave}
+//           title={modalConfig.title}
+//           fields={modalConfig.fields}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default RenderNestedPolicyFields;
 
 
 

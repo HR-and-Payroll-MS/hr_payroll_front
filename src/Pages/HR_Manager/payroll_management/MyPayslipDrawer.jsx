@@ -1,14 +1,8 @@
 import React from "react";
 import FileDrawer from "../../../Components/FileDrawer"
 
-function MyPayslipDrawer({ data, close }) {
+function MyPayslipDrawer({ data }) {
   return (
-    <FileDrawer
-      isModalOpen={true}
-      closeModal={close}
-      width="w-1/3"
-      transparency={false}
-    >
       <div className="p-5">
         <h2 className="text-xl font-semibold mb-4">
           Payslip - {data.month}
@@ -26,14 +20,7 @@ function MyPayslipDrawer({ data, close }) {
           </p>
         </div>
 
-        <button
-          onClick={close}
-          className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-        >
-          Close
-        </button>
       </div>
-    </FileDrawer>
   );
 }
 

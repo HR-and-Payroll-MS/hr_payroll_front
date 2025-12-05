@@ -53,7 +53,7 @@ function InputField({
 // check here there is some thing wrong
 
   return (
-    <div className="relative flex-1"> 
+    <div className="relative flex-1 max-w-3/5"> 
       <div className={ `flex text-slate-700 dark:text-slate-200 flex-1 ${border} rounded items-center justify-between px-2.5 py-1.5 dark:border-slate-500 border-slate-300`}>
         <input
           onChange={(e) => setQuery(e.target.value)}

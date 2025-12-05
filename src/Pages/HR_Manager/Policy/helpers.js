@@ -19,3 +19,4 @@ export const setNested = (obj, path, value) => {
   }
   cur[parts[parts.length - 1]] = value;
 };
+

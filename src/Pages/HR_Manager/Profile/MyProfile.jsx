@@ -6,123 +6,13 @@ import StepHeader from '../../../Components/forms/StepHeader';
 import { RenderStepContent } from '../../../utils/RenderStepContent';
 import Icon from '../../../Components/Icon';
 import ThreeDots from '../../../animations/ThreeDots';
-function EmployeeProfile({employeeData}) {     
-  return ( <div id="left" className="flex bg-white w-full flex-col h-full p-2 px-4 gap-4">
-        {/* TOP SECTION */}
-        <div id="top" className="items-center justify-center flex flex-col flex-2">
-          <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
-            <img
-              className="w-20 h-20 object-fill rounded-full"
-                src={
-    employeeData?.general?.photo
-      ? `http://172.16.27.124:3000${employeeData.general.photo}`
-      : "/pic/download (48).png"
-  }
-              alt="Profile"
-            />
-          </div>
-    
-          <div className="flex flex-col items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
-            <p className="font-bold text-gray-700 text-lg">
-              {employeeData?.general?.fullname || "Not Provided"}
-            </p>
-            <p className="font-semibold text-gray-500 text-xs">
-              {employeeData?.job?.jobtitle || "Not Provided"}
-            </p>
-          </div>
-    
-          <div className="flex items-center gap-1.5 justify-center p-2 rounded hover:bg-slate-50">
-            <p className={`font-bold px-6 py-1 text-xs rounded-md ${
-              employeeData?.payroll?.employeestatus === "Active"
-                ? "bg-green-50 text-green-800"
-                : "bg-red-50 text-red-800"
-            }`}>
-              {employeeData?.payroll?.employeestatus || "unknown"}
-            </p>
-          </div>
-        </div>
-    
-        <hr className="text-gray-200" />
-    
-        {/* MIDDLE SECTION */}
-        <div id="middle" className="items-start flex flex-col flex-1">
-          <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-            <Icon className='w-4 h-4' name={'Mail'}/>
-            <p className="font-semibold text-xs text-gray-700 rounded-md">
-              {employeeData?.general?.emailaddress || "No email"}
-            </p>
-          </div>
-    
-          <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-            <Icon className='w-4 h-4' name={'Phone'}/>
-            <p className="font-semibold text-xs text-gray-700 rounded-md">
-              {employeeData?.general?.phonenumber || "0972334145"}
-            </p>
-          </div>
-    
-          <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-            <Icon className='w-4 h-4' name={'MapPinned'}/>
-            <p className="font-semibold text-xs text-gray-700 rounded-md">
-              {employeeData?.general?.timezone || "GMT+07:00"}
-            </p>
-          </div>
-        </div>
-    
-        <hr className="text-gray-200" />
-    
-        {/* BOTTOM SECTION */}
-        <div id="bottom" className="flex-2">
-          <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
-            <div>
-              <p className="font-semibold text-gray-400 text-xs">Department</p>
-              <p className="font-bold text-gray-700 text-xs">
-                {employeeData?.job?.department || "Designer"}
-              </p>
-            </div>
-          </div>
-    
-          <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
-            <div>
-              <p className="font-semibold text-gray-400 text-xs">Office</p>
-              <p className="font-bold text-gray-700 text-xs">
-                {employeeData?.job?.office || "Unpixel Studio"}
-              </p>
-            </div>
-          </div>
-    
-          <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
-            <div>
-              <p className="font-semibold text-gray-400 text-xs">Line Manager</p>
-              <div className="flex items-center gap-1.5 my-1.5">
-               <img
-              className="w-6 h-6 object-fill rounded-full"
-              src={employeeData?.general?.profilepicture || "\\pic\\download (48).png"}
-              alt="Profile"
-            />
-                <p className="font-bold text-gray-700 text-xs">
-                  {employeeData?.job?.linemanager || "Skylar Catzoni"}
-                </p>
-              </div>
-            </div>
-          </div>
-    
-          <div className="flex bg-red-800 text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
-            <p className="text-xs font-semibold">Delete User</p>
-            <Icon className='w-4 h-4' name={'Trash'}/>
-          </div>
-        </div>
-      </div>
-    );
-    
-  
-}
+import ProfileHeader from '../../profile/ProfileHeader';
 
-
-function MyProfile() {
+function MyProfile({currStep=0}) {
     
   const { axiosPrivate } = useAuth(); // must supply axiosPrivate configured with baseURL + auth
   const steps = ["General", "Job", "Payroll", "Documents"];
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(currStep);
   const [employeeData, setEmployeeData] = useState(null);
   const [originalData, setOriginalData] = useState(null); // keep backend snapshot
   const [loading, setLoading] = useState(true);
@@ -141,6 +31,7 @@ function MyProfile() {
           {
           id: 1,
           general: {
+            fullname: "be Beso",
             gender: "e",
             dateofbirth: "7-04-15",
             maritalstatus: "gle",
@@ -162,7 +53,6 @@ function MyProfile() {
             emepostcode: "1",
           },
           job: {
-            fullname: "be Beso",
             employeeid: "001",
             serviceyear: "3",
             joindate: "203-10",
@@ -285,16 +175,19 @@ if (error)
     );
 
   return (
-    <div className="flex flex-col w-full h-full justify-start bg-gray-50 dark:bg-slate-900">
-      <Header Title={"Employee Detail"} Breadcrumb={"Employee detail"} />
+    <div className="flex flex-col w-full h-full justify-start overflow-y-auto scrollbar-hidden bg-gray-50 dark:bg-slate-900">
+      {/* <Header Title={"Employee Detail"} Breadcrumb={"Employee detail"} /> */}
 
-      <div className="flex flex-1 gap-5 overflow-y-scroll rounded-md h-full">
-        <div className="h-fit shadow rounded-xl overflow-clip w-1/4"><EmployeeProfile employeeData={employeeData}/></div>
+      {/* <div className="flex flex-col flex-1  overflow-y-scroll rounded-md h-full"> */}
+        <div className="h-fit  rounded-xl">
+          {/* <EmployeeProfile employeeData={employeeData}/> */}
+          <ProfileHeader/>
+        </div>
 
-        <div className="flex flex-col rounded-md shadow h-full flex-1 gap-4 p-4 bg-white">
-          <StepHeader steps={steps} currentStep={currentStep} onStepClick={setCurrentStep} />
+        <div className="flex flex-col rounded-md h-full flex-1 gap-4 ">
+          <StepHeader classname='flex justify-start items-start  px-4 my-2 m-0 *:h-12 min-h-fit max-h-fit  gap-5 border-b border-gray-200 ' notcurrentsytle='border-gray-50' steps={steps} currentStep={currentStep} onStepClick={setCurrentStep} />
 
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 bg-white ">
             <RenderStepContent
               currentStep={currentStep}
               editMode={editMode}
@@ -306,7 +199,7 @@ if (error)
               handleDocumentUpdate={handleDocumentUpdate}
             />
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

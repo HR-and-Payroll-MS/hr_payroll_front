@@ -94,16 +94,16 @@ export const sidebarList = {
         { subPath: 'send_notification_page', label: 'Send Notifications' },
       ],
     },
-    {
-      Icons: 'CircleUser',
-      path: null,
-      label: 'Profile',
-      Visible: false,
-      sub: [
-        { subPath: '/', label: 'Manage Profile' },
-        { subPath: 'logout', label: 'logout' },
-      ],
-    },
+    // {
+    //   Icons: 'CircleUser',
+    //   path: null,
+    //   label: 'Profile',
+    //   Visible: false,
+    //   sub: [
+    //     { subPath: '/', label: 'Manage Profile' },
+    //     { subPath: 'logout', label: 'logout' },
+    //   ],
+    // },
   ],
 
 

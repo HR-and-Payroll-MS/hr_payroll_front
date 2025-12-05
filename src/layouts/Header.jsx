@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import DropDownContent from "../Components/DropDownContent";
 import Icon from "../Components/Icon";
 import InputField from "../Components/InputField";
-import { NotificationBell } from "../Pages/HR_Manager/Notifications/MockData";
+import NotificationBell  from "../Pages/HR_Manager/Notifications/NotificationBell";
 
 export default function Header(){
         return <div className={`bg-white flex justify-evenly shadow h-14 gap-3 z-50  dark:bg-slate-800 dark:text-white `}> 

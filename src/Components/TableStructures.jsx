@@ -3,10 +3,13 @@ import Icon from './Icon';
 import FileDrawer from './FileDrawer';
 import Drawer from './Drawer';
 import AttendanceCorrectionPage from '../Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
+import PayrollReportDrawer from '../Pages/HR_Manager/payroll_management/PayrollReportDrawer';
 // import { BASE_URL } from '../api/axiosInstance';
-
+function EmptyComponent() {
+  return <div>No component provided</div>;
+}
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-function TableStructures({data="",id, item}) {
+function TableStructures({data="",id, item,Comps = EmptyComponent,nickname}) {
 
   const [isModalOpen,setModalOpen] =useState(false);
   const openModal =()=>setModalOpen(true);
@@ -92,23 +95,37 @@ function TableStructures({data="",id, item}) {
         );
       case 62:
         return(
-            <div className="flex w-full  gap-1.5 items-center ">
-                            <div onClick={deleteItem} className="p-1.5 bg-red-600 rounded-md hover:bg-red-900 hover:cursor-pointer *:scrollbar-hidden">
-                                <Icon name={"Trash"} className="text-slate-50 h-4 w-4"/>
-                            </div>
+          <div className="flex w-full  gap-1.5 items-center ">
+                          <div onClick={deleteItem} className="p-1.5 bg-red-600 rounded-md hover:bg-red-900 hover:cursor-pointer *:scrollbar-hidden">
+                              <Icon name={"Trash"} className="text-slate-50 h-4 w-4"/>
+                          </div>
 
 
 
-                             <div onClick={openModal} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
-                                <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/>
-                                { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
-                                         <AttendanceCorrectionPage staticUserData={data}/>
+                            <div onClick={openModal} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
+                              <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/>
+                              { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
+                                        <AttendanceCorrectionPage staticUserData={data}/>
+                              </FileDrawer>)}
+                          </div>
+                          
+                  </div>
+      );
+      case 63:
+        return(
+            <div className="flex w-full justify-start gap-1.5 items-center ">
+                            <div onClick={openModal} className=" hover:cursor-pointer *:scrollbar-hidden">
+                                {/* <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/> */}
+                                <div><p className='hover:underline text-blue-500 hover:text-blue-700'>{nickname}</p></div>
+                                { isModalOpen&& (
+                                  <FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
+                                          {/* <PayrollReportDrawer data={data}/> */}
+                                          <Comps data={data}/>
                                 </FileDrawer>)}
                             </div>
                             
                     </div>
         );
-
 
       default:
         return <p>-</p>;

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import MyPayslipList from "./MyPayslipList";
 import MyPayslipDrawer from "./MyPayslipDrawer";
+import Table from '../../../Components/Table'
+import PayrollReportDrawer from "./PayrollReportDrawer";
 
 function MyPayrollPage() {
   // static placeholder data
@@ -21,17 +23,18 @@ function MyPayrollPage() {
     },
   ];
 
+  const structure = [1,1,63]
+  const key =[['month'],['net']]
+  const title = ["Month","Net Salary","Action"]
+
   const [selected, setSelected] = useState(null);
 
   return (
     <div className="p-5">
-      <h1 className="text-2xl font-semibold mb-4">My Payroll</h1>
+    <h1 className="text-2xl font-semibold mb-4">My Payroll</h1>
+<Table Data={payslips} Structure={structure} ke={key} title={title} nickname="View Payslip" components={MyPayslipDrawer}/>
 
-      <MyPayslipList payslips={payslips} onView={(p) => setSelected(p)} />
-
-      {selected && (
-        <MyPayslipDrawer data={selected} close={() => setSelected(null)} />
-      )}
+     
     </div>
   );
 }

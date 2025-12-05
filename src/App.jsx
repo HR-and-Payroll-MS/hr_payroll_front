@@ -50,7 +50,10 @@ import LeaveApprovalPage from './Pages/HR_Manager/LeaveApproval/LeaveApprovalPag
 import AnnouncementsPage from './Pages/HR_Manager/Announcement/AnnouncementPage';
 import PayrollReportsPage from './Pages/HR_Manager/payroll_management/PayrollReportsPage';
 import MyPayrollPage from './Pages/HR_Manager/payroll_management/MyPayrollPage';
-import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
+import NotificationCenterPage from './Pages/HR_Manager/Notifications/NotificationCenterPage';
+import SendNotificationPage from './Pages/HR_Manager/Notifications/SendNotificationPage';
+import ProfileHeader from './Pages/profile/ProfileHeader';
+// import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
 
@@ -77,10 +80,12 @@ function App() {
             <Route path="Payroll_report" element={<PayrollReportsPage/>} />
             <Route path="MyPayroll" element={<MyPayrollPage/>} />
             <Route path="policies" element={<Policy/>} />
-            <Route path="logout" element={<LogOut />} />
+            {/* <Route path="logout" element={<LogOut />} /> */}
+            <Route path="logout" element={<ProfileHeader />} />
             <Route path="profile" element={<MyProfile/>} />
+            {/* <Route path="send_notification_page" element={<SendNotificationPage/>} /> */}
             <Route path="send_notification_page" element={<SendNotificationPage/>} />
-            <Route path="notification_bell" element={<NotificationBell/>} />
+            {/* <Route path="notification_bell" element={<NotificationBell/>} /> */}
             <Route path="notification_center_page" element={<NotificationCenterPage/>} />
             <Route path="Employee" element={<Employee />}>
               <Route path="ManageEmployee" element={<ManageEmployee />} />
@@ -110,6 +115,32 @@ function App() {
             <Route path="Modal_Test" element={<CVReader />} />
           </Route>
         </Route>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         {/* ------------------------- manager ---------------------- */}
 

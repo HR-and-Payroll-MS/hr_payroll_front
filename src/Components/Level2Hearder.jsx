@@ -148,7 +148,7 @@ export function ApproveReject({ FiltersChange }) {
   ];
 
   return (
-    <div id="left" className="flex py-2.5 gap-3 w-full justify-between items-center">
+    <div id="left" className="flex py-2.5 gap-3 w-full justify-start items-center">
 
       <InputField  placeholder={"Search Employee"} displayKey="name" onSelect={handleEmployeeSelect} />
 
@@ -180,7 +180,7 @@ export function AnnouncementSearch({ setQ,setPriority }) {
   ];
 
   return (
-    <div id="left" className="flex py-2.5 gap-3 w-full justify-between items-center">
+    <div id="left" className="flex py-2.5 gap-3 w-full justify-start items-center">
 
       <InputField  placeholder={"Search title or content..."} displayKey="name" onSelect={handleEmployeeSelect} />
 

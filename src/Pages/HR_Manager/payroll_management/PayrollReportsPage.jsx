@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PayrollReportsTable from "./PayrollReportsTable";
 import PayrollReportDrawer from "./PayrollReportDrawer";
+import Table from "../../../Components/Table"
 
 function PayrollReportsPage() {
   // static data placeholder
@@ -20,24 +21,16 @@ function PayrollReportsPage() {
       status: "Completed",
     },
   ];
+  const structure = [1,1,1,1,63]
+  const key =[['month'],['totalEmployees'],['totalPayout'],['status']]
+  const title = ["Month","Employees","Total Payout","Status","Action"]
 
   const [selectedReport, setSelectedReport] = useState(null);
 
   return (
     <div className="p-5">
       <h1 className="text-2xl font-semibold mb-4">Payroll Reports</h1>
-
-      <PayrollReportsTable
-        reports={mockReports}
-        onView={(report) => setSelectedReport(report)}
-      />
-
-      {selectedReport && (
-        <PayrollReportDrawer
-          data={selectedReport}
-          close={() => setSelectedReport(null)}
-        />
-      )}
+      <Table Data={mockReports} Structure={structure} ke={key} title={title} components={PayrollReportDrawer}/>
     </div>
   );
 }

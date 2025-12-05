@@ -22,12 +22,12 @@ export default function AnnouncementList({ announcements = [], onOpen }) {
   });
 
   return (
-    <div className="space-y-4 flex flex-col flex-1">
+    <div className="space-y-4 flex flex-col flex-1 h-full">
       <div className="flex gap-3 items-center mb-2">
         <AnnouncementSearch setPriority={setPriority} setQ={setQ}/>
       </div>
 
-      <div className="grid flex-1 gap-3">
+      <div className="grid flex-1 py-1.5 overflow-y-auto scrollbar-hidden gap-3">
         {filtered.length === 0 && (
           <div className="p-6 flex flex-col  justify-center items-center  text-gray-600"> <img
                 className=""

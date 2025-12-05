@@ -67,16 +67,16 @@ export default function AnnouncementsPage() {
   }
 
   return (
-    <div className="p-6 flex flex-col min-h-screen">
+    <div className="p-6 flex h-full flex-col min-h-screen">
       <div className="flex items-center justify-between mb-6">  
         <Header  Title={"Announcements"} subTitle={"Create and broadcast announcements to employees."}>
           <CreateAnnouncement onCreate={handleCreate} />
         </Header>
       </div>
         
-
+<div className="h-9/12">
       <AnnouncementList announcements={announcements} onOpen={openDetails} />
-
+</div>
 
         {drawerOpen && <FileDrawer isModalOpen={drawerOpen} closeModal={closeDetails}>
         {selected && (

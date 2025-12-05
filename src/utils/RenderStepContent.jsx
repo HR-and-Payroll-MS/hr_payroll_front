@@ -15,7 +15,7 @@ export const RenderStepContent = ({
   switch (currentStep) {
     case 0:
       return (
-        <div className="flex-1 flex-col p-2 flex">
+        <div className="flex-1 flex-col p-4 flex">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">General Information</h2>
             {editMode?.general ? (
@@ -42,7 +42,7 @@ export const RenderStepContent = ({
 
     case 1:
       return (
-        <div className="space-y-4">
+        <div className="flex-1 flex-col p-4 flex">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Job Information</h2>
             {editMode?.job ? (
@@ -68,7 +68,7 @@ export const RenderStepContent = ({
       );
 case 2:
       return (
-        <div className="space-y-4">
+        <div className="flex-1 flex-col p-4 flex">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Payroll Information</h2>
             {editMode?.payroll ? (
@@ -94,7 +94,7 @@ case 2:
 
     case 3:
       return (
-        <div className="space-y-4">
+        <div className="flex-1 flex-col p-4 flex">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Documents</h2>
             {editMode?.documents ? (

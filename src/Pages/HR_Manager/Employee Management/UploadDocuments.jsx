@@ -76,7 +76,7 @@ export default function UploadDocuments() {
         }
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState(employee);
+  const [selectedEmployee, setSelectedEmployee] = useState("");
   const [employeesOptions, setEmployeesOptions] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [loadingDocs, setLoadingDocs] = useState(false);
@@ -510,18 +510,25 @@ export default function UploadDocuments() {
         },
       ]
   const loadDocuments = useCallback(async (employeeId) => {
-    // setLoadingDocs(true);
-    // try {
-    //   const res= await axiosPrivate.get(`/employees/${employeeId}`)
-    //   setDocuments([res.data]|| [])
-    // } catch (err) {
-    //   console.error('fetch docs error', err);
-    //   setDocuments([]);
-    // } finally {
-    //   setLoadingDocs(false);
-    // }
-    setDocuments(response)
-  }, []);useEffect(() => {
+    setLoadingDocs(true);
+    try {
+
+      const res = await axiosPrivate.get(`/employees/serve-document/${employeeId}/`,{ responseType: "blob" });
+      // const res= await axiosPrivate.get(`/employees/${employeeId}/serve-document/`)
+      setDocuments([res.data]|| [])
+      console.log('employeeId', employeeId);
+      console.log("res.data", res.data);
+      console.log('fetched docs', res.data.documents);
+    } catch (err) {
+      console.error('fetch docs error', err);
+      setDocuments([]);
+    } finally {
+      setLoadingDocs(false);
+    }
+    // setDocuments(response)
+  }, []);
+  
+  useEffect(() => {
     if (selectedEmployee?.id) {
       loadDocuments(selectedEmployee.id);
     } else {
@@ -550,7 +557,6 @@ export default function UploadDocuments() {
   };
     const handleEmployeeSelect = (emp) => {
     console.log("Selected employee:", emp);
-
     setSelectedEmployee(emp);
     loadDocuments(emp.id); // send ID only
   };
@@ -564,7 +570,7 @@ export default function UploadDocuments() {
       setDocuments(prev); // rollback
     }
   };
-
+console.log('Employee', selectedEmployee);
   return (
     <div className="p-6">
       <header className="flex items-center justify-between mb-6">
@@ -583,14 +589,14 @@ export default function UploadDocuments() {
           {selectedEmployee ? (
             <div className="flex items-center gap-3 mt-2">
               <img
-                src={selectedEmployee.avatar || '/pic/avatar.jpg'}
+                src={selectedEmployee.general.photo || '/pic/avatar.jpg'}
                 alt=""
                 className="h-10 w-10 rounded-full"
               />
               <div>
-                <div className="font-semibold">{selectedEmployee.name}</div>
+                <div className="font-semibold">{selectedEmployee.general.fullname}</div>
                 <div className="text-xs text-slate-500">
-                  {selectedEmployee.department || selectedEmployee.email}
+                  {selectedEmployee.department || selectedEmployee.general.emailaddress}
                 </div>
               </div>
               <button
@@ -606,7 +612,7 @@ export default function UploadDocuments() {
             </div>
           )}
         </div>
-        <Table Data={response} Structure={structure} ke={key2} title={title} onRowClick={(data) => console.log(data)} />
+        <Table Data={documents} Structure={structure} ke={key2} title={title} onRowClick={(data) => console.log(data)} />
        </main>
 
       <UploadDrawer open={drawerOpen} onClose={setDrawerOpen} employee={selectedEmployee} onUpload={async (payload) => { await handleUpload(payload); setDrawerOpen(false);}} uploading={uploading} />

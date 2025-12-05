@@ -17,6 +17,7 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
       setProgress(0);
     }
   }, [open]);
+  console.log('Selected Employee in UploadDrawer:', employee);
   const handleSubmit = async () => {
     if (!employee) {
       alert('Please select an employee before uploading.');
@@ -59,11 +60,11 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
              <label className="text-sm block mb-1 ">Employee</label>
                 {employee ? (
                   <div className="flex items-center gap-3 p-3  ">
-                    <img src={employee.avatar || '/pic/avatar.jpg'} alt="" className="h-8 w-8 rounded-full" />
+                    <img src={employee.general.photo || '/pic/avatar.jpg'} alt="" className="h-8 w-8 rounded-full" />
                     <div>
-                      <div className="font-medium">{employee.full_name}</div>
+                      <div className="font-medium">{employee.general.fullname}</div>
                       <div className="text-xs text-slate-500">
-                        {employee.employee_id}
+                        {employee.job.employeeid} - {employee.job.department}
                       </div>
                     </div>
                   </div>

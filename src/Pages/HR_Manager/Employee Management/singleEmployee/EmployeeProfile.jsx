@@ -3,10 +3,19 @@ import Icon from '../../../../Components/Icon';
 import useAuth from '../../../../Context/AuthContext';
 function EmployeeProfile({employeeData}) {  
   const {axiosPrivate} = useAuth();
-  const handleDelete = () => {
-    // Implement delete functionality here
-    console.log("Delete user:", employeeData?.general?.fullname);
+  const handleDelete = async () => {
+    
+  try {
+    const response = await axiosPrivate.delete(`/employees/${employeeData?.id}/`);
+    
+    console.log("Delete response:", response.data);
+    console.log("Deleted user:", employeeData?.general?.fullname);
+
+  } catch (error) {
+    console.error("Failed to delete employee:", error);
   }
+};
+
   return ( <div id="left" className="flex bg-white w-full flex-col h-full p-2 px-4 gap-4">
         {/* TOP SECTION */}
         <div id="top" className="items-center justify-center flex flex-col flex-2">

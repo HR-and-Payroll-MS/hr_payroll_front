@@ -105,6 +105,7 @@ function ViewEmployeeDetail() {
   }, [axiosPrivate, employeeId]);
   
   const handleDocumentUpdate = (updatedFiles) => {
+    console.log('updatedFiles',updatedFiles)
     setEmployeeData((prev) => ({
       ...prev,
       documents: {
@@ -136,7 +137,7 @@ function ViewEmployeeDetail() {
       setEmployeeData(data);
       setOriginalData(data);
       setEditMode((prev) => ({ ...prev, [section]: false }));
-      const res= await axiosPrivate.put(`/employees/${employeeId}`, data);
+      const res= await axiosPrivate.patch(`/employees/${employeeId}/`, data);
       console.log("Saved successfully (simulated):", data," Response:", res.data);
     } catch (err) {
       console.error("Save failed:", err);
@@ -161,7 +162,7 @@ function ViewEmployeeDetail() {
     );
 if (error)
     return (
-      <div className="p-4 text-center text-red-500 bg-red-50 rounded-lg">
+      <div className="p-4 text-center text-red-500 bg-red-50  rounded-lg">
         {error}
       </div>
     );

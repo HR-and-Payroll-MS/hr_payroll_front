@@ -4,7 +4,22 @@ import { usePagination } from "../Hooks/usePagination";
 import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
-function Table({ Data,URL, Structure, ke,clickable=true ,title=[], onRowClick,totPage=1}) {
+function Table({ Data,URL, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view"}) {
+
+  // function Table(props) {
+  // const {
+  //   Data,
+  //   URL,
+  //   ke,
+  //   onRowClick,
+  //   Structure,
+  //   components,
+  //   title = [],
+  //   clickable = true,
+  //   totPage = 1,
+  //   nickname="view"
+  // } = props;
+
   const { data, page,setPage, totalPages, loading } = usePagination(URL,10,Data?Data:[],totPage)
   const handleRowClick = (rowData,index) => {
     if (onRowClick) {
@@ -45,7 +60,7 @@ function Table({ Data,URL, Structure, ke,clickable=true ,title=[], onRowClick,to
       {i.map((j, jndex) =>
         jndex !== i.length - 1 && (
           <td key={jndex} className="border-b border-gray-100 dark:border-gray-600 px-4 py-2">
-            <TableStructures data={data[index]} id={bodyStructure[jndex]} item={j} />
+            <TableStructures nickname={nickname} Comps={components} data={data[index]} id={bodyStructure[jndex]} item={j} />
           </td>
         )
       )}
@@ -55,7 +70,7 @@ function Table({ Data,URL, Structure, ke,clickable=true ,title=[], onRowClick,to
 ) : (
   <tbody>
     <tr>
-      <td colSpan={9} className="text-center text-gray-500 py-4 border border-slate-300">
+      <td colSpan={9} className="text-center text-gray-500 py-4 ">
         No users found
       </td>
     </tr>
@@ -63,7 +78,7 @@ function Table({ Data,URL, Structure, ke,clickable=true ,title=[], onRowClick,to
 );
   return (
     <div className="flex-1 flex flex-col overflow-y-scroll scrollbar-hidden overflow-hidden">
-      <table className="bg-white  dark:bg-slate-800 border-b border-gray-300 w-full">
+      <table className="bg-white  dark:bg-slate-800  border-gray-300 w-full">
         {table_header}
         {table_content}
       </table> 
@@ -71,7 +86,6 @@ function Table({ Data,URL, Structure, ke,clickable=true ,title=[], onRowClick,to
     </div>
   );
 }
-
 export default Table;
 
 
