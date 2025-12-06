@@ -26,6 +26,7 @@ export default function Dropdown({
   return (
     <div className="relative  w-full" ref={dropdownRef}>
       <button
+        type="button" 
         onClick={toggleDropdown}
         className={`w-full ${text} flex text-slate-700 dark:text-slate-200 items-center gap-1 justify-between ${border} rounded-lg px-4 ${padding} hover:border-slate-400 transition`}
       >

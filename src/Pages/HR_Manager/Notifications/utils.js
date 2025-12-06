@@ -22,13 +22,28 @@ export function notificationIcon(category) {
   }
 }
 
+// export const ROLE_SEND_PERMISSIONS = {
+//   SYSTEM_ADMIN: ["system","hr","attendance","payroll"],
+//   HR_MANAGER: ["hr","attendance","leave","announcement"],
+//   PAYROLL_OFFICER: ["payroll","announcement"],
+//   DEPARTMENT_MANAGER: ["leave","attendance","announcement"],
+//   EMPLOYEE: [],
+// };
 export const ROLE_SEND_PERMISSIONS = {
-  SYSTEM_ADMIN: ["system","hr","attendance","payroll"],
-  HR_MANAGER: ["hr","attendance","leave","announcement"],
+  SYSTEM_ADMIN: [{content:"system"},{content:"hr"},{content:"attendance"},{content:"payroll"}],
+  HR_MANAGER: [{content:"hr"},{content:"attendance"},{content:"leave"},{content:"announcement"}],
   PAYROLL_OFFICER: ["payroll","announcement"],
   DEPARTMENT_MANAGER: ["leave","attendance","announcement"],
   EMPLOYEE: [],
 };
+
+const status = [
+    {content:'All Priority',svg:null,placeholder:true},
+    {content:'Low',svg:null},
+    {content:'Normal',svg:null},
+    {content:'High',svg:null},
+    {content:'Urgent',svg:null},
+  ];
 
 export const ROLE_RECEIVE_TYPES = {
   SYSTEM_ADMIN: ["system","hr","attendance","payroll","leave"],

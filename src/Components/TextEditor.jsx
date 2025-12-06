@@ -8,9 +8,12 @@ export default function TextEditor({ value, onChange }) {
       value={value}
       onEditorChange={onChange}
       init={{
-        height: 300,
+        min_height: 400,
+max_height: 500,
+
         menubar: false,
-        plugins: "link lists image code table autoresize",
+        // plugins: "link lists image code table autoresize",
+        plugins: "link lists image code table",
         toolbar:
           "undo redo | bold italic underline | bullist numlist | link image | table | code",
         branding: false,
