@@ -77,7 +77,7 @@ export default function Sidebar() {
   );
 
   const middle1 = (
-    <div id="middle" className="flex relative flex-col w-full flex-1 my-4 overflow-y-auto scrollbar-hidden  gap-2" >
+    <div id="middle" className="flex relative flex-col w-full flex-1 my-4 overflow-y-auto  scrollbar-hidden  gap-2" >
       {list.map((lists, index) =>
         lists.path ? (
           <div key={index} className="cursor-pointer">

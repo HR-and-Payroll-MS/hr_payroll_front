@@ -1,3 +1,4 @@
+import CropperModal from "./CropperModal";
 import { useImageUpload } from "./useImageUpload";
 export default function ImageUploader({ setImage, onClose }) {
   const { handleFile, inputRef, selectedImage } = useImageUpload();
@@ -11,7 +12,7 @@ export default function ImageUploader({ setImage, onClose }) {
           <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
         </div>
 
-        {/* {selectedImage && (
+        {selectedImage && (
           <CropperModal
             file={selectedImage}
             onSave={(output)=>{
@@ -19,7 +20,7 @@ export default function ImageUploader({ setImage, onClose }) {
               onClose();               // closes modal after saving image
             }}
           />
-        )} */}
+        )}
         {selectedImage&&(setImage(selectedImage))}
 
         <button className="btn btn-ghost mt-4 w-full" onClick={onClose}>

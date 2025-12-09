@@ -34,7 +34,7 @@ export default function DropDownContent({ children , svgs }) {
         {svgs}
       </button>
       {open && (
-        <div className="absolute -right-0 mt-2 w-36   bg-white rounded-lg shadow-xl z-50">
+        <div onClick={() => setOpen(false)} className="absolute -right-0 mt-2 w-36   bg-white rounded-lg shadow-xl z-50">
             {children}
         </div>
       )}

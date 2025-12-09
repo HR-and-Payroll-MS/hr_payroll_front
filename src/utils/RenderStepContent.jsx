@@ -1,7 +1,7 @@
+
 import DocumentList from "../Components/DocumentList";
 import Icon from "../Components/Icon";
 import { RenderFields } from "./renderFields";
-
 export const RenderStepContent = ({
   currentStep,
   editMode,
@@ -11,14 +11,17 @@ export const RenderStepContent = ({
   handleCancel,
   handleEditToggle,
   handleDocumentUpdate,
+  editable = {general: true, job: true, payroll: true, documents: true } // new prop: object like { general: true, job: false, payroll: true, documents: true }
 }) => {
+  const isEditable = (section) => editable[section];
+
   switch (currentStep) {
     case 0:
       return (
-        <div className="flex-1 flex-col p-4 flex">
+        <div className="flex-1 flex-col border border-slate-300 rounded bg-white p-4 flex">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">General Information</h2>
-            {editMode?.general ? (
+            {isEditable("general") && (editMode?.general ? (
               <div className="flex gap-2">
                 <button onClick={() => handleSave("general")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
                   Save
@@ -31,21 +34,26 @@ export const RenderStepContent = ({
               <button onClick={() => handleEditToggle("general")} className="px-3 py-1 rounded hover:bg-slate-100">
                 <Icon className="w-4 h-4" name={"Pen"} />
               </button>
-            )}
+            ))}
           </div>
 
-          <div className="flex flex-1 gap-5 p-4 justify-start items-start flex-wrap">
-            <RenderFields sectionKey="general" sectionData={employeeData?.general} handleInputChange={handleInputChange} editMode={editMode} />
+          <div className="flex flex-1 gap-5 p-2 justify-start items-start flex-wrap">
+            <RenderFields
+              sectionKey="general"
+              sectionData={employeeData?.general}
+              handleInputChange={handleInputChange}
+              editMode={isEditable("general") ? editMode : {}}
+            />
           </div>
         </div>
       );
 
     case 1:
       return (
-        <div className="flex-1 flex-col p-4 flex">
+        <div className="flex-1 border border-slate-300 rounded bg-white  flex-col p-4 flex">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Job Information</h2>
-            {editMode?.job ? (
+            {isEditable("job") && (editMode?.job ? (
               <div className="flex gap-2">
                 <button onClick={() => handleSave("job")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
                   Save
@@ -58,20 +66,26 @@ export const RenderStepContent = ({
               <button onClick={() => handleEditToggle("job")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
                 <Icon className="w-4 h-4" name={"Pen"} />
               </button>
-            )}
+            ))}
           </div>
 
-          <div className="flex gap-5 p-4 justify-start items-start flex-wrap">
-            <RenderFields handleInputChange={handleInputChange} sectionKey={"job"} sectionData={employeeData?.job} editMode={editMode} />
+          <div className="flex gap-5 p-2 justify-start items-start flex-wrap">
+            <RenderFields
+              sectionKey="job"
+              sectionData={employeeData?.job}
+              handleInputChange={handleInputChange}
+              editMode={isEditable("job") ? editMode : {}}
+            />
           </div>
         </div>
       );
-case 2:
+
+    case 2:
       return (
-        <div className="flex-1 flex-col p-4 flex">
+        <div className="flex-1 border border-slate-300 rounded bg-white flex-col p-4 flex">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Payroll Information</h2>
-            {editMode?.payroll ? (
+            {isEditable("payroll") && (editMode?.payroll ? (
               <div className="flex gap-2">
                 <button onClick={() => handleSave("payroll")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
                   Save
@@ -84,20 +98,25 @@ case 2:
               <button onClick={() => handleEditToggle("payroll")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
                 <Icon className="w-4 h-4" name={"Pen"} />
               </button>
-            )}
+            ))}
           </div>
-          <div className="flex gap-5 p-4 justify-start items-start flex-wrap">
-            <RenderFields handleInputChange={handleInputChange} sectionKey={"payroll"} sectionData={employeeData?.payroll} editMode={editMode} />
+          <div className="flex gap-5 p-2 justify-start items-start flex-wrap">
+            <RenderFields
+              sectionKey="payroll"
+              sectionData={employeeData?.payroll}
+              handleInputChange={handleInputChange}
+              editMode={isEditable("payroll") ? editMode : {}}
+            />
           </div>
         </div>
       );
 
     case 3:
       return (
-        <div className="flex-1 flex-col p-4 flex">
+        <div className="flex-1 flex-col p-4 flex border border-slate-300 rounded bg-white ">
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Documents</h2>
-            {editMode?.documents ? (
+            {isEditable("documents") && (editMode?.documents ? (
               <div className="flex gap-2">
                 <button onClick={() => handleSave("documents")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
                   Save
@@ -110,17 +129,16 @@ case 2:
               <button onClick={() => handleEditToggle("documents")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
                 <Icon className="w-4 h-4" name={"Pen"} />
               </button>
-            )}
+            ))}
           </div>
 
           <div className="space-y-2 ">
-            {console.log("documents", employeeData?.documents?.files || [])}
-           <DocumentList 
-  files={employeeData?.documents?.files || []} 
-  isEditing={!!editMode?.documents} 
-  onChange={handleDocumentUpdate} 
-/>
-</div>
+            <DocumentList
+              files={employeeData?.documents?.files || []}
+              isEditing={isEditable("documents") && !!editMode?.documents}
+              onChange={handleDocumentUpdate}
+            />
+          </div>
         </div>
       );
 
@@ -128,6 +146,164 @@ case 2:
       return null;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import DocumentList from "../Components/DocumentList";
+// import Icon from "../Components/Icon";
+// import { RenderFields } from "./renderFields";
+
+// export const RenderStepContent = ({
+//   currentStep,
+//   editMode,
+//   employeeData,
+//   handleInputChange,
+//   handleSave,
+//   handleCancel,
+//   handleEditToggle,
+//   handleDocumentUpdate,
+// }) => {
+//   switch (currentStep) {
+//     case 0:
+//       return (
+//         <div className="flex-1 flex-col p-4 flex">
+//           <div className="flex justify-between items-center mb-2 ">
+//             <h2 className="font-semibold text-lg">General Information</h2>
+//             {editMode?.general ? (
+//               <div className="flex gap-2">
+//                 <button onClick={() => handleSave("general")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+//                   Save
+//                 </button>
+//                 <button onClick={() => handleCancel("general")} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+//                   Cancel
+//                 </button>
+//               </div>
+//             ) : (
+//               <button onClick={() => handleEditToggle("general")} className="px-3 py-1 rounded hover:bg-slate-100">
+//                 <Icon className="w-4 h-4" name={"Pen"} />
+//               </button>
+//             )}
+//           </div>
+
+//           <div className="flex flex-1 gap-5 p-4 justify-start items-start flex-wrap">
+//             <RenderFields sectionKey="general" sectionData={employeeData?.general} handleInputChange={handleInputChange} editMode={editMode} />
+//           </div>
+//         </div>
+//       );
+
+//     case 1:
+//       return (
+//         <div className="flex-1 flex-col p-4 flex">
+//           <div className="flex justify-between items-center mb-2 ">
+//             <h2 className="font-semibold text-lg">Job Information</h2>
+//             {editMode?.job ? (
+//               <div className="flex gap-2">
+//                 <button onClick={() => handleSave("job")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+//                   Save
+//                 </button>
+//                 <button onClick={() => handleCancel("job")} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+//                   Cancel
+//                 </button>
+//               </div>
+//             ) : (
+//               <button onClick={() => handleEditToggle("job")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
+//                 <Icon className="w-4 h-4" name={"Pen"} />
+//               </button>
+//             )}
+//           </div>
+
+//           <div className="flex gap-5 p-4 justify-start items-start flex-wrap">
+//             <RenderFields handleInputChange={handleInputChange} sectionKey={"job"} sectionData={employeeData?.job} editMode={editMode} />
+//           </div>
+//         </div>
+//       );
+// case 2:
+//       return (
+//         <div className="flex-1 flex-col p-4 flex">
+//           <div className="flex justify-between items-center mb-2 ">
+//             <h2 className="font-semibold text-lg">Payroll Information</h2>
+//             {editMode?.payroll ? (
+//               <div className="flex gap-2">
+//                 <button onClick={() => handleSave("payroll")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+//                   Save
+//                 </button>
+//                 <button onClick={() => handleCancel("payroll")} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+//                   Cancel
+//                 </button>
+//               </div>
+//             ) : (
+//               <button onClick={() => handleEditToggle("payroll")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
+//                 <Icon className="w-4 h-4" name={"Pen"} />
+//               </button>
+//             )}
+//           </div>
+//           <div className="flex gap-5 p-4 justify-start items-start flex-wrap">
+//             <RenderFields handleInputChange={handleInputChange} sectionKey={"payroll"} sectionData={employeeData?.payroll} editMode={editMode} />
+//           </div>
+//         </div>
+//       );
+
+//     case 3:
+//       return (
+//         <div className="flex-1 flex-col p-4 flex">
+//           <div className="flex justify-between items-center mb-2 ">
+//             <h2 className="font-semibold text-lg">Documents</h2>
+//             {editMode?.documents ? (
+//               <div className="flex gap-2">
+//                 <button onClick={() => handleSave("documents")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+//                   Save
+//                 </button>
+//                 <button onClick={() => handleCancel("documents")} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+//                   Cancel
+//                 </button>
+//               </div>
+//             ) : (
+//               <button onClick={() => handleEditToggle("documents")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
+//                 <Icon className="w-4 h-4" name={"Pen"} />
+//               </button>
+//             )}
+//           </div>
+
+//           <div className="space-y-2 ">
+//             {console.log("documents", employeeData?.documents?.files || [])}
+//            <DocumentList 
+//   files={employeeData?.documents?.files || []} 
+//   isEditing={!!editMode?.documents} 
+//   onChange={handleDocumentUpdate} 
+// />
+// </div>
+//         </div>
+//       );
+
+//     default:
+//       return null;
+//   }
+// };
 
 
 

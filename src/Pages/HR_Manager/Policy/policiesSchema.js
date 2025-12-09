@@ -1,11 +1,3 @@
-// policiesSchema.js
-// This file contains an initial policies object you can replace with data from backend.
-// The schema also shows lightweight typed wrappers for special renderers:
-// - { __type: "dropdown", options: [...], value: "..." }
-// - { __type: "documents", value: [...] } -> DocumentList
-//
-// Replace values with actual backend fields.
-
 export const initialPolicies = {
   general: {
     companyName: "Example Co",

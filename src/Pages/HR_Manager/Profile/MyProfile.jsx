@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import useAuth from '../../../Context/AuthContext';
 import Header from '../../../Components/Header';
 import StepHeader from '../../../Components/forms/StepHeader';
@@ -7,12 +7,17 @@ import { RenderStepContent } from '../../../utils/RenderStepContent';
 import Icon from '../../../Components/Icon';
 import ThreeDots from '../../../animations/ThreeDots';
 import ProfileHeader from '../../profile/ProfileHeader';
+import MyPayrollPage from '../payroll_management/MyPayrollPage';
 
 function MyProfile({currStep=0}) {
     
+  const { state } = useLocation();
+  const { position } = state || {};
+  const activeStep = position ?? currStep;
+
   const { axiosPrivate } = useAuth(); // must supply axiosPrivate configured with baseURL + auth
   const steps = ["General", "Job", "Payroll", "Documents"];
-  const [currentStep, setCurrentStep] = useState(currStep);
+  const [currentStep, setCurrentStep] = useState(activeStep);
   const [employeeData, setEmployeeData] = useState(null);
   const [originalData, setOriginalData] = useState(null); // keep backend snapshot
   const [loading, setLoading] = useState(true);
@@ -20,6 +25,13 @@ function MyProfile({currStep=0}) {
   const [editMode, setEditMode] = useState({general: false, job: false, payroll: false, documents: false,});
   const employeeId = 0
 //   const employeeId = useParams().id;
+  useEffect(() => {
+    if (position !== undefined) {
+      setCurrentStep(position);
+    } else{
+      setCurrentStep(0)
+    }
+  }, [position]);
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -80,6 +92,34 @@ function MyProfile({currStep=0}) {
               {
                 name: "Empent Contract.pdf",
                 url: "https://example.com/files/contract.pdf",
+              },
+              {
+                name: "tailwind_cheat_sheet.pdf",
+                url: "https://example.com/files/idcard.png",
+                type: "application/pdf",
+                size: 3717,
+                webkitRelativePath: ""
+              },
+              {
+                name: "tailwind_cheat_sheet.pdf",
+                url: "https://example.com/files/idcard.png",
+                type: "application/pdf",
+                size: 3717,
+                webkitRelativePath: ""
+              },
+              {
+                name: "tailwind_cheat_sheet.pdf",
+                url: "https://example.com/files/idcard.png",
+                type: "application/pdf",
+                size: 3717,
+                webkitRelativePath: ""
+              },
+              {
+                name: "tailwind_cheat_sheet.pdf",
+                url: "https://example.com/files/idcard.png",
+                type: "application/pdf",
+                size: 3717,
+                webkitRelativePath: ""
               },
               {
                 name: "tailwind_cheat_sheet.pdf",
@@ -187,7 +227,7 @@ if (error)
         <div className="flex flex-col rounded-md h-full flex-1 gap-4 ">
           <StepHeader classname='flex justify-start items-start  px-4 my-2 m-0 *:h-12 min-h-fit max-h-fit  gap-5 border-b border-gray-200 ' notcurrentsytle='border-gray-50' steps={steps} currentStep={currentStep} onStepClick={setCurrentStep} />
 
-          <div className="flex-1 bg-white ">
+          <div className="flex-1 flex flex-col gap-3.5 pb-1 ">
             <RenderStepContent
               currentStep={currentStep}
               editMode={editMode}
@@ -197,7 +237,9 @@ if (error)
               handleCancel={handleCancel}
               handleEditToggle={handleEditToggle}
               handleDocumentUpdate={handleDocumentUpdate}
+              editable={{ general: true, job: false, payroll: false, documents: true }}
             />
+            {currentStep===2 && <MyPayrollPage headerfont='text-xl' background={" border border-slate-300 rounded bg-white"}/>}
           </div>
         {/* </div> */}
       </div>

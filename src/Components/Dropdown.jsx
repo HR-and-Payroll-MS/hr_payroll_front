@@ -42,29 +42,33 @@ export default function Dropdown({
       </button>
 
       {isOpen && (
-        <ul className="absolute z-10 text-nowrap mt-2 w-full min-w-fit bg-white dark:bg-slate-700 rounded-sm shadow-lg max-h-56 overflow-y-auto scrollbar-hidden">
-          {options.length > 0 ? (
-            options.map((item, index) => (
-              <li
-                key={index}
-                onClick={() => handleSelect(item.content, item.svg)}
-                className={`px-4 flex gap-1 ${text} text-slate-700 dark:text-slate-200 py-2 cursor-pointer dark:hover:text-slate-800 dark:hover:border-slate-800 hover:bg-slate-100 ${
-                  selected === item.content
-                    ? "bg-slate-100 dark:bg-green-800 dark:text-slate-200 text-slate-600"
-                    : ""
-                }`}
-              >
-                {item.svg ? (
-                  <Icon className="w-4 h-4" name={item.svg} />
-                ) : null}
-                {item.content}
-              </li>
-            ))
-          ) : (
-            <li className="px-4 py-2 text-gray-400">No options</li>
-          )}
-        </ul>
-      )}
+  <ul className="absolute z-10 text-nowrap mt-2 w-full min-w-fit bg-white dark:bg-slate-700 rounded-sm shadow-lg max-h-56 overflow-y-auto scrollbar-hidden">
+    {options && options.length > 0 ? (
+      options.map((item, index) => {
+        // normalize item: if it's a string, turn it into an object with content
+        const option = typeof item === "string" ? { content: item } : item;
+
+        return (
+          <li
+            key={index}
+            onClick={() => handleSelect(option.content, option.svg)}
+            className={`px-4 flex gap-1 ${text} text-slate-700 dark:text-slate-200 py-2 cursor-pointer dark:hover:text-slate-800 dark:hover:border-slate-800 hover:bg-slate-100 ${
+              selected === option.content
+                ? "bg-slate-100 dark:bg-green-800 dark:text-slate-200 text-slate-600"
+                : ""
+            }`}
+          >
+            {option.svg && <Icon className="w-4 h-4" name={option.svg} />}
+            {option.content}
+          </li>
+        );
+      })
+    ) : (
+      <li className="px-4 py-2 text-gray-400">No options</li>
+    )}
+  </ul>
+)}
+
     </div>
   );
 }

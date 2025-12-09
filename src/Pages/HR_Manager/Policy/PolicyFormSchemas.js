@@ -40,7 +40,7 @@ export const policyFormSchemas = {
   salaryStructurePolicy: {
     deductions: {
       // example: letting the admin add taxBracket item
-      taxBracket: {
+      shiftTimes: {
         min: { type: "number", label: "Min" },
         max: { type: "number", label: "Max" },
         rate: { type: "number", label: "Rate (%)" },

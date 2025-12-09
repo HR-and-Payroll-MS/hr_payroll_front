@@ -9,9 +9,9 @@ export function useImageUpload() {
     const file = e.target.files[0];
     if (!validateImage(file)) return alert("Invalid Image");
 
-    const url = URL.createObjectURL(file);
+    const url = URL.createObjectURL(file); // preview URL
     setSelectedImage(url);
   };
 
-  return { handleFile, inputRef, selectedImage };
+  return { handleFile, inputRef, selectedImage, setSelectedImage };
 }

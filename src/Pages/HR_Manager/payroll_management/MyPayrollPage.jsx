@@ -4,7 +4,7 @@ import MyPayslipDrawer from "./MyPayslipDrawer";
 import Table from '../../../Components/Table'
 import PayrollReportDrawer from "./PayrollReportDrawer";
 
-function MyPayrollPage() {
+function MyPayrollPage({background,headerfont="text-2xl"}) {
   // static placeholder data
   const payslips = [
     {
@@ -30,8 +30,8 @@ function MyPayrollPage() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="p-5">
-    <h1 className="text-2xl font-semibold mb-4">My Payroll</h1>
+    <div className={`p-5 ${background}`}>
+    <h1 className={` font-semibold mb-4 ${headerfont}`}>Payslips</h1>
 <Table Data={payslips} Structure={structure} ke={key} title={title} nickname="View Payslip" components={MyPayslipDrawer}/>
 
      
