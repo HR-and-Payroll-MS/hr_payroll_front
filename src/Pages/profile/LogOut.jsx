@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import useAuth from '../../../Context/AuthContext';
-import Login from '../../LoginPage';
+import useAuth from '../../Context/AuthContext';
+import Login from '../LoginPage';
 
 function LogOut() {
   const { logout } = useAuth();
@@ -13,8 +13,6 @@ function LogOut() {
 }
 
 export default LogOut;
-
-
 
 // import React, { useEffect } from 'react'
 // import useAuth from '../../../Context/AuthContext'

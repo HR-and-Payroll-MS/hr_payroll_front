@@ -38,6 +38,7 @@ const RenderStepPolicy = ({
   handleEditToggle,
   handleAddItem,
   handleRemoveItem,
+  TitleOff=false
 }) => {
   const sectionKey = stepMap[currentStep];
 
@@ -46,7 +47,7 @@ const RenderStepPolicy = ({
   return (
     <div className="flex-1 flex-col flex">
       <div className="flex p-4 z-4 bg-white shadow sticky top-0 justify-between items-center mb-2 ">
-        <h2 className="font-semibold  text-lg">{prettyTitle[sectionKey]}</h2>
+        {!TitleOff&&<h2 className="font-semibold  text-lg">{prettyTitle[sectionKey]}</h2>}
         {editMode?.[sectionKey] ? (
           <div className="flex gap-2">
             <button onClick={() => handleSave(sectionKey)} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600" >

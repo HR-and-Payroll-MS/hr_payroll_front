@@ -4,7 +4,7 @@ import useOutside from "./useOutside";
 import useNotificationStore from "./useNotificationStore";
 import { formatTime, notificationIcon } from "./utils";
 import { MOCK_NOTIFICATIONS } from "./mockData";
-import Icon from "../../../Components/Icon";
+import Icon from "../../Components/Icon";
 
 export default function NotificationBell({ role = "EMPLOYEE", onOpenCenter }) {
   const store = useNotificationStore(MOCK_NOTIFICATIONS);

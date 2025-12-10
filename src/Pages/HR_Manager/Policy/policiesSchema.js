@@ -133,17 +133,18 @@ export const initialPolicies = {
       gradeB: 20000,
       gradeC: 15000,
     },
-    allowances: {
-      transport: 1000,
-      housing: 3000,
-      meal: 500,
-    },
+   allowances: [
+  { name: "Transport", value: 1000 },
+  { name: "Housing", value: 2000 },
+]
+
+,
     deductions: {
       pensionPercent: 7,
       taxBracket: [
-        { min: 0, max: 10000, rate: 5 },
-        { min: 10001, max: 20000, rate: 15 },
-        { min: 20001, max: 40000, rate: 25 },
+        { min: 0, max: 10000, rate: 5 ,appliedfor:"Department" },
+        { min: 10001, max: 20000, rate: 15 ,appliedfor:"All"},
+        { min: 20001, max: 40000, rate: 25 ,appliedfor:"All"},
       ],
     },
   },

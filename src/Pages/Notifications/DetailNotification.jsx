@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "../../../Components/Icon";
+import Icon from "../../Components/Icon";
 
 function DetailNotification({ n, setSelected, store }) {
   return (

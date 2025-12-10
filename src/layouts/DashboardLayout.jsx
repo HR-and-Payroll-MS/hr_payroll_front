@@ -7,9 +7,8 @@ import PieChartExample from '../Components/graphs/PieChartExample';
 import { useTheme } from '../Context/ThemeContext';
 import { getLocalData, setLocalData } from '../Hooks/useLocalStorage';
 import WelcomeOverlay from '../Components/WelcomeOverlay';
-function DashboardLayout() {
-
- const data= [
+function DashboardLayout({
+  data= [
   {
     "photo": "/public/pic/image.png",
     "full_name": "Sophia Johnson",
@@ -60,11 +59,10 @@ function DashboardLayout() {
     "gender": "Female",
     "job_title": "UI/UX Designer"
   }
-]
-const structure=[3,1,1,1,1,1];
-const title=['USER','PHONE','DEPARTMENT','GENDER','STATUS','TYPE']
-
-const ke=[
+] ,
+structure=[3,1,1,1,1,1],
+title=['USER','PHONE','DEPARTMENT','GENDER','STATUS','TYPE'],
+ke=[
   ["photo", "full_name", "email"], 
   ["phone"], 
   ["department"], 
@@ -72,7 +70,9 @@ const ke=[
   ["status"],
   ["job_title"], 
   ["id"], 
-]
+]}) {
+
+
 
   // const formattedData = useFormattedTableData(backendData, Directory.bodyStructure);
   const { theme } = useTheme();

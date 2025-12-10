@@ -1,4 +1,4 @@
-import Icon from "../../../Components/Icon";
+import Icon from "../../Components/Icon";
 import { notificationIcon, formatTime } from "./utils";
 
 export default function NotificationCard({ n, onView, onDelete, onMarkRead, canAction }) {

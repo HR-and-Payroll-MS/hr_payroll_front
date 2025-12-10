@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from "react";
 import Dropdown from "../../../Components/Dropdown";
 import DocumentList from "../../../Components/DocumentList";
 import AddNewItemModal from "../../../utils/AddNewItemModal";
+import { policyFormSchemas } from "./PolicyFormSchemas";
 
 // Convert camelCase/snake_case → Human label
 const humanLabel = (key) =>
@@ -28,42 +29,44 @@ const RenderNestedPolicyFields = ({
 
   const entries = useMemo(() => Object.entries(data), [data]);
 
-  /** ------------------ HELPER: get schema at any path ------------------ */
-  const getSchemaAtPath = (schemaRoot, path) => {
-    if (!path) return null;
-    return path.split(".").reduce((acc, part) => acc?.[part], schemaRoot);
-  };
+  /** ---------------------------------------------
+   * Modal opening for arrays (supports deeply nested schemas)
+   * ----------------------------------------------*/
+  const openAddModalFor = useCallback((arrayKey, arrayPath) => {
+    // retrieve schema from formSchemas dynamically using the path
+    const pathSegments = arrayPath.split(".");
+    let schema = formSchemas?.[sectionKey];
+    pathSegments.forEach((seg) => {
+      if (schema?.[seg]) schema = schema[seg];
+    });
 
-  /** ------------------ OPEN MODAL ------------------ */
-  const openAddModalFor = useCallback((arrayKey, arrayPath, fieldsSchema) => {
-    const stableFields = { ...fieldsSchema }; 
+    // fallback: if schema is not found, just use an empty object
+    const stableFields = schema && typeof schema === "object" && !Array.isArray(schema) ? { ...schema } : {};
+
     setModalConfig({
       title: `Add to ${humanLabel(arrayKey)}`,
       fields: stableFields,
       arrayPath,
     });
     setModalOpen(true);
-  }, []);
+  }, [formSchemas, sectionKey]);
 
-  const onModalSave = useCallback(
-    (newItem) => {
-      if (!modalConfig) return;
-      handleAddItem(sectionKey, modalConfig.arrayPath, newItem);
-      setModalOpen(false);
-      setModalConfig(null);
-    },
-    [modalConfig, handleAddItem, sectionKey]
-  );
+  const onModalSave = useCallback((newItem) => {
+    if (!modalConfig) return;
+    handleAddItem(sectionKey, modalConfig.arrayPath, newItem);
+    setModalOpen(false);
+    setModalConfig(null);
+  }, [modalConfig, handleAddItem, sectionKey]);
 
   return (
     <div className="w-full flex flex-col gap-4">
       {entries.map(([key, value]) => {
         const fullPath = path ? `${path}.${key}` : key;
 
-        // ---------------- OBJECT ----------------
+        // NESTED OBJECT
         if (value && typeof value === "object" && !Array.isArray(value) && !value.__type) {
           return (
-            <div key={fullPath} className="w-full rounded p-3 shadow bg-slate-50">
+            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
               <h3 className="font-semibold mb-2">{humanLabel(key)}</h3>
               <MemoizedRenderFields
                 data={value}
@@ -79,20 +82,15 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-        // ---------------- ARRAY ----------------
+        // ARRAY FIELD
         if (Array.isArray(value)) {
-          const arraySchema = getSchemaAtPath(formSchemas?.[sectionKey], fullPath);
-
           return (
-            <div key={fullPath} className="w-full shadow rounded p-3 bg-slate-50">
+            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-semibold">{humanLabel(key)}</h3>
-
                 {isEditing && (
                   <button
-                    onClick={() =>
-                      openAddModalFor(key, fullPath, arraySchema || {})
-                    }
+                    onClick={() => openAddModalFor(key, fullPath)}
                     className="px-2 py-1 bg-green-100 text-sm rounded"
                   >
                     + Add
@@ -133,7 +131,6 @@ const RenderNestedPolicyFields = ({
                     );
                   }
 
-                  // primitive array
                   return (
                     <div key={itemPath} className="flex items-center gap-3">
                       <div className="flex-1">{String(item)}</div>
@@ -153,7 +150,7 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-        // ---------------- DROPDOWN ----------------
+        // TYPED FIELD: DROPDOWN
         if (value?.__type === "dropdown") {
           return (
             <div key={fullPath} className="w-full flex gap-3 items-center">
@@ -174,7 +171,7 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-        // ---------------- DOCUMENTS ----------------
+        // TYPED FIELD: DOCUMENTS
         if (value?.__type === "documents") {
           return (
             <div key={fullPath} className="w-full flex gap-3 items-start">
@@ -190,7 +187,7 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-        // ---------------- PRIMITIVE ----------------
+        // PRIMITIVE FIELD
         return (
           <div key={fullPath} className="w-full flex gap-3 items-center">
             <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>

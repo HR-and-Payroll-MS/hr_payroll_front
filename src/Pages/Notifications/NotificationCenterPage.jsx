@@ -3,9 +3,8 @@ import NotificationCard from "./NotificationCard";
 import { ROLE_RECEIVE_TYPES, formatTime } from "./utils";
 import useNotificationStore from "./useNotificationStore";
 import { MOCK_NOTIFICATIONS } from "./mockData";
-import Dropdown from "../../../Components/Dropdown";
-import InputField from "../../../Components/InputField";
-import Icon from "../../../Components/Icon";
+import Dropdown from "../../Components/Dropdown";
+import InputField from "../../Components/InputField";
 import DetailNotification from "./DetailNotification";
 
 export default function NotificationCenterPage({ role = "EMPLOYEE" }) {

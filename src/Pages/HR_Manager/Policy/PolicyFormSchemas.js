@@ -54,15 +54,32 @@ export const policyFormSchemas = {
     },
   },
 
-  salaryStructurePolicy: {
-    deductions: {
-      taxBracket: {
-        min: { type: "number", label: "Min" },
-        max: { type: "number", label: "Max" },
-        rate: { type: "number", label: "Rate (%)" },
+salaryStructurePolicy: {
+  allowances: {
+    name: { type: "text", label: "Allowance Name" },
+    value: { type: "number", label: "Amount" },
+  },
+  deductions: {
+    taxBracket: {
+      min: { type: "number", label: "Min" },
+      max: { type: "number", label: "Max" },
+      rate: { type: "number", label: "Rate (%)" },
+      appliedfor: {
+        type: "dropdown",
+        label: "Applied For",
+        options: [
+          "All",
+          "Department 1",
+          "Department 2",
+          "HR manager",
+          "Department managers",
+          "Payroll officers",
+        ],
       },
     },
   },
+},
+
 };
 
 

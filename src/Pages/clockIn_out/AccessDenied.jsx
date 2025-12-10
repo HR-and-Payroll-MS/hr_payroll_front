@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { useNetwork } from "../../Context/NetworkContext";
+
 export default function AccessDenied() {
   const { refresh } = useNetwork();
   return (

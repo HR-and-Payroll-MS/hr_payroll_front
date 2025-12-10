@@ -2,9 +2,9 @@ import { useState } from "react";
 import useNotificationStore from "./useNotificationStore";
 import { ROLE_SEND_PERMISSIONS } from "./utils";
 import { MOCK_NOTIFICATIONS, MOCK_USERS } from "./mockData";
-import Dropdown from "../../../Components/Dropdown";
-import InputField from "../../../Components/InputField";
-import TextEditor from "../../../Components/TextEditor";
+import Dropdown from "../../Components/Dropdown";
+import InputField from "../../Components/InputField";
+import TextEditor from "../../Components/TextEditor";
 
 export default function SendNotificationPage({ role="HR_MANAGER" }) {
   const store=useNotificationStore(MOCK_NOTIFICATIONS);

@@ -1,4 +1,78 @@
 export const sidebarList = {
+ Payroll: [
+  {
+    Icons: 'Users', // already good for managing multiple employees
+    path: null,
+    label: 'Payroll Management',
+    Visible: false,
+    sub: [
+      { subPath: 'generate_payroll', label: 'Generate Payroll' },
+      { subPath: 'salary_structure', label: 'Salary Structure' },
+      // { subPath: 'allowances', label: 'Allowances/Bonuses' },
+    ],
+  },
+  {
+    Icons: 'CalendarCheck2', // better than BookA → clearly means attendance/marking
+    path: null,
+    label: 'Attendance',
+    Visible: false,
+    sub: [
+      { subPath: 'myattendance', label: 'My Attendance' },
+    ],
+  },
+  {
+    Icons: 'Receipt', // industry standard for payslips
+    path: null,
+    label: 'Payslips',
+    Visible: false,
+    sub: [
+      { subPath: 'view_generated_payslips', label: 'View Generated Payslips' },
+      { subPath: 're_generate_payslips', label: 'Re-Generate Payslips' },
+    ],
+  },
+  {
+    Icons: 'IndianRupee', // perfect for salary data (or use Wallet if you prefer)
+    path: null,
+    label: 'Employee Payroll Data',
+    Visible: false,
+    sub: [
+      { subPath: 'view_employee_salary_info', label: 'View Employee Salary Info' },
+      { subPath: 'edit_employee_salary_info', label: 'Edit Employee Salary Info' },
+    ],
+  },
+  {
+    Icons: 'FileBarChart2', // best modern icon for reports & analytics
+    path: null,
+    label: 'Reports',
+    Visible: false,
+    sub: [
+      { subPath: 'payroll_reports', label: 'Payroll Reports' },
+      { subPath: 'tax_reports', label: 'Tax Reports' },
+      { subPath: 'department_wise_paryoll', label: 'Department-Wise Payroll' },
+    ],
+  },
+  {
+    Icons: 'BellRing', // more appropriate than ShieldAlert for notifications
+    path: null,
+    label: 'Notification',
+    Visible: false,
+    sub: [
+      { subPath: 'view_notification', label: 'View Notification' },
+      { subPath: 'send_notification', label: 'Send Notification' },
+    ],
+  },
+  {
+    Icons: 'UserCog', // perfect combo: profile + settings/logout
+    path: null,
+    label: 'Profile',
+    Visible: false,
+    sub: [
+      { subPath: 'view_profile', label: 'View Profile' },
+      { subPath: '/logout', label: 'Logout' },
+    ],
+  },
+],
+
   Manager: [
     {
       Icons: 'Users',
@@ -106,42 +180,83 @@ export const sidebarList = {
     // },
   ],
 
+  Employee: [
+    {
+      path: null,
+      label: 'M Employee',
+      Visible: true,
+      sub: [
+        { subPath: 'Employee/ManageEmployee', label: 'Manage Employee' },
+        { subPath: 'Employee/Directory', label: 'Directory' },
+        { subPath: 'org-chart', label: 'ORG Chart' },
+      ],
+    },
+    {
+      path: null,
+      label: 'M Checklist',
+      Visible: false,
+      sub: [
+        { subPath: '/', label: 'To-Do' },
+        { subPath: '/', label: 'Onboarding' },
+        { subPath: '/', label: 'Offboarding' },
+        { subPath: '/', label: 'Setting' },
+      ],
+    },
+    {
+      path: null,
+      label: 'M Time Off',
+      Visible: false,
+      sub: [
+        { subPath: '/', label: 'My Time Off' },
+        { subPath: '/', label: 'Team Time Off' },
+        { subPath: '/', label: 'Employee Time Off' },
+        { subPath: '/', label: 'Settings' },
+      ],
+    },
+    {
+      path: null,
+      label: 'M Attendance',
+      Visible: false,
+      sub: [
+        { subPath: '/', label: 'My Attendance' },
+        { subPath: '/', label: 'Team Attendance' },
+        { subPath: '/', label: 'Employee Attendance' },
+        { subPath: '/', label: 'Settings' },
+      ],
+    },
+    {
+      path: 'null',
+      label: 'M Payroll',
+      Visible: false,
+      sub: [
+        { subPath: '/', label: 'Manage Employee' },
+        { subPath: '/', label: 'Directory' },
+        { subPath: '/', label: 'ORG Chart' },
+      ],
+    },
+    {
+      path: 'null',
+      label: 'M Performance',
+      Visible: false,
+      sub: [
+        { subPath: '/', label: 'Manage Employee' },
+        { subPath: '/', label: 'Directory' },
+        { subPath: '/', label: 'ORG Chart' },
+      ],
+    },
+    {
+      path: null,
+      label: 'M Recruitment',
+      Visible: false,
+      sub: [
+        { subPath: '/', label: 'Jobs' },
+        { subPath: '/', label: 'Candidates' },
+        { subPath: '/', label: 'Settings' },
+      ],
+    },
+  ],
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  Maager: [
+  Dep_Man: [
     {
       Icons: 'Users',
       path: null,
@@ -230,7 +345,7 @@ export const sidebarList = {
       ],
     },
   ],
-  hr: [
+  Admin: [
     {
       path: null,
       label: 'M Employee',

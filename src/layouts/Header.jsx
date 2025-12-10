@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import DropDownContent from "../Components/DropDownContent";
 import Icon from "../Components/Icon";
 import InputField from "../Components/InputField";
-import NotificationBell  from "../Pages/HR_Manager/Notifications/NotificationBell";
+import NotificationBell  from "../Pages/Notifications/NotificationBell";
 
 export default function Header(){
         const navigate = useNavigate()
