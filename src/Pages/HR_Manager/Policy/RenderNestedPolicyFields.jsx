@@ -2,7 +2,6 @@ import React, { useState, useMemo, useCallback } from "react";
 import Dropdown from "../../../Components/Dropdown";
 import DocumentList from "../../../Components/DocumentList";
 import AddNewItemModal from "../../../utils/AddNewItemModal";
-import { policyFormSchemas } from "./PolicyFormSchemas";
 
 // Convert camelCase/snake_case → Human label
 const humanLabel = (key) =>
@@ -21,54 +20,51 @@ const RenderNestedPolicyFields = ({
   handleRemoveItem,
   formSchemas = {},
 }) => {
-
   const [modalOpen, setModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState(null);
 
   if (!data) return <div className="text-sm text-gray-500">No data</div>;
   const isEditing = !!editMode?.[sectionKey];
 
-  /** ---------------------------------------------
-   *  🔥 MOST IMPORTANT OPTIMIZATION
-   *  Object.entries() memoized so recursion stops re-rendering itself infinitely
-   * ----------------------------------------------*/
   const entries = useMemo(() => Object.entries(data), [data]);
 
+  /** ------------------ HELPER: get schema at any path ------------------ */
+  const getSchemaAtPath = (schemaRoot, path) => {
+    if (!path) return null;
+    return path.split(".").reduce((acc, part) => acc?.[part], schemaRoot);
+  };
 
-  /** ---------------------------------------------
-   * Modal opening — now fields are memoized to avoid re-render loop
-   * ----------------------------------------------*/
+  /** ------------------ OPEN MODAL ------------------ */
   const openAddModalFor = useCallback((arrayKey, arrayPath, fieldsSchema) => {
-    const stableFields = { ...fieldsSchema }; // still copied, but only ON CALL
+    const stableFields = { ...fieldsSchema }; 
     setModalConfig({
       title: `Add to ${humanLabel(arrayKey)}`,
-      fields: stableFields,   // NOT rebuilt every render anymore
+      fields: stableFields,
       arrayPath,
     });
     setModalOpen(true);
   }, []);
 
-  const onModalSave = useCallback((newItem) => {
-    if (!modalConfig) return;
-    handleAddItem(sectionKey, modalConfig.arrayPath, newItem);
-    setModalOpen(false);
-    setModalConfig(null);
-  }, [modalConfig, handleAddItem, sectionKey]);
-
+  const onModalSave = useCallback(
+    (newItem) => {
+      if (!modalConfig) return;
+      handleAddItem(sectionKey, modalConfig.arrayPath, newItem);
+      setModalOpen(false);
+      setModalConfig(null);
+    },
+    [modalConfig, handleAddItem, sectionKey]
+  );
 
   return (
     <div className="w-full flex flex-col gap-4">
-
       {entries.map(([key, value]) => {
         const fullPath = path ? `${path}.${key}` : key;
 
-        // --------------------------------- OBJECT NESTED ---------------------------------
+        // ---------------- OBJECT ----------------
         if (value && typeof value === "object" && !Array.isArray(value) && !value.__type) {
           return (
-            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
+            <div key={fullPath} className="w-full rounded p-3 shadow bg-slate-50">
               <h3 className="font-semibold mb-2">{humanLabel(key)}</h3>
-
-              {/* 🔥 recursion is now safe */}
               <MemoizedRenderFields
                 data={value}
                 sectionKey={sectionKey}
@@ -83,22 +79,20 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-
-        // ---------------------------------- ARRAY FIELD -----------------------------------
+        // ---------------- ARRAY ----------------
         if (Array.isArray(value)) {
-          const arraySchema = formSchemas?.[sectionKey]?.[key];
+          const arraySchema = getSchemaAtPath(formSchemas?.[sectionKey], fullPath);
 
           return (
-            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
+            <div key={fullPath} className="w-full shadow rounded p-3 bg-slate-50">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-semibold">{humanLabel(key)}</h3>
 
                 {isEditing && (
                   <button
                     onClick={() =>
-                      arraySchema
-                        ? openAddModalFor(key, fullPath, arraySchema)
-                        : handleAddItem(sectionKey, fullPath, {})}
+                      openAddModalFor(key, fullPath, arraySchema || {})
+                    }
                     className="px-2 py-1 bg-green-100 text-sm rounded"
                   >
                     + Add
@@ -125,8 +119,6 @@ const RenderNestedPolicyFields = ({
                             </button>
                           </div>
                         )}
-
-                        {/* 🔥 recursion inside array */}
                         <MemoizedRenderFields
                           data={item}
                           sectionKey={sectionKey}
@@ -141,10 +133,10 @@ const RenderNestedPolicyFields = ({
                     );
                   }
 
+                  // primitive array
                   return (
                     <div key={itemPath} className="flex items-center gap-3">
                       <div className="flex-1">{String(item)}</div>
-
                       {isEditing && (
                         <button
                           onClick={() => handleRemoveItem(sectionKey, fullPath, idx)}
@@ -161,8 +153,7 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-
-        // --------------------------- TYPED FIELD: DROPDOWN ---------------------------
+        // ---------------- DROPDOWN ----------------
         if (value?.__type === "dropdown") {
           return (
             <div key={fullPath} className="w-full flex gap-3 items-center">
@@ -183,7 +174,7 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-        // -------------------------- TYPED FIELD: DOCUMENTS --------------------------
+        // ---------------- DOCUMENTS ----------------
         if (value?.__type === "documents") {
           return (
             <div key={fullPath} className="w-full flex gap-3 items-start">
@@ -199,12 +190,10 @@ const RenderNestedPolicyFields = ({
           );
         }
 
-
-        // -------------------------------- PRIMITIVE FIELD ------------------------------
+        // ---------------- PRIMITIVE ----------------
         return (
           <div key={fullPath} className="w-full flex gap-3 items-center">
             <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
-
             <div className="flex-1">
               {isEditing ? (
                 <input
@@ -222,7 +211,6 @@ const RenderNestedPolicyFields = ({
         );
       })}
 
-
       {/* Add New Item Modal */}
       {modalConfig && (
         <AddNewItemModal
@@ -237,7 +225,5 @@ const RenderNestedPolicyFields = ({
   );
 };
 
-
-/* ------------------ Wrap in memo to stop re-renders ------------------ */
 const MemoizedRenderFields = React.memo(RenderNestedPolicyFields);
 export default MemoizedRenderFields;
