@@ -333,6 +333,67 @@ export function Generatepayroll({ setQ, setPriority, action }) {
     </div>
   );
 }
+export function ViewEditPayslips({ setQ, setPriority, action }) {
+  const handleFilter = (employee) => {
+    console.log('search', employee);
+    setPriority(employee);
+  };
+  const handleEmployeeSelect = (employee) => {
+    setQ(employee);
+  };
+  // const [popup,setpopup]= useState(false)
+  const PayrollCycle = [
+    { content: 'Monthly', svg: null },
+    { content: 'Weekly', svg: null },
+  ];
+  const Department = [
+    { content: 'Department 0', svg: null },
+    { content: 'Department 1', svg: null },
+    { content: 'Department 2', svg: null },
+    { content: 'Department 3', svg: null },
+  ];
+
+  return (
+    <div
+      id="left"
+      className="flex p-2.5 gap-3 w-full justify-between items-center"
+    >
+      <div className='flex gap-3 flex-1'>
+      <SearchDate />
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown
+          onChange={(i) => handleFilter(i)}
+          options={Department}
+          text="text-xs font-semibold"
+          placeholder="Department 1"
+          border="border gap-1 border-gray-100"
+        />
+      </div>
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown
+          onChange={(i) => handleFilter(i)}
+          options={PayrollCycle}
+          text="text-xs font-semibold"
+          placeholder="Monthly"
+          border="border gap-1 border-gray-100"
+        />
+      </div></div>
+      <InputField
+        placeholder={'Search title or content...'}
+        displayKey="name"
+        onSelect={handleEmployeeSelect}
+      />
+      {/* <Button onClick={()=>setpopup(true)} text='Generate Payroll' icon={"CloudLightning"}/> */}
+      {/* {popup&&<ConfirmPopup onConfirm={action} confirmText='Generate Payroll' message='are you sure you want to generate payroll?' onCancel={()=>setpopup(false)} isOpen={popup}/>} */}
+    </div>
+  );
+}
+
+
+
+
+
+
 
 {
   /* <div>
