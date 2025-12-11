@@ -21,6 +21,62 @@
     .scrollbar-hidden{
         -ms-overflow-style:none;
     }
+
+    @layer utilities {
+
+  /* Default: Fully hidden */
+  .hover-scrollbar {
+    scrollbar-width: none;        /* Firefox hide */
+    -ms-overflow-style: none;     /* IE hide */
+  }
+
+  .hover-scrollbar::-webkit-scrollbar {
+    width: 0;                     /* Chrome hide */
+    height: 0;
+  }
+
+  /* On hover – show ONLY thumb */
+  .hover-scrollbar:hover {
+    scrollbar-width: thin;        /* Firefox (thumb only) */
+  }
+
+  .hover-scrollbar:hover::-webkit-scrollbar {
+    width: 6px;                   /* thickness */
+    background: transparent;      /* removes track */
+  }
+
+  /* Remove TRACK completely */
+  .hover-scrollbar:hover::-webkit-scrollbar-track {
+    background: transparent !important;
+    border: none !important;
+  }
+  
+  /* Fix track still showing on some Chrome versions */
+  .hover-scrollbar:hover::-webkit-scrollbar-track-piece {
+    background: transparent !important;
+  }
+
+  /* The thumb (only part you want visible) */
+  .hover-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: #a1a1aa; /* gray-400 */
+    border-radius: 20px;
+    border: 2px solid transparent; /* removes track outline */
+    background-clip: content-box;  /* hides background behind thumb */
+  }
+
+  /* Remove arrows completely */
+  .hover-scrollbar::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Remove corner */
+  .hover-scrollbar::-webkit-scrollbar-corner {
+    background: transparent !important;
+  }
+}
+
      
 }
         @keyframes shimmer {

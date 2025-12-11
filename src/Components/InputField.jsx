@@ -3,9 +3,7 @@ import Icon from './Icon'
 import SuggestionBox from './SuggestionBox'
 import useAuth from '../Context/AuthContext'
 
-function InputField({
-  placeholder = "Search...",
-  apiEndpoint ,
+function InputField({placeholder = "Search...",apiEndpoint ,
   displayKey = "name",
   onSelect,
   icon=true,

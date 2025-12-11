@@ -69,9 +69,9 @@ import TaxReports from './Pages/Payroll_Officer/reports/TaxReports'
 export const UserContext = createContext();
 
 function App() {
-  // useEffect(()=>{
-  //   setLocalData("role","Payroll")
-  // },[])
+  useEffect(()=>{
+    setLocalData("role","Payroll")
+  },[])
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(

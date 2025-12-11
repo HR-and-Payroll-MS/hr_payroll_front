@@ -100,15 +100,7 @@ export function SearchStatus({ onFiltersChange }) {
       </div>
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-        <Dropdown
-          onChange={(i) => console.log(i)}
-          options={viewOptions}
-          text="text-xs font-semibold"
-          placeholder="View"
-          showIcons
-          Svg={'AlignEndVertical'}
-          border="border gap-1 border-gray-100"
-        />
+        <SearchDate/>
       </div>
     </div>
   );
@@ -341,7 +333,7 @@ export function ViewEditPayslips({ setQ, setPriority, action }) {
   const handleEmployeeSelect = (employee) => {
     setQ(employee);
   };
-  // const [popup,setpopup]= useState(false)
+  const [popup,setpopup]= useState(false)
   const PayrollCycle = [
     { content: 'Monthly', svg: null },
     { content: 'Weekly', svg: null },
@@ -383,8 +375,8 @@ export function ViewEditPayslips({ setQ, setPriority, action }) {
         displayKey="name"
         onSelect={handleEmployeeSelect}
       />
-      {/* <Button onClick={()=>setpopup(true)} text='Generate Payroll' icon={"CloudLightning"}/> */}
-      {/* {popup&&<ConfirmPopup onConfirm={action} confirmText='Generate Payroll' message='are you sure you want to generate payroll?' onCancel={()=>setpopup(false)} isOpen={popup}/>} */}
+      <Button onClick={()=>setpopup(true)} text='Re-Generate Payroll' icon={"CloudLightning"}/>
+      {popup&&<ConfirmPopup onConfirm={action} confirmText='Generate Payroll' message='are you sure you want to Re-Generate payroll?' onCancel={()=>setpopup(false)} isOpen={popup}/>}
     </div>
   );
 }

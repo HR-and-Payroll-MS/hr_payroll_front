@@ -4,11 +4,13 @@ import { Generatepayroll } from '../../../Components/Level2Hearder'
 import Header from '../../../Components/Header'
 import Table from '../../../Components/Table'
 import { useNavigate } from 'react-router-dom'
+import FileDrawer from '../../../Components/FileDrawer'
+import OnPayrollGenerate from './OnPayrollGenerate'
 
 function GeneratePayroll() {
   const handledate=(e)=>console.log(e)
 
-
+  const [isModalOpen,setModalOpen]=useState(false);
   const navigate = useNavigate();
 const onRowClick=(id)=>{
     navigate(`/hr_dashboard/Employee_Attendance/${id}`, {state: id})
@@ -102,9 +104,12 @@ const title=['EMPLOYEE','DEPARTMENT','BASE SALARY','ALLOWANCES','DEDUCTION','NET
     <div className='p-4 gap-3 flex flex-col  overflow-hidden h-full'>
       <Header Title={"Generate Payroll"}/>
       <div className='p-4 gap-3 flex flex-col  overflow-hidden h-full'>
-      <Generatepayroll action={()=>console.log("submited")}/>
+      <Generatepayroll action={()=>setModalOpen(true)}/>
       <Table clickable={false} Data={attendanceData} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10} />
   </div>
+  {isModalOpen && <FileDrawer width='w-11/12' isModalOpen={isModalOpen} closeModal={()=>setModalOpen(false)} >
+      <OnPayrollGenerate/>
+  </FileDrawer>}
       </div>
   )
 }

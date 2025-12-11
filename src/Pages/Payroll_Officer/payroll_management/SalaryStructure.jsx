@@ -29,7 +29,7 @@ function SalaryStructure() {
         // setOriginalData(res.data);
         const res = initialPolicies;
         setPolicyData(res);
-        // setOriginalData(JSON.parse(JSON.stringify(res)));
+        setOriginalData(JSON.parse(JSON.stringify(res)));
       } catch (err) {
         console.error(err);
         setError("Failed to fetch policy data.");
@@ -152,7 +152,9 @@ function SalaryStructure() {
   };
 
   const handleCancel = (section) => {
+    console.log(section,"")
     if (!originalData) return;
+    console.log("section")
     setPolicyData((prev) => {
       const next = JSON.parse(JSON.stringify(prev));
       next[section] = JSON.parse(JSON.stringify(originalData[section] || {}));

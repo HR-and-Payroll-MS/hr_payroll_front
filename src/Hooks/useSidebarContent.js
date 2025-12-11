@@ -26,8 +26,7 @@ export const sidebarList = {
     label: 'Payslips',
     Visible: false,
     sub: [
-      { subPath: 'view_generated_payslips', label: 'View Generated Payslips' },
-      { subPath: 're_generate_payslips', label: 'Re-Generate Payslips' },
+      { subPath: 'view_generated_payslips', label: 'View/Edit Generated Payslips' },
     ],
   },
   {
