@@ -275,7 +275,7 @@ export function AnnouncementSearch({ setQ, setPriority }) {
     </div>
   );
 }
-export function Generatepayroll({ setQ, setPriority, action }) {
+export function Generatepayroll({ setQ, setPriority,noCancel, action,icon, onDateClick, size, className, text,popup,setpopup, message, onConfirm, onCancel, confirmText, cancelText }) {
   const handleFilter = (employee) => {
     console.log('search', employee);
     setPriority(employee);
@@ -283,7 +283,6 @@ export function Generatepayroll({ setQ, setPriority, action }) {
   const handleEmployeeSelect = (employee) => {
     setQ(employee);
   };
-  const [popup,setpopup]= useState(false)
   const PayrollCycle = [
     { content: 'Monthly', svg: null },
     { content: 'Weekly', svg: null },
@@ -301,8 +300,8 @@ export function Generatepayroll({ setQ, setPriority, action }) {
       className="flex p-2.5 gap-3 w-full justify-between items-center"
     >
       <div className='flex gap-3 flex-1'>
-      <SearchDate />
-      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+      <SearchDate isSingle={true} onSubmit={onDateClick} />
+      {/* <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
           onChange={(i) => handleFilter(i)}
           options={Department}
@@ -310,7 +309,7 @@ export function Generatepayroll({ setQ, setPriority, action }) {
           placeholder="Department 1"
           border="border gap-1 border-gray-100"
         />
-      </div>
+      </div> */}
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
           onChange={(i) => handleFilter(i)}
@@ -320,8 +319,8 @@ export function Generatepayroll({ setQ, setPriority, action }) {
           border="border gap-1 border-gray-100"
         />
       </div></div>
-      <Button onClick={()=>setpopup(true)} text='Generate Payroll' icon={"CloudLightning"}/>
-      {popup&&<ConfirmPopup onConfirm={action} confirmText='Generate Payroll' message='are you sure you want to generate payroll?' onCancel={()=>setpopup(false)} isOpen={popup}/>}
+      <Button onClick={()=>setpopup(true)} text={text||'Generate Payroll'} icon={icon||"CloudLightning"}/>
+      {popup&&<ConfirmPopup noCancel={noCancel} onConfirm={action} confirmText={confirmText||'Generate Payroll'} message={message||'are you sure you want to generate payroll?'} cancelText={cancelText||"Cancel"} onCancel={()=>setpopup(false)} isOpen={popup}/>}
     </div>
   );
 }

@@ -1,25 +1,23 @@
 import React from "react";
+import { motion } from "framer-motion";
 
-export default function ActionButton({
-  isClockedIn,
-  hasCheckedOut,
-  actionLoading,
-  onClick
-}) {
+export default function ActionButton({ isClockedIn, hasCheckedOut, actionLoading, onClick }) {
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       onClick={onClick}
       disabled={actionLoading || hasCheckedOut}
-      className={`w-48 h-48 rounded-full shadow-lg flex items-center justify-center text-center text-white text-xl font-semibold transition-transform transform hover:scale-105
-        ${hasCheckedOut ? 'bg-gray-400 cursor-not-allowed' : isClockedIn ? 'bg-red-600' : 'bg-green-600'}`}
+      className={`w-52 h-52 rounded-full shadow-2xl flex items-center justify-center text-xl font-bold text-white transition-all
+        ${hasCheckedOut ? "bg-gray-400 cursor-not-allowed" : isClockedIn ? "bg-red-600" : "bg-green-600"}`}
     >
       {actionLoading
         ? "Processing..."
         : hasCheckedOut
         ? "Day Complete"
         : isClockedIn
-        ? "CHECK OUT"
-        : "CHECK IN"}
-    </button>
+        ? "CLOCK OUT"
+        : "CLOCK IN"}
+    </motion.button>
   );
 }

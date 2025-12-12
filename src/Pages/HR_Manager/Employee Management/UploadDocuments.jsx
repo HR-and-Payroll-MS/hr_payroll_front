@@ -514,7 +514,6 @@ export default function UploadDocuments() {
     try {
 
       const res = await axiosPrivate.get(`/employees/serve-document/${employeeId}/`,{ responseType: "blob" });
-      // const res= await axiosPrivate.get(`/employees/${employeeId}/serve-document/`)
       setDocuments([res.data]|| [])
       console.log('employeeId', employeeId);
       console.log("res.data", res.data);

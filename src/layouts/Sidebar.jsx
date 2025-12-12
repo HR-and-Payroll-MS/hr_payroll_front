@@ -8,6 +8,9 @@ import { getLocalData  } from '../Hooks/useLocalStorage';
 import { useNetwork } from '../Context/NetworkContext';
 
 export default function Sidebar() {
+
+  const clockinPath={Payroll:"payroll",Manager:"hr_dashboard"}
+
   const { auth } = useAuth();
   const {isLocal, checking} = useNetwork()
   const role = auth?.user?.role;
@@ -77,7 +80,7 @@ export default function Sidebar() {
   );
 
   const middle1 = (
-    <div id="middle" className="flex relative flex-col w-full flex-1 my-4 overflow-y-auto hover-scrollbar  gap-2" >
+    <div id="middle" className="flex relative flex-col w-full flex-1 my-4 overflow-y-auto  gap-2" >
       {list.map((lists, index) =>
         lists.path ? (
           <div key={index} className="cursor-pointer">
@@ -140,7 +143,7 @@ export default function Sidebar() {
         </div>
         ) : (isLocal) ? (<div className='relative px-4.5 '>
                     <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1 border-slate-300 dark:border-slate-500 rounded-full z-0 '/>
-          <NavLink to={'clock_in'} end className={({ isActive }) => `relative z-10  flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive? 'bg-slate-200 dark:bg-slate-700' : 'hover:bg-slate-50 bg-white dark:bg-slate-800  dark:hover:bg-slate-700'}`}>
+          <NavLink to={`/${clockinPath[role]}/clock_in`} end className={({ isActive }) => `relative z-10  flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive? 'bg-slate-200 dark:bg-slate-700' : 'hover:bg-slate-50 bg-white dark:bg-slate-800  dark:hover:bg-slate-700'}`}>
                   <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
                       Clock In
                     </p>

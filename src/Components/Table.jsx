@@ -4,7 +4,7 @@ import { usePagination } from "../Hooks/usePagination";
 import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
-function Table({ Data,URL, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view"}) {
+function Table({ Data,URL, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view",D1}) {
   const { data, page,setPage, totalPages, loading } = usePagination(URL,10,Data?Data:[],totPage)
   const handleRowClick = (rowData,index) => {
     if (onRowClick) {
@@ -45,7 +45,7 @@ function Table({ Data,URL, Structure, ke,clickable=true,components ,title=[], on
       {i.map((j, jndex) =>
         jndex !== i.length - 1 && (
           <td key={jndex} className="border-b border-gray-100 dark:border-gray-600 px-4 py-2">
-            <TableStructures nickname={nickname} Comps={components} data={data[index]} id={bodyStructure[jndex]} item={j} />
+            <TableStructures nickname={nickname} rawData={Data} Comps={components} data={data[index]} D1={D1} id={bodyStructure[jndex]} item={j} />
           </td>
         )
       )}

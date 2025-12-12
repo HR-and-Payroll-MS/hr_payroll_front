@@ -8,7 +8,8 @@ export function AuthContextProvider({ children }){
 
   const [auth,setAuth] = useState({user:null, accessToken:null})
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-
+  const [searchEmployees, setSearchEmployees] = useState([])
+  const [loading, setLoading] = useState(true);
   const refreshFn = useRefreshToken();
   const logout = useCallback(() => {
     try{
@@ -47,6 +48,35 @@ export function AuthContextProvider({ children }){
     };
   },[axiosPrivate])
 
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const res = await axiosPrivate.get("/employees/");
+        // pick only necessary fields
+        const data = res.data.results.map((e) => ({
+          id: e.id,
+          fullname: e.general?.fullname || "",
+          emailaddress: e.general?.emailaddress || "",
+          photo: e.general?.photo || "/pic/download (48).png",
+          employeeid: e.job?.employeeid || "",
+          department: e.job?.department || "",
+        }));
+
+
+        
+        // console.log(res.data,"<-- res data")
+        // console.log(data,"<-- processed data")
+        setSearchEmployees(data);
+      } catch (err) {
+        console.error("Failed to fetch employees:", err);
+        // setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEmployees();
+  }, [axiosPrivate]);
+
   const setUser = useCallback((userData,accessToken) => {
     if(!userData || !accessToken) return;
     setLocalData('id',userData.username);
@@ -70,6 +100,8 @@ export function AuthContextProvider({ children }){
  
       const userRes = await axiosPrivate.get('/users/me/');
       const userData = userRes.data;
+      console.log(userData,"<-- user data after login")
+      setLocalData('id',userData.id);
 
       setUser(userData, access);
       return userData;
@@ -99,7 +131,7 @@ export function AuthContextProvider({ children }){
   },[])
 
   return (
-    <AuthContext.Provider value = {{ auth , setAuth , isAuthLoading , login , logout , setUser , axiosPrivate }} >
+    <AuthContext.Provider value = {{ auth , setAuth , isAuthLoading , login , logout , setUser,searchEmployees , axiosPrivate }} >
       {children}
     </AuthContext.Provider>
   );

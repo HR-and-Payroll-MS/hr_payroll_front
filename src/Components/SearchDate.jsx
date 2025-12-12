@@ -2,14 +2,20 @@ import { useState } from "react";
 import Dropdown from "./Dropdown";
 import Icon from "./Icon";
 
-export default function SearchDate({ onSubmit }) {
+export default function SearchDate({ onSubmit,isSingle=false }) {
   const [mode, setMode] = useState("single");
   const [singleDate, setSingleDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [clicked,setClicked] = useState(false)
 
   // Runs ONLY when user clicks submit button
   const handleSubmit = () => {
+    if(singleDate||(startDate&&endDate))setClicked(true)
+    if(isSingle){
+      onSubmit && onSubmit(singleDate);
+    }
+    else{
     if (mode === "single" && singleDate) {
       onSubmit && onSubmit({ type: "single", date: singleDate });
     }
@@ -21,7 +27,7 @@ export default function SearchDate({ onSubmit }) {
         from: startDate,
         to: endDate
       });
-    }
+    }}
   };
 
   const choice=["single","range"]
@@ -30,7 +36,7 @@ export default function SearchDate({ onSubmit }) {
     <div className="px-3 border text-xs border-slate-200 rounded-xl w-fit flex gap-3 bg-slate-50 shadow items-center">
 
       {/* Mode Switch */}
-      <Dropdown placeholder="Choose Type" border="" options={choice} onChange={setMode} />
+     {!isSingle&& <Dropdown placeholder="Choose Type" border="" options={choice} onChange={setMode} />}
 
       {/* Single Date */}
       {mode === "single" && (
@@ -66,8 +72,8 @@ export default function SearchDate({ onSubmit }) {
         onClick={handleSubmit}
         className="bg-slate-800 text-xs cursor-pointer text-white px-3 py-1 rounded-md hover:bg-slate-950"
       >
-        {/* <Icon name={"Search"} className="w-4 h-4"/> */}
-        Apply
+        {clicked? <Icon name={"Check"} className="w-4 h-4"/>:"Apply"}
+       
       </button>
     </div>
   );

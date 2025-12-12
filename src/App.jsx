@@ -69,9 +69,9 @@ import TaxReports from './Pages/Payroll_Officer/reports/TaxReports'
 export const UserContext = createContext();
 
 function App() {
-  useEffect(()=>{
-    setLocalData("role","Payroll")
-  },[])
+  // useEffect(()=>{
+  //   setLocalData("role","Manager")
+  // },[])
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -100,6 +100,7 @@ function App() {
             <Route path="payroll_reports" element={<PayrollReports />} />
             <Route path="tax_reports" element={<TaxReports />} />
             <Route path="myattendance" element={<MyAttendance />} />
+            <Route path="clock_in" element={<ClockIn />} />
           </Route>
         </Route>
 
@@ -107,9 +108,11 @@ function App() {
 
 
 
+            <Route path="logout" element={<LogOut/>} />
         {/* ------------------------- hr ---------------------- */}
         <Route element={<Routes allowedRoles={['Manager']} />}>
           <Route path="hr_dashboard" element={<MainLayout />}>
+            <Route path="clock_in" element={<ClockIn />} />
             <Route index element={<DashboardLayout />} />
             <Route path="Employee_Directory" element={<EmployeeDirectory />} />
             {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
@@ -122,7 +125,6 @@ function App() {
             <Route path="MyPayroll" element={<MyPayrollPage />} />
             <Route path="policies" element={<Policy />} />
             {/* <Route path="logout" element={<LogOut />} /> */}
-            <Route path="logout" element={<ProfileHeader />} />
             <Route path="profile" element={<MyProfile />} />
             {/* <Route path="send_notification_page" element={<SendNotificationPage/>} /> */}
             <Route
@@ -146,7 +148,6 @@ function App() {
             </Route>
 
             <Route path="attendance" element={<Attendance />} />
-            <Route path="clock_in" element={<ClockIn />} />
             <Route
               path="Employee_Attendance"
               element={<EmployeeAttendanceList />}

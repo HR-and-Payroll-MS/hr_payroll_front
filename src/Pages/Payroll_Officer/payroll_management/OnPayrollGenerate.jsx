@@ -3,28 +3,39 @@ import React, { useRef, useState } from "react";
 import PayslipTemplate from "../../../Components/PayslipTemplate";
 import { generatePdfBlobFromElement } from "../../../utils/pdf";
 import PayslipList from "../../../Components/PayslipList";
+import Table from "../../../Components/Table";
 import calcPayrollForEmployee from "./calcPayrollForEmployee";
 import ViewerLoader from "./ViewerLoader";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import axios from "axios";
+import Header from "../../../Components/Header";
+import { Generatepayroll } from "../../../Components/Level2Hearder";
 // import ExportTable from "../../../Components/ExportTable";
 const demoEmployees = [
   { id: "EMP001", name: "John Doe", department: "Finance", jobTitle: "Accountant", bankAccount: "0011223344" },
   { id: "EMP002", name: "Mary Smith", department: "HR", jobTitle: "HR Officer", bankAccount: "9988776655" },
   { id: "EMP003", name: "Ali Mohammed", department: "IT", jobTitle: "Developer", bankAccount: "2233445566" },
 ];
-export default function OnPayrollGenerate() {
+const key =[['id'], ['name'],[ 'department'], ['jobTitle'], ['bankAccount']];
+const title=['Employee ID', 'Name', 'Department', 'Job Title', 'Bank Account','Actions'];
+const structure=[1,1,1,1,1,64];
+export default function OnPayrollGenerate({
+  progress,
+  setProgress,
+  summary,
+  setSummary
+  
+}) {
+  const [empid, setEmpid] = useState("");
+  const printRef = useRef();
+  const [popup,setpopup]= useState(false)
+  const [processing, setProcessing] = useState(false);
+  const [employees] = useState(demoEmployees);
   const [month, setMonth] = useState(() => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
   });
-  const [progress, setProgress] = useState("");
-  const [employees] = useState(demoEmployees);
-  const [selectedPayslipKey, setSelectedPayslipKey] = useState(null);
-  const [processing, setProcessing] = useState(false);
-  const [summary, setSummary] = useState(null);
-  const printRef = useRef();
 
 // map over all employees and sum up the net pay and store in summary state
   async function handlePreviewAndSummary() {
@@ -37,6 +48,7 @@ export default function OnPayrollGenerate() {
          totalPayout,
           // missing,
           payrolls });
+          setpopup(false)
   }
 async function handleGenerateConfirmed() {
   if (!summary?.payrolls?.length) {
@@ -113,76 +125,28 @@ async function handleGenerateConfirmed() {
 }
 
   return (
-    <div className="p-6">
-
-      {/* summary sheet view on click it calls the handlepreviewAndSummary and the input on change it calls setmonth to contain the value */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold">Generate Payroll</h2>
-        <div className="flex gap-2">
-          <input value={month} onChange={(e) => setMonth(e.target.value)} className="border px-3 py-2 rounded" />
-          <button onClick={handlePreviewAndSummary} className="px-4 py-2 bg-blue-600 text-white rounded">
-            Preview Summary
-          </button>
+    <>
+      <Header Title={"Generate Payroll"}/>
+       <Generatepayroll  message={summary?"Generate payslips for all employees? This will replace existing payslips for this month.":"Preview summary first."}   noCancel={summary?false:true} confirmText={summary?"Generate Payroll":"Preview Summary"}  onDateClick={setMonth} text={summary?null:"Preview Summary"} icon={summary?null:"Eye"} popup={popup} setpopup={setpopup} action={summary?handleGenerateConfirmed:handlePreviewAndSummary}/>
+    <div className=" overflow-auto">
+      <div className="flex gap-6">
+        <div className="flex-1 space-y-4">
+          <div className="  rounded ">
+            <Table components={ ViewerLoader} D1={month} Data={demoEmployees} Structure={structure} ke={key} title={title}/>
+          </div>
+        
         </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2 space-y-4">
-          <div className="p-4 border rounded">
-            <h3 className="font-semibold mb-2">Employees to include</h3>
-            <table className="w-full text-sm">
-              <thead className="text-left text-slate-600">
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Department</th>
-                  <th>Job Title</th>
-                  <th>Bank</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map((e) => (
-                  <tr key={e.id} className="border-t">
-                    <td className="py-2">{e.id}</td>
-                    <td>{e.name}</td>
-                    <td>{e.department}</td>
-                    <td>{e.jobTitle}</td>
-                    <td>{e.bankAccount || <span className="text-xs text-red-500">Missing</span>}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="p-4 border rounded">
-            {!selectedPayslipKey ? (<>
-              <h3 className="font-semibold mb-2">Preview Payslip (example)</h3>
-              
-              <div className="text-sm text-slate-500">Select a payslip from the stored list to view</div>
-              <div className="mb-3">
-                <button onClick={() => setSelectedPayslipKey(`${employees[0].id}_${month}`)} className="px-3 py-1 text-sm bg-slate-100 rounded">
-                  Open latest stored for {employees[0].id}
-                </button>
-              </div>
-              <div className="bg-white p-3 rounded shadow">
-                <PayslipTemplate payroll={calcPayrollForEmployee(employees[0], month)} ref={printRef} />
-              </div>
-            </>) : (
-            <>
-              <h3 className="font-semibold mb-2">Open Payslip Viewer</h3>
-                <div>
-                  <div className="mb-2 text-sm">Viewing: {selectedPayslipKey}</div>
-                  <div className="bg-white p-3 rounded">
-                    {/* Viewer now renders the PayslipTemplate using the selected key */}
-                    <ViewerLoader demoEmployees={demoEmployees} keyId={selectedPayslipKey} />
-                  </div>
-                </div>
-              
-            </>
-          )}
-          </div>
-          <div className="p-4 border rounded">
-            <h3 className="font-semibold mb-2">Actions</h3>
+{processing && (
+  <div style={{
+    position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)",
+    background: "#333", color: "white", padding: "12px 24px",
+    borderRadius: 8, zIndex: 9999, fontSize: "14px", boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
+  }}>
+    {progress || "Processing..."}
+  </div>
+)}
+        <aside className="space-y-4">  
+          {/* <div className="p-4 border rounded">
             <div className="flex gap-2">
               <button
                 onClick={() => {
@@ -196,23 +160,8 @@ async function handleGenerateConfirmed() {
                 {processing ? "Generating..." : "Generate & Store Payslips"}
               </button>
             </div>
-
-            <div className="mt-3 text-sm text-slate-600">
-              When generated, payslips are stored locally in your browser. Re-generating for the same employee+month will replace the old PDF.
-            </div>
-          </div>
-        </div>
-{processing && (
-  <div style={{
-    position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)",
-    background: "#333", color: "white", padding: "12px 24px",
-    borderRadius: 8, zIndex: 9999, fontSize: "14px", boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
-  }}>
-    {progress || "Processing..."}
-  </div>
-)}
-        <aside className="space-y-4">
-          <div className="p-4 border rounded">
+          </div> */}
+          <div className="p-4 shadow bg-slate-50 rounded">
             <h3 className="font-semibold mb-2">Summary (Preview)</h3>
             {!summary && <div className="text-sm text-slate-500">Click "Preview Summary" to view payroll totals.</div>}
             {summary && (
@@ -234,15 +183,10 @@ async function handleGenerateConfirmed() {
               </div>
             )}
           </div>
-
-          <div className="p-4 border rounded">
-            <h3 className="font-semibold mb-2">Stored Payslips</h3>
-            <PayslipList onSelect={(k) => setSelectedPayslipKey(k)} />
-          </div>
         </aside>
 
       </div>
-    </div>
+    </div></>
   );
 }
 

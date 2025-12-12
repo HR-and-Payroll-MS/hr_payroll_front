@@ -10,7 +10,8 @@ export default function ConfirmPopup({
   confirmText = "Yes",
   cancelText = "Cancel",
   location = "center" ,
-  subMessage=""
+  subMessage="",
+  noCancel=false
 
 }) {
   return (
@@ -36,12 +37,12 @@ export default function ConfirmPopup({
             </div>
         {/* Buttons */}
         <div className="flex justify-center gap-4 mt-3">
-          <button
+          {!noCancel&&<button
             onClick={onCancel}
             className="px-4 py-2 flex-1 cursor-pointer rounded-md border hover:bg-slate-100 dark:border-slate-600 dark:hover:bg-slate-700"
           >
             {cancelText}
-          </button>
+          </button>}
           <button
             onClick={onConfirm}
             className="px-4 py-2 flex-1 cursor-pointer rounded-md bg-red-600 text-white hover:bg-red-700"

@@ -1,26 +1,19 @@
 import { useEffect, useState } from "react";
+import useAuth from "../../Context/AuthContext";
 
 export default function useAttendanceToday() {
   const [loading, setLoading] = useState(true);
   const [punches, setPunches] = useState([]);
   const [error, setError] = useState(null);
+  const { axiosprivate } = useAuth();
 
   async function load() {
     setLoading(true);
     setError(null);
+
     try {
-      // real API
-      // const res = await fetch('/api/attendance/today');
-
-      // TEMP MOCK:
-      const json = {
-        punches: [
-          { type: 'check_in', time: '2025-11-18T08:00:00Z', location: 'Office' },
-          // { type: 'check_out', time: '2025-11-18T08:09:00Z', location: 'Office' }
-        ]
-      };
-
-      setPunches(json.punches || []);
+      const res = await axiosprivate.get("/attendances/today/");
+      setPunches(res.data?.punches || []);
     } catch (e) {
       setPunches([]);
       setError(e.message);

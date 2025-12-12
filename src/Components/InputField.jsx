@@ -14,21 +14,34 @@ function InputField({placeholder = "Search...",apiEndpoint ,
   const [suggestions, setSuggestions] = useState([])
   const [loading, setLoading] = useState(false)
   const {axiosPrivate} = useAuth();
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      if(apiEndpoint){
-            if (query.trim().length > 1) {
-              fetchSuggestions(query)
-            } else {
-              setSuggestions([])
-            }
-    } else{
-        // onSelect(query)
-    if (onSelect) onSelect(query)
-      }
-    }, 400)
-    return () => clearTimeout(delay)
-  }, [query])
+  const {searchEmployees}=useAuth();
+useEffect(() => {
+  const delay = setTimeout(() => {
+    if(apiEndpoint){
+  // NEW IMPROVED LOGIC — only this part changes
+  if (query.trim().length >= 2) {
+    // User has typed 2 or more characters → show suggestions (filtered from existing data)
+    if (Array.isArray(searchEmployees) && searchEmployees.length > 0) {
+      const filtered = searchEmployees.filter(emp => {
+        const searchStr = `${emp.employeeid || ''} ${emp.emailaddress || ''} ${emp.department || ''} ${emp.fullname || ''}`.toLowerCase()
+        return searchStr.includes(query.toLowerCase().trim())
+      })
+      
+      console.log("Showing suggestions for:", query, filtered)
+      setSuggestions(filtered)
+    } else {
+      setSuggestions([])
+    }
+  } else {
+    // User typed 0 or 1 character → hide suggestions immediately
+    setSuggestions([])
+  }
+} else {
+      if (onSelect) onSelect(query)
+    }
+  }, 400)
+  return () => clearTimeout(delay)
+}, [query, apiEndpoint, searchEmployees, onSelect])
 
   const fetchSuggestions = async (text) => {
     try {setLoading(true)
@@ -66,7 +79,9 @@ function InputField({placeholder = "Search...",apiEndpoint ,
       {loading && (
         <div className="absolute right-3 top-2 text-gray-400 text-sm">...</div>
       )}
-      <SuggestionBox suggestions={suggestions} onSelect={handleSelect} />
+      {/* <SuggestionBox suggestions={suggestions} onSelect={handleSelect} /> */}
+      <SuggestionBox suggestions={suggestions} onSelect={handleSelect} query={query} />
+
     </div>
   )
 }

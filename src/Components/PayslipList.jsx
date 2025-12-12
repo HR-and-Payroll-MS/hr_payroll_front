@@ -4,9 +4,9 @@ import React, { useState } from "react";
 export default function PayslipList({ onSelect }) {
   // Static dummy data (you can replace with actual API response later)
   const [keys, setKeys] = useState([
-    "EMP001_2025-12",
-    "EMP002_2025-12",
-    "EMP003_2025-12"
+    "EMP001",
+    "EMP002",
+    "EMP003"
   ]);
 
   async function refresh() {
