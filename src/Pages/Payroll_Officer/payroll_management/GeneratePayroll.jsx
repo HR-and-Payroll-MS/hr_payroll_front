@@ -6,6 +6,7 @@ import Table from '../../../Components/Table'
 import { useNavigate } from 'react-router-dom'
 import FileDrawer from '../../../Components/FileDrawer'
 import OnPayrollGenerate from './OnPayrollGenerate'
+import ExportTable from '../../../Components/ExportTable'
 
 function GeneratePayroll() {
   const handledate=(e)=>console.log(e)
@@ -105,12 +106,21 @@ const title=['EMPLOYEE','DEPARTMENT','BASE SALARY','ALLOWANCES','DEDUCTION','NET
       <Header Title={"Generate Payroll"}/>
       <div className='p-4 gap-3 flex flex-col  overflow-hidden h-full'>
       <Generatepayroll action={()=>setModalOpen(true)}/>
+        
+      <ExportTable
+        data={attendanceData}        // your backend data
+        title={title}                // ['EMPLOYEE','DEPARTMENT',...]
+        bodyStructure={structure}    // [3,1,1,1,1,1,1]
+        keys={ke2}                   // flattened keys for extraction
+        fileName="Attendance Report"
+      />
+      
       <Table clickable={false} Data={attendanceData} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10} />
-  </div>
-  {isModalOpen && <FileDrawer width='w-11/12' isModalOpen={isModalOpen} closeModal={()=>setModalOpen(false)} >
-      <OnPayrollGenerate/>
-  </FileDrawer>}
       </div>
+      {isModalOpen && <FileDrawer width='w-11/12' isModalOpen={isModalOpen} closeModal={()=>setModalOpen(false)} >
+          <OnPayrollGenerate/>
+      </FileDrawer>}
+    </div>
   )
 }
 

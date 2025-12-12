@@ -24,10 +24,13 @@
     "autoprefixer": "^10.4.21",
     "axios": "^1.12.2",
     "d3-scale": "^4.0.2",
+    "docx": "^9.5.1",
+    "file-saver": "^2.0.5",
     "framer-motion": "^12.23.24",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
     "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
     "lexical": "^0.38.2",
     "lucide-react": "^0.542.0",
     "pdfjs-dist": "^5.4.296",
@@ -41,7 +44,8 @@
     "recharts": "^3.5.0",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.14",
-    "tinymce": "^8.2.2"
+    "tinymce": "^8.2.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

@@ -5,21 +5,6 @@ import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
 function Table({ Data,URL, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view"}) {
-
-  // function Table(props) {
-  // const {
-  //   Data,
-  //   URL,
-  //   ke,
-  //   onRowClick,
-  //   Structure,
-  //   components,
-  //   title = [],
-  //   clickable = true,
-  //   totPage = 1,
-  //   nickname="view"
-  // } = props;
-
   const { data, page,setPage, totalPages, loading } = usePagination(URL,10,Data?Data:[],totPage)
   const handleRowClick = (rowData,index) => {
     if (onRowClick) {
