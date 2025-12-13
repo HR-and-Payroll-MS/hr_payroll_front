@@ -76,7 +76,7 @@ export default function UploadDocuments() {
         }
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState("");//for debug change it to employee i mean the null
   const [employeesOptions, setEmployeesOptions] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [loadingDocs, setLoadingDocs] = useState(false);
@@ -611,6 +611,8 @@ console.log('Employee', selectedEmployee);
             </div>
           )}
         </div>
+        {/* <Table Data={employee.documents.files} Structure={structure} ke={key2} title={title} onRowClick={(data) => console.log(data)} /> */}
+        {/* the upper table is to debug with out connection */}
         <Table Data={documents} Structure={structure} ke={key2} title={title} onRowClick={(data) => console.log(data)} />
        </main>
 

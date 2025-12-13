@@ -5,7 +5,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 function SuggestionBox({ suggestions = [], onSelect, query }) {
   // Always render the <ul>, show "No results" if empty
   return (
-    <ul className="absolute top-full left-0 w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 rounded-md mt-1 shadow-lg z-20 max-h-60 overflow-y-auto">
+    <ul className="absolute top-full left-0 w-full min-w-64 bg-white dark:bg-slate-800  dark:border-slate-600 rounded-md mt-1 scrollbar-hidden shadow-lg z-20 max-h-60 overflow-y-auto">
       {suggestions.length > 0 ? (
         suggestions.map((item) => (
           <li

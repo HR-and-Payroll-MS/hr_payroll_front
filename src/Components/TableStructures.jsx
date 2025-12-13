@@ -4,6 +4,7 @@ import FileDrawer from './FileDrawer';
 import Drawer from './Drawer';
 import AttendanceCorrectionPage from '../Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
 import PayrollReportDrawer from '../Pages/HR_Manager/payroll_management/PayrollReportDrawer';
+import DocumentList from './DocumentList';
 // import { BASE_URL } from '../api/axiosInstance';
 function EmptyComponent() {
   return <div>No component provided</div>;
@@ -105,7 +106,8 @@ function TableStructures({data="",id,D1, item,Comps = EmptyComponent,nickname,ra
                             <div onClick={openModal} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
                               <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/>
                               { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
-                                        <AttendanceCorrectionPage staticUserData={data}/>
+                                        <DocumentList files={ []} justOpen={true}/>
+                                        {console.log(data," id---->",id," item---->",item)}
                               </FileDrawer>)}
                           </div>
                           

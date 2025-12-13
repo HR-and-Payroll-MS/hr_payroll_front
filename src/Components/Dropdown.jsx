@@ -28,7 +28,7 @@ export default function Dropdown({
       <button
         type="button" 
         onClick={toggleDropdown}
-        className={`w-full ${text} flex text-slate-700 dark:text-slate-200 items-center gap-1 justify-between ${border} rounded-lg px-4 ${padding} hover:border-slate-400 transition`}
+        className={`w-full ${text} flex text-nowrap text-slate-700 dark:text-slate-200 items-center gap-1 justify-between ${border} rounded-lg px-4 ${padding} hover:border-slate-400 transition`}
       >
         {icon ? <Icon className="w-4 h-4" name={icon} /> : null}
         <span className={`text-slate-700 dark:text-slate-200  ${selected ? "text-gray-900 dark:text-slate-100" : "text-slate-800 dark:text-slate-200"}`}>

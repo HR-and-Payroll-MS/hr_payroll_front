@@ -23,10 +23,10 @@ export function SearchStatus({ onFiltersChange }) {
     onFiltersChange({ employee: employee.name });
   };
 
-  const viewOptions = [
-    { content: 'Card View', svg: 'Grip' },
-    { content: 'Tabular View', svg: 'Grid3x3' },
-  ];
+  // const viewOptions = [
+  //   { content: 'Card View', svg: 'Grip' },
+  //   { content: 'Tabular View', svg: 'Grid3x3' },
+  // ];
   const depOptions = [
     { content: 'Department', svg: null, placeholder: true },
     { content: 'Human Resource', svg: null },
@@ -100,7 +100,7 @@ export function SearchStatus({ onFiltersChange }) {
       </div>
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-        <SearchDate/>
+        {/* <SearchDate/> */}
       </div>
     </div>
   );
@@ -380,6 +380,106 @@ export function ViewEditPayslips({ setQ, setPriority, action }) {
   );
 }
 
+export function AttendanceStatus({ onFiltersChange }) {
+  const handleFilter = (item, key) => {
+    if (!item) return;
+    // console.log("Dropdown selected:", item, "key:", key);
+    if (
+      item === 'Job Type' ||
+      item === 'Department' ||
+      item === 'Gender' ||
+      item === 'Status'
+    )
+      onFiltersChange({ [key]: '' });
+    else onFiltersChange({ [key]: item.content || item });
+  };
+
+  const handleEmployeeSelect = (employee) => {
+    onFiltersChange({ employee: employee.name });
+  };
+
+  const viewOptions = [
+    { content: 'Card View', svg: 'Grip' },
+    { content: 'Tabular View', svg: 'Grid3x3' },
+  ];
+  const depOptions = [
+    { content: 'Department', svg: null, placeholder: true },
+    { content: 'Human Resource', svg: null },
+    { content: 'Finance', svg: null },
+    { content: 'IT', svg: null },
+  ];
+  const genderOptions = [
+    { content: 'Gender', svg: null, placeholder: true },
+    { content: 'Female', svg: null },
+    { content: 'Male', svg: null },
+    { content: 'What else ?', svg: null },
+  ];
+  const jobOptions = [
+    { content: 'Job Type', svg: null, placeholder: true },
+    { content: 'fullTime', svg: null },
+    { content: 'PartTime', svg: null },
+  ];
+  const statOptions = [
+    { content: 'Status', svg: null, placeholder: true },
+    { content: 'Active', svg: null },
+    { content: 'InActive', svg: null },
+  ];
+
+  return (
+    <div id="left" className="flex py-2.5 gap-3 justify-between items-center">
+      <InputField
+        placeholder={'Search Employee'}
+        apiEndpoint="/api/employees/search"
+        displayKey="name"
+        onSelect={handleEmployeeSelect}
+      />
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown
+          onChange={(i) => handleFilter(i, 'job_type')}
+          options={jobOptions}
+          text="text-xs font-semibold"
+          placeholder="Job Type"
+          border="border gap-1 border-gray-100"
+        />
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown
+          onChange={(i) => handleFilter(i, 'gender')}
+          options={genderOptions}
+          text="text-xs font-semibold"
+          placeholder="Gender"
+          border="border gap-1 border-gray-100"
+        />
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown
+          onChange={(i) => handleFilter(i, 'department')}
+          options={depOptions}
+          text="text-xs font-semibold"
+          placeholder="Department"
+          border="border gap-1 border-gray-100"
+        />
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown
+          onChange={(i) => handleFilter(i, 'is_active')}
+          options={statOptions}
+          text="text-xs font-semibold"
+          placeholder="All Status"
+          border="border gap-1 border-gray-100"
+        />
+      </div>
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <SearchDate/>
+      </div>
+    </div>
+  );
+}
 
 
 

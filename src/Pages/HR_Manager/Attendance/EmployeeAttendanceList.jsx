@@ -1,7 +1,7 @@
 import React, { useEffect ,useState} from 'react'
 import Table from '../../../Components/Table'
 import Header from '../../../Components/Header'
-import {SearchStatus} from '../../../Components/Level2Hearder'
+import {AttendanceStatus} from '../../../Components/Level2Hearder'
 import { useNavigate } from "react-router-dom";
 function EmployeeAttendanceList() {
 useEffect(()=>{
@@ -96,7 +96,7 @@ const title=['EMPLOYEE','DATE','CLOCK IN','CLOCK IN LOCATION','CLOCK OUT','STATU
     return (
     <div className='p-4 flex flex-col  overflow-hidden h-full'>
         <Header Title={"Employee Attendance"} subTitle={"view all employee's Attendance and click to view detail "}/>
-        <SearchStatus onFiltersChange={updateFilter} />
+        <AttendanceStatus onFiltersChange={updateFilter} />
         {/* <Table URL={"/attendances/"} Data={[]}  title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10}/> */}
         
         {/* <Table Data={attendanceData} URL={dynamicURL} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10} /> */}

@@ -1,9 +1,9 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PDFViewer from "./PDFViewer";
 import FileDrawer from "./FileDrawer"; // Assume you have this modal/drawer component
 import useAuth from "../Context/AuthContext";
-const DocumentList = ({ files = [], isEditing = false, onChange }) => {
+const DocumentList = ({ files = [], isEditing = false, onChange , justOpen=false}) => {
   const {axiosPrivate} = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -17,6 +17,12 @@ const DocumentList = ({ files = [], isEditing = false, onChange }) => {
     onChange(updatedFiles);
   };
 
+  useEffect(()=>{
+    if(justOpen){
+      openViewer(files[0]);
+    }
+  },[])
+
   // Open viewer - fetch as blob to bypass X-Frame-Options
   const openViewer = async (file) => {
     setSelectedFile(file);
@@ -28,6 +34,7 @@ const DocumentList = ({ files = [], isEditing = false, onChange }) => {
       setIsModalOpen(true);
       return;
     }
+
 
     // If it's from the backend (has an ID), fetch via the serve-document endpoint
     if (file?.id) {
@@ -121,6 +128,93 @@ const DocumentList = ({ files = [], isEditing = false, onChange }) => {
 };
 
 export default DocumentList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

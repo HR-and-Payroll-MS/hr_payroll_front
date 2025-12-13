@@ -5,14 +5,14 @@ export default function useAttendanceToday() {
   const [loading, setLoading] = useState(true);
   const [punches, setPunches] = useState([]);
   const [error, setError] = useState(null);
-  const { axiosprivate } = useAuth();
+  const { axiosPrivate } = useAuth();
 
   async function load() {
     setLoading(true);
     setError(null);
 
     try {
-      const res = await axiosprivate.get("/attendances/today/");
+      const res = await axiosPrivate.get("/attendances/today/");
       setPunches(res.data?.punches || []);
     } catch (e) {
       setPunches([]);
