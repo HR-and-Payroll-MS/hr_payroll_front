@@ -55,10 +55,31 @@
   .hover-scrollbar:hover::-webkit-scrollbar-track-piece {
     background: transparent !important;
   }
+  .hover-bar::-webkit-scrollbar {
+    width: 6px;                   /* thickness */
+    background: transparent;      /* removes track */
+  }
+
+  /* Remove TRACK completely */
+  .hover-bar::-webkit-scrollbar-track {
+    background: transparent !important;
+    border: none !important;
+  }
+  
+  /* Fix track still showing on some Chrome versions */
+  .hover-bar::-webkit-scrollbar-track-piece {
+    background: transparent !important;
+  }
 
   /* The thumb (only part you want visible) */
   .hover-scrollbar:hover::-webkit-scrollbar-thumb {
     background-color: #a1a1aa; /* gray-400 */
+    border-radius: 20px;
+    border: 2px solid transparent; /* removes track outline */
+    background-clip: content-box;  /* hides background behind thumb */
+  }
+  .hover-bar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 128, 0, 0.545); /* gray-400 */
     border-radius: 20px;
     border: 2px solid transparent; /* removes track outline */
     background-clip: content-box;  /* hides background behind thumb */
@@ -73,6 +94,9 @@
 
   /* Remove corner */
   .hover-scrollbar::-webkit-scrollbar-corner {
+    background: transparent !important;
+  }
+  .hover-bar::-webkit-scrollbar-corner {
     background: transparent !important;
   }
 }

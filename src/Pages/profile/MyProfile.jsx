@@ -224,7 +224,7 @@ function MyProfile({ currStep = 0 }) {
     );
 
   return (
-    <div className="flex flex-col w-full h-full justify-start overflow-y-auto scrollbar-hidden bg-gray-50 dark:bg-slate-900">
+    <div className="flex flex-col w-full h-full justify-start overflow-y-auto scrollbar-hidden bg-slate-50 dark:bg-slate-900">
       {/* <Header Title={"Employee Detail"} Breadcrumb={"Employee detail"} /> */}
 
       {/* <div className="flex flex-col flex-1  overflow-y-scroll rounded-md h-full"> */}
@@ -235,14 +235,14 @@ function MyProfile({ currStep = 0 }) {
 
       <div className="flex flex-col rounded-md h-full flex-1 gap-4 ">
         <StepHeader
-          classname="flex justify-start items-start  px-4 my-2 m-0 *:h-12 min-h-fit max-h-fit  gap-5 border-b border-gray-200 "
+          classname="flex justify-start items-start  px-4 my-2 m-0 *:h-12 min-h-fit max-h-fit  gap-5 border-b border-gray-200 bg-transparent "
           notcurrentsytle="border-gray-50"
           steps={steps}
           currentStep={currentStep}
           onStepClick={setCurrentStep}
         />
 
-        <div className="flex-1 flex flex-col gap-3.5 pb-1 ">
+        <div className="flex-1 flex shadow flex-col gap-3.5 pb-1 ">
           <RenderStepContent
             currentStep={currentStep}
             editMode={editMode}

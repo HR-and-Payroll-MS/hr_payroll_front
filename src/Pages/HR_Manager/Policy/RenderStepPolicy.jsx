@@ -50,10 +50,10 @@ const RenderStepPolicy = ({
         {!TitleOff&&<h2 className="font-semibold  text-lg">{prettyTitle[sectionKey]}</h2>}
         {editMode?.[sectionKey] ? (
           <div className="flex gap-2">
-            <button onClick={() => handleSave(sectionKey)} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600" >
+            <button onClick={() => handleSave(sectionKey)} className="px-3 py-1 shadow bg-green-500 text-white rounded hover:bg-green-600" >
               Save
             </button>
-            <button onClick={() => handleCancel(sectionKey)} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+            <button onClick={() => handleCancel(sectionKey)} className="px-3 py-1 bg-gray-300 shadow text-gray-700 rounded hover:bg-gray-400">
               Cancel
             </button>
           </div>

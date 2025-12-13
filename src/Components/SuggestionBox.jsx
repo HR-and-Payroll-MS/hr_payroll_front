@@ -2,11 +2,11 @@ import React from 'react'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function SuggestionBox({ suggestions = [], onSelect, query }) {
+function SuggestionBox({ suggestions = [], onSelect, query ,suggestion}) {
   // Always render the <ul>, show "No results" if empty
   return (
     <ul className="absolute top-full left-0 w-full min-w-64 bg-white dark:bg-slate-800  dark:border-slate-600 rounded-md mt-1 scrollbar-hidden shadow-lg z-20 max-h-60 overflow-y-auto">
-      {suggestions.length > 0 ? (
+      {suggestions.length > 0  ? (
         suggestions.map((item) => (
           <li
             key={item.id}
@@ -42,7 +42,7 @@ function SuggestionBox({ suggestions = [], onSelect, query }) {
             </div>
           </li>
         ))
-      ) : query.trim().length >= 2 ? (
+      ) : query.trim().length >= 2 && suggestion ? (
         <li className="px-3 py-2.5 text-gray-500 dark:text-slate-400 text-sm">
           No results found
         </li>

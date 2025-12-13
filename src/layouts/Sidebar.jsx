@@ -68,7 +68,7 @@ export default function Sidebar() {
     <NavLink
       to=""
       id="top2"
-      className={`bg-green-600 rounded-md p-2.5 px-5 flex w-full justify-between items-center ${
+      className={`bg-green-600 shadow rounded-md p-2.5 px-5 flex w-full justify-between items-center ${
         collapsed ? 'justify-center' : ''
       }`}
     >
@@ -80,7 +80,7 @@ export default function Sidebar() {
   );
 
   const middle1 = (
-    <div id="middle" className="flex relative flex-col w-full flex-1 my-4 overflow-y-auto  gap-2" >
+    <div id="middle" className="flex relative  flex-col w-full flex-1 my-4 hover-bar overflow-y-auto  gap-2" >
       {list.map((lists, index) =>
         lists.path ? (
           <div key={index} className="cursor-pointer">
@@ -92,7 +92,7 @@ export default function Sidebar() {
                 `flex gap-1.5 rounded-md w-full items-center px-2.5 py-1.5 
                 ${
                   isActive
-                    ? 'bg-slate-200 dark:bg-slate-700 text-blue-500'
+                    ? 'bg-slate-200 shadow dark:bg-slate-700 text-green-700'
                     : 'hover:bg-slate-50 hover:dark:bg-slate-700'
                 }
                 ${collapsed ? 'justify-center' : 'justify-start'}
@@ -103,7 +103,7 @@ export default function Sidebar() {
                 name={lists.Icons || 'User'}
                 className={`w-5 h-5 ${
                   location.pathname === lists.path
-                    ? 'text-blue-500'
+                    ? 'text-green-700'
                     : 'text-slate-400'
                 }`}
               />
@@ -120,7 +120,7 @@ export default function Sidebar() {
               onClick={() => { if (collapsed) setCollapsed(false); else toggleVisible(lists.label);}}
               className={` ${lists.Visible ?"":'hover:bg-slate-50 dark:hover:bg-slate-700'} flex w-full ${collapsed ? 'justify-center' : 'justify-between'} items-center p-2.5 transition-all`}>
               <div className="flex items-center gap-1.5 justify-center">
-                <Icon name={lists.Icons} className={`w-4 h-4 ${lists.Visible ? 'text-blue-500' : 'text-slate-400'}`}/>
+                <Icon name={lists.Icons} className={`w-4 h-4 ${lists.Visible ? 'text-green-700' : 'text-slate-400'}`}/>
                 {!collapsed && (
                   <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
                     {lists.label}
@@ -143,7 +143,7 @@ export default function Sidebar() {
         </div>
         ) : (isLocal) ? (<div className='relative px-4.5 '>
                     <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1 border-slate-300 dark:border-slate-500 rounded-full z-0 '/>
-          <NavLink to={`/${clockinPath[role]}/clock_in`} end className={({ isActive }) => `relative z-10  flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive? 'bg-slate-200 dark:bg-slate-700' : 'hover:bg-slate-50 bg-white dark:bg-slate-800  dark:hover:bg-slate-700'}`}>
+          <NavLink to={`/${clockinPath[role]}/clock_in`} end className={({ isActive }) => `relative z-10  flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive? 'bg-slate-200 shadow dark:bg-slate-700' : 'hover:bg-slate-50 bg-white dark:bg-slate-800  dark:hover:bg-slate-700'}`}>
                   <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
                       Clock In
                     </p>
@@ -161,7 +161,7 @@ export default function Sidebar() {
                 {lists.sub?.map((subs,index) => (
                   <div key={index} className='relative px-4.5 '>
                     <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[30%] h-2 border-b-1 border-slate-300 dark:border-slate-500 rounded-full z-0 '></div>
-                    <NavLink key={subs.label} to={subs.subPath} end className={({ isActive }) => `relative z-10 flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive ? 'bg-slate-200 dark:bg-slate-700 ' : ' bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
+                    <NavLink key={subs.label} to={subs.subPath} end className={({ isActive }) => `relative z-10 flex rounded-md w-full justify-between items-center px-2.5 py-1.5 ${isActive ? 'bg-slate-200 shadow dark:bg-slate-700 ' : ' bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
                       <p className="dark:text-slate-300 font-semibold text-gray-700 text-sm">
                         {subs.label}
                       </p>

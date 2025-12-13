@@ -5,6 +5,7 @@ import ActionButton from "./ActionButton";
 import PunchStats from "./PunchStats";
 import PunchTimeline from "./PunchTimeline";
 import useAuth from "../../Context/AuthContext";
+import Header from "../../Components/Header";
 
 export default function ClockIn() {
   const { loading, punches, error, refresh } = useAttendanceToday();
@@ -71,15 +72,10 @@ export default function ClockIn() {
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
-      <header className="mb-6">
-        <h1 className="text-2xl font-bold">Attendance — Admin Panel</h1>
-        <p className="text-sm text-gray-500">
-          Clock in/out for employees (office network only)
-        </p>
-      </header>
-
-      <section className="flex flex-col items-center gap-4">
+    <div className="px-4 py-2  h-full gap-4 flex flex-col bg-slate-50  mx-auto">
+      <Header Title={"Attendance — Admin Panel"} subTitle={"Clock in/out for employees (office network only)"}/>
+    <div className="flex gap-4 flex-1">
+      <section className="flex flex-1 bg-white flex-col rounded shadow  items-center justify-center gap-4">
         <ActionButton
           isClockedIn={isClockedIn}
           hasCheckedOut={hasCheckedOut}
@@ -108,10 +104,11 @@ export default function ClockIn() {
         <PunchStats punches={punches} lastPunch={lastPunch} />
       </section>
 
-      <section className="mt-8 overflow-y-auto">
+      <section className="min-w-2/6 rounded bg-white shadow max-h-4/6 p-4 overflow-y-auto">
         <h2 className="text-lg font-semibold mb-3">Today's punches</h2>
         <PunchTimeline loading={loading} punches={punches} />
       </section>
+      </div>
     </div>
   );
 }

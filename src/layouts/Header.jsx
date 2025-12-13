@@ -8,7 +8,7 @@ export default function Header(){
         const navigate = useNavigate()
         return <div className={`bg-white flex justify-evenly shadow h-14 gap-3 z-50  dark:bg-slate-800 dark:text-white `}> 
         <div id="left" className="flex py-2.5 w-2/5  justify-between items-center p-4 ">
-            <div className={`flex items-center gap-1.5 justify-between bg-gray-100 w-full h-full px-1.5 rounded-md  dark:bg-slate-700 `}>
+            <div className={`flex shadow items-center gap-1.5 justify-between bg-gray-100 w-full h-full px-1.5 rounded-md  dark:bg-slate-700 `}>
                 <div className="flex items-center gap-1.5 px-2.5 py-2 h-full">
                     <img className="h-4 opacity-45" src="\svg\search-svgrepo-com.svg" alt="" />
                     {/* <input className=" h-full rounded w-full" type="email" name="email" id="email" placeholder="search anything..." /> */}

@@ -91,14 +91,14 @@ ke=[
         <SummaryCard />
       </div>
       <div className="flex gap-4  w-full flex-2">
-        <div className="bg-gray-50 h-full dark:bg-slate-700 rounded flex-1 ">
+        <div className="bg-gray-50 h-full shadow dark:bg-slate-700 rounded flex-1 ">
           {/* <BarChartExample themeMode={darkMode ? 'dark' : 'light'} /> */}
           <BarChartExample theme={theme} />
         </div>
-        <div className="bg-gray-50 h-full dark:bg-slate-700 rounded flex-1 ">
+        <div className="bg-gray-50 h-full shadow dark:bg-slate-700 rounded flex-1 ">
           <LineChartExample theme={theme} />
         </div>
-        <div className="bg-gray-50 h-full dark:bg-slate-700 rounded flex-1 ">
+        <div className="bg-gray-50 h-full shadow dark:bg-slate-700 rounded flex-1 ">
           <PieChartExample theme={theme} />
         </div>
       </div>

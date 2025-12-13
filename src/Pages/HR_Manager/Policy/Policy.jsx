@@ -19,7 +19,7 @@ function Policy() {
     "Job Structure Policy",
     "Salary Structure Policy",
   ];
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(0);
   const [policyData, setPolicyData] = useState(null);
   const [originalData, setOriginalData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ function Policy() {
         // setOriginalData(res.data);
         const res = initialPolicies;
         setPolicyData(res);
-        // setOriginalData(JSON.parse(JSON.stringify(res)));
+        setOriginalData(JSON.parse(JSON.stringify(res)));
       } catch (err) {
         console.error(err);
         setError("Failed to fetch policy data.");

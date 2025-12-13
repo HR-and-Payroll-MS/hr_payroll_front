@@ -132,7 +132,7 @@ export const sidebarList = {
       label: 'Reports',
       Visible: false,
       sub: [
-        { subPath: '/', label: 'Payroll Reports' },
+        { subPath: 'efficiencyhr', label: 'Payroll Reports' },
         { subPath: '/', label: 'Attendance Reports' },
         { subPath: '/', label: 'Leave Reports' },
         { subPath: '/', label: 'Overtime Reports' },
@@ -142,11 +142,21 @@ export const sidebarList = {
     },
     {
       Icons: 'ShieldAlert',
-      path: 'policies',
-      label: 'Policy',
+      path: null,
+      label: 'Efficiency & Policy',
       Visible: false,
-      sub: null
+      sub: [
+        { subPath: 'efficiencyhr', label: 'Create Efficiency Form' },
+        { subPath: 'policies', label: 'Policy' }
+      ],
     },
+    // {
+    //   Icons: 'ShieldAlert',
+    //   path: 'policies',
+    //   label: 'Policy',
+    //   Visible: false,
+    //   sub: null
+    // },
     // {
     //   Icons: 'ShieldAlert',
     //   path: null,

@@ -8,6 +8,8 @@ import useAuth from '../Context/AuthContext'
 function InputField({placeholder = "Search...",apiEndpoint ,
   displayKey = "name",
   onSelect,
+  maxWidth="max-w-3/5",
+  suggestion=true,
   icon=true,
   border="border",
   value=""//the input text that is inserted inside the inputfield
@@ -36,7 +38,7 @@ function InputField({placeholder = "Search...",apiEndpoint ,
                 }
               }
         } else{
-            // onSelect(query)
+            onSelect(query)
         if (onSelect) onSelect(query)
           }
         }, 400)
@@ -65,7 +67,7 @@ function InputField({placeholder = "Search...",apiEndpoint ,
 // check here there is some thing wrong
 
   return (
-    <div className="relative flex-1 min-w-2/5 max-w-3/5"> 
+    <div className={`relative flex-1 min-w-2/5 ${maxWidth}`}> 
       <div className={ `flex text-slate-700 dark:text-slate-200 flex-1 ${border} rounded items-center justify-between px-2.5 py-1.5 dark:border-slate-500 border-slate-300`}>
         <input
           onChange={(e) => setQuery(e.target.value)}
@@ -80,7 +82,7 @@ function InputField({placeholder = "Search...",apiEndpoint ,
         <div className="absolute right-3 top-2 text-gray-400 text-sm">...</div>
       )}
       {/* <SuggestionBox suggestions={suggestions} onSelect={handleSelect} /> */}
-      <SuggestionBox suggestions={suggestions} onSelect={handleSelect} query={query} />
+      <SuggestionBox suggestion={suggestion} suggestions={suggestions} onSelect={handleSelect} query={query} />
     </div>
   )
 }

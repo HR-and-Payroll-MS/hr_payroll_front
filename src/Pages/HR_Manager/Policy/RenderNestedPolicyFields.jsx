@@ -3,6 +3,7 @@ import Dropdown from "../../../Components/Dropdown";
 import DocumentList from "../../../Components/DocumentList";
 import AddNewItemModal from "../../../utils/AddNewItemModal";
 import { policyFormSchemas } from "./PolicyFormSchemas";
+import InputField from "../../../Components/InputField";
 
 // Convert camelCase/snake_case → Human label
 const humanLabel = (key) =>
@@ -66,7 +67,7 @@ const RenderNestedPolicyFields = ({
         // NESTED OBJECT
         if (value && typeof value === "object" && !Array.isArray(value) && !value.__type) {
           return (
-            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
+            <div key={fullPath} className="w-full  shadow rounded p-3 bg-slate-50">
               <h3 className="font-semibold mb-2">{humanLabel(key)}</h3>
               <MemoizedRenderFields
                 data={value}
@@ -85,13 +86,13 @@ const RenderNestedPolicyFields = ({
         // ARRAY FIELD
         if (Array.isArray(value)) {
           return (
-            <div key={fullPath} className="w-full rounded p-3 bg-slate-50">
+            <div key={fullPath} className="w-full rounded p-3 shadow bg-slate-50">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-semibold">{humanLabel(key)}</h3>
                 {isEditing && (
                   <button
                     onClick={() => openAddModalFor(key, fullPath)}
-                    className="px-2 py-1 bg-green-100 text-sm rounded"
+                    className="px-2 py-1 shadow bg-green-100 text-sm rounded"
                   >
                     + Add
                   </button>
@@ -106,7 +107,7 @@ const RenderNestedPolicyFields = ({
 
                   if (typeof item === "object") {
                     return (
-                      <div key={itemPath} className="p-3 bg-white rounded flex flex-col gap-3">
+                      <div key={itemPath} className="p-3 bg-white inset-shadow-xs rounded flex flex-col gap-3">
                         {isEditing && (
                           <div className="flex justify-end">
                             <button
@@ -193,11 +194,19 @@ const RenderNestedPolicyFields = ({
             <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
             <div className="flex-1">
               {isEditing ? (
-                <input
-                  value={value ?? ""}
-                  onChange={(e) => handleInputChange(sectionKey, fullPath, e.target.value)}
-                  className="w-full border rounded px-2 py-1"
-                />
+                // <input
+                //   value={value ?? ""}
+                //   onChange={(e) => handleInputChange(sectionKey, fullPath, e.target.value)}
+                //   className="w-full border rounded px-2 py-1"
+                // />
+                 <InputField
+                  border="inset-shadow-2xs border border-slate-200" 
+                  maxWidth=" bg-white" 
+                  suggestion={false} 
+                  placeholder={value} 
+                  icon={false} 
+                  onSelect={(e) => handleInputChange(sectionKey, fullPath, e)}/>
+                         
               ) : (
                 <div className="font-semibold">
                   {value ? String(value) : <span className="text-gray-400 italic">Not provided</span>}

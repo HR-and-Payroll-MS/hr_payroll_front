@@ -64,14 +64,17 @@ import ViewGeneratedPayslips from './Pages/Payroll_Officer/payslips/ViewGenerate
 import DepartmentWisePayroll from './Pages/Payroll_Officer/reports/DepartmentWisePayroll'
 import PayrollReports from './Pages/Payroll_Officer/reports/PayrollReports'
 import TaxReports from './Pages/Payroll_Officer/reports/TaxReports'
+import FormBuilder from './Examples/FormBuilder';
+import FormField from './Examples/FormField';
+import HREfficiencyForm from './Examples/HREfficiencyForm';
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
 
 function App() {
-  // useEffect(()=>{
-  //   setLocalData("role","Manager")
-  // },[])
+  useEffect(()=>{
+    setLocalData("role","Manager")
+  },[])
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -119,6 +122,7 @@ function App() {
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route path="View_Employee" element={<ViewEmployee />} />
             <Route path="Addemployee" element={<AddEmployee />} />
+            <Route path="efficiencyhr" element={<HREfficiencyForm />} />
             <Route path="Approve_Reject" element={<LeaveApprovalPage />} />
             <Route path="Announcement" element={<AnnouncementsPage />} />
             <Route path="Payroll_report" element={<PayrollReportsPage />} />

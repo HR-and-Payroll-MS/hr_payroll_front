@@ -8,7 +8,7 @@ export default function ProfilePicture() {
 
   return (
     <>
-      <div className="relative w-28 h-28 ">
+      <div className="relative rounded-full bg-amber-800 shadow w-28 h-28 ">
         {image?
           (<img src={image} className="w-28 bg-amber-100 h-28 rounded-full border-4 border-white shadow object-cover"/>
           ):(

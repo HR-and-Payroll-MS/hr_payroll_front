@@ -4,7 +4,7 @@ import Icon from '../../Components/Icon'
 export default function ProfileHeader() {
   const employeeData=[];
   return (
-    <div className="w-full bg-white rounded-md shadow-2xs pb-4  overflow-hidden">
+    <div className="w-full bg-white rounded-md shadow pb-4  overflow-hidden">
       <div className="h-34 bg-cover bg-center" style={{ backgroundImage:"url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')" }} />
       <div className="relative px-6 -mt-14">
         <ProfilePicture />
