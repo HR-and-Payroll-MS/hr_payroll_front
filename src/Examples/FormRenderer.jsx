@@ -4,7 +4,7 @@ import InputField from "../Components/InputField";
 import Dropdown from "../Components/Dropdown";
 
 export default function FormRenderer({ savedForm }) {
-    console.log("Rendered Form Data:", savedForm);
+    // console.log("Rendered Form Data:", savedForm);
   const [answers, setAnswers] = useState({});
   const [finalScore, setFinalScore] = useState(null);
 
@@ -15,7 +15,7 @@ export default function FormRenderer({ savedForm }) {
   const calculateScore = () => {
   let achieved = 0;
   let possible = 0;
-
+    console.log("saved form",savedForm)
   savedForm.performanceMetrics.forEach((field) => {
     const answer = answers[field.id];
 
@@ -119,13 +119,13 @@ export default function FormRenderer({ savedForm }) {
 
       <button
         onClick={calculateScore}
-        className="mt-8 px-8 py-4 bg-green-600 text-white text-lg rounded hover:bg-green-700"
+        className="mt-8 px-4 py-2 bg-green-600 shadow text-white rounded hover:bg-green-700"
       >
         Submit & Calculate Efficiency
       </button>
 
       {finalScore !== null && (
-        <div className="mt-10 p-8 bg-green-50 border-4 border-green-300 rounded-xl text-center">
+        <div className="mt-10 p-8 bg-green-50 shadow  rounded text-center">
           <h2 className="text-4xl font-bold text-green-800">
             Final Efficiency Score: {finalScore}%
           </h2>
