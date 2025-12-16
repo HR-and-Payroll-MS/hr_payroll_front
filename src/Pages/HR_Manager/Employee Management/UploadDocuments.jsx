@@ -32,10 +32,11 @@ export default function UploadDocuments() {
     setLoadingDocs(true);
     try {
 
-      const res = await axiosPrivate.get(`/employees/serve-document/${employeeId}/`,{ responseType: "blob" });
-      setDocuments([res.data]|| [])
+      const res = await axiosPrivate.get(`/employees/${employeeId}/`);
+      
+      setDocuments(res.data?.documents.files|| [])
       // console.log('employeeId', employeeId);
-      // console.log("res.data", res.data);
+      console.log("res.data", res.data?.documents.files);
       // console.log('fetched docs', res.data.documents);
     } catch (err) {
       console.error('fetch docs error', err);
@@ -53,51 +54,118 @@ export default function UploadDocuments() {
       setDocuments([]);
     }
   }, [selectedEmployee, loadDocuments]);
- const handleUpload = async ({ files, type, notes, onProgress }) => {
+  const handleUpload = async ({ files, type, notes, onProgress }) => {
+  if (!selectedEmployee?.id) {
+    console.error("No employee selected");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+
+    // Backend fields (adjust names if backend differs)
+    formData.append("type", type || "");
+    formData.append("notes", notes || "");
+
+    // Normalize files
+    const docs =
+      files instanceof File
+        ? [files]
+        : files?.files
+        ? Array.from(files.files)
+        : Array.isArray(files)
+        ? files
+        : [];
+
+    if (!docs.length) {
+      console.error("No files to upload");
+      return;
+    }
+
+    docs.forEach((file) => {
+      formData.append("documents", file); // backend expects "documents"
+    });
+
+    // Debug (FormData can't be console.logged directly)
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    const response = await axiosPrivate.post(
+      `/employees/${selectedEmployee.id}/upload-document/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (event) => {
+          if (onProgress && event.total) {
+            const percent = Math.round((event.loaded * 100) / event.total);
+            onProgress(percent);
+          }
+        },
+      }
+    );
+
+    console.log("Upload successful:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error uploading documents:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  const handleUpload = async ({ files, type, notes, onProgress }) => {
 
 //  const uploadData = new FormData();
-
-// const docs = formData.documents?.files;
+// uploadData.append("name", "type");
+// const docs = files?.files || files; 
 
 // if (docs) {
 //   const files = docs instanceof File ? [docs] : Array.from(docs);
 //   files.forEach(file => uploadData.append("documents", file));
 // }
-//_______________________________________________
 
+// try {
+//   // console.log("going")
+//   console.log(uploadData ,"upload dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+//   console.log(selectedEmployee)
+  
+//     const response = await axiosPrivate.post(`/employees/${selectedEmployee?.id}/upload-document/`, uploadData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
+//     console.log("done")
+//     // return response.data;
+//   } catch (error) {
+//     console.error("Error submitting profile:", error.response?.data || error);
+//   } finally {
+//     // setLoading(false)
+//   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  console.log(files, type, notes, onProgress)
-    // if (!selectedEmployee)
-    //   throw new Error('Employee must be selected before uploading.');
-    // const form = new FormData();
-    // form.append('employeeId', selectedEmployee.id);
-    // form.append('type', type);
-    // form.append('notes', notes || '');
-    // files.forEach((f) => form.append('files', f));
-    // setUploading(true);
-    // try {
-    //   const res = await uploadDocuments(form, (ev) => {
-    //     if (onProgress) onProgress(Math.round((ev.loaded * 100) / ev.total));
-    //   });
-    //   setDocuments((prev) => [...res, ...prev]);
-    //   return res;
-    // } finally {
-    //   setUploading(false);
-    // }
-  };
+//   console.log(files)
+//     // if (!selectedEmployee)
+//     //   throw new Error('Employee must be selected before uploading.');
+//     // const form = new FormData();
+//     // form.append('employeeId', selectedEmployee.id);
+//     // form.append('type', type);
+//     // form.append('notes', notes || '');
+//     // files.forEach((f) => form.append('files', f));
+//     // setUploading(true);
+//     // try {
+//     //   const res = await uploadDocuments(form, (ev) => {
+//     //     if (onProgress) onProgress(Math.round((ev.loaded * 100) / ev.total));
+//     //   });
+//     //   setDocuments((prev) => [...res, ...prev]);
+//     //   return res;
+//     // } finally {
+//     //   setUploading(false);
+//     // }
+//   };
     const handleEmployeeSelect = (emp) => {
     // console.log("Selected employee:", emp);
     setSelectedEmployee(emp);
@@ -161,7 +229,7 @@ export default function UploadDocuments() {
        </main>
 
       <UploadDrawer open={drawerOpen} onClose={setDrawerOpen} employee={selectedEmployee} onUpload={async (payload) => { await handleUpload(payload); setDrawerOpen(false);}} uploading={uploading} />
-      <PreviewModal doc={previewDoc} onClose={() => setPreviewDoc(null)} />
+      {/* <PreviewModal doc={previewDoc} onClose={() => setPreviewDoc(null)} /> */}
     </div>
   );
 }

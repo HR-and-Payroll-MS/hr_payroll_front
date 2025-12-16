@@ -115,14 +115,22 @@ const DocumentList = ({ files = [], isEditing = false, onChange , justOpen=false
         </div>
       )}
 
-      {isModalOpen && selectedFile && blobUrl && (
-        <FileDrawer isModalOpen={isModalOpen} closeModal={handleClose}>
-          <PDFViewer
-            url={blobUrl}
-            onClose={handleClose}
-          />
-        </FileDrawer>
-      )}
+     {isModalOpen && selectedFile && blobUrl && (
+  justOpen ? (
+    <PDFViewer
+      url={blobUrl}
+      onClose={handleClose}
+    />
+  ) : (
+    <FileDrawer isModalOpen={isModalOpen} closeModal={handleClose}>
+      <PDFViewer
+        url={blobUrl}
+        onClose={handleClose}
+      />
+    </FileDrawer>
+  )
+)}
+
     </div>
   );
 };
