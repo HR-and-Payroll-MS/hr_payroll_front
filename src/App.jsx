@@ -68,6 +68,7 @@ import FormBuilder from './Examples/FormBuilder';
 import FormField from './Examples/FormField';
 import HREfficiencyForm from './Examples/HREfficiencyForm';
 import EfficiencyReport from './Pages/HR_Manager/Report/EfficiencyReport';
+import IndexRedirect from './Pages/IndexRedirect';
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
@@ -83,6 +84,8 @@ function App() {
       <>
         {' '}
         <Route path="/login" element={<Login />} />
+        <Route index element={<IndexRedirect />} />
+
         <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="/access-denied" element={<AccessDenied />} />
         {/* ------------------------- Payroll officer ---------------------- */}

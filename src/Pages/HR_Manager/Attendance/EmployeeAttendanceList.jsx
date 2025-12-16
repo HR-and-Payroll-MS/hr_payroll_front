@@ -4,11 +4,14 @@ import Header from "../../../Components/Header";
 import { AttendanceStatus } from "../../../Components/Level2Hearder";
 import AttendanceCorrectionPage from "./AttendanceCorrectionPage";
 import useAuth from "../../../Context/AuthContext";
+import { Atom } from "react-loading-indicators";
 
 const TABLE_MODES = {
   DEPARTMENT: "DEPARTMENT",
   EMPLOYEE: "EMPLOYEE",
 };
+
+
 
 /* -------- MOCK EMPLOYEE DATA (for drill-down only) -------- */
 const employeeAttendanceMock = [
@@ -84,11 +87,12 @@ function EmployeeAttendanceList() {
   /* ================= ROW CLICK ================= */
 
 const onRowClick = async (rowIndex,index,data) => {
-  console.log(rowIndex)
-  console.log(index)
-  console.log(data)
-  
+  // console.log(rowIndex , "rowIndex")
+  // console.log(index , "index")
+  // console.log(data , "data")
+  setDep(data[index].department_name)
   const id=data[index].department_id
+  setLoading(true)
   setHistory((prev) => [...prev, tableConfig]);
   setTableMode(TABLE_MODES.EMPLOYEE);
 
@@ -142,6 +146,9 @@ const onRowClick = async (rowIndex,index,data) => {
       Data: [],
     }));
   }
+  finally{
+    setLoading(false);
+  }
 };
 
   /* ================= BACK ================= */
@@ -157,7 +164,8 @@ const onRowClick = async (rowIndex,index,data) => {
 
   if (!tableConfig) {
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex flex-col justify-center items-center h-full">
+        <Atom color="#32cd32" size="medium" text="" textColor="" />
         Loading departments...
       </div>
     );

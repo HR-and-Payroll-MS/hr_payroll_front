@@ -148,6 +148,7 @@ export function AuthContextProvider({ children }) {
         const userData = userRes.data;
 
         // Store user info
+        console.log(userData, '<-- user data after login');
         setLocalData('id', userData.username);
         setLocalData('role', userData.groups?.[0] ?? null);
         setLocalData('user_id', userData.employee_id); // assuming userData has .id

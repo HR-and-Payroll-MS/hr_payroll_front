@@ -50,7 +50,7 @@ import Icon from './Icon'
 
 
 // ............................       Working Pagination         ......................................
-export const Pagination=({ page, totalPages, onPageChange})=> {
+export const Pagination=({ page, totalPages=1, onPageChange})=> {
   return (totalPages>1 &&
     <div id="middle" className="flex  justify-between py-2 items-center ">
                 

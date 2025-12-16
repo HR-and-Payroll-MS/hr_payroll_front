@@ -3,6 +3,7 @@ import SummaryCard from "../../../Components/SummaryCard";
 import { AttendanceNivoPie, BarChart, Heatmap } from "../../../Components/Graphs";
 import useAuth from "../../../Context/AuthContext";
 import { getLocalData } from "../../../Hooks/useLocalStorage";
+import { Atom } from "react-loading-indicators";
 
 export default function MyAttendance() {
   const { axiosPrivate } = useAuth();
@@ -407,7 +408,7 @@ export default function MyAttendance() {
   }, []);
 
   if (loading || !data) {
-    return <div className="p-6">Loading your attendance...</div>;
+    return <div className="flex flex-col justify-center items-center h-full"><Atom color="#32cd32" size="medium" text="" textColor="" />Loading your attendance...</div>;
   }
 
   return (

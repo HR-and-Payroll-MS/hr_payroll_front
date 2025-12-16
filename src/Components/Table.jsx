@@ -4,6 +4,7 @@ import { usePagination } from "../Hooks/usePagination";
 import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
+import { Commet, FourSquare } from "react-loading-indicators";
 function Table({ Data,URL,onRowClickInside, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view",D1}) {
   const { data, page,setPage, totalPages, loading } = usePagination(URL,10,Data?Data:[],totPage)
   const handleRowClick = (rowData,index,data) => {
@@ -32,8 +33,9 @@ function Table({ Data,URL,onRowClickInside, Structure, ke,clickable=true,compone
     <tr>
       <td colSpan={9} className="text-center py-4">
         
-              <div className="flex justify-center items-center h-64">
-                <ThreeDots />
+              <div className="flex opacity-50@ justify-center items-center h-64">
+                {/* <ThreeDots /> */}
+                <Commet color={"oklch(62.7% 0.194 149.214)"} size="medium" text="loading" textColor=""/>
               </div>
       </td>
     </tr>
@@ -66,7 +68,9 @@ function Table({ Data,URL,onRowClickInside, Structure, ke,clickable=true,compone
   <tbody>
     <tr>
       <td colSpan={9} className="text-center text-gray-500 py-4 ">
-        No users found
+        {/* No users found */}
+        <div className="flex flex-col font-semibold opacity-40 justify-center items-center">
+          <img className=" " src="/public/pic/F1.png" alt="no users found" />No Data</div>
       </td>
     </tr>
   </tbody>

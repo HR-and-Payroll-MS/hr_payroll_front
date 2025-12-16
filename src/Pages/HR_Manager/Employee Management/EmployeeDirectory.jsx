@@ -49,7 +49,7 @@ const [filters, setFilters] = useState({});
       <Header Title="Employee Directory" subTitle="view all employees and click to view detail"/>
       <SearchStatus onFiltersChange={updateFilter} />
         {console.log(dynamicURL)}
-      <Table Data={[]} URL={dynamicURL} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10} />
+      <Table Data={[]} URL={dynamicURL} title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} />
     </div>
   );
 }
