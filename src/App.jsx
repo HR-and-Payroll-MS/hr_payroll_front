@@ -67,14 +67,16 @@ import TaxReports from './Pages/Payroll_Officer/reports/TaxReports'
 import FormBuilder from './Examples/FormBuilder';
 import FormField from './Examples/FormField';
 import HREfficiencyForm from './Examples/HREfficiencyForm';
+import EfficiencyReport from './Pages/HR_Manager/Report/EfficiencyReport';
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
 
 function App() {
-  useEffect(()=>{
-    setLocalData("role","Manager")
-  },[])
+  // useEffect(()=>{
+    // setLocalData("role","Manager")
+    // localStorage.clear();
+  // },[])
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -86,6 +88,7 @@ function App() {
         {/* ------------------------- Payroll officer ---------------------- */}
         <Route element={<Routes allowedRoles={['Payroll']} />}>
           <Route path="Payroll" element={<MainLayout />}>
+            <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route index element={<DashboardLayout />} />
             <Route path="generate_payroll" element={<GeneratePayroll />} />
             <Route path="profile" element={<MyProfile />} />
@@ -121,6 +124,7 @@ function App() {
             {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route path="View_Employee" element={<ViewEmployee />} />
+            <Route path="efficiency_report" element={<EfficiencyReport />} />
             <Route path="Addemployee" element={<AddEmployee />} />
             <Route path="efficiencyhr" element={<HREfficiencyForm />} />
             <Route path="Approve_Reject" element={<LeaveApprovalPage />} />
@@ -152,10 +156,8 @@ function App() {
             </Route>
 
             <Route path="attendance" element={<Attendance />} />
-            <Route
-              path="Employee_Attendance"
-              element={<EmployeeAttendanceList />}
-            />
+            <Route path="Employee_Attendance" element={<EmployeeAttendanceList />}/>
+            <Route path="Department_Attendance" element={<EmployeeAttendanceList />}/>
             <Route
               path="Employee_Attendance/:id"
               element={<EmployeeAttendanceDetail />}

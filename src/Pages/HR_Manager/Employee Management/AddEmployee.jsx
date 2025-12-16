@@ -170,7 +170,7 @@ uploadData.append("photo", photo);
     <div className="w-full h-full flex flex-col mx-auto p-6 bg-white rounded-2xl">
       <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
 
-      <div className="mt-6 overflow-y-auto flex-1 ">{renderStep()}</div>
+      <div className="mt-6 hover-bar overflow-y-auto flex-1 ">{renderStep()}</div>
 
       <div className="flex justify-between mt-8">
         {currentStep > 0 && (

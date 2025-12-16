@@ -18,7 +18,7 @@ export const usePagination = (url, limit=10,exdata,totPag) =>{
                 // const res = await axios.get(`${url}?page=${page}&limit=${limit}`)
                 const res = await axiosPrivate.get(url)
                 // const res = await axiosPrivate.get(`${url}?page=${page}&limit=${limit}`)
-                console.log(res.data)
+                // console.log(res.data)
                 setData(res.data.results)
                 }
                 else{

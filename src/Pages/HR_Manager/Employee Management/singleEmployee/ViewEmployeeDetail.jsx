@@ -6,14 +6,50 @@ import Header from '../../../../Components/Header';
 import StepHeader from '../../../../Components/forms/StepHeader';
 import { RenderStepContent } from '../../../../utils/RenderStepContent';
 import EmployeeProfile from './EmployeeProfile';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+const editableByHR = {
+  general: true,
+  job: true,
+  payroll: true,
+  documents: true,
+};
 
-function ViewEmployeeDetail() {
-    
+const editableByPayroll = {
+  general: false,
+  job: true,
+  payroll: true,
+  documents: false,
+};
+const stepIndexMapByRole = {
+  HR: [0, 1, 2, 3],        // General, Job, Payroll, Documents
+  payroll: [1, 2],        // Job, Payroll
+};
+
+const defaultSteps = ["General", "Job", "Payroll", "Documents"]
+function ViewEmployeeDetail({role='HR'}) {
+  const { state } = useLocation();
+  const { Role } = state || {};
+  const activeStep = Role ?? role;
+    useEffect(() => {
+  const stepMap =
+    activeStep === "payroll"
+      ? stepIndexMapByRole.payroll
+      : stepIndexMapByRole.HR;
+
+  setSteps(
+    stepMap.map((i) => defaultSteps[i])
+  );
+
+  setUiStep(0);
+  setCurrentStep(stepMap[0]); // logical index
+}, [activeStep]);
+
+  
   const { axiosPrivate } = useAuth(); // must supply axiosPrivate configured with baseURL + auth
-  const steps = ["General", "Job", "Payroll", "Documents"];
   const [currentStep, setCurrentStep] = useState(0);
+  const [uiStep, setUiStep] = useState(0);
   const [employeeData, setEmployeeData] = useState(null);
+  const [steps, setSteps] = useState(defaultSteps)
   const [originalData, setOriginalData] = useState(null); // keep backend snapshot
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -26,7 +62,7 @@ function ViewEmployeeDetail() {
          const daattaa = await axiosPrivate.get(`/employees/${employeeId}`);
          console.log(daattaa.data.documents[0]);
 
-      //    const response = [
+      //    const daattaa = {data:[
       //     {
       //     id: 1,
       //     general: {
@@ -90,7 +126,7 @@ function ViewEmployeeDetail() {
       //       ],
       //     },
       //   }
-      // ];
+      // ]};
         setEmployeeData(daattaa.data);
         setOriginalData(daattaa.data);
       } catch (err) {
@@ -179,14 +215,27 @@ if (error)
       <Header Title={"Employee Detail"} Breadcrumb={"Employee detail"} />
 
       <div className="flex flex-1 gap-5 overflow-y-scroll rounded-md h-full">
-        <div className="h-fit shadow rounded-xl overflow-clip w-1/4"><EmployeeProfile employeeData={employeeData}/></div>
+        <div className="h-fit shadow rounded-xl overflow-clip w-1/4"><EmployeeProfile role={Role  } employeeData={employeeData}/></div>
 
         <div className="flex flex-col rounded-md shadow h-full flex-1 gap-4 p-4 bg-white">
-          <StepHeader steps={steps} currentStep={currentStep} onStepClick={setCurrentStep} />
+                <StepHeader
+          steps={steps}
+          currentStep={uiStep}
+          onStepClick={(index) => {
+            const stepMap =
+              Role === "payroll"
+                ? stepIndexMapByRole.payroll
+                : stepIndexMapByRole.HR;
 
-          <div className="flex-1 overflow-y-auto">
+            setUiStep(index);
+            setCurrentStep(stepMap[index]); // 👈 THIS FIXES EVERYTHING
+          }}
+        />
+
+          <div className="flex-1 hover-bar overflow-y-auto">
             <RenderStepContent
               currentStep={currentStep}
+              editable={Role === "payroll" ? editableByPayroll : editableByHR}
               editMode={editMode}
               employeeData={employeeData}
               handleInputChange={handleInputChange}

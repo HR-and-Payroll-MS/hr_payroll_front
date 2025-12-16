@@ -16,6 +16,7 @@ export default function AppProvider({children})
                 </NetworkProvider>
               {/* </SocketProvider> */}
             </AuthContextProvider>
+
     // return <AuthContext>
     //             <ThemeContext>
     //                 {children}

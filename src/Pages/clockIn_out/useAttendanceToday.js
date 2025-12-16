@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../Context/AuthContext";
+import { getLocalData } from "../../Hooks/useLocalStorage";
 
 export default function useAttendanceToday() {
   const [loading, setLoading] = useState(true);
@@ -12,7 +13,9 @@ export default function useAttendanceToday() {
     setError(null);
 
     try {
-      const res = await axiosPrivate.get("/attendances/today/");
+      // console.log("here here here")
+      const res = await axiosPrivate.get(`employees/${getLocalData("user_id")}/attendances/today/`);
+      console.log(res?.data?.punches)
       setPunches(res.data?.punches || []);
     } catch (e) {
       setPunches([]);

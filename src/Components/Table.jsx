@@ -4,11 +4,12 @@ import { usePagination } from "../Hooks/usePagination";
 import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
-function Table({ Data,URL, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view",D1}) {
+function Table({ Data,URL,onRowClickInside, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view",D1}) {
   const { data, page,setPage, totalPages, loading } = usePagination(URL,10,Data?Data:[],totPage)
-  const handleRowClick = (rowData,index) => {
+  const handleRowClick = (rowData,index,data) => {
     if (onRowClick) {
-      onRowClick(rowData)
+      onRowClick(rowData,index,data)
+      // onRowClick(rowData,index)
     } else if(rowData.id){
     }
   }
@@ -40,8 +41,17 @@ function Table({ Data,URL, Structure, ke,clickable=true,components ,title=[], on
 ) : structuredData.length > 0 ? (
   <tbody>
   {structuredData.map((i, index) => (
-   
-    <tr key={index} {...(clickable && { onClick: () => handleRowClick(i.at(-1), index),})} className={`${clickable ? "cursor-pointer" : ""} hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-sm text-gray-700 `}>
+    // <tr key={index} {...(clickable && { onClick: () => handleRowClick(i,index),})} className={`${clickable ? "cursor-pointer" : ""} hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-sm text-gray-700 `}>
+    //   {i.map((j, jndex) =>
+    //     jndex !== i.length - 1 && (
+    //       <td key={jndex}  className="border-b border-gray-100 dark:border-gray-600 px-4 py-2">
+    //         <TableStructures nickname={nickname} rawData={Data} Comps={components} data={data[index]} D1={D1} id={bodyStructure[jndex]} item={j} />
+    //       </td>
+    //     )
+    //   )}
+    // </tr>
+    <tr key={index} {...(clickable && { onClick: () => handleRowClick(i.at(-1), index,data),})} className={`${clickable ? "cursor-pointer" : ""} hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-sm text-gray-700 `}>
+      {/* {console.log("Row data for click:",i)} */}
       {i.map((j, jndex) =>
         jndex !== i.length - 1 && (
           <td key={jndex} className="border-b border-gray-100 dark:border-gray-600 px-4 py-2">

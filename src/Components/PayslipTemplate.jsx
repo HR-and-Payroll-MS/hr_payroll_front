@@ -1,16 +1,83 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useImperativeHandle } from "react";
 
-/**
- * PDF-safe PayslipTemplate: all Tailwind colors replaced with inline RGB
- */
-const PayslipTemplate = forwardRef(({ payroll }, ref) => {
+const PayslipTemplate = forwardRef(({ payroll, isEditable = false, onSave }, ref) => {
+  const [isEditing, setIsEditing] = useState(isEditable);
+  const [editedData, setEditedData] = useState(payroll);
+  const originalData = payroll;
+  console.log(payroll,"from the template")
+
+  // Expose methods to parent (e.g., to trigger save/cancel from outside)
+  useImperativeHandle(ref, () => ({
+    startEditing: () => setIsEditing(true),
+    cancelEditing: handleCancel,
+    save: handleSave,
+  }));
+
+  const handleChange = (field, value) => {
+    setEditedData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleEarningsChange = (index, subfield, value) => {
+    const newEarnings = [...editedData.earnings];
+    newEarnings[index] = { ...newEarnings[index], [subfield]: value };
+    setEditedData((prev) => ({ ...prev, earnings: newEarnings }));
+  };
+
+  const handleDeductionsChange = (index, subfield, value) => {
+    const newDeductions = [...editedData.deductions];
+    newDeductions[index] = { ...newDeductions[index], [subfield]: value };
+    setEditedData((prev) => ({ ...prev, deductions: newDeductions }));
+  };
+
+  const recalculateTotals = (data) => {
+    const gross = data.earnings.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+    const totalDeductions = data.deductions.reduce((sum, d) => sum + Number(d.amount || 0), 0);
+    const net = gross - totalDeductions;
+    return { gross, totalDeductions, net };
+  };
+
+  const handleSave = () => {
+    const { gross, totalDeductions, net } = recalculateTotals(editedData);
+    const finalData = {
+      ...editedData,
+      gross,
+      totalDeductions,
+      net,
+    };
+    setEditedData(finalData);
+    setIsEditing(false);
+
+    if (onSave) {
+      onSave(finalData);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditedData(originalData);
+    setIsEditing(false);
+  };
+
   if (!payroll) return null;
 
-  const { company, employee, month, earnings, deductions, gross, totalDeductions, net, paymentMethod, paymentDate } = payroll;
+  const {
+    company,
+    employee,
+    month,
+    earnings,
+    deductions,
+    gross,
+    totalDeductions,
+    net,
+    paymentMethod,
+    paymentDate,
+  } = isEditing ? editedData : payroll;
+
+  const displayData = isEditing ? editedData : payroll;
+  const { gross: displayGross, totalDeductions: displayTotalDeductions, net: displayNet } =
+    isEditing ? recalculateTotals(displayData) : { gross, totalDeductions, net };
 
   return (
     <div
-      ref={ref}
       style={{
         maxWidth: "768px",
         margin: "0 auto",
@@ -19,8 +86,41 @@ const PayslipTemplate = forwardRef(({ payroll }, ref) => {
         color: "rgb(30,30,30)",
         boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
         fontFamily: "sans-serif",
+        position: "relative",
       }}
     >
+      {/* Edit Mode Buttons */}
+      {isEditing && (
+        <div style={{ position: "absolute", top: "0.5rem", right: "0.5rem", display: "flex", gap: "0.5rem" }}>
+          <button
+            onClick={handleSave}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "rgb(22,163,74)",
+              color: "white",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+            }}
+          >
+            Save
+          </button>
+          <button
+            onClick={handleCancel}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "rgb(239,68,68)",
+              color: "white",
+              border: "none",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
         <div style={{ display: "flex", gap: "1rem" }}>
@@ -50,10 +150,52 @@ const PayslipTemplate = forwardRef(({ payroll }, ref) => {
           <h3 style={{ fontWeight: 600 }}>Employee Details</h3>
           <table style={{ fontSize: "0.875rem" }}>
             <tbody>
-              <tr><td style={{ paddingRight: "0.5rem" }}>Name:</td><td>{employee.name}</td></tr>
+              <tr>
+                <td style={{ paddingRight: "0.5rem" }}>Name:</td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={employee.name}
+                      onChange={(e) => setEditedData((prev) => ({ ...prev, employee: { ...prev.employee, name: e.target.value } }))}
+                      style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem" }}
+                    />
+                  ) : (
+                    employee.name
+                  )}
+                </td>
+              </tr>
               <tr><td style={{ paddingRight: "0.5rem" }}>Employee ID:</td><td>{employee.id}</td></tr>
-              <tr><td style={{ paddingRight: "0.5rem" }}>Department:</td><td>{employee.department}</td></tr>
-              <tr><td style={{ paddingRight: "0.5rem" }}>Job Title:</td><td>{employee.jobTitle}</td></tr>
+              <tr>
+                <td style={{ paddingRight: "0.5rem" }}>Department:</td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={employee.department || ""}
+                      onChange={(e) => setEditedData((prev) => ({ ...prev, employee: { ...prev.employee, department: e.target.value } }))}
+                      style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem" }}
+                    />
+                  ) : (
+                    employee.department || "-"
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ paddingRight: "0.5rem" }}>Job Title:</td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={employee.jobTitle || ""}
+                      onChange={(e) => setEditedData((prev) => ({ ...prev, employee: { ...prev.employee, jobTitle: e.target.value } }))}
+                      style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem" }}
+                    />
+                  ) : (
+                    employee.jobTitle
+                  )}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -61,9 +203,51 @@ const PayslipTemplate = forwardRef(({ payroll }, ref) => {
           <h3 style={{ fontWeight: 600 }}>Payment Info</h3>
           <table style={{ fontSize: "0.875rem" }}>
             <tbody>
-              <tr><td style={{ paddingRight: "0.5rem" }}>Payment Method:</td><td>{paymentMethod}</td></tr>
-              <tr><td style={{ paddingRight: "0.5rem" }}>Payment Date:</td><td>{paymentDate}</td></tr>
-              <tr><td style={{ paddingRight: "0.5rem" }}>Bank Account:</td><td>{employee.bankAccount || "-"}</td></tr>
+              <tr>
+                <td style={{ paddingRight: "0.5rem" }}>Payment Method:</td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={paymentMethod}
+                      onChange={(e) => handleChange("paymentMethod", e.target.value)}
+                      style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem" }}
+                    />
+                  ) : (
+                    paymentMethod
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ paddingRight: "0.5rem" }}>Payment Date:</td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={paymentDate}
+                      onChange={(e) => handleChange("paymentDate", e.target.value)}
+                      style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem" }}
+                    />
+                  ) : (
+                    paymentDate
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ paddingRight: "0.5rem" }}>Bank Account:</td>
+                <td>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={employee.bankAccount || ""}
+                      onChange={(e) => setEditedData((prev) => ({ ...prev, employee: { ...prev.employee, bankAccount: e.target.value } }))}
+                      style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem" }}
+                    />
+                  ) : (
+                    employee.bankAccount || "-"
+                  )}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -77,13 +261,35 @@ const PayslipTemplate = forwardRef(({ payroll }, ref) => {
             <tbody>
               {earnings.map((e, idx) => (
                 <tr key={idx}>
-                  <td style={{ width: "75%" }}>{e.label}</td>
-                  <td style={{ textAlign: "right" }}>{e.amount.toLocaleString()}</td>
+                  <td style={{ width: "75%" }}>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={e.label}
+                        onChange={(ev) => handleEarningsChange(idx, "label", ev.target.value)}
+                        style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem", width: "100%" }}
+                      />
+                    ) : (
+                      e.label
+                    )}
+                  </td>
+                  <td style={{ textAlign: "right" }}>
+                    {isEditing ? (
+                      <input
+                        type="number"
+                        value={e.amount}
+                        onChange={(ev) => handleEarningsChange(idx, "amount", Number(ev.target.value) || 0)}
+                        style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem", width: "100px", textAlign: "right" }}
+                      />
+                    ) : (
+                      e.amount.toLocaleString()
+                    )}
+                  </td>
                 </tr>
               ))}
               <tr style={{ borderTop: "1px solid #ccc", fontWeight: 600 }}>
                 <td>Total Earnings</td>
-                <td style={{ textAlign: "right" }}>{gross.toLocaleString()}</td>
+                <td style={{ textAlign: "right" }}>{displayGross.toLocaleString()}</td>
               </tr>
             </tbody>
           </table>
@@ -95,13 +301,35 @@ const PayslipTemplate = forwardRef(({ payroll }, ref) => {
             <tbody>
               {deductions.map((d, idx) => (
                 <tr key={idx}>
-                  <td style={{ width: "75%" }}>{d.label}</td>
-                  <td style={{ textAlign: "right" }}>{d.amount.toLocaleString()}</td>
+                  <td style={{ width: "75%" }}>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={d.label}
+                        onChange={(ev) => handleDeductionsChange(idx, "label", ev.target.value)}
+                        style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem", width: "100%" }}
+                      />
+                    ) : (
+                      d.label
+                    )}
+                  </td>
+                  <td style={{ textAlign: "right" }}>
+                    {isEditing ? (
+                      <input
+                        type="number"
+                        value={d.amount}
+                        onChange={(ev) => handleDeductionsChange(idx, "amount", Number(ev.target.value) || 0)}
+                        style={{ border: "1px solid #ccc", borderRadius: "0.25rem", padding: "0.25rem", width: "100px", textAlign: "right" }}
+                      />
+                    ) : (
+                      d.amount.toLocaleString()
+                    )}
+                  </td>
                 </tr>
               ))}
               <tr style={{ borderTop: "1px solid #ccc", fontWeight: 600 }}>
                 <td>Total Deductions</td>
-                <td style={{ textAlign: "right" }}>{totalDeductions.toLocaleString()}</td>
+                <td style={{ textAlign: "right" }}>{displayTotalDeductions.toLocaleString()}</td>
               </tr>
             </tbody>
           </table>
@@ -113,11 +341,11 @@ const PayslipTemplate = forwardRef(({ payroll }, ref) => {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ fontSize: "0.875rem", color: "rgb(100,116,139)" }}>Gross Salary</div>
-            <div style={{ fontSize: "1.125rem", fontWeight: 600 }}>{gross.toLocaleString()}</div>
+            <div style={{ fontSize: "1.125rem", fontWeight: 600 }}>{displayGross.toLocaleString()}</div>
           </div>
           <div>
             <div style={{ fontSize: "0.875rem", color: "rgb(100,116,139)" }}>Net Pay</div>
-            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "rgb(22,163,74)" }}>{net.toLocaleString()}</div>
+            <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "rgb(22,163,74)" }}>{displayNet.toLocaleString()}</div>
           </div>
         </div>
         <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "rgb(100,116,139)" }}>
@@ -129,6 +357,227 @@ const PayslipTemplate = forwardRef(({ payroll }, ref) => {
 });
 
 export default PayslipTemplate;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { forwardRef } from "react";
+
+// /**
+//  * PDF-safe PayslipTemplate: all Tailwind colors replaced with inline RGB
+//  */
+// const PayslipTemplate = forwardRef(({ payroll }, ref) => {
+//   if (!payroll) return null;
+
+//   const { company, employee, month, earnings, deductions, gross, totalDeductions, net, paymentMethod, paymentDate } = payroll;
+
+//   return (
+//     <div
+//       ref={ref}
+//       style={{ maxWidth: "768px", margin: "0 auto", backgroundColor: "white", padding: "1.5rem", color: "rgb(30,30,30)", boxShadow: "0 2px 6px rgba(0,0,0,0.1)", fontFamily: "sans-serif", }} >
+//       {/* Header */}
+//       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+//         <div style={{ display: "flex", gap: "1rem" }}>
+//           {company?.logoUrl ? (
+//             <img src={company.logoUrl} alt="logo" style={{ width: "64px", height: "64px", objectFit: "contain" }} />
+//           ) : (
+//             <div style={{ width: "64px", height: "64px", backgroundColor: "rgb(226,232,240)", borderRadius: "0.25rem" }} />
+//           )}
+//           <div>
+//             <h1 style={{ fontSize: "1.25rem", fontWeight: 700 }}>{company?.name || "Company Name"}</h1>
+//             <div style={{ fontSize: "0.875rem" }}>{company?.address}</div>
+//             <div style={{ fontSize: "0.75rem", color: "rgb(100,116,139)" }}>
+//               {company?.phone} • {company?.email}
+//             </div>
+//           </div>
+//         </div>
+//         <div style={{ textAlign: "right" }}>
+//           <div style={{ fontSize: "0.875rem", color: "rgb(100,116,139)" }}>Payslip for</div>
+//           <div style={{ fontSize: "1.125rem", fontWeight: 600 }}>{month}</div>
+//           <div style={{ fontSize: "0.75rem", marginTop: "0.5rem" }}>Payslip ID: {`${employee.id}-${month}`}</div>
+//         </div>
+//       </div>
+
+//       {/* Employee & Payment Info */}
+//       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+//         <div>
+//           <h3 style={{ fontWeight: 600 }}>Employee Details</h3>
+//           <table style={{ fontSize: "0.875rem" }}>
+//             <tbody>
+//               <tr><td style={{ paddingRight: "0.5rem" }}>Name:</td><td>{employee.name}</td></tr>
+//               <tr><td style={{ paddingRight: "0.5rem" }}>Employee ID:</td><td>{employee.id}</td></tr>
+//               <tr><td style={{ paddingRight: "0.5rem" }}>Department:</td><td>{employee.department}</td></tr>
+//               <tr><td style={{ paddingRight: "0.5rem" }}>Job Title:</td><td>{employee.jobTitle}</td></tr>
+//             </tbody>
+//           </table>
+//         </div>
+//         <div>
+//           <h3 style={{ fontWeight: 600 }}>Payment Info</h3>
+//           <table style={{ fontSize: "0.875rem" }}>
+//             <tbody>
+//               <tr><td style={{ paddingRight: "0.5rem" }}>Payment Method:</td><td>{paymentMethod}</td></tr>
+//               <tr><td style={{ paddingRight: "0.5rem" }}>Payment Date:</td><td>{paymentDate}</td></tr>
+//               <tr><td style={{ paddingRight: "0.5rem" }}>Bank Account:</td><td>{employee.bankAccount || "-"}</td></tr>
+//             </tbody>
+//           </table>
+//         </div>
+//       </div>
+
+//       {/* Earnings & Deductions */}
+//       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+//         <div style={{ backgroundColor: "rgb(248,250,252)", padding: "0.75rem", borderRadius: "0.25rem" }}>
+//           <h4 style={{ fontWeight: 600, marginBottom: "0.5rem" }}>Earnings</h4>
+//           <table style={{ width: "100%", fontSize: "0.875rem" }}>
+//             <tbody>
+//               {earnings.map((e, idx) => (
+//                 <tr key={idx}>
+//                   <td style={{ width: "75%" }}>{e.label}</td>
+//                   <td style={{ textAlign: "right" }}>{e.amount.toLocaleString()}</td>
+//                 </tr>
+//               ))}
+//               <tr style={{ borderTop: "1px solid #ccc", fontWeight: 600 }}>
+//                 <td>Total Earnings</td>
+//                 <td style={{ textAlign: "right" }}>{gross.toLocaleString()}</td>
+//               </tr>
+//             </tbody>
+//           </table>
+//         </div>
+
+//         <div style={{ backgroundColor: "rgb(248,250,252)", padding: "0.75rem", borderRadius: "0.25rem" }}>
+//           <h4 style={{ fontWeight: 600, marginBottom: "0.5rem" }}>Deductions</h4>
+//           <table style={{ width: "100%", fontSize: "0.875rem" }}>
+//             <tbody>
+//               {deductions.map((d, idx) => (
+//                 <tr key={idx}>
+//                   <td style={{ width: "75%" }}>{d.label}</td>
+//                   <td style={{ textAlign: "right" }}>{d.amount.toLocaleString()}</td>
+//                 </tr>
+//               ))}
+//               <tr style={{ borderTop: "1px solid #ccc", fontWeight: 600 }}>
+//                 <td>Total Deductions</td>
+//                 <td style={{ textAlign: "right" }}>{totalDeductions.toLocaleString()}</td>
+//               </tr>
+//             </tbody>
+//           </table>
+//         </div>
+//       </div>
+
+//       {/* Gross & Net */}
+//       <div style={{ marginTop: "1rem", padding: "1rem", border: "1px solid #ccc", borderRadius: "0.25rem", backgroundColor: "rgb(249,250,251)" }}>
+//         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+//           <div>
+//             <div style={{ fontSize: "0.875rem", color: "rgb(100,116,139)" }}>Gross Salary</div>
+//             <div style={{ fontSize: "1.125rem", fontWeight: 600 }}>{gross.toLocaleString()}</div>
+//           </div>
+//           <div>
+//             <div style={{ fontSize: "0.875rem", color: "rgb(100,116,139)" }}>Net Pay</div>
+//             <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "rgb(22,163,74)" }}>{net.toLocaleString()}</div>
+//           </div>
+//         </div>
+//         <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "rgb(100,116,139)" }}>
+//           This is a computer-generated payslip and does not require a signature.
+//         </div>
+//       </div>
+//     </div>
+//   );
+// });
+
+// export default PayslipTemplate;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

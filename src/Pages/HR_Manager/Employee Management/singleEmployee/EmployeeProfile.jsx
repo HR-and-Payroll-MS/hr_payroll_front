@@ -1,7 +1,7 @@
 import React from 'react'
 import Icon from '../../../../Components/Icon';
 import useAuth from '../../../../Context/AuthContext';
-function EmployeeProfile({employeeData}) {  
+function EmployeeProfile({employeeData,role}) {  
   const {axiosPrivate} = useAuth();
   const handleDelete = async () => {
     
@@ -115,10 +115,10 @@ function EmployeeProfile({employeeData}) {
             </div>
           </div>
     
-          <div  onClick={handleDelete} className="flex bg-red-800 hover:cursor-pointer text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
+         {role==="HR"&& <div  onClick={handleDelete} className="flex bg-red-800 hover:cursor-pointer text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
             <p className="text-xs font-semibold">Delete User</p>
             <Icon className='w-4 h-4' name={'Trash'}/>
-          </div>
+          </div>}
         </div>
       </div>
     );

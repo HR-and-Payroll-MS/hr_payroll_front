@@ -1,107 +1,469 @@
 import React, { useEffect, useState } from "react";
 import SummaryCard from "../../../Components/SummaryCard";
-import { BarChart, Heatmap } from "../../../Components/Graphs";
-export default function  MyAttendance() {
+import { AttendanceNivoPie, BarChart, Heatmap } from "../../../Components/Graphs";
+import useAuth from "../../../Context/AuthContext";
+import { getLocalData } from "../../../Hooks/useLocalStorage";
+
+export default function MyAttendance() {
+  const { axiosPrivate } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const dataz={ summary: [    
-    { Title: "Total Days", and:"days",color:"bg-indigo-500",logo:"Calendar", data: 1232 },
-    { Title: "Present", and:"days",color:"bg-amber-500",logo:"Calendar", data: 4 },
-    { Title: "Absent", and:"days",color:"bg-yellow-500",logo:"Calendar", data: 2 },
-    { Title: "Late", and:"days",color:"bg-green-500",logo:"Calendar", data: 1 },
-    { Title: "Leave", and:"days",color:"bg-blue-500",logo:"Calendar", data: 3 }],
-    activity: [
-      { day: "2025-11-01", value: 1 },
-      { day: "2025-11-02", value: 0 },
-      { day: "2025-11-03", value: 1 },
-      { day: "2025-11-04", value: 2 },
-      { day: "2025-11-05", value: 3 },
-      { day: "2025-11-06", value: 1 },
-      { day: "2025-11-07", value: 1 },
-      { day: "2025-11-08", value: 1 },
-      { day: "2025-11-09", value: 0 },
-    ],
-    trend: [
-      { month: "Jan", present: 22, absent: 2, leave: 1 },
-      { month: "Feb", present: 20, absent: 4, leave: 2 },
-      { month: "Mar", present: 24, absent: 1, leave: 0 },
-    ],
-  };
 
-useEffect(() => {
-  (async () => {
-    setLoading(true);
-    try {
-      const result = await new Promise((resolve) => {
-        setTimeout(() => resolve(dataz), 300);
+  /* =========================================================
+     BACKEND-IDENTICAL MOCKED RESPONSE
+  ========================================================= */
+//   const mockedResponse = {
+//   "count": 15,
+//   "next": null,
+//   "previous": null,
+//   "results": [
+//     {
+//       "id": 201,
+//       "employee": 1,
+//       "date": "2025-12-15",
+//       "clock_in": "2025-12-15T08:30:00+03:00",
+//       "clock_in_location": "Office",
+//       "clock_out": "2025-12-15T17:30:00+03:00",
+//       "clock_out_location": "Office",
+//       "deficit": "+00:00:00",
+//       "logged_time": "09:00:00",
+//       "notes": "",
+//       "overtime": "+01:00:00",
+//       "overtime_seconds": 3600,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 202,
+//       "employee": 1,
+//       "date": "2025-12-14",
+//       "clock_in": "2025-12-14T09:10:00+03:00",
+//       "clock_in_location": "Remote",
+//       "clock_out": "2025-12-14T18:00:00+03:00",
+//       "clock_out_location": "Remote",
+//       "deficit": "+00:10:00",
+//       "logged_time": "08:50:00",
+//       "notes": "Late arrival",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "LATE",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 203,
+//       "employee": 1,
+//       "date": "2025-12-13",
+//       "clock_in": null,
+//       "clock_in_location": null,
+//       "clock_out": null,
+//       "clock_out_location": null,
+//       "deficit": "+08:00:00",
+//       "logged_time": "00:00:00",
+//       "notes": "Uninformed absence",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "00:00:00",
+//       "status": "ABSENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 204,
+//       "employee": 1,
+//       "date": "2025-12-12",
+//       "clock_in": "2025-12-12T08:45:00+03:00",
+//       "clock_in_location": "HQ",
+//       "clock_out": "2025-12-12T17:15:00+03:00",
+//       "clock_out_location": "HQ",
+//       "deficit": "+00:30:00",
+//       "logged_time": "08:30:00",
+//       "notes": "",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 205,
+//       "employee": 1,
+//       "date": "2025-12-11",
+//       "clock_in": "2025-12-11T08:20:00+03:00",
+//       "clock_in_location": "Office",
+//       "clock_out": "2025-12-11T18:10:00+03:00",
+//       "clock_out_location": "Office",
+//       "deficit": "+00:00:00",
+//       "logged_time": "09:50:00",
+//       "notes": "Extra workload",
+//       "overtime": "+01:50:00",
+//       "overtime_seconds": 6600,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     },
+
+//     {
+//       "id": 206,
+//       "employee": 1,
+//       "date": "2025-12-10",
+//       "clock_in": null,
+//       "clock_in_location": null,
+//       "clock_out": null,
+//       "clock_out_location": null,
+//       "deficit": "+08:00:00",
+//       "logged_time": "00:00:00",
+//       "notes": "Sick Permission",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "Permission",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 207,
+//       "employee": 1,
+//       "date": "2025-12-09",
+//       "clock_in": "2025-12-09T08:35:00+03:00",
+//       "clock_in_location": "Remote",
+//       "clock_out": "2025-12-09T17:30:00+03:00",
+//       "clock_out_location": "Remote",
+//       "deficit": "+00:05:00",
+//       "logged_time": "08:55:00",
+//       "notes": "",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 208,
+//       "employee": 1,
+//       "date": "2025-12-08",
+//       "clock_in": "2025-12-08T09:05:00+03:00",
+//       "clock_in_location": "Office",
+//       "clock_out": "2025-12-08T17:45:00+03:00",
+//       "clock_out_location": "Office",
+//       "deficit": "+00:05:00",
+//       "logged_time": "08:40:00",
+//       "notes": "Traffic delay",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "LATE",
+//       "work_schedule_hours": 8
+//     },
+
+//     {
+//       "id": 209,
+//       "employee": 1,
+//       "date": "2025-12-07",
+//       "clock_in": null,
+//       "clock_in_location": null,
+//       "clock_out": null,
+//       "clock_out_location": null,
+//       "deficit": "+08:00:00",
+//       "logged_time": "00:00:00",
+//       "notes": "Weekend",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "00:00:00",
+//       "status": "ABSENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 210,
+//       "employee": 1,
+//       "date": "2025-12-06",
+//       "clock_in": null,
+//       "clock_in_location": null,
+//       "clock_out": null,
+//       "clock_out_location": null,
+//       "deficit": "+08:00:00",
+//       "logged_time": "00:00:00",
+//       "notes": "Weekend",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "00:00:00",
+//       "status": "ABSENT",
+//       "work_schedule_hours": 8
+//     },
+
+//     {
+//       "id": 211,
+//       "employee": 1,
+//       "date": "2025-12-05",
+//       "clock_in": "2025-12-05T08:25:00+03:00",
+//       "clock_in_location": "Office",
+//       "clock_out": "2025-12-05T17:20:00+03:00",
+//       "clock_out_location": "Office",
+//       "deficit": "+00:00:00",
+//       "logged_time": "08:55:00",
+//       "notes": "",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 212,
+//       "employee": 1,
+//       "date": "2025-12-04",
+//       "clock_in": "2025-12-04T08:30:00+03:00",
+//       "clock_in_location": "HQ",
+//       "clock_out": "2025-12-04T18:00:00+03:00",
+//       "clock_out_location": "HQ",
+//       "deficit": "+00:00:00",
+//       "logged_time": "09:30:00",
+//       "notes": "Project deadline",
+//       "overtime": "+01:30:00",
+//       "overtime_seconds": 5400,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 213,
+//       "employee": 1,
+//       "date": "2025-12-03",
+//       "clock_in": "2025-12-03T08:40:00+03:00",
+//       "clock_in_location": "Remote",
+//       "clock_out": "2025-12-03T17:10:00+03:00",
+//       "clock_out_location": "Remote",
+//       "deficit": "+00:20:00",
+//       "logged_time": "08:30:00",
+//       "notes": "",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 214,
+//       "employee": 1,
+//       "date": "2025-12-02",
+//       "clock_in": "2025-12-02T09:15:00+03:00",
+//       "clock_in_location": "Office",
+//       "clock_out": "2025-12-02T17:30:00+03:00",
+//       "clock_out_location": "Office",
+//       "deficit": "+00:15:00",
+//       "logged_time": "08:15:00",
+//       "notes": "Late due to meeting",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "LATE",
+//       "work_schedule_hours": 8
+//     },
+//     {
+//       "id": 215,
+//       "employee": 1,
+//       "date": "2025-12-01",
+//       "clock_in": "2025-12-01T08:30:00+03:00",
+//       "clock_in_location": "Office",
+//       "clock_out": "2025-12-01T17:30:00+03:00",
+//       "clock_out_location": "Office",
+//       "deficit": "+00:00:00",
+//       "logged_time": "09:00:00",
+//       "notes": "",
+//       "overtime": "00:00:00",
+//       "overtime_seconds": 0,
+//       "paid_time": "08:00:00",
+//       "status": "PRESENT",
+//       "work_schedule_hours": 8
+//     }
+//   ]
+// }
+
+
+  /* =========================================================
+     TRANSFORM BACKEND DATA → UI DATA
+  ========================================================= */
+  const transformAttendanceData = (apiResponse) => {
+    const results = apiResponse?.results || [];
+
+    let present = 0;
+    let absent = 0;
+    let late = 0;
+    let Permission = 0;
+
+    const activity = [];
+    const trendMap = {};
+
+    results.forEach((item) => {
+      const month = new Date(item.date).toLocaleString("default", {
+        month: "short",
       });
 
-      setData(result);
-    } catch (err) {
-      console.error("Failed to fetch attendance", err);
-    } finally {
-      setLoading(false);
-    }
-  })();
-}, []);
+      if (!trendMap[month]) {
+        trendMap[month] = { month, present: 0, absent: 0, Permission: 0 };
+      }
 
+      switch (item.status) {
+        case "PRESENT":
+          present++;
+          trendMap[month].present++;
+          activity.push({ day: item.date, value: 1 });
+          break;
 
-  if (loading || !data) return <div className="p-6">Loading your attendance...</div>;
+        case "ABSENT":
+          absent++;
+          trendMap[month].absent++;
+          activity.push({ day: item.date, value: 0 });
+          break;
+
+        case "LATE":
+          late++;
+          activity.push({ day: item.date, value: 2 });
+          break;
+
+        case "PERMITTED":
+          Permission++;
+          trendMap[month].Permission++;
+          activity.push({ day: item.date, value: 3 });
+          break;
+
+        default:
+          activity.push({ day: item.date, value: 0 });
+      }
+    });
+
+    return {
+      summary: [
+        {
+          Title: "Total Days",
+          and: "days",
+          color: "bg-indigo-500",
+          logo: "Calendar",
+          data: results.length,
+        },
+        {
+          Title: "Present",
+          and: "days",
+          color: "bg-green-500",
+          logo: "Calendar",
+          data: present,
+        },
+        {
+          Title: "Absent",
+          and: "days",
+          color: "bg-red-500",
+          logo: "Calendar",
+          data: absent,
+        },
+        {
+          Title: "Late",
+          and: "days",
+          color: "bg-amber-500",
+          logo: "Calendar",
+          data: late,
+        },
+        {
+          Title: "Permission",
+          and: "days",
+          color: "bg-blue-500",
+          logo: "Calendar",
+          data: Permission,
+        },
+      ],
+      activity,
+      trend: Object.values(trendMap),
+    };
+  };
+
+  /* =========================================================
+     EFFECT (AXIOS COMMENTED – READY FOR PROD)
+  ========================================================= */
+  useEffect(() => {
+    setLoading(true);
+
+    // 🔹 Mocked (identical to backend)
+    // const transformed = transformAttendanceData(mockedResponse);
+    // setData(transformed);
+    // setLoading(false);
+
+    
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosPrivate.get(
+          `/employees/${getLocalData("user_id")}/attendances/`
+        );
+        console.log("Attendance API response:", response.data);
+        const transformed = transformAttendanceData(response.data);
+        setData(transformed);
+      } catch (err) {
+        console.error("Failed to fetch attendance", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    
+  }, []);
+
+  if (loading || !data) {
+    return <div className="p-6">Loading your attendance...</div>;
+  }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">My Attendance</h1>
-          <p className="text-sm text-slate-500">Your attendance overview and statistics</p>
-        </div>
-      </div>
-            <SummaryCard data={data.summary}/>
-    <div className="flex gap-2.5">
-    {/* Trend Chart */}
-        <div className="bg-slate-100  flex-1 rounded-lg shadow p-4">
-            <h2 className="font-semibold mb-2">Monthly Attendance Trend</h2>
-            <p className="text-xs text-slate-500 mb-3">
-            Track your attendance stats across months.
-            </p>
-            <div className="">
-            {/* <AttendanceTrendChart data={data.trend} /> */}
-            <BarChart indexBy={"month"} keys={["present","absent","leave"]} data={data.trend} />
-
-            </div>
-        </div>
-        
-      <div className="rounded-lg flex-1 flex flex-col justify-center  bg-yellow-100 shadow p-4">
-        <h2 className="font-semibold mb-2">Attendance Calendar</h2>
-        <p className="text-xs text-slate-500 mb-3">
-          Each day’s color indicates your presence level — darker = more consistent presence.
+    <div className="p-6 space-y-6 h-full hover-bar overflow-y-auto">
+      <div>
+        <h1 className="text-2xl font-bold">My Attendance</h1>
+        <p className="text-sm text-slate-500">
+          Your attendance overview and statistics
         </p>
-        <div className="h-2/5">
-          <Heatmap lightColors={["#ef4444","#22c55e","#f59e0b","#3b82f6",]} data={data.activity}/>
-        </div>
-            <div className="flex gap-3 mt-2">
-                <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-red-500"></div>
-                    <span className="text-xs">0.Absent</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-orange-400"></div>
-                    <span className="text-xs">2.Late</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-blue-500"></div>
-                    <span className="text-xs">3.Permission</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-green-500"></div>
-                    <span className="text-xs">1.Present</span>
-                </div>
-            </div>
-
       </div>
 
-     </div>
+      {/* SUMMARY CARDS */}
+      <SummaryCard data={data.summary} />
+
+      <div className="flex gap-3">
+        {/* BAR CHART */}
+        <div className=" dark:bg-slate-800 flex-1 rounded-lg shadow p-4">
+          <h2 className="font-semibold mb-2">Monthly Attendance Trend</h2>
+          {/* <BarChart
+            indexBy="month"
+            keys={["present", "absent", "Permission"]}
+            data={data.trend}
+          /> */}
+          <AttendanceNivoPie data={data.summary} />
+
+        </div>
+
+        {/* HEATMAP */}
+        <div className=" flex-1 rounded-lg shadow p-4">
+          <h2 className="font-semibold mb-2">Attendance Calendar</h2>
+
+          <Heatmap
+            data={data.activity}
+            lightColors={["#ef4444", "#22c55e", "#f59e0b", "#3b82f6"]}
+          />
+
+          {/* <div className="flex gap-3 mt-3 text-xs">
+            <Legend color="bg-red-500" label="0 Absent" />
+            <Legend color="bg-green-500" label="1 Present" />
+            <Legend color="bg-orange-400" label="2 Late" />
+            <Legend color="bg-blue-500" label="3 Leave" />
+          </div> */}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   LEGEND COMPONENT
+========================================================= */
+function Legend({ color, label }) {
+  return (
+    <div className="flex items-center gap-1">
+      <div className={`w-2 h-2 ${color}`} />
+      <span>{label}</span>
     </div>
   );
 }

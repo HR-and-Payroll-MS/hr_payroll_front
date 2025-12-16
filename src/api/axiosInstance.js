@@ -4,12 +4,14 @@ import axios from 'axios';
 //B3Library...........................
 // export const BASE_URL = 'http://172.16.0.181:3000/api/v1';
 // Alx.....................
-// export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
+export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
 // export const BASE_URL = 'http://172.16.27.124:3000/api/v1';
 //ME
 // export const BASE_URL = 'http://10.198.81.173:3000/api/v1';
+// changable
+// export const BASE_URL = 'http://10.165.115.12:3000/api/v1';
 //Seud
-export const BASE_URL = 'http://192.168.75.173:3000/api/v1';
+// export const BASE_URL = 'http://192.168.75.173:3000/api/v1';
 
 export const axiosPublic = axios.create({
   baseURL: BASE_URL,

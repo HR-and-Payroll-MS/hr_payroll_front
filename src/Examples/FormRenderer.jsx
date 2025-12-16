@@ -2,117 +2,174 @@
 import React, { useState } from "react";
 import InputField from "../Components/InputField";
 import Dropdown from "../Components/Dropdown";
+import MetricCards from "./MetricCards";
 
 export default function FormRenderer({ savedForm }) {
-    // console.log("Rendered Form Data:", savedForm);
   const [answers, setAnswers] = useState({});
   const [finalScore, setFinalScore] = useState(null);
+  const [report, setReport] = useState(null);
 
   const handleChange = (fieldId, value) => {
-    setAnswers({ ...answers, [fieldId]: value });
+    setAnswers((prev) => ({
+      ...prev,
+      [fieldId]: value,
+    }));
   };
 
-  const calculateScore = () => {
-  let achieved = 0;
-  let possible = 0;
-    console.log("saved form",savedForm)
+const calculateScore = () => {
+  let totalAchieved = 0;
+  let totalPossible = 0;
+
+  const metricReports = [];
+  const metricSummaries = []; // <-- now an array
+
   savedForm.performanceMetrics.forEach((field) => {
     const answer = answers[field.id];
+    let fieldAchieved = 0;
+    let fieldPossible = 0;
 
-    // Determine max possible for this field
-    let maxForField = 0;
-
+    // NUMBER FIELD
     if (field.type === "number") {
-      maxForField = field.weight;
-      achieved += Math.min(parseFloat(answer) || 0, maxForField);
+      fieldPossible = field.weight;
+      fieldAchieved = Math.min(Number(answer) || 0, fieldPossible);
     }
 
+    // DROPDOWN FIELD
     if (field.type === "dropdown") {
-      const maxOption = Math.max(...field.options.map(o => o.point));
-      maxForField = maxOption;
-        console.log("MaxOption",maxOption)
-      const selected = field.options.find(o => o.label === answer);
-      achieved += selected ? selected.point : 0;
-      console.log("selected",selected)
+      fieldPossible = Math.max(...field.options.map((o) => o.point));
+
+      if (answer) {
+        const match = answer.match(/(\d+(\.\d+)?)/);
+        fieldAchieved = match ? Number(match[0]) : 0;
+      }
     }
 
-    possible += maxForField;
+    totalAchieved += fieldAchieved;
+    totalPossible += fieldPossible;
+
+    metricReports.push({
+      id: field.id,
+      name: field.name,
+      type: field.type,
+      weight: field.weight,
+      selected: answer ?? null,
+      achievedPoints: fieldAchieved,
+      possiblePoints: fieldPossible
+    });
+
+    // JSON summary as array
+    metricSummaries.push({
+      name: field.name,
+      scored: `${fieldAchieved} out of ${fieldPossible}`
+    });
   });
 
-  const percentage = possible > 0 ? (achieved / possible) * 100 : 0;
-  setFinalScore(percentage.toFixed(1));
+  const feedbackReports = savedForm.feedbackSections.map((field) => ({
+    id: field.id,
+    name: field.name,
+    type: field.type,
+    value: answers[field.id] ?? null
+  }));
+
+  const totalEfficiency = totalPossible > 0 ? (totalAchieved / totalPossible) * 100 : 0;
+
+  const report = {
+    title: savedForm.title,
+    totalEfficiency: Number(totalEfficiency.toFixed(1)),
+    summary: {
+      totalAchieved,
+      totalPossible,
+      perMetric: metricSummaries // <-- array now, no overwriting
+    },
+    performanceMetrics: metricReports,
+    feedback: feedbackReports
+  };
+
+  setFinalScore(report.totalEfficiency);
+  setReport(report);
+  console.log("Full Efficiency Report with All Metrics:", report);
 };
+
+
+
+
 
 
   return (
     <div className="shadow bg-slate-50 mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">{savedForm?.title}</h1>
+      <h1 className="text-3xl font-bold mb-8">
+        {savedForm?.title}
+      </h1>
 
       {savedForm?.performanceMetrics.map((field) => (
-        <div key={field?.id} className="mb-6">
+        <div key={field.id} className="mb-6">
           <label className="block text-lg font-medium mb-2">
-            {field?.name} <span className="text-sm text-gray-500">(Weight: {field?.weight})</span>
+            {field.name}
+            <span className="text-sm text-gray-500 ml-2">
+              (Weight: {field.weight})
+            </span>
           </label>
 
-          {field?.type === "number" && (
+          {/* NUMBER */}
+          {field.type === "number" && (
             <input
               type="number"
               min="0"
-              max={field?.weight}
+              max={field.weight}
               step="0.1"
-              onChange={(e) => handleChange(field?.id, e.target.value)}
+              onChange={(e) =>
+                handleChange(field.id, e.target.value)
+              }
               className="border outline-none rounded p-3 w-full inset-shadow-2xs bg-white border-slate-200"
             />
           )}
 
-          {field?.type === "dropdown" && (
-            // <select
-            //   onChange={(e) => handleChange(field?.id, e.target.value)}
-            //   className="border rounded p-3 w-full"
-            // >
-            //   <option value="">Choose...</option>
-            //   {field?.options.map((opt) => (
-            //     <option key={opt.id} value={opt.label}>
-            //       {opt.label} → {opt.point} points
-            //     </option>
-            //   ))}
-            // </select>
-            
-            <Dropdown  onChange={(e) => handleChange(field?.id, e)} options={field?.options.map(item => `${item.label}→ ${item.point} points`)}/>
+          {/* DROPDOWN (STRING OPTIONS ONLY) */}
+          {field.type === "dropdown" && (
+            <Dropdown
+              onChange={(value) =>
+                handleChange(field.id, value)
+              }
+              options={field?.options.map(item => `${item.label}→ ${item.point} points`)}
+            />
           )}
         </div>
       ))}
 
-      <h2 className="text-2xl font-bold mt-10 mb-6 text-slate-700">Feedback</h2>
+      <h2 className="text-2xl font-bold mt-10 mb-6 text-slate-700">
+        Feedback
+      </h2>
+
       {savedForm?.feedbackSections.map((field) => (
-        <div key={field?.id} className="mb-6">
-          <label className="block text-lg font-medium mb-2">{field?.name}</label>
-          {field?.type === "textarea" ? (
+        <div key={field.id} className="mb-6">
+          <label className="block text-lg font-medium mb-2">
+            {field.name}
+          </label>
+
+          {field.type === "textarea" ? (
             <textarea
-              onChange={(e) => handleChange(field?.id, e.target.value)}
+              onChange={(e) =>
+                handleChange(field.id, e.target.value)
+              }
               className="border bg-white inset-shadow-2xs outline-none border-slate-200 rounded p-3 w-full h-32"
             />
-          ) : field?.type === "dropdown" ? (
-            // <select
-            //   onChange={(e) => handleChange(field?.id, e.target.value)}
-            //   className="border rounded p-3 w-full"
-            // >
-            //   <option value="">Select...</option>
-            //   {field?.options.map((o) => (
-            //     <option key={o.id}>{o.label}</option>
-            //   ))}
-            // </select>
-            
-            <Dropdown  onChange={(e) => handleChange(field?.id, e)} options={field?.options.map(item => item.label)}/>
-                        
+          ) : field.type === "dropdown" ? (
+            <Dropdown
+              onChange={(value) =>
+                handleChange(field.id, value)
+              }
+              options={field?.options.map(item => item.label)}
+            />
           ) : (
-            // <input
-            //   type="text"
-            //   onChange={(e) => handleChange(field?.id, e.target.value)}
-            //   className="border  inset-shadow-2xs outline-none border-slate-200  rounded p-3 w-full"
-            // />
-             <InputField  border="inset-shadow-2xs border border-slate-200" maxWidth=" bg-white"  suggestion={false} placeholder="" icon={false} onSelect={(e) => handleChange(field?.id, e)}/>
-     
+            <InputField
+              border="inset-shadow-2xs border border-slate-200"
+              maxWidth="bg-white"
+              suggestion={false}
+              icon={false}
+              onSelect={(value) =>
+                handleChange(field.id, value)
+              }
+            />
           )}
         </div>
       ))}
@@ -125,12 +182,14 @@ export default function FormRenderer({ savedForm }) {
       </button>
 
       {finalScore !== null && (
-        <div className="mt-10 p-8 bg-green-50 shadow  rounded text-center">
+        <div className="mt-10 p-8 bg-green-50 shadow rounded text-center">
           <h2 className="text-4xl font-bold text-green-800">
             Final Efficiency Score: {finalScore}%
           </h2>
         </div>
       )}
+      {report && <MetricCards Data={report} />}
+
     </div>
   );
 }

@@ -14,66 +14,7 @@ import Header from '../../../Components/Header';
 import useAuth from '../../../Context/AuthContext';
 
 export default function UploadDocuments() {
-  const employee = {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        }
+  
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [selectedEmployee, setSelectedEmployee] = useState("");//for debug change it to employee i mean the null
@@ -86,438 +27,16 @@ export default function UploadDocuments() {
   const key =[ ['document'],['Type'],['UploadOn'],['UploadedBy'],['Notes'],['Actions'],]
   const key2 =[ ['general_fullname'],['general_gender'],['general_state'],['general_city'],['general_country'],['general_postcode'],]
   const title =['document','Type','UploadOn','UploadedBy','Notes','Actions',]
-  const structure=[1, 1, 1, 1, 1,62 ]
-    const response = [
-          {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        },
-          {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        },
-          {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        },
-          {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        },
-          {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        },
-          {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        },
-          {
-          id: 1,
-          general: {
-            fullname: "be Beso",
-            gender: "e",
-            dateofbirth: "7-04-15",
-            maritalstatus: "gle",
-            nationality: "iopian",
-            personaltaxid: "9584732",
-            emailaddress: "b.taye@example.com",
-            socialinsurance: "558932",
-            healthinsurance: "229584",
-            phonenumber: "+911223344",
-            primaryaddress: " Sunshine Avenue",
-            country: "Eopia",
-            state: "Ad Ababa",
-            city: "Ad Ababa",
-            postcode: "0",
-            emefullname: "ta Taye",
-            emephonenumber: "+254556677",
-            emestate: "Ad Ababa",
-            emecity: "Ad Ababa",
-            emepostcode: "1",
-          },
-          job: {
-            employeeid: "001",
-            serviceyear: "3",
-            joindate: "203-10",
-            jobtitle: "Frnd Developer",
-            positiontype: "Fuime",
-            employmenttype: "Pnent",
-            linemanager: "Sl Bekele",
-            contractnumber: "C42",
-            contractname: "Frod Developer Contract",
-            contracttype: "Indite",
-            startdate: "2022-0",
-            enddate: "",
-          },
-          payroll: {
-            employeestatus: "Ae",
-            employmenttype: "Pnent",
-            jobdate: "202-10",
-            lastworkingdate: "",
-            salary: 25000,
-            offset: 200,
-            onset: 100,
-          },
-          documents: {
-            files: [
-              {
-                name: "Empent Contract.pdf",
-                url: "https://example.com/files/contract.pdf",
-              },
-              {
-                name: "ID .png",
-                url: "https://example.com/files/idcard.png",
-              },
-            ],
-          },
-        },
-      ]
+  const structure=[1, 1, 1, 1, 1,62 ];
   const loadDocuments = useCallback(async (employeeId) => {
     setLoadingDocs(true);
     try {
 
       const res = await axiosPrivate.get(`/employees/serve-document/${employeeId}/`,{ responseType: "blob" });
       setDocuments([res.data]|| [])
-      console.log('employeeId', employeeId);
-      console.log("res.data", res.data);
-      console.log('fetched docs', res.data.documents);
+      // console.log('employeeId', employeeId);
+      // console.log("res.data", res.data);
+      // console.log('fetched docs', res.data.documents);
     } catch (err) {
       console.error('fetch docs error', err);
       setDocuments([]);
@@ -535,6 +54,31 @@ export default function UploadDocuments() {
     }
   }, [selectedEmployee, loadDocuments]);
  const handleUpload = async ({ files, type, notes, onProgress }) => {
+
+//  const uploadData = new FormData();
+
+// const docs = formData.documents?.files;
+
+// if (docs) {
+//   const files = docs instanceof File ? [docs] : Array.from(docs);
+//   files.forEach(file => uploadData.append("documents", file));
+// }
+//_______________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   console.log(files, type, notes, onProgress)
     // if (!selectedEmployee)
     //   throw new Error('Employee must be selected before uploading.');
@@ -555,7 +99,7 @@ export default function UploadDocuments() {
     // }
   };
     const handleEmployeeSelect = (emp) => {
-    console.log("Selected employee:", emp);
+    // console.log("Selected employee:", emp);
     setSelectedEmployee(emp);
     loadDocuments(emp.id); // send ID only
   };
@@ -569,7 +113,7 @@ export default function UploadDocuments() {
       setDocuments(prev); // rollback
     }
   };
-console.log('Employee', selectedEmployee);
+// console.log('Employee', selectedEmployee);
   return (
     <div className="p-6">
       <header className="flex items-center justify-between mb-6">
@@ -588,14 +132,14 @@ console.log('Employee', selectedEmployee);
           {selectedEmployee ? (
             <div className="flex items-center gap-3 mt-2">
               <img
-                src={selectedEmployee.general.photo || '/pic/avatar.jpg'}
+                src={selectedEmployee?.general?.photo || '/pic/avatar.jpg'}
                 alt=""
                 className="h-10 w-10 rounded-full"
               />
               <div>
-                <div className="font-semibold">{selectedEmployee.general.fullname}</div>
+                <div className="font-semibold">{selectedEmployee?.general?.fullname}</div>
                 <div className="text-xs text-slate-500">
-                  {selectedEmployee.department || selectedEmployee.general.emailaddress}
+                  {selectedEmployee.department || selectedEmployee?.general?.emailaddress}
                 </div>
               </div>
               <button
@@ -621,4 +165,490 @@ console.log('Employee', selectedEmployee);
     </div>
   );
 }
+
+
+
+// const employee = {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         }
+
+// const response = [
+//           {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         },
+//           {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         },
+//           {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         },
+//           {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         },
+//           {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         },
+//           {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         },
+//           {
+//           id: 1,
+//           general: {
+//             fullname: "be Beso",
+//             gender: "e",
+//             dateofbirth: "7-04-15",
+//             maritalstatus: "gle",
+//             nationality: "iopian",
+//             personaltaxid: "9584732",
+//             emailaddress: "b.taye@example.com",
+//             socialinsurance: "558932",
+//             healthinsurance: "229584",
+//             phonenumber: "+911223344",
+//             primaryaddress: " Sunshine Avenue",
+//             country: "Eopia",
+//             state: "Ad Ababa",
+//             city: "Ad Ababa",
+//             postcode: "0",
+//             emefullname: "ta Taye",
+//             emephonenumber: "+254556677",
+//             emestate: "Ad Ababa",
+//             emecity: "Ad Ababa",
+//             emepostcode: "1",
+//           },
+//           job: {
+//             employeeid: "001",
+//             serviceyear: "3",
+//             joindate: "203-10",
+//             jobtitle: "Frnd Developer",
+//             positiontype: "Fuime",
+//             employmenttype: "Pnent",
+//             linemanager: "Sl Bekele",
+//             contractnumber: "C42",
+//             contractname: "Frod Developer Contract",
+//             contracttype: "Indite",
+//             startdate: "2022-0",
+//             enddate: "",
+//           },
+//           payroll: {
+//             employeestatus: "Ae",
+//             employmenttype: "Pnent",
+//             jobdate: "202-10",
+//             lastworkingdate: "",
+//             salary: 25000,
+//             offset: 200,
+//             onset: 100,
+//           },
+//           documents: {
+//             files: [
+//               {
+//                 name: "Empent Contract.pdf",
+//                 url: "https://example.com/files/contract.pdf",
+//               },
+//               {
+//                 name: "ID .png",
+//                 url: "https://example.com/files/idcard.png",
+//               },
+//             ],
+//           },
+//         },
+//       ]
 

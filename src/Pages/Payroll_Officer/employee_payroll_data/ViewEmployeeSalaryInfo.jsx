@@ -1,131 +1,110 @@
-import React from 'react'
-import Icon from '../../../Components/Icon';
-import useAuth from '../../../Context/AuthContext';
+import React, { useState } from 'react'
+import Header from '../../../Components/Header';
+import { SearchStatus } from '../../../Components/Level2Hearder';
+import Table from '../../../Components/Table';
+import { useNavigate } from 'react-router-dom';
+const employeeAttendanceMock = 
+   [
+  {
+    id:1,
+    employee: {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      pic: ""
+    },
+    attendance:{
+    date: "2025-11-23",
+    clockIn: "08:59 AM",
+    clockInLocation: "HQ Office - Main Gate",
+    clockOut: "05:02 PM",
+    clockOutLocation: "HQ Office - Side Exit",
+    workSchedules: "9:00 AM - 5:00 PM",
+    paidTime: "8h 03m",
+    notes: "On time",}
+  },
+  {
+    id:2,
+    employee: {
+      name: "Sarah Johnson",
+      email: "sarah.johnson@example.com",
+      pic: ""
+    },
+    
+    attendance:{date: "2025-11-23",
+    clockIn: "09:17 AM",
+    clockInLocation: "Remote - Addis Ababa",
+    clockOut: "06:00 PM",
+    clockOutLocation: "Remote - Addis Ababa",
+    workSchedules: "9:00 AM - 5:00 PM",
+    paidTime: "7h 43m",
+    notes: "Late arrival explained"}
+  },
+  {
+    id:3,
+    employee: {
+      name: "Daniel Mekonnen",
+      email: "daniel.mekonnen@example.com",
+      pic: ""
+    },
+    attendance:{date: "2025-11-23",
+    clockIn: "07:55 AM",
+    clockInLocation: "Warehouse Entry Point 2",
+    clockOut: "04:10 PM",
+    clockOutLocation: "Warehouse Exit Point 1",
+    workSchedules: "8:00 AM - 4:00 PM",
+    paidTime: "8h 15m",
+    notes: "Overtime 15 minutes"}
+  }
+];
 function ViewEmployeeSalaryInfo({employeeData}) {
+  const navigate = useNavigate();
 
+  const onRowClick = (id) => {
+    navigate(`/payroll/users/${id}`, {state:{Role:"payroll"}});
+  };
 
-  const {axiosPrivate} = useAuth();
-  const handleDelete = async () => {
+const [filters, setFilters] = useState({});
     
-  try {
-    const response = await axiosPrivate.delete(`/employees/${employeeData?.id}/`);
+    function updateFilter(obj){
+        const key = Object.keys(obj)[0];
+        const value = obj[key]
+        setFilters(prev =>{
+            if(value == null || value === "" ){
+                const {[key]:removed, ...rest}=prev;
+                return rest;
+            }
+            return {...prev,[key]:value};
+        });
+    }
     
-    console.log("Delete response:", response.data);
-    console.log("Deleted user:", employeeData?.general?.fullname);
+    
+      const queryString = new URLSearchParams(
+        Object.entries(filters).filter(([k,v]) => v && v !== "")
+      ).toString();
+    
+      const dynamicURL = queryString ? `/employees/?${queryString}` : "/employees/";
+      console.log("Dynamic URL:", dynamicURL);
 
-  } catch (error) {
-    console.error("Failed to delete employee:", error);
-  }
-};
+  const structure = [3,1,1,1,1,1];
+  const ke2 = [
+    ["general_photo", "general_fullname", "general_emailaddress"],
+    ["general_phonenumber"],
+    ["job_joindate"],
+    ["general_gender"],
+    ["payroll_employeestatus"],
+    ["general_maritalstatus"],
+  ];
+  const title = ['USER','PHONE','JOIN DATE','GENDER','STATUS','MARITAL STATUS'];
 
-  return ( <div id="left" className="flex bg-white w-full flex-col h-full p-2 px-4 gap-4">
-        {/* TOP SECTION */}
-        <div id="top" className="items-center justify-center flex flex-col flex-2">
-          <div className="flex items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
-            <img
-              className="w-20 h-20 object-fill rounded-full"
-                src={
-    employeeData?.general?.photo
-      ? `http://172.16.27.124:3000${employeeData.general.photo}`
-      : "/pic/download (48).png"
-  }
-              alt="Profile"
-            />
-          </div>
-    
-          <div className="flex flex-col items-center gap-1.5 justify-start p-2 rounded hover:bg-slate-50">
-            <p className="font-bold text-gray-700 text-lg">
-              {employeeData?.general?.fullname || "Not Provided"}
-            </p>
-            <p className="font-semibold text-gray-500 text-xs">
-              {employeeData?.job?.jobtitle || "Not Provided"}
-            </p>
-          </div>
-    
-          <div className="flex items-center gap-1.5 justify-center p-2 rounded hover:bg-slate-50">
-            <p className={`font-bold px-6 py-1 text-xs rounded-md ${
-              employeeData?.payroll?.employeestatus === "Active"
-                ? "bg-green-50 text-green-800"
-                : "bg-red-50 text-red-800"
-            }`}>
-              {employeeData?.payroll?.employeestatus || "unknown"}
-            </p>
-          </div>
-        </div>
-    
-        <hr className="text-gray-200" />
-    
-        {/* MIDDLE SECTION */}
-        <div id="middle" className="items-start flex flex-col flex-1">
-          <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-            <Icon className='w-4 h-4' name={'Mail'}/>
-            <p className="font-semibold text-xs text-gray-700 rounded-md">
-              {employeeData?.general?.emailaddress || "No email"}
-            </p>
-          </div>
-    
-          <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-            <Icon className='w-4 h-4' name={'Phone'}/>
-            <p className="font-semibold text-xs text-gray-700 rounded-md">
-              {employeeData?.general?.phonenumber || "0972334145"}
-            </p>
-          </div>
-    
-          <div className="flex items-start gap-2 justify-start p-2 rounded hover:bg-slate-50">
-            <Icon className='w-4 h-4' name={'MapPinned'}/>
-            <p className="font-semibold text-xs text-gray-700 rounded-md">
-              {employeeData?.general?.timezone || "GMT+07:00"}
-            </p>
-          </div>
-        </div>
-    
-        <hr className="text-gray-200" />
-    
-        {/* BOTTOM SECTION */}
-        <div id="bottom" className="flex-2">
-          <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
-            <div>
-              <p className="font-semibold text-gray-400 text-xs">Department</p>
-              <p className="font-bold text-gray-700 text-xs">
-                {employeeData?.job?.department || "Designer"}
-              </p>
-            </div>
-          </div>
-    
-          <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
-            <div>
-              <p className="font-semibold text-gray-400 text-xs">Office</p>
-              <p className="font-bold text-gray-700 text-xs">
-                {employeeData?.job?.office || "Unpixel Studio"}
-              </p>
-            </div>
-          </div>
-    
-          <div className="flex items-center gap-1.5 justify-between p-2 rounded hover:bg-slate-50">
-            <div>
-              <p className="font-semibold text-gray-400 text-xs">Line Manager</p>
-              <div className="flex items-center gap-1.5 my-1.5">
-               <img
-              className="w-6 h-6 object-fill rounded-full"
-              src={employeeData?.general?.profilepicture || "\\pic\\download (48).png"}
-              alt="Profile"
-            />
-                <p className="font-bold text-gray-700 text-xs">
-                  {employeeData?.job?.linemanager || "Skylar Catzoni"}
-                </p>
-              </div>
-            </div>
-          </div>
-    
-          <div  onClick={handleDelete} className="flex bg-red-800 hover:cursor-pointer text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
-            <p className="text-xs font-semibold">Delete User</p>
-            <Icon className='w-4 h-4' name={'Trash'}/>
-          </div>
-        </div>
-      </div>
-    );
-    
-  
+  return (
+    <div className='p-4 flex flex-col h-full'>
+      <Header Title="Employee Directory" subTitle="view all employees and click to view detail"/>
+      <SearchStatus onFiltersChange={updateFilter} />
+        {console.log(dynamicURL)}
+      <Table Data={employeeAttendanceMock}  title={title} Structure={structure} ke={ke2} onRowClick={onRowClick} totPage={10} />
+    </div>
+    // URL={dynamicURL}
+  );
 }
 
 export default ViewEmployeeSalaryInfo

@@ -426,7 +426,7 @@ export function AttendanceStatus({ onFiltersChange }) {
   ];
 
   return (
-    <div id="left" className="flex py-2.5 gap-3 justify-between items-center">
+    <div id="left" className="flex py-2.5 gap-3 justify-between max-w-full items-center">
       <InputField
         placeholder={'Search Employee'}
         apiEndpoint="/api/employees/search"

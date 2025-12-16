@@ -127,11 +127,12 @@ async function handleGenerateConfirmed() {
   return (
     <>
       <Header Title={"Generate Payroll"}/>
-       <Generatepayroll  message={summary?"Generate payslips for all employees? This will replace existing payslips for this month.":"Preview summary first."}   noCancel={summary?false:true} confirmText={summary?"Generate Payroll":"Preview Summary"}  onDateClick={setMonth} text={summary?null:"Preview Summary"} icon={summary?null:"Eye"} popup={popup} setpopup={setpopup} action={summary?handleGenerateConfirmed:handlePreviewAndSummary}/>
+       <Generatepayroll  message={summary?"Generate payslips for all employees? This will replace existing payslips for this month.":"Preview summary first."}   noCancel={summary?false:true} confirmText={summary?"Generate Payroll":"Preview Summary"}  onDateClick={setMonth} text={summary?null:"Preview Summary"} icon={summary?null:"Eye"} popup={summary?popup:false} setpopup={summary?setpopup:handlePreviewAndSummary} action={handleGenerateConfirmed}/>
     <div className=" overflow-auto">
       <div className="flex gap-6">
         <div className="flex-1 space-y-4">
           <div className="  rounded ">
+            {console.log("demo employee data",demoEmployees)}
             <Table components={ ViewerLoader} D1={month} Data={demoEmployees} Structure={structure} ke={key} title={title}/>
           </div>
         
@@ -146,21 +147,7 @@ async function handleGenerateConfirmed() {
   </div>
 )}
         <aside className="space-y-4">  
-          {/* <div className="p-4 border rounded">
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  if (!summary) return alert("Preview summary first.");
-                  if (!confirm("Generate payslips for all employees? This will replace existing payslips for this month.")) return;
-                  handleGenerateConfirmed();
-                }}
-                disabled={processing}
-                className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-60"
-              >
-                {processing ? "Generating..." : "Generate & Store Payslips"}
-              </button>
-            </div>
-          </div> */}
+         
           <div className="p-4 shadow bg-slate-50 rounded">
             <h3 className="font-semibold mb-2">Summary (Preview)</h3>
             {!summary && <div className="text-sm text-slate-500">Click "Preview Summary" to view payroll totals.</div>}

@@ -24,7 +24,7 @@ function DetailNotification({ n, setSelected, store }) {
             {n.unread ? "Unread" : "Read"}
           </span>
         </div>
-        <div className="bg-amber-50 rounded p-4 flex-1 overflow-y-auto scrollbar-hidden">
+        <div className="bg-amber-50 shadow rounded p-4 flex-1 overflow-y-auto scrollbar-hidden">
             <p className="text-gray-700  mb-4 whitespace-pre-wrap">{n.message}</p>
         </div>
         <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 border-t border-slate-200 pt-3">

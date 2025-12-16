@@ -5,8 +5,8 @@ import { getLocalData } from "../Hooks/useLocalStorage";
 const NetworkContext = createContext(null);
 
 export function NetworkProvider({ children }) {
-  const [isLocal, setIsLocal] = useState(true);//default :null
-  const [checking, setChecking] = useState(false);//default :true
+  const [isLocal, setIsLocal] = useState(null);//default :null
+  const [checking, setChecking] = useState(true);//default :true
   const [error, setError] = useState(null);
 
   const { axiosPrivate } = useAuth();
@@ -16,11 +16,11 @@ export function NetworkProvider({ children }) {
   //   setError(null);
 
   //   try {
-  //     // const res = await axiosPrivate.get(`/employees/${getLocalData("id")}/attendances/network-status/`);
-  //     // console.log("Network status response:", res);
-  //     // // const json = res?.data?.is_office_network ?? false;
+  //     const res = await axiosPrivate.get(`/employees/${getLocalData("id")}/attendances/network-status/`);
+  //     console.log("Network status response:", res);
+  //     const json = res?.data?.is_office_network ?? false;
   //     conosle.log("Checking network status...",getLocalData("id"));
-  //     // setIsLocal(json);
+  //     setIsLocal(json);
   //   } catch (err) {
   //     // If axiosPrivate refreshes token, this catch may still fire from first 401
   //     if (err?.response?.status !== 401) {
@@ -33,34 +33,42 @@ export function NetworkProvider({ children }) {
   // }, [axiosPrivate]);
 
   useEffect(() => {
-    // let active = true;
+    const id = getLocalData("user_id")
+    let active = true;
 
-    // // wrap checkLocal so it won't set state after unmount
-    // const safeCheck = async () => {
-    //   try {
+  //   // wrap checkLocal so it won't set state after unmount
+    const safeCheck = async () => {
+      try {
         
-    //   conosle.log("Checking network status...",getLocalData("id"));
-    //     // const res = await axiosPrivate.get("/attendances/check-network/");
-    //     // if (!active) return;
+      console.log("Checking network status...",id);
 
-    //     // setIsLocal(res.data?.is_office_network ?? false);
-    //     // setError(null);
-    //   } catch (err) {
-    //     if (!active) return;
+        // const res = await axiosPrivate.get("/attendances/check-network/");
+        const res = await axiosPrivate.get(`/employees/${id}/attendances/network-status/`);
+        // console.log(res)
+        if (!active) return;
 
-    //     if (err?.response?.status !== 401) {
-    //       setError(err.message);
-    //     }
-    //     setIsLocal(false);
-    //   } finally {
-    //     if (active) setChecking(false);
-    //   }
-    // };
+        setIsLocal(res.data?.is_office_network);
+        // console.log("here",res.data?.is_office_network)
+        // setIsLocal(res.data?.is_office_network ?? false);
+        setError(null);
+      } catch (err) {
+        if (!active) return;
 
-    // safeCheck();
-    // return () => {
-    //   active = false;
-    // };
+        if (err?.response?.status !== 401) {
+          setError(err.message);
+        }
+        setIsLocal(false);
+      } finally {
+        if (active) setChecking(false);
+      }
+    };
+
+
+    id?safeCheck():[];
+    return () => {
+      active = false;
+
+    };
   }, [axiosPrivate]);
 
   // safe for re-renders

@@ -35,8 +35,7 @@ export const sidebarList = {
     label: 'Employee Payroll Data',
     Visible: false,
     sub: [
-      { subPath: 'view_employee_salary_info', label: 'View Employee Salary Info' },
-      { subPath: 'edit_employee_salary_info', label: 'Edit Employee Salary Info' },
+      { subPath: 'view_employee_salary_info', label: 'view/Edit employee salary info' },
     ],
   },
   {
@@ -91,7 +90,8 @@ export const sidebarList = {
       label: 'Attendance',
       Visible: false,
       sub: [
-        { subPath: 'Employee_Attendance', label: 'Employee Attendance' },
+        // { subPath: 'Employee_Attendance', label: 'Employee Attendance' },
+        { subPath: 'Department_Attendance', label: 'Department Attendance' },
         { subPath: 'myattendance', label: 'My Attendance' },
       ],
     },
@@ -116,27 +116,27 @@ export const sidebarList = {
       Visible: false,
       sub:false
     },
-    {
-      Icons: 'Calendar',
-      path: null,
-      label: 'Payroll Management',
-      Visible: false,
-      sub: [
-        { subPath: 'Payroll_report', label: 'View Payroll Reports' },
-        { subPath: 'MyPayroll', label: 'My Payroll' },
-      ],
-    },
+    // {
+    //   Icons: 'Calendar',
+    //   path: null,
+    //   label: 'Payroll Management',
+    //   Visible: false,
+    //   sub: [
+    //     { subPath: 'Payroll_report', label: 'View Payroll Reports' },
+    //     { subPath: 'MyPayroll', label: 'My Payroll' },
+    //   ],
+    // },
     {
       Icons: 'FlagTriangleRight',
       path: null,
       label: 'Reports',
       Visible: false,
       sub: [
-        { subPath: 'efficiencyhr', label: 'Payroll Reports' },
+        { subPath: 'Payroll_report', label: 'Payroll Reports' },
         { subPath: '/', label: 'Attendance Reports' },
         { subPath: '/', label: 'Leave Reports' },
         { subPath: '/', label: 'Overtime Reports' },
-        { subPath: '/', label: 'employee efficiency Reports' },
+        { subPath: 'efficiency_report', label: 'employee efficiency Reports' },
         { subPath: '/', label: 'Employee Compliant Report' },
       ],
     },

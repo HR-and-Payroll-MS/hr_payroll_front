@@ -22,6 +22,7 @@ export default function Login() {
   useEffect(() => {
   if (auth?.user?.role === 'hr') navigate('/manager_dashboard');
   else if (auth?.user?.role === 'Manager') navigate('/hr_dashboard');
+  else if (auth?.user?.role === 'Payroll') navigate('/payroll');
   else {<>unknown Actor logged in</>}
 }, [auth, navigate]);
 

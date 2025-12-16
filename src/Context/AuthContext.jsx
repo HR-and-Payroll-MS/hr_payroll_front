@@ -1,137 +1,197 @@
-import React, { createContext, useContext, useEffect, useState,useCallback,useMemo } from 'react';
-import {setLocalData , getLocalData} from '../Hooks/useLocalStorage'
-import useRefreshToken  from '../Hooks/useRefreshToken'
-import { createAxiosPrivate, axiosPublic } from '../api/axiosInstance'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
+import { setLocalData, getLocalData } from '../Hooks/useLocalStorage';
+import useRefreshToken from '../Hooks/useRefreshToken';
+import { createAxiosPrivate, axiosPublic } from '../api/axiosInstance';
+
 const AuthContext = createContext(null);
 
-export function AuthContextProvider({ children }){
-
-  const [auth,setAuth] = useState({user:null, accessToken:null})
+export function AuthContextProvider({ children }) {
+  const [auth, setAuth] = useState({ user: null, accessToken: null });
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-  const [searchEmployees, setSearchEmployees] = useState([])
-  const [loading, setLoading] = useState(true);
+  const [searchEmployees, setSearchEmployees] = useState([]);
+  const [loading, setLoading] = useState(false); // employees loading
+
   const refreshFn = useRefreshToken();
+
   const logout = useCallback(() => {
-    try{
-        localStorage.clear();
-    } catch (e) { console.error('error from the logout .13 :',e)}
-    setAuth({ user:null,accessToken:null });
-  },[])
+    localStorage.clear();
+    setAuth({ user: null, accessToken: null });
+    setSearchEmployees([]);
+  }, []);
 
   const onRefresh = useCallback(async () => {
     const newAccess = await refreshFn();
     if (newAccess) {
-      setAuth(prev => ({...prev, accessToken: newAccess }));
-      setLocalData('access',newAccess)
+      setAuth((prev) => ({ ...prev, accessToken: newAccess }));
+      setLocalData('access', newAccess);
       return newAccess;
     }
-    return null
-  },[refreshFn])
+    return null;
+  }, [refreshFn]);
 
-  const getAccessToken = useCallback(()=>{
+  const getAccessToken = useCallback(() => {
     return getLocalData('access') || auth.accessToken || null;
-  },[auth.accessToken])
+  }, [auth.accessToken]);
 
   const axiosPrivate = useMemo(() => {
     return createAxiosPrivate({
       getAccessToken,
       onRefresh,
-      onLogout:logout,
+      onLogout: logout,
     });
-  },[getAccessToken, onRefresh, logout])
+  }, [getAccessToken, onRefresh, logout]);
 
-  useEffect(()=>{
-    return ()=>{
-      if(axiosPrivate && typeof axiosPrivate._ejectInterceptors === 'function'){
+  // Cleanup interceptors on unmount
+  useEffect(() => {
+    return () => {
+      if (axiosPrivate && typeof axiosPrivate._ejectInterceptors === 'function') {
         axiosPrivate._ejectInterceptors();
       }
     };
-  },[axiosPrivate])
-
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const res = await axiosPrivate.get("/employees/");
-        // pick only necessary fields
-        const data = res.data.results.map((e) => ({
-          id: e.id,
-          fullname: e.general?.fullname || "",
-          emailaddress: e.general?.emailaddress || "",
-          photo: e.general?.photo || "/pic/download (48).png",
-          employeeid: e.job?.employeeid || "",
-          department: e.job?.department || "",
-        }));
-
-
-        
-        // console.log(res.data,"<-- res data")
-        // console.log(data,"<-- processed data")
-        setSearchEmployees(data);
-      } catch (err) {
-        console.error("Failed to fetch employees:", err);
-        // setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchEmployees();
   }, [axiosPrivate]);
 
-  const setUser = useCallback((userData,accessToken) => {
-    if(!userData || !accessToken) return;
-    setLocalData('id',userData.username);
-    setLocalData('role',userData.groups?.[0]?? null);
-    setLocalData('access',accessToken);
-    setAuth({
-      user: { username: userData.username, role:userData.groups?.[0] ?? null },accessToken
-    })
-  },[])
-
-  const login = useCallback ( async (username, password) => {
-    try {
-      const res = await axiosPublic.post('/auth/djoser/jwt/create/',{username, password});
-      const { access, refresh } = res.data || {};
-      if ( !access || !refresh ) throw new Error('Invalid auth response from server');
-
-      setLocalData('access',access);
-      setLocalData('refresh',refresh);
-      
-      console.log(getLocalData('access'),"<--- access \n",getLocalData('refresh'),"<-----refresh")
- 
-      const userRes = await axiosPrivate.get('/users/me/');
-      const userData = userRes.data;
-      console.log(userData,"<-- user data after login")
-      setLocalData('id',userData.id);
-
-      setUser(userData, access);
-      return userData;
-    } catch (error) {
-      const status = error?.response?.status
-      if (error.status === 400) throw new Error("Please check your imput fields and try again")
-      // if (error.status === 401) throw new Error("Incorrect email or password. Please try again.")
-      if (error.status === 403) throw new Error("You don't have permission to access this account.")
-      if (error.status === 404) throw new Error("Server not found. Please try again later.")
-      if (error.status === 500) throw new Error("Server error. Please try again later")
-      const msg = error?.response?.data?.detail || error.message || "Something went wrong. Please try again.";
-    throw new Error(msg)
-
-    }
-    
-  },[axiosPrivate, setUser]);
-
-
+  // Restore auth from localStorage on mount
   useEffect(() => {
     const access = getLocalData('access');
     const userId = getLocalData('id');
     const userRole = getLocalData('role');
-    if(access && userId) {
-      setAuth({user:{username:userId,role:userRole}, accessToken:access});
+
+    if (access && userId) {
+      setAuth({
+        user: { username: userId, role: userRole },
+        accessToken: access,
+      });
     }
     setIsAuthLoading(false);
-  },[])
+  }, []);
+
+  // Fetch employees ONLY when user is authenticated
+  useEffect(() => {
+    if (!auth.user || !auth.accessToken) {
+      setSearchEmployees([]);
+      setLoading(false);
+      return;
+    }
+
+    const fetchEmployees = async () => {
+      setLoading(true);
+      try {
+        const res = await axiosPrivate.get('/employees/');
+        const data = res.data.results.map((e) => ({
+          id: e.id,
+          fullname: e.general?.fullname || '',
+          emailaddress: e.general?.emailaddress || '',
+          photo: e.general?.photo || '/pic/download (48).png',
+          employeeid: e.job?.employeeid || '',
+          department: e.job?.department || '',
+        }));
+        setSearchEmployees(data);
+      } catch (err) {
+        console.error('Failed to fetch employees:', err);
+        if (err?.response?.status === 401) {
+          logout(); // Token invalid/expired and refresh failed
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEmployees();
+  }, [auth.user, auth.accessToken, axiosPrivate, logout]);
+
+  // Manual setUser (optional helper)
+  const setUser = useCallback((userData, accessToken) => {
+    if (!userData || !accessToken) return;
+
+    setLocalData('id', userData.username);
+    setLocalData('role', userData.groups?.[0] ?? null);
+    setLocalData('access', accessToken);
+
+    setAuth({
+      user: { username: userData.username, role: userData.groups?.[0] ?? null },
+      accessToken,
+    });
+  }, []);
+
+  // LOGIN FUNCTION - FIXED: No more 401 on /users/me/
+  const login = useCallback(
+    async (username, password) => {
+      try {
+        const res = await axiosPublic.post('/auth/djoser/jwt/create/', {
+          username,
+          password,
+        });
+        const { access, refresh } = res.data || {};
+
+        if (!access || !refresh) {
+          throw new Error('Invalid auth response from server');
+        }
+
+        // Store tokens
+        setLocalData('access', access);
+        setLocalData('refresh', refresh);
+
+        // Fetch user profile using the FRESH token directly
+        const userRes = await axiosPublic.get('/users/me/', {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        });
+
+        const userData = userRes.data;
+
+        // Store user info
+        setLocalData('id', userData.username);
+        setLocalData('role', userData.groups?.[0] ?? null);
+        setLocalData('user_id', userData.employee_id); // assuming userData has .id
+
+        // Update auth state → triggers employee fetch automatically
+        setAuth({
+          user: { username: userData.username, role: userData.groups?.[0] ?? null },
+          accessToken: access,
+        });
+
+        return userData;
+      } catch (error) {
+        let msg = 'Something went wrong. Please try again.';
+
+        if (error?.response?.status === 400 || error?.response?.status === 401) {
+          msg = 'Incorrect username or password.';
+        } else if (error?.response?.status === 403) {
+          msg = "You don't have permission to access this account.";
+        } else if (error?.response?.data?.detail) {
+          msg = error.response.data.detail;
+        } else if (error.message) {
+          msg = error.message;
+        }
+
+        throw new Error(msg);
+      }
+    },
+    []
+  );
 
   return (
-    <AuthContext.Provider value = {{ auth , setAuth , isAuthLoading , login , logout , setUser,searchEmployees , axiosPrivate }} >
+    <AuthContext.Provider
+      value={{
+        auth,
+        setAuth,
+        isAuthLoading,
+        login,
+        logout,
+        setUser,
+        searchEmployees,
+        loading, // employees loading state
+        axiosPrivate,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -139,9 +199,371 @@ export function AuthContextProvider({ children }){
 
 export default function useAuth() {
   const ctx = useContext(AuthContext);
-  if(!ctx) throw new Error('useAuth must be used inside AuthcontextProvider');
+  if (!ctx) {
+    throw new Error('useAuth must be used inside AuthContextProvider');
+  }
   return ctx;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { createContext, useContext, useEffect, useState,useCallback,useMemo } from 'react';
+// import {setLocalData , getLocalData} from '../Hooks/useLocalStorage'
+// import useRefreshToken  from '../Hooks/useRefreshToken'
+// import { createAxiosPrivate, axiosPublic } from '../api/axiosInstance'
+// const AuthContext = createContext(null);
+
+// export function AuthContextProvider({ children }){
+
+//   const [auth,setAuth] = useState({user:null, accessToken:null})
+//   const [isAuthLoading, setIsAuthLoading] = useState(true);
+//   const [searchEmployees, setSearchEmployees] = useState([])
+//   const [loading, setLoading] = useState(true);
+//   const refreshFn = useRefreshToken();
+//   const logout = useCallback(() => {
+//     try{
+//         localStorage.clear();
+//     } catch (e) { console.error('error from the logout .13 :',e)}
+//     setAuth({ user:null,accessToken:null });
+//   },[])
+
+//   const onRefresh = useCallback(async () => {
+//     const newAccess = await refreshFn();
+//     if (newAccess) {
+//       setAuth(prev => ({...prev, accessToken: newAccess }));
+//       setLocalData('access',newAccess)
+//       return newAccess;
+//     }
+//     return null
+//   },[refreshFn])
+
+//   const getAccessToken = useCallback(()=>{
+//     return getLocalData('access') || auth.accessToken || null;
+//   },[auth.accessToken])
+
+//   const axiosPrivate = useMemo(() => {
+//     return createAxiosPrivate({
+//       getAccessToken,
+//       onRefresh,
+//       onLogout:logout,
+//     });
+//   },[getAccessToken, onRefresh, logout])
+
+//   useEffect(()=>{
+//     return ()=>{
+//       if(axiosPrivate && typeof axiosPrivate._ejectInterceptors === 'function'){
+//         axiosPrivate._ejectInterceptors();
+//       }
+//     };
+//   },[axiosPrivate])
+
+//   // useEffect(() => {
+//   //   const fetchEmployees = async () => {
+//   //     try {
+//   //       const res = await axiosPrivate.get("/employees/");
+//   //       // pick only necessary fields
+//   //       const data = res.data.results.map((e) => ({
+//   //         id: e.id,
+//   //         fullname: e.general?.fullname || "",
+//   //         emailaddress: e.general?.emailaddress || "",
+//   //         photo: e.general?.photo || "/pic/download (48).png",
+//   //         employeeid: e.job?.employeeid || "",
+//   //         department: e.job?.department || "",
+//   //       }));
+
+
+        
+//   //       // console.log(res.data,"<-- res data")
+//   //       // console.log(data,"<-- processed data")
+//   //       setSearchEmployees(data);
+//   //     } catch (err) {
+//   //       console.error("Failed to fetch employees:", err);
+//   //       // setError(err.message);
+//   //     } finally {
+//   //       setLoading(false);
+//   //     }
+//   //   };
+//   //   fetchEmployees();
+//   // }, []);
+
+//   useEffect(() => {
+//   // If no authenticated user, don't fetch employees
+//   if (!auth.user || !auth.accessToken) {
+//     setLoading(false);           // Stop loading indicator
+//     setSearchEmployees([]);      // Optional: clear any old data
+//     return;
+//   }
+
+//   const fetchEmployees = async () => {
+//     setLoading(true); // Start loading when we actually fetch
+//     try {
+//       const res = await axiosPrivate.get("/employees/");
+//       const data = res.data.results.map((e) => ({
+//         id: e.id,
+//         fullname: e.general?.fullname || "",
+//         emailaddress: e.general?.emailaddress || "",
+//         photo: e.general?.photo || "/pic/download (48).png",
+//         employeeid: e.job?.employeeid || "",
+//         department: e.job?.department || "",
+//       }));
+
+//       setSearchEmployees(data);
+//     } catch (err) {
+//       console.error("Failed to fetch employees:", err);
+
+//       // Optional: if unauthorized and refresh failed, logout
+//       if (err?.response?.status === 401) {
+//         logout();
+//       }
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   fetchEmployees();
+// }, []); // Empty array → runs only once on mount
+
+//   const setUser = useCallback((userData,accessToken) => {
+//     if(!userData || !accessToken) return;
+//     setLocalData('id',userData.username);
+//     setLocalData('role',userData.groups?.[0]?? null);
+//     setLocalData('access',accessToken);
+//     setAuth({
+//       user: { username: userData.username, role:userData.groups?.[0] ?? null },accessToken
+//     })
+//   },[])
+
+//   const login = useCallback ( async (username, password) => {
+//     try {
+//       const res = await axiosPublic.post('/auth/djoser/jwt/create/',{username, password});
+//       const { access, refresh } = res.data || {};
+//       if ( !access || !refresh ) throw new Error('Invalid auth response from server');
+
+//       setLocalData('access',access);
+//       setLocalData('refresh',refresh);
+      
+//       console.log(getLocalData('access'),"<--- access \n",getLocalData('refresh'),"<-----refresh")
+ 
+//       const userRes = await axiosPrivate.get('/users/me/');
+//       const userData = userRes.data;
+//       console.log(userData,"<-- user data after login")
+//       console.log(userData?.id,"<-- user id after login")
+//       setLocalData('user_id',userData?.employee_id);
+
+//       setUser(userData, access);
+//       return userData;
+//     } catch (error) {
+//       const status = error?.response?.status
+//       if (error.status === 400) throw new Error("Please check your imput fields and try again")
+//       // if (error.status === 401) throw new Error("Incorrect email or password. Please try again.")
+//       if (error.status === 403) throw new Error("You don't have permission to access this account.")
+//       if (error.status === 404) throw new Error("Server not found. Please try again later.")
+//       if (error.status === 500) throw new Error("Server error. Please try again later")
+//       const msg = error?.response?.data?.detail || error.message || "Something went wrong. Please try again.";
+//     throw new Error(msg)
+
+//     }
+    
+//   },[axiosPrivate, setUser]);
+
+
+//   useEffect(() => {
+//     const access = getLocalData('access');
+//     const userId = getLocalData('id');
+//     const userRole = getLocalData('role');
+//     if(access && userId) {
+//       setAuth({user:{username:userId,role:userRole}, accessToken:access});
+//     }
+//     setIsAuthLoading(false);
+//   },[])
+
+//   return (
+//     <AuthContext.Provider value = {{ auth , setAuth , isAuthLoading , login , logout , setUser,searchEmployees , axiosPrivate }} >
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// }
+
+// export default function useAuth() {
+//   const ctx = useContext(AuthContext);
+//   if(!ctx) throw new Error('useAuth must be used inside AuthcontextProvider');
+//   return ctx;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
