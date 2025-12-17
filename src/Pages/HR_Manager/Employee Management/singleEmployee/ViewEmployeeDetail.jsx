@@ -7,6 +7,7 @@ import StepHeader from '../../../../Components/forms/StepHeader';
 import { RenderStepContent } from '../../../../utils/RenderStepContent';
 import EmployeeProfile from './EmployeeProfile';
 import { useLocation, useParams } from 'react-router-dom';
+import { Commet, OrbitProgress } from 'react-loading-indicators';
 const editableByHR = {
   general: true,
   job: true,
@@ -192,8 +193,9 @@ function ViewEmployeeDetail({role='HR'}) {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-64">
-        <ThreeDots />
+      <div className="flex opacity-50 justify-center items-center h-64">
+        {/* <ThreeDots /> */}
+        <Commet color="#32cd32" size="medium" textColor="" text="Loading"/>
       </div>
     );
 if (error)

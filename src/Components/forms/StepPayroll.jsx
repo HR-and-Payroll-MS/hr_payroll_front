@@ -1,10 +1,14 @@
+import Dropdown from '../Dropdown'
+const status =["Active", "Inactive", "Terminated", "On Leave"]
 const StepPayroll = ({ data , onChange }) => {
+
     const employmentInfo= <div className="border p-2  rounded-lg border-gray-200">
                     
                    <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap  ">
                             <div className="w-96 flex gap-2   text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Employee Status</p>
-                                <input type="text" value={data.employeestatus} onChange={(e) => onChange({ employeestatus: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
+                                <Dropdown padding='p-0.5' options={status} onChange={(e) => onChange({ employeestatus: e })}/>
+                                {/* <input type="text" value={data.employeestatus} onChange={(e) => onChange({ employeestatus: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />    */}
                             </div>
                             <div className="w-96 flex gap-2  text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Employment Type</p>

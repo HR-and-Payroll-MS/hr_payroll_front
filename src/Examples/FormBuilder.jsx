@@ -95,6 +95,7 @@ export default function FormBuilder({ formData, setFormData }) {
       <div className="mb-8 bg-slate-50 p-4 rounded shadow">
         <label className="block text-lg font-medium mb-2">Form Title</label>
         <InputField
+        searchMode="input"
           border="inset-shadow-2xs border border-slate-200"
           maxWidth="bg-white"
           suggestion={false}

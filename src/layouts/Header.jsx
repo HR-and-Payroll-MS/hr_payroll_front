@@ -3,16 +3,41 @@ import DropDownContent from "../Components/DropDownContent";
 import Icon from "../Components/Icon";
 import InputField from "../Components/InputField";
 import NotificationBell  from "../Pages/Notifications/NotificationBell";
+import { getLocalData } from "../Hooks/useLocalStorage";
+const mainHeaderSearch = {
+  Manager: [
+    { label: "Dashboard", path: "/hr_dashboard" },
+    { label: "Employee Directory", path: "/hr_dashboard/Employee_Directory" },
+    { label: "Upload Documents", path: "/hr_dashboard/org-chart" },
+    { label: "Department Attendance", path: "/hr_dashboard/Department_Attendance" },
+    { label: "My Attendance", path: "/hr_dashboard/myattendance" },
+    { label: "Approve/Reject Requests", path: "/hr_dashboard/Approve_Reject" },
+    { label: "Payroll Reports", path: "/hr_dashboard/Payroll_report" },
+    { label: "employee efficiency Reports", path: "/hr_dashboard/efficiency_report" },
+    { label: "Create Efficiency Form", path: "/hr_dashboard/efficiencyhr" },
+    { label: "Policy", path: "/hr_dashboard/policies'" },
+    { label: "View Notifications", path: "/hr_dashboard/notification_center_page" },
+    { label: "Send Notifications", path: "/hr_dashboard/send_notification_page" },
+    { label: "Profile", path: "/hr_dashboard/profile" },
+  ],
+  Payroll: [
+    { label: "Employees", path: "/hr/employees" },
+    { label: "Leave Requests", path: "/hr/leave-requests" },
+  ],
+};
 
 export default function Header(){
         const navigate = useNavigate()
         return <div className={`bg-white flex justify-evenly shadow h-14 gap-3 z-50  dark:bg-slate-800 dark:text-white `}> 
         <div id="left" className="flex py-2.5 w-2/5  justify-between items-center p-4 ">
-            <div className={`flex shadow items-center gap-1.5 justify-between bg-gray-100 w-full h-full px-1.5 rounded-md  dark:bg-slate-700 `}>
-                <div className="flex items-center gap-1.5 px-2.5 py-2 h-full">
+            <div className={`flex shadow items-center gap-1.5 justify-start bg-gray-100 w-full h-full px-1.5 rounded-md  dark:bg-slate-700 `}>
+                <div className="flex flex-1 items-center gap-1.5 pl-2.5 py-2 h-full">
                     <img className="h-4 opacity-45" src="\svg\search-svgrepo-com.svg" alt="" />
                     {/* <input className=" h-full rounded w-full" type="email" name="email" id="email" placeholder="search anything..." /> */}
-                    <InputField border="" placeholder="search anything..." icon={false}/>
+                    {/* <InputField border="" placeholder="search anything..." icon={false}/> */}
+                    <InputField icon={false} border="" maxWidth="w-full" placeholder="Search..." searchMode="global" globalData={mainHeaderSearch[getLocalData("role")]} displayKey="label" onSelect={(item) => navigate(item.path)} />
+
+
                 </div>
                 <div className={`flex bg-white items-center justify-center gap-1.5 px-1.5 rounded-md  dark:bg-slate-700 `}>
                     <p className="text-lg font-bold">x</p>

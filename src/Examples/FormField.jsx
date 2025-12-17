@@ -23,7 +23,7 @@ export default function FormFieldEditor({
       <div className="flex justify-between items-start">
         <div className="flex-1 flex flex-col gap-2.5">
           {/* <input type="text" value={field.name} onChange={(e) => onUpdate(field.id, { name: e.target.value })} placeholder="Field label" className="text-lg font-medium border-b-2 border-gray-300 focus:border-blue-500 outline-none w-full mb-3"/> */}
-          <InputField border="inset-shadow-2xs border border-slate-200" maxWidth=" bg-white" suggestion={false} placeholder="Field label" icon={false} onSelect={(e)=>{onUpdate(field.id, { name: e})}}/>
+          <InputField searchMode="input" border="inset-shadow-2xs border border-slate-200" maxWidth=" bg-white" suggestion={false} placeholder="Field label" icon={false} onSelect={(e)=>{onUpdate(field.id, { name: e})}}/>
           <div className="grid grid-cols-2 gap-4 mb-3">
             <div className="flex-1 flex flex-col gap-2.5">
               <label className="block text-sm font-medium">Type</label>
@@ -57,6 +57,7 @@ export default function FormFieldEditor({
                     placeholder="w-64 border p-2 rounded"
                   /> */}
                       <InputField 
+                      searchMode="input"
                       border="inset-shadow-2xs border border-slate-200"
                       maxWidth="max-w-3/5 bg-white"
                       suggestion={false} placeholder="Insert Option Label" 

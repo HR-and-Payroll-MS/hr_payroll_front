@@ -53,6 +53,7 @@ export function SearchStatus({ onFiltersChange }) {
   return (
     <div id="left" className="flex py-2.5 gap-3 justify-between items-center">
       <InputField
+        searchMode='api'
         placeholder={'Search Employee'}
         apiEndpoint="/api/employees/search"
         displayKey="name"
@@ -217,6 +218,7 @@ export function ApproveReject({ FiltersChange }) {
       className="flex py-2.5 gap-3 w-full justify-start items-center"
     >
       <InputField
+        searchMode='input'
         placeholder={'Search Employee'}
         displayKey="name"
         onSelect={handleEmployeeSelect}
@@ -258,6 +260,7 @@ export function AnnouncementSearch({ setQ, setPriority }) {
       className="flex py-2.5 gap-3 w-full justify-start items-center"
     >
       <InputField
+        searchMode='input'
         placeholder={'Search title or content...'}
         displayKey="name"
         onSelect={handleEmployeeSelect}
@@ -370,6 +373,7 @@ export function ViewEditPayslips({ setQ, setPriority, action }) {
         />
       </div></div>
       <InputField
+      searchMode='input'
         placeholder={'Search title or content...'}
         displayKey="name"
         onSelect={handleEmployeeSelect}
@@ -428,6 +432,7 @@ export function AttendanceStatus({ onFiltersChange }) {
   return (
     <div id="left" className="flex py-2.5 gap-3 justify-between max-w-full items-center">
       <InputField
+      searchMode='api'
         placeholder={'Search Employee'}
         apiEndpoint="/api/employees/search"
         displayKey="name"

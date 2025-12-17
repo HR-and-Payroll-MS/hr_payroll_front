@@ -1,3 +1,18 @@
+import Dropdown from '../Dropdown'
+
+const LineManager = ["John Doe", "Jane Smith", "Michael Johnson", "Emily Davis"]
+const PositionTypes = ["Full-Time", "Part-Time", "Contracht"]
+const JobTitles = ["HR Manager", "Department Manager", "Payroll Officer", "Employee"]
+const EmploymentTypes = ["Permanent", "Temporary", "Casual"]
+// Job Title represents the specific role of an employee,
+//  such as HR Manager, Department Manager, Payroll Officer,
+//   or Employee. Position Type describes the nature of the job,
+//    like full-time, part-time, or contract. 
+//    Employment Type indicates the employment arrangement,
+//     such as permanent, temporary, or casual. Line Manager 
+//     refers to the person who directly supervises the employee.
+
+
 const StepJob = ({ data , onChange }) => {
     const employmentInfo= <div className="border p-2 rounded-lg border-gray-200">
                     <div className="flex mx-4 py-4 border-b border-gray-200">
@@ -27,19 +42,22 @@ const StepJob = ({ data , onChange }) => {
                    <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap  ">
                             <div className="w-96 flex gap-2   text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Job Title</p>
-                                <input type="text" value={data.jobtitle} onChange={(e) => onChange({ jobtitle: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
+                                <Dropdown padding='p-0.5' options={JobTitles} onChange={(e) => onChange({ jobtitle: e })}/>{/* <input type="text" value={data.jobtitle} onChange={(e) => onChange({ jobtitle: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />    */}
                             </div>
                             <div className="w-96 flex gap-2  text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Position Type</p>
-                                <input type="text" value={data.positiontype} onChange={(e) => onChange({ positiontype: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
+                                <Dropdown padding='p-0.5' options={PositionTypes} onChange={(e) => onChange({ positiontype: e })}/>
+                                {/* <input type="text" value={data.positiontype} onChange={(e) => onChange({ positiontype: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />    */}
                             </div>
                             <div className="w-96 flex gap-2  text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Employment Type</p>
-                                <input type="text" value={data.employmenttype} onChange={(e) => onChange({ employmenttype: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />
+                                <Dropdown padding='p-0.5' options={EmploymentTypes} onChange={(e) => onChange({ EmploymentTypes: e })}/>
+                                {/* <input type="text" value={data.employmenttype} onChange={(e) => onChange({ employmenttype: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " /> */}
                             </div>
                             <div className="w-96 flex gap-2  text-nowrap">
                                 <p className="min-w-40 text-gray-400 ">Line Manager</p>
-                                <input type="text" value={data.linemanager} onChange={(e) => onChange({ linemanager: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />  
+                                <Dropdown padding='p-0.5' options={LineManager} onChange={(e) => onChange({ linemanager: e })}/>
+                                {/* <input type="text" value={data.linemanager} onChange={(e) => onChange({ linemanager: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   */}
                             </div>
                         </div>
                     </div>

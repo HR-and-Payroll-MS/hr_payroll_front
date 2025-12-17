@@ -1,7 +1,16 @@
+import Dropdown from "../Components/Dropdown";
 import { formatDateForInput } from "./formatDateForInput";
 
 const deletableFields = ["clockIn", "clockOut"];
 const timeFields = ["clockIn", "clockOut"];
+
+const EMPLOYEE_STATUS_OPTIONS = [
+  { label: "Active", value: "Active" },
+  { label: "Inactive", value: "Inactive" },
+  { label: "On Leave", value: "On Leave" },
+  { label: "Terminated", value: "Terminated" },
+];
+
 
 /** Extract HH:mm from ISO */
 const extractTime = (value) => {
@@ -63,7 +72,46 @@ export const RenderFields = ({
               />
             ) : (
               <>
-                <input
+              {sectionKey === "payroll" && key === "employeestatus" ? (
+  // <select value={value || ""} onChange={(e) => handleInputChange(sectionKey, key, e.target.value)} className="w-full border rounded px-3 py-1 bg-white focus:ring-1 focus:ring-green-500" >
+  //   <option value="" disabled> Select status </option>
+
+  //   {EMPLOYEE_STATUS_OPTIONS.map((opt) => (
+  //     <option key={opt.value} value={opt.value}>
+  //       {opt.label}
+  //     </option>
+  //   ))}
+  // </select>
+  <Dropdown onChange={(e) => handleInputChange(sectionKey, key, e)} options={EMPLOYEE_STATUS_OPTIONS.map((o)=>o.label)}/>
+) : (
+  <input
+    type={
+      key.toLowerCase().includes("date")
+        ? "date"
+        : isTimeField
+        ? "time"
+        : "text"
+    }
+    value={
+      key.toLowerCase().includes("date")
+        ? formatDateForInput(value)
+        : isTimeField
+        ? extractTime(value)
+        : value || ""
+    }
+    onChange={(e) => {
+      const newValue = isTimeField
+        ? mergeTimeIntoISO(value, e.target.value)
+        : e.target.value;
+
+      handleInputChange(sectionKey, key, newValue);
+    }}
+    className="w-full border rounded px-3 py-1 focus:ring-1 focus:ring-green-500"
+  />
+)}
+
+
+                {/* <input
                   type={
                     key.toLowerCase().includes("date")
                       ? "date"
@@ -86,7 +134,7 @@ export const RenderFields = ({
                     handleInputChange(sectionKey, key, newValue);
                   }}
                   className="w-full border rounded px-3 py-1 focus:ring-1 focus:ring-green-500"
-                />
+                /> */}
 
                 {showDelete && (
                   <button

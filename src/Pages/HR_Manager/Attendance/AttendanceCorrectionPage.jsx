@@ -12,6 +12,9 @@ const EDITABLE_ATTENDANCE_FIELDS = [
   "notes",
 ];
 
+const DEFAULT_LOCATION = "Onsite";
+
+
 const ATTENDANCE_FIELD_MAP = {
   clockIn: "clock_in",
   clockOut: "clock_out",
@@ -93,22 +96,88 @@ export default function AttendanceCorrectionPage({ Data }) {
   };
 
   const handleInputChange = (sectionKey, field, value) => {
-    setUserData((prev) => ({
-      ...prev,
-      [sectionKey]: {
-        ...prev[sectionKey],
-        [field]: value === "" ? null : value,
-      },
-    }));
+  setUserData((prev) => {
+    const updatedSection = { ...prev[sectionKey] };
 
-    setUpdatedData((prev) => ({
+    // 1️⃣ Deleting CLOCK IN → wipe everything
+    if (field === "clockIn" && value === null) {
+      updatedSection.clockIn = null;
+      updatedSection.clockOut = null;
+      updatedSection.clockInLocation = null;
+      updatedSection.clockOutLocation = null;
+    }
+
+    // 2️⃣ Deleting CLOCK OUT → wipe clockOut + clockOutLocation
+    else if (field === "clockOut" && value === null) {
+      updatedSection.clockOut = null;
+      updatedSection.clockOutLocation = null;
+    }
+
+    // 3️⃣ Location cleared → apply default
+    else if (
+      (field === "clockInLocation" || field === "clockOutLocation") &&
+      (value === null || value === "")
+    ) {
+      updatedSection[field] = DEFAULT_LOCATION;
+    }
+
+    // Normal update
+    else {
+      updatedSection[field] = value;
+    }
+
+    return {
       ...prev,
-      [sectionKey]: {
-        ...prev[sectionKey],
-        [field]: value === "" ? null : value,
-      },
-    }));
-  };
+      [sectionKey]: updatedSection,
+    };
+  });
+
+  // 🔁 Mirror same logic for updatedData
+  setUpdatedData((prev) => {
+    const updatedSection = { ...(prev[sectionKey] || {}) };
+
+    if (field === "clockIn" && value === null) {
+      updatedSection.clockIn = null;
+      updatedSection.clockOut = null;
+      updatedSection.clockInLocation = null;
+      updatedSection.clockOutLocation = null;
+    } else if (field === "clockOut" && value === null) {
+      updatedSection.clockOut = null;
+      updatedSection.clockOutLocation = null;
+    } else if (
+      (field === "clockInLocation" || field === "clockOutLocation") &&
+      (value === null || value === "")
+    ) {
+      updatedSection[field] = DEFAULT_LOCATION;
+    } else {
+      updatedSection[field] = value;
+    }
+
+    return {
+      ...prev,
+      [sectionKey]: updatedSection,
+    };
+  });
+};
+
+
+  // const handleInputChange = (sectionKey, field, value) => {
+  //   setUserData((prev) => ({
+  //     ...prev,
+  //     [sectionKey]: {
+  //       ...prev[sectionKey],
+  //       [field]: value === "" ? null : value,
+  //     },
+  //   }));
+
+  //   setUpdatedData((prev) => ({
+  //     ...prev,
+  //     [sectionKey]: {
+  //       ...prev[sectionKey],
+  //       [field]: value === "" ? null : value,
+  //     },
+  //   }));
+  // };
 
   const handleSave = async () => {
   try {

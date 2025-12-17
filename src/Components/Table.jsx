@@ -33,7 +33,7 @@ function Table({ Data,URL,onRowClickInside, Structure, ke,clickable=true,compone
     <tr>
       <td colSpan={9} className="text-center py-4">
         
-              <div className="flex opacity-50@ justify-center items-center h-64">
+              <div className="flex opacity-50 justify-center items-center h-64">
                 {/* <ThreeDots /> */}
                 <Commet color={"oklch(62.7% 0.194 149.214)"} size="medium" text="loading" textColor=""/>
               </div>
