@@ -1,45 +1,87 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import Icon from "./Icon";
 
-export default function SearchDate({ onSubmit,isSingle=false }) {
+export default function SearchDate({
+  onSubmit,
+  isSingle = false,
+  style = "border border-slate-200 bg-slate-50 shadow",
+  applyButton = true, // ← New prop
+}) {
   const [mode, setMode] = useState("single");
   const [singleDate, setSingleDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [clicked,setClicked] = useState(false)
+  const [clicked, setClicked] = useState(false);
 
-  // Runs ONLY when user clicks submit button
+  // Auto-submit logic when applyButton is false
+  useEffect(() => {
+    if (!applyButton) {
+      // Auto-submit as soon as valid data is present
+      if (isSingle && singleDate) {
+        onSubmit?.(singleDate);
+      } else if (!isSingle) {
+        if (mode === "single" && singleDate) {
+          onSubmit?.({ type: "single", date: singleDate });
+        } else if (mode === "range" && startDate && endDate) {
+          onSubmit?.({ type: "range", from: startDate, to: endDate });
+        }
+      }
+    }
+  }, [
+    applyButton,
+    isSingle,
+    mode,
+    singleDate,
+    startDate,
+    endDate,
+    onSubmit,
+  ]);
+
+  // Manual submit (only used when applyButton is true)
   const handleSubmit = () => {
-    if(singleDate||(startDate&&endDate))setClicked(true)
-    if(isSingle){
-      onSubmit && onSubmit(singleDate);
-    }
-    else{
-    if (mode === "single" && singleDate) {
-      onSubmit && onSubmit({ type: "single", date: singleDate });
+    let valid = false;
+
+    if (isSingle) {
+      if (singleDate) {
+        valid = true;
+        onSubmit?.(singleDate);
+      }
+    } else {
+      if (mode === "single" && singleDate) {
+        valid = true;
+        onSubmit?.({ type: "single", date: singleDate });
+      } else if (mode === "range" && startDate && endDate) {
+        valid = true;
+        onSubmit?.({ type: "range", from: startDate, to: endDate });
+      }
     }
 
-    if (mode === "range" && startDate && endDate) {
-        console.log("here")
-      onSubmit && onSubmit({
-        type: "range",
-        from: startDate,
-        to: endDate
-      });
-    }}
+    if (valid) {
+      setClicked(true);
+      // Optional: reset clicked state after a delay for visual feedback
+      setTimeout(() => setClicked(false), 2000);
+    }
   };
 
-  const choice=["single","range"]
+  const choice = ["single", "range"];
 
   return (
-    <div className="px-3 border text-xs border-slate-200 rounded-xl w-fit flex gap-3 bg-slate-50 shadow items-center">
-
+    <div
+      className={`px-3 text-xs rounded-xl w-fit flex gap-3 ${style} items-center`}
+    >
       {/* Mode Switch */}
-     {!isSingle&& <Dropdown placeholder="Choose Type" border="" options={choice} onChange={setMode} />}
+      {!isSingle && (
+        <Dropdown
+          placeholder="Choose Type"
+          border=""
+          options={choice}
+          onChange={setMode}
+        />
+      )}
 
-      {/* Single Date */}
-      {mode === "single" && (
+      {/* Force single mode if isSingle is true */}
+      {(isSingle || mode === "single") && (
         <input
           type="date"
           value={singleDate}
@@ -49,8 +91,8 @@ export default function SearchDate({ onSubmit,isSingle=false }) {
       )}
 
       {/* Range */}
-      {mode === "range" && (
-        <div className="flex gap-2">
+      {mode === "range" && !isSingle && (
+        <div className="flex gap-2 items-center">
           <input
             type="date"
             value={startDate}
@@ -67,14 +109,22 @@ export default function SearchDate({ onSubmit,isSingle=false }) {
         </div>
       )}
 
-      {/* The Button that triggers output */}
-      <button
-        onClick={handleSubmit}
-        className="bg-slate-800 text-xs cursor-pointer text-white px-3 py-1 rounded-md hover:bg-slate-950"
-      >
-        {clicked? <Icon name={"Check"} className="w-4 h-4"/>:"Apply"}
-       
-      </button>
+      {/* Apply Button - only shown when applyButton is true */}
+      {applyButton && (
+        <button
+          onClick={handleSubmit}
+          className="bg-slate-800 text-xs cursor-pointer text-white px-3 py-1 rounded-md hover:bg-slate-950 transition flex items-center gap-1"
+        >
+          {clicked ? (
+            <>
+              <Icon name="Check" className="w-4 h-4" />
+              Applied
+            </>
+          ) : (
+            "Apply"
+          )}
+        </button>
+      )}
     </div>
   );
 }

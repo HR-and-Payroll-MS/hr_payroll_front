@@ -3,6 +3,7 @@ import { getAccessToken, refreshToken } from "../utils/auth";
 
 let socket = null;
 let currentPath = "/ws/notifications/socket.io"; 
+// let currentPath = "/ws/notifications/"; 
 
 export function connectSocket(path = currentPath) {
   currentPath = path;

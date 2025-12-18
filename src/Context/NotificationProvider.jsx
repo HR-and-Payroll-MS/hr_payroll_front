@@ -9,32 +9,44 @@ export function NotificationProvider({ children }) {
   const socket = useSocket();
 
   const [items, setItems] = useState([]);
-  const unreadCount = items.filter((n) => n.unread).length;
+
+  const unreadCount = items.filter((n) => !n.is_read).length;
 
   /* 🔹 Initial fetch */
   useEffect(() => {
     let mounted = true;
 
     axiosPrivate
-      .get("/api/notifications/")
+      .get("notifications/")
       .then((res) => {
-        if (mounted) setItems(res.data || []);
+        if (!mounted) return;
+        setItems(res.data?.results || []); // ✅ FIX
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error("Failed to fetch notifications:", err);
+      });
 
     return () => {
       mounted = false;
     };
   }, [axiosPrivate]);
 
-  /* 🔹 Socket listener */
+  /* 🔹 Realtime socket */
   useEffect(() => {
     if (!socket) return;
 
     const onNotification = (data) => {
       setItems((prev) => {
         if (prev.some((n) => n.id === data.id)) return prev;
-        return [data, ...prev];
+
+        return [
+          {
+            ...data,
+            is_read: false,
+            created_at: new Date().toISOString(),
+          },
+          ...prev,
+        ];
       });
     };
 
@@ -44,19 +56,19 @@ export function NotificationProvider({ children }) {
 
   /* 🔹 Actions */
   const markRead = async (id) => {
-    await axiosPrivate.post(`/api/notifications/${id}/mark-read/`);
+    await axiosPrivate.post(`notifications/${id}/mark-read/`);
     setItems((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, unread: false } : n))
+      prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
     );
   };
 
   const markAllRead = async () => {
-    await axiosPrivate.post("/api/notifications/mark-all-read/");
-    setItems((prev) => prev.map((n) => ({ ...n, unread: false })));
+    await axiosPrivate.post("notifications/mark-all-read/");
+    setItems((prev) => prev.map((n) => ({ ...n, is_read: true })));
   };
 
   const remove = async (id) => {
-    await axiosPrivate.delete(`/api/notifications/${id}/`);
+    await axiosPrivate.delete(`notifications/${id}/`);
     setItems((prev) => prev.filter((n) => n.id !== id));
   };
 

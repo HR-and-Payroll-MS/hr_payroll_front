@@ -236,6 +236,48 @@ export function ApproveReject({ FiltersChange }) {
     </div>
   );
 }
+export function LeaveRequest({ setQ, setPriority }) {
+  const handleFilter = (employee) => {
+    console.log('search', employee);
+    setPriority(employee);
+  };
+
+  const handleEmployeeSelect = (employee) => {
+    setQ(employee);
+  };
+
+  const status = [
+    { content: 'All Priority', svg: null, placeholder: true },
+    { content: 'Low', svg: null },
+    { content: 'Normal', svg: null },
+    { content: 'High', svg: null },
+    { content: 'Urgent', svg: null },
+  ];
+
+  return (
+    <div
+      id="left"
+      className="flex py-2.5 gap-3 w-full justify-start items-center"
+    >
+      <InputField
+        searchMode='input'
+        placeholder={'Search title or content...'}
+        displayKey="name"
+        onSelect={handleEmployeeSelect}
+      />
+
+      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <Dropdown
+          onChange={(i) => handleFilter(i)}
+          options={status}
+          text="text-xs font-semibold"
+          placeholder="All Priority"
+          border="border gap-1 border-gray-100"
+        />
+      </div>
+    </div>
+  );
+}
 export function AnnouncementSearch({ setQ, setPriority }) {
   const handleFilter = (employee) => {
     console.log('search', employee);

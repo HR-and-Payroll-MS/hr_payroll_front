@@ -69,6 +69,7 @@ import FormField from './Examples/FormField';
 import HREfficiencyForm from './Examples/HREfficiencyForm';
 import EfficiencyReport from './Pages/HR_Manager/Report/EfficiencyReport';
 import IndexRedirect from './Pages/IndexRedirect';
+import LeaveRequestForEmployees from './Pages/HR_Manager/LeaveApproval/LeaveRequestForEmployees';
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
@@ -127,6 +128,7 @@ function App() {
             {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route path="View_Employee" element={<ViewEmployee />} />
+            <Route path="Request" element={<LeaveRequestForEmployees />} />
             <Route path="efficiency_report" element={<EfficiencyReport />} />
             <Route path="Addemployee" element={<AddEmployee />} />
             <Route path="efficiencyhr" element={<HREfficiencyForm />} />

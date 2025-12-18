@@ -11,6 +11,7 @@ export default function Dropdown({
   padding="py-2.5",
   onChange,
   Svg,
+  width="w-full",
   showIcons = false
 }) {
   const { selected, isOpen, dropdownRef, toggleDropdown, selectItem } =
@@ -24,7 +25,7 @@ export default function Dropdown({
   };
 
   return (
-    <div className={`relative  w-full ${padding} `} ref={dropdownRef}>
+    <div className={`relative ${width}  ${padding} `} ref={dropdownRef}>
       <button
         type="button" 
         onClick={toggleDropdown}
@@ -42,7 +43,7 @@ export default function Dropdown({
       </button>
 
       {isOpen && (
-  <ul className="absolute z-10 text-nowrap mt-2 w-full min-w-fit bg-white dark:bg-slate-700 rounded-sm shadow-lg max-h-56 overflow-y-auto scrollbar-hidden">
+  <ul className="absolute z-10 text-nowrap mt-2 w-full min-w-fit bg-white dark:bg-slate-700 rounded-sm shadow-lg max-h-56 overflow-y-auto hover-bar">
     {options && options.length > 0 ? (
       options.map((item, index) => {
         // normalize item: if it's a string, turn it into an object with content

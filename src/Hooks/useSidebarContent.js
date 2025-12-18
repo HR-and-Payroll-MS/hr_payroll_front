@@ -134,7 +134,7 @@ export const sidebarList = {
       sub: [
         { subPath: 'Payroll_report', label: 'Payroll Reports' },
         { subPath: '/', label: 'Attendance Reports' },
-        { subPath: '/', label: 'Leave Reports' },
+        { subPath: 'Request', label: 'Leave Reports' },
         { subPath: '/', label: 'Overtime Reports' },
         { subPath: 'efficiency_report', label: 'employee efficiency Reports' },
         { subPath: '/', label: 'Employee Compliant Report' },
