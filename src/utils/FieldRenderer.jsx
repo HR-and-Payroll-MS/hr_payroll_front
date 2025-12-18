@@ -47,7 +47,7 @@ const FieldRenderer = ({ fieldKey, fieldDef, value, onChange }) => {
       return (
         <div>
           <label className="block text-sm text-gray-600 mb-1">{label}</label>
-          <Dropdown
+          <Dropdown padding="p-1"
             options={fieldDef.options || []}
             placeholder={fieldDef.placeholder || `Select ${label}`}
             value={value}

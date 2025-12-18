@@ -62,7 +62,6 @@ function InputField({
         return;
       }
 
-      // 🌐 API SEARCH
       if (apiEndpoint && query.trim().length > 1) {
         const filtered = (searchEmployees || []).filter(emp => {
           const text = `${emp.employeeid || ""} ${emp.emailaddress || ""} ${emp.department || ""} ${emp.fullname || ""}`.toLowerCase();
@@ -86,7 +85,7 @@ function InputField({
   /* ================= AUTO HIDE ================= */
   useEffect(() => {
     if (!showSuggestions) return;
-    const t = setTimeout(() => setShowSuggestions(false), 8000);
+    const t = setTimeout(() => setShowSuggestions(false), 20000);
     return () => clearTimeout(t);
   }, [showSuggestions]);
 

@@ -194,18 +194,17 @@ const RenderNestedPolicyFields = ({
             <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
             <div className="flex-1">
               {isEditing ? (
-                // <input
-                //   value={value ?? ""}
-                //   onChange={(e) => handleInputChange(sectionKey, fullPath, e.target.value)}
-                //   className="w-full border rounded px-2 py-1"
-                // />
-                 <InputField
-                  border="inset-shadow-2xs border border-slate-200" 
-                  maxWidth=" bg-white" 
-                  suggestion={false} 
-                  placeholder={value} 
-                  icon={false} 
-                  onSelect={(e) => handleInputChange(sectionKey, fullPath, e)}/>
+                <input
+                  value={value ?? ""}
+                  onChange={(e) => handleInputChange(sectionKey, fullPath, e.target.value)}
+                  className="flex items-center px-2.5 py-1.5 rounded outline-green-600 text-slate-700 dark:text-slate-200 border dark:border-slate-500 border-slate-300"/>
+                //  <InputField
+                //   border="inset-shadow-2xs border border-slate-200" 
+                //   maxWidth=" bg-white" 
+                //   suggestion={false} 
+                //   placeholder={value} 
+                //   icon={false} 
+                //   onSelect={(e) => handleInputChange(sectionKey, fullPath, e)}/>
                          
               ) : (
                 <div className="font-semibold">

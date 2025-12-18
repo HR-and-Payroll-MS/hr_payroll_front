@@ -1,40 +1,50 @@
-import React, { createContext, useContext, useEffect, useMemo } from "react";
-import { connectSocket, disconnectSocket, getSocket } from "../api/socket";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { connectSocket, disconnectSocket } from "../api/socket";
 
 const SocketContext = createContext(null);
 
 export function SocketProvider({ children }) {
+  const [socket, setSocket] = useState(null);
+
   useEffect(() => {
-    connectSocket(); // connect once globally
+    const s = connectSocket();
+
+    if (s) {
+      setSocket(s);
+    }
 
     return () => {
-      disconnectSocket(); // cleanup on app unload
+      disconnectSocket();
+      setSocket(null);
     };
   }, []);
 
-  const value = useMemo(() => {
-    const socket = getSocket();
-    if (!socket) return null;
-
-    return {
-      socket,
-
-      emit: (event, payload) => {
-        socket.emit(event, payload);
-      },
-
-      on: (event, callback) => {
-        socket.on(event, callback);
-      },
-
-      off: (event, callback) => {
-        socket.off(event, callback);
-      },
-    };
-  }, []);
+  if (!socket) {
+    return (
+      <SocketContext.Provider value={null}>
+        {children}
+      </SocketContext.Provider>
+    );
+  }
 
   return (
-    <SocketContext.Provider value={value}>
+    <SocketContext.Provider
+      value={{
+        socket,
+
+        emit: (event, payload) => {
+          socket.emit(event, payload);
+        },
+
+        on: (event, callback) => {
+          socket.on(event, callback);
+        },
+
+        off: (event, callback) => {
+          socket.off(event, callback);
+        },
+      }}
+    >
       {children}
     </SocketContext.Provider>
   );
@@ -43,3 +53,69 @@ export function SocketProvider({ children }) {
 export function useSocket() {
   return useContext(SocketContext);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { createContext, useContext, useEffect, useMemo } from "react";
+// import { connectSocket, disconnectSocket, getSocket } from "../api/socket";
+
+// const SocketContext = createContext(null);
+
+// export function SocketProvider({ children }) {
+//   useEffect(() => {
+//     connectSocket(); // connect once globally
+
+//     return () => {
+//       disconnectSocket(); // cleanup on app unload
+//     };
+//   }, []);
+
+//   const value = useMemo(() => {
+//     const socket = getSocket();
+//     if (!socket) return null;
+
+//     return {
+//       socket,
+
+//       emit: (event, payload) => {
+//         socket.emit(event, payload);
+//       },
+
+//       on: (event, callback) => {
+//         socket.on(event, callback);
+//       },
+
+//       off: (event, callback) => {
+//         socket.off(event, callback);
+//       },
+//     };
+//   }, []);
+
+//   return (
+//     <SocketContext.Provider value={value}>
+//       {children}
+//     </SocketContext.Provider>
+//   );
+// }
+
+// export function useSocket() {
+//   return useContext(SocketContext);
+// }

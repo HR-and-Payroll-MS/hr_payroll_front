@@ -15,7 +15,7 @@ const mainHeaderSearch = {
     { label: "Payroll Reports", path: "/hr_dashboard/Payroll_report" },
     { label: "employee efficiency Reports", path: "/hr_dashboard/efficiency_report" },
     { label: "Create Efficiency Form", path: "/hr_dashboard/efficiencyhr" },
-    { label: "Policy", path: "/hr_dashboard/policies'" },
+    { label: "Policy", path: "/hr_dashboard/policies" },
     { label: "View Notifications", path: "/hr_dashboard/notification_center_page" },
     { label: "Send Notifications", path: "/hr_dashboard/send_notification_page" },
     { label: "Profile", path: "/hr_dashboard/profile" },
@@ -30,16 +30,16 @@ export default function Header(){
         const navigate = useNavigate()
         return <div className={`bg-white flex justify-evenly shadow h-14 gap-3 z-50  dark:bg-slate-800 dark:text-white `}> 
         <div id="left" className="flex py-2.5 w-2/5  justify-between items-center p-4 ">
-            <div className={`flex shadow items-center gap-1.5 justify-start bg-gray-100 w-full h-full px-1.5 rounded-md  dark:bg-slate-700 `}>
-                <div className="flex flex-1 items-center gap-1.5 pl-2.5 py-2 h-full">
-                    <img className="h-4 opacity-45" src="\svg\search-svgrepo-com.svg" alt="" />
+            <div className={`flex relative shadow items-center gap-1.5 justify-start bg-gray-100 w-full h-full rounded-md  dark:bg-slate-700 `}>
+                <div className="flex relative flex-1 items-center gap-1.5 py-2 h-full">
+                    <img className="h-4 left-2 absolute opacity-45" src="\svg\search-svgrepo-com.svg" alt="" />
                     {/* <input className=" h-full rounded w-full" type="email" name="email" id="email" placeholder="search anything..." /> */}
                     {/* <InputField border="" placeholder="search anything..." icon={false}/> */}
-                    <InputField icon={false} border="" maxWidth="w-full" placeholder="Search..." searchMode="global" globalData={mainHeaderSearch[getLocalData("role")]} displayKey="label" onSelect={(item) => navigate(item.path)} />
+                    <InputField icon={false} border="" maxWidth="w-full pl-5" placeholder="Search..." searchMode="global" globalData={mainHeaderSearch[getLocalData("role")]} displayKey="label" onSelect={(item) => navigate(item.path)} />
 
 
                 </div>
-                <div className={`flex bg-white items-center justify-center gap-1.5 px-1.5 rounded-md  dark:bg-slate-700 `}>
+                <div className={`flex absolute right-2 bg-white items-center justify-center gap-1.5 px-1.5 rounded-md  dark:bg-slate-700 `}>
                     <p className="text-lg font-bold">x</p>
                     <p className="text-sm font-bold">F</p>
                 </div>
