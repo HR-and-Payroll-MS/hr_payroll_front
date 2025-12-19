@@ -70,6 +70,7 @@ import HREfficiencyForm from './Examples/HREfficiencyForm';
 import EfficiencyReport from './Pages/HR_Manager/Report/EfficiencyReport';
 import IndexRedirect from './Pages/IndexRedirect';
 import LeaveRequestForEmployees from './Pages/HR_Manager/LeaveApproval/LeaveRequestForEmployees';
+import OrgChartPage from './Pages/ORG_CHART/OrgChartPage';
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
@@ -88,6 +89,7 @@ function App() {
         <Route index element={<IndexRedirect />} />
 
         <Route path="/unauthorized" element={<UnAuthorized />} />
+        <Route path="/ORG" element={<OrgChartPage />} />
         <Route path="/access-denied" element={<AccessDenied />} />
         {/* ------------------------- Payroll officer ---------------------- */}
         <Route element={<Routes allowedRoles={['Payroll']} />}>
