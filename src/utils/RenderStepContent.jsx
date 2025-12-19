@@ -1,8 +1,11 @@
 
+import { useState } from "react";
 import DocumentList from "../Components/DocumentList";
 import Icon from "../Components/Icon";
+import UploadDrawer from "../Example/UploadDrawer";
 import { RenderFields } from "./renderFields";
 export const RenderStepContent = ({
+  style='border border-slate-300',
   currentStep,
   editMode,
   employeeData,
@@ -10,15 +13,17 @@ export const RenderStepContent = ({
   handleSave,
   handleCancel,
   handleEditToggle,
+  myDocument=false,
   handleDocumentUpdate,
   editable = {general: true, job: true, payroll: true, documents: true } // new prop: object like { general: true, job: false, payroll: true, documents: true }
 }) => {
   const isEditable = (section) => editable[section];
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   switch (currentStep) {
     case 0:
       return (
-        <div className="flex-1 flex-col border border-slate-300 rounded bg-white p-4 flex">
+        <div className={` ${style} flex-1 flex-col  rounded bg-white p-4 flex`}>
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">General Information</h2>
             {isEditable("general") && (editMode?.general ? (
@@ -50,7 +55,7 @@ export const RenderStepContent = ({
 
     case 1:
       return (
-        <div className="flex-1 border border-slate-300 rounded bg-white  flex-col p-4 flex">
+        <div className={` ${style} flex-1  rounded bg-white  flex-col p-4 flex`}>
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Job Information</h2>
             {isEditable("job") && (editMode?.job ? (
@@ -82,7 +87,7 @@ export const RenderStepContent = ({
 
     case 2:
       return (
-        <div className="flex-1 border border-slate-300 rounded bg-white flex-col p-4 flex">
+        <div className={` ${style} flex-1  rounded bg-white flex-col p-4 flex`}>
           <div className="flex justify-between items-center mb-2 ">
             <h2 className="font-semibold text-lg">Payroll Information</h2>
             {isEditable("payroll") && (editMode?.payroll ? (
@@ -111,36 +116,105 @@ export const RenderStepContent = ({
         </div>
       );
 
-    case 3:
-      return (
-        <div className="flex-1 flex-col p-4 flex border border-slate-300 rounded bg-white ">
-          <div className="flex justify-between items-center mb-2 ">
-            <h2 className="font-semibold text-lg">Documents</h2>
-            {isEditable("documents") && (editMode?.documents ? (
-              <div className="flex gap-2">
-                <button onClick={() => handleSave("documents")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+    // case 3:
+    //   return (
+    //     <div className={` ${style} flex-1 flex-col p-4 flex  rounded bg-white `}>
+    //       <div className="flex justify-between items-center mb-2 ">
+    //         <h2 className="font-semibold text-lg">Documents</h2>
+    //         {isEditable("documents") && (editMode?.documents ? (
+    //           <div className="flex gap-2">
+    //             <button onClick={() => handleSave("documents")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+    //               Save
+    //             </button>
+    //             <button onClick={() => handleCancel("documents")} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+    //               Cancel
+    //             </button>
+    //           </div>
+    //         ) : (
+    //           <button onClick={() => handleEditToggle("documents")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
+    //             <Icon className="w-4 h-4" name={"Pen"} />
+    //           </button>
+    //         ))}
+    //       </div>
+
+    //       <div className="space-y-2 ">
+    //         <DocumentList
+    //           files={employeeData?.documents?.files || []}
+    //           isEditing={isEditable("documents") && !!editMode?.documents}
+    //           onChange={handleDocumentUpdate}
+    //         />
+    //       </div>
+    //     </div>
+    //   );
+
+   case 3:
+  return (
+    <div className={` ${style} flex-1 flex-col p-4 flex rounded bg-white `}>
+      <div className="flex justify-between items-center mb-2 ">
+        <h2 className="font-semibold text-lg">Documents</h2>
+
+        <div className="flex gap-2 items-center">
+          {/* Edit / Save / Cancel */}
+          {isEditable("documents") &&
+            (editMode?.documents ? (
+              <>
+                <button
+                  onClick={() => handleSave("documents")}
+                  className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                >
                   Save
                 </button>
-                <button onClick={() => handleCancel("documents")} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+                <button
+                  onClick={() => handleCancel("documents")}
+                  className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                >
                   Cancel
                 </button>
-              </div>
+              </>
             ) : (
-              <button onClick={() => handleEditToggle("documents")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
+              <button
+                onClick={() => handleEditToggle("documents")}
+                className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100"
+              >
                 <Icon className="w-4 h-4" name={"Pen"} />
               </button>
             ))}
-          </div>
 
-          <div className="space-y-2 ">
-            <DocumentList
-              files={employeeData?.documents?.files || []}
-              isEditing={isEditable("documents") && !!editMode?.documents}
-              onChange={handleDocumentUpdate}
-            />
-          </div>
+          {/* Add button shown only if myDocument is true */}
+          {myDocument && (
+            <button
+              onClick={() => setDrawerOpen(true)}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded shadow-sm text-sm bg-blue-600 text-white hover:bg-blue-700"
+            >
+              <Icon name={"Plus"} className="h-4 w-4" />
+              Add PDF
+            </button>
+          )}
         </div>
-      );
+      </div>
+
+      <div className="space-y-2 ">
+        <DocumentList
+          files={employeeData?.documents?.files || []}
+          isEditing={isEditable("documents") && !!editMode?.documents}
+          onChange={handleDocumentUpdate}
+        />
+      </div>
+
+      {/* Upload Drawer */}
+      <UploadDrawer
+        open={drawerOpen}
+        onClose={setDrawerOpen}
+        // employee={selectedEmployee}
+        // onUpload={async (payload) => {
+        //   await handleUpload(payload);
+        //   setDrawerOpen(false);
+        // }}
+        // uploading={uploading}
+      />
+    </div>
+  );
+
 
     default:
       return null;

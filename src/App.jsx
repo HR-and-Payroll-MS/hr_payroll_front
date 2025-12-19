@@ -76,8 +76,8 @@ export const UserContext = createContext();
 
 function App() {
   // useEffect(()=>{
-    // setLocalData("role","Manager")
-    // localStorage.clear();
+  //   setLocalData("role","Manager")
+  // //   localStorage.clear();
   // },[])
   const { theme } = useTheme();
   const router = createBrowserRouter(

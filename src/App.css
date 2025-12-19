@@ -157,3 +157,33 @@ animation:loader-spin 1.5 linear infinite;}
     transform:rotate(360deg)
   }
 }
+
+/* Global CSS - replace your previous block with this */
+
+.custom-tinymce-wrapper .tox-tinymce {
+  border: 1px solid #e2e8f0 !important; /* Light mode default border */
+  border-radius: 8px !important;
+  overflow: hidden; /* Ensures glow doesn't get clipped */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Remove any residual default focus pseudo-elements */
+.custom-tinymce-wrapper .tox-edit-area::before,
+.custom-tinymce-wrapper .tox-tinymce::before {
+  display: none !important;
+}
+
+/* Strong custom green focus indicator */
+.custom-tinymce-wrapper .tox-tinymce.tox-tinymce--focused {
+  border-color: #22c55e !important; /* Solid green border */
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35) !important; /* Green glow */
+}
+
+/* Dark mode adjustments (if your app adds .dark class to <html> or <body>) */
+.dark .custom-tinymce-wrapper .tox-tinymce {
+  border-color: #374151 !important; /* Darker default border */
+}
+
+.dark .custom-tinymce-wrapper .tox-tinymce.tox-tinymce--focused {
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.45) !important; /* Slightly brighter glow in dark */
+}

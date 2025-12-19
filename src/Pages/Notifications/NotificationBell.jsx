@@ -65,7 +65,7 @@ export default function NotificationBell({ role = "EMPLOYEE", onOpenCenter }) {
           {/* Body */}
           <div className="max-h-72 overflow-auto scrollbar-hidden">
             {visibleItems.length === 0 ? (
-              <div className="p-4 text-sm text-slate-500">
+              <div className="p-4 text-sm text-center text-slate-500">
                 No notifications
               </div>
             ) : (

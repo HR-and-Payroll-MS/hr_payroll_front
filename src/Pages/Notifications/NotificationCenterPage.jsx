@@ -82,13 +82,10 @@ export default function NotificationCenterPage({ role = "EMPLOYEE" }) {
       </div>
 
       {/* Cards */}
-      <div className="space-y-3 py-3 overflow-y-auto scrollbar-hidden">
+      <div className="space-y-3  py-3 overflow-y-auto scrollbar-hidden">
         {view.length > 0 ? (
           view.map((n) => (
-            <NotificationCard
-              key={n.id}
-              n={n}
-              canAction={ROLE_RECEIVE_TYPES[role]?.includes(n.category)}
+            <NotificationCard key={n.id} n={n} canAction={ROLE_RECEIVE_TYPES[role]?.includes(n.category)}
               onView={() => {
                 markRead(n.id);
                 setSelected({ ...n, unread: false });

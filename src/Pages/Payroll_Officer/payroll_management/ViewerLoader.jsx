@@ -23,9 +23,9 @@ export default function ViewerLoader({ Id,demoEmployees,month= new Date().toISOS
   console.log("Payroll rebuilt in ViewerLoader:", payroll);
 
   return (
-    <div className="p-4 border h-full rounded bg-white">
-      <p className="text-2xl font-bold">Preview for the Employee named {payroll?.employee?.name}</p>
-      {console.log(payroll)}
+    <div className="p-4 border dark:border-slate-400 dark:bg-slate-700 overflow-y-auto h-full rounded hover-bar bg-white">
+      <p className="text-2xl dark:text-slate-200 mb-7 font-bold">Preview for the Employee named {payroll?.employee?.name}</p>
+      {/* {console.log(payroll)} */}
       <PayslipTemplate payroll={payroll} />
     </div>
   );

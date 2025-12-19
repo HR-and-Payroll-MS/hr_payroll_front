@@ -16,6 +16,10 @@ function LeaveRequestForEmployees() {
     documents:{files:null},
     });
     const [currentStep, setCurrentStep] = useState(0);
+    const [date, setdate] = useState("all");
+    const [status, setstatus] = useState("all");
+    const [q, setQ] = useState("");
+
 
     const steps = [ "View Leave Requests","Send Leave Request",];
     const handleDataChange = (section, newData) => {
@@ -39,9 +43,11 @@ function LeaveRequestForEmployees() {
       case 0:
         return (
           <ViewRequestForEmployees
-            // data={formData.general}
-            // onChange={(newData) => handleDataChange("general", newData)}
-          />
+  date={date}
+  status={status}
+  q={q}          
+/>
+
         );
       case 1:
         return (
@@ -54,14 +60,14 @@ function LeaveRequestForEmployees() {
   };
   return (
     <div className='flex flex-col gap-1 h-full'>
-        <div className='p-3 px-6 bg-slate-50 shadow overflow-y-auto hover-bar'>
+        <div className='p-3 px-6 dark:bg-slate-700 bg-slate-50 shadow'>
         <Header className={""} Title={"Leave Request Page"}/></div>
-        <div className="w-full h-full flex flex-col mx-auto p-6 ">
+        <div className="w-full relative flex-1 flex flex-col mx-auto p-6 overflow-y-auto hover-bar ">
             
-            <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep}/>
-            <div className='p-2 flex flex-col flex-1 h-full '>
-                <LeaveRequest/>
-                <div className="border border-t-0 p-2 border-slate-200 hover-bar overflow-y-auto flex-1 "> {renderStep()}</div>
+            <StepHeader style='float  top-0' steps={steps} currentStep={currentStep} onStepClick={goToStep}/>
+            <div className='p-2 flex flex-col flex-1'>
+                {currentStep===0&&<LeaveRequest setQ={setQ} setdate={setdate} setstatus={setstatus} />}
+                <div className="border border-t-0 p-2 dark:border-slate-600 border-slate-200 hover-bar overflow-y-auto flex-1 "> {renderStep()}</div>
             </div>
         </div>
     </div>

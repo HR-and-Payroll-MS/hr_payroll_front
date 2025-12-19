@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MyPayslipList from "./MyPayslipList";
+import MyPayslipList from "../../MyPayslipList";
 import MyPayslipDrawer from "./MyPayslipDrawer";
 import Table from '../../../Components/Table'
 import PayrollReportDrawer from "./PayrollReportDrawer";

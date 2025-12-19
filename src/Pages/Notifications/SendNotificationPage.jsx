@@ -52,7 +52,7 @@ export default function SendNotificationPage() {
   }
 
   return (
-    <form onSubmit={submit} className="mx-auto overflow-y-auto h-full p-6 space-y-4">
+    <form onSubmit={submit} className="mx-auto overflow-y-auto hover-bar h-full p-6 space-y-4">
       <h2 className="text-xl font-bold">Send Notification</h2>
 
       <Dropdown

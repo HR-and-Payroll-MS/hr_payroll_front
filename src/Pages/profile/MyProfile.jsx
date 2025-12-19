@@ -242,8 +242,10 @@ function MyProfile({ currStep = 0 }) {
           onStepClick={setCurrentStep}
         />
 
-        <div className="flex-1 flex shadow flex-col gap-3.5 pb-1 ">
+        <div className="flex-1 flex  flex-col gap-3.5 pb-1 ">
           <RenderStepContent
+          style=''
+          myDocument={true}
             currentStep={currentStep}
             editMode={editMode}
             employeeData={employeeData}
@@ -262,7 +264,7 @@ function MyProfile({ currStep = 0 }) {
           {currentStep === 2 && (
             <MyPayrollPage
               headerfont="text-xl"
-              background={' border border-slate-300 rounded bg-white'}
+              background={'   rounded bg-white'}
             />
           )}
         </div>

@@ -236,48 +236,89 @@ export function ApproveReject({ FiltersChange }) {
     </div>
   );
 }
-export function LeaveRequest({ setQ, setPriority }) {
-  const handleFilter = (employee) => {
-    console.log('search', employee);
-    setPriority(employee);
+export function LeaveRequest({ setQ, setdate, setstatus }) {
+
+  // 🔹 STATUS (Dropdown emits STRING)
+  const handleFilter = (value) => {
+    if (!value) {
+      setstatus("all");
+      return;
+    }
+    setstatus(value.toLowerCase());
   };
 
-  const handleEmployeeSelect = (employee) => {
-    setQ(employee);
+  // 🔹 SEARCH
+  const handleEmployeeSelect = (searchTerm) => {
+    setQ(searchTerm || "");
+  };
+
+  // 🔹 DATE (SearchDate emits {type, from, to} OR {type, date})
+  const handleDateChange = (payload) => {
+    console.log('date payload', payload);
+    if (!payload) {
+      setdate("all");
+      return;
+    }
+    // if(payload.from===null&&payload.to===null&&payload.date===null){setdate("all"); return;}
+
+    // Single date
+    if (payload.type === "single") {
+      setdate(payload.date);
+      return;
+    }
+
+    // Range date
+    if (payload.type === "range") {
+      const from = payload.from;
+      const to = payload.to;
+
+      if (from && to) {
+        // normalize order
+        setdate(from <= to ? `${from}:${to}` : `${to}:${from}`);
+      } else if (from) {
+        setdate(from);
+      } else {
+        setdate("all");
+      }
+    }
   };
 
   const status = [
-    { content: 'All Priority', svg: null, placeholder: true },
-    { content: 'Low', svg: null },
-    { content: 'Normal', svg: null },
-    { content: 'High', svg: null },
-    { content: 'Urgent', svg: null },
+    { content: "All", svg: null, placeholder: true },
+    { content: "Approved", svg: null },
+    { content: "Denied", svg: null },
+    { content: "Pending", svg: null },
   ];
 
   return (
-    <div
-      id="left"
-      className="flex py-2.5 gap-3 w-full justify-start items-center"
-    >
+    <div className="flex py-2.5 gap-3 w-full justify-start items-center">
       <InputField
-        searchMode='input'
-        placeholder={'Search title or content...'}
+        searchMode="input"
+        placeholder={"Search title or content..."}
         displayKey="name"
         onSelect={handleEmployeeSelect}
       />
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
-          onChange={(i) => handleFilter(i)}
+          onChange={handleFilter}      // ✅ string-based
           options={status}
           text="text-xs font-semibold"
           placeholder="All Priority"
           border="border gap-1 border-gray-100"
         />
       </div>
+
+      <SearchDate
+        style=""
+        applyButton={false}
+        isSingle={false}
+        onSubmit={handleDateChange}   // ✅ fixed
+      />
     </div>
   );
 }
+
 export function AnnouncementSearch({ setQ, setPriority }) {
   const handleFilter = (employee) => {
     console.log('search', employee);
@@ -395,7 +436,7 @@ export function ViewEditPayslips({ setQ, setPriority, action }) {
       className="flex p-2.5 gap-3 w-full justify-between items-center"
     >
       <div className='flex gap-3 flex-1'>
-      <SearchDate />
+      <SearchDate style='' />
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
           onChange={(i) => handleFilter(i)}
@@ -420,8 +461,8 @@ export function ViewEditPayslips({ setQ, setPriority, action }) {
         displayKey="name"
         onSelect={handleEmployeeSelect}
       />
-      <Button onClick={()=>setpopup(true)} text='Re-Generate Payroll' icon={"CloudLightning"}/>
-      {popup&&<ConfirmPopup onConfirm={action} confirmText='Generate Payroll' message='are you sure you want to Re-Generate payroll?' onCancel={()=>setpopup(false)} isOpen={popup}/>}
+      {/* <Button onClick={()=>setpopup(true)} text='Re-Generate Payroll' icon={"CloudLightning"}/> */}
+      {/* {popup&&<ConfirmPopup onConfirm={action} confirmText='Generate Payroll' message='are you sure you want to Re-Generate payroll?' onCancel={()=>setpopup(false)} isOpen={popup}/>} */}
     </div>
   );
 }

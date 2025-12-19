@@ -49,7 +49,7 @@ export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}
 };
   return (open && <FileDrawer isModalOpen={open} closeModal={onClose} >
               {/* <PDFViewer file={selectedFile}/> */}
-        <aside className="ml-auto -z-50 w-full  text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800 h-full p-6  overflow-auto">
+        <aside className="ml-auto -z-50 w-full  text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800 h-full p-6 hover-bar overflow-auto">
           <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Upload Document</h2>
           </div>
