@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { useTheme } from '../Context/ThemeContext';
+import KeyboardShortcuts from '../Components/KeyboardShrotCuts';
 export default function MainLayout() {
   const { theme } = useTheme();
   return (
@@ -13,6 +14,8 @@ export default function MainLayout() {
         <Header />
         <div className="h-full p-4 flex-1 overflow-y-scroll scrollbar-hidden">
           <div className="h-full w-full shadow bg-white rounded-md overflow-hidden dark:bg-slate-800">
+            
+            <KeyboardShortcuts/>
             <Outlet />
           </div>
         </div>

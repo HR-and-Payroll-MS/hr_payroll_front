@@ -8,6 +8,7 @@ import Icon from '../../Components/Icon';
 import ThreeDots from '../../animations/ThreeDots';
 import ProfileHeader from './ProfileHeader';
 import MyPayrollPage from '../HR_Manager/payroll_management/MyPayrollPage';
+import { getLocalData } from '../../Hooks/useLocalStorage';
 
 function MyProfile({ currStep = 0 }) {
   const { state } = useLocation();
@@ -27,8 +28,8 @@ function MyProfile({ currStep = 0 }) {
     payroll: false,
     documents: false,
   });
-  const employeeId = 0;
-  //   const employeeId = useParams().id;
+  // const employeeId = 0;
+    const employeeId = getLocalData("user_id");;
   useEffect(() => {
     if (position !== undefined) {
       setCurrentStep(position);
@@ -40,8 +41,8 @@ function MyProfile({ currStep = 0 }) {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        //  const daattaa = await axiosPrivate.get(`/employees/${employeeId}`);
-        //  console.log(daattaa.data.general.photo);
+         const daattaa = await axiosPrivate.get(`/employees/${employeeId}`);
+         console.log(daattaa.data);
 
         const response = [
           {
@@ -136,8 +137,10 @@ function MyProfile({ currStep = 0 }) {
             },
           },
         ];
-        setEmployeeData(response[employeeId]);
-        setOriginalData(response[employeeId]);
+        setEmployeeData(daattaa.data);
+        setOriginalData(daattaa.data);
+        // setEmployeeData(response[0]);
+        // setOriginalData(response[0]);
       } catch (err) {
         console.error(err);
         setError('Failed to fetch employee details.');
@@ -181,13 +184,31 @@ function MyProfile({ currStep = 0 }) {
       setEmployeeData(data);
       setOriginalData(data);
       setEditMode((prev) => ({ ...prev, [section]: false }));
-      const res = await axiosPrivate.put(`/employees/${employeeId}`, data);
+      const res = await axiosPrivate.put(`/employees/${employeeId}/`, data);
       console.log(
         'Saved successfully (simulated):',
         data,
         ' Response:',
         res.data
       );
+
+
+
+// const photos = formData.documents?.files;
+// console.log(photos)
+// if (photos) {
+// const photosArray = photos instanceof File ? [photos] : Array.from(photos);
+// photosArray.forEach(photo => {
+// uploadData.append("photo", photo);
+// });
+// }
+
+
+
+
+
+
+
     } catch (err) {
       console.error('Save failed:', err);
       setError('Failed to save. Try again.');
@@ -230,7 +251,13 @@ function MyProfile({ currStep = 0 }) {
       {/* <div className="flex flex-col flex-1  overflow-y-scroll rounded-md h-full"> */}
       <div className="h-fit  rounded-xl">
         {/* <EmployeeProfile employeeData={employeeData}/> */}
-        <ProfileHeader />
+        {/* <ProfileHeader employeeData={employeeData} setEmployeeData={setEmployeeData} /> */}
+      
+
+  <ProfileHeader 
+    employeeData={employeeData} 
+    setEmployeeData={setEmployeeData} 
+  />
       </div>
 
       <div className="flex flex-col rounded-md h-full flex-1 gap-4 ">

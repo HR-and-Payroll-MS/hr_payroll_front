@@ -71,6 +71,13 @@ import EfficiencyReport from './Pages/HR_Manager/Report/EfficiencyReport';
 import IndexRedirect from './Pages/IndexRedirect';
 import LeaveRequestForEmployees from './Pages/HR_Manager/LeaveApproval/LeaveRequestForEmployees';
 import OrgChartPage from './Pages/ORG_CHART/OrgChartPage';
+import ForgetPassword from './Pages/ForgetPassword';
+import OTPVerification from './Pages/OTPVerification';
+import UpdatePassword from './Pages/UpdatePassword';
+import FAQPage from './Pages/Help/Lists/FAQ/FAQPage';
+import HelpCenter from './Pages/Help/HelpCenter';
+import ShortCut from './Pages/Help/Lists/ShorCut';
+
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
 export const UserContext = createContext();
@@ -80,20 +87,43 @@ function App() {
   //   setLocalData("role","Manager")
   // //   localStorage.clear();
   // },[])
+
+  const sharedSettingsRoutes = (
+  <Route path="setting" element={<Settingz />}>
+    <Route path="CompanyInfo" element={<CompanyInfo />} />
+    <Route path="ChangePassword" element={<ChangePassword />} />
+    <Route path="WorkSchedule" element={<WorkSchedule />} />
+    <Route path="FAQ" element={<FAQPage />} />
+  </Route>
+);
+  const sharedHelpRoutes = (
+  <Route path="HelpCenter" element={<HelpCenter />}>
+    <Route path="shortcut" element={<ShortCut />} />
+    <Route path="ChangePassword" element={<ChangePassword />} />
+    <Route path="WorkSchedule" element={<WorkSchedule />} />
+    <Route path="FAQ" element={<FAQPage />} />
+  </Route>
+);
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         {' '}
         <Route path="/login" element={<Login />} />
-        <Route index element={<IndexRedirect />} />
-
+        <Route path="/Forgot_Password" element={<ForgetPassword />} />
+        <Route path="/verification" element={<OTPVerification />} />
+        <Route path="/UpdatePassword" element={<UpdatePassword />} />
+        <Route index element={<IndexRedirect />} /> 
+         
+        
         <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="/ORG" element={<OrgChartPage />} />
         <Route path="/access-denied" element={<AccessDenied />} />
         {/* ------------------------- Payroll officer ---------------------- */}
         <Route element={<Routes allowedRoles={['Payroll']} />}>
           <Route path="Payroll" element={<MainLayout />}>
+            {sharedSettingsRoutes}
+            {sharedHelpRoutes}
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route index element={<DashboardLayout />} />
             <Route path="generate_payroll" element={<GeneratePayroll />} />
@@ -126,6 +156,8 @@ function App() {
           <Route path="hr_dashboard" element={<MainLayout />}>
             <Route path="clock_in" element={<ClockIn />} />
             <Route index element={<DashboardLayout />} />
+            {sharedHelpRoutes}
+            {sharedSettingsRoutes}
             <Route path="Employee_Directory" element={<EmployeeDirectory />} />
             {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
@@ -171,11 +203,7 @@ function App() {
             />
             <Route path="myattendance" element={<MyAttendance />} />
 
-            <Route path="setting" element={<Settingz />}>
-              <Route path="CompanyInfo" element={<CompanyInfo />} />
-              <Route path="ChangePassword" element={<ChangePassword />} />
-              <Route path="WorkSchedule" element={<WorkSchedule />} />
-            </Route>
+            
 
             <Route path="org-chart" element={<DocumentsPage />} />
             {/* <Route path="Modal_Test" element={<Checklist />} /> */}

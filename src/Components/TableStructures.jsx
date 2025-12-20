@@ -97,16 +97,16 @@ function TableStructures({data="",id,D1, item,Comps = EmptyComponent,nickname,ra
         );
       case 62:
         return(
-          <div className="flex w-full  gap-1.5 items-center ">
+          <div className="flex w-full h-full gap-1.5 items-center ">
                           <div onClick={deleteItem} className="p-1.5 bg-red-600 rounded-md hover:bg-red-900 hover:cursor-pointer *:scrollbar-hidden">
                               <Icon name={"Trash"} className="text-slate-50 h-4 w-4"/>
                           </div>
 
 
 
-                            <div onClick={openModal} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer *:scrollbar-hidden">
+                            <div onClick={openModal} className="p-1.5 bg-blue-800 rounded-md hover:bg-slate-900 hover:cursor-pointer h-full *:scrollbar-hidden">
                               <Icon name={"Eye"} className="text-slate-50 h-4 w-4"/>
-                              { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
+                              { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20 h-full "} width='w-1/2 h-full bg-black' isModalOpen={isModalOpen} closeModal={setModalOpen}>
                                         <DocumentList files={ [data]} justOpen={true}/>
                                         {console.log(data.blob," id---->",id," item---->",item)}
                               </FileDrawer>)}

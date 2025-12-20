@@ -105,7 +105,7 @@ export default function PDFViewer({ file, url, onClose }) {
   }
 
   return (
-    <div className="relative w-full h-full border rounded-lg overflow-auto bg-white shadow-md">
+    <div className="relative w-full h-full bg border rounded-lg overflow-auto bg-white shadow-md">
       {/* Close button */}
       {onClose && (
         <button

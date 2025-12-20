@@ -183,9 +183,11 @@ export default function Sidebar() {
           <div className="flex w-full justify-between items-center m-0.5">
             <div className="flex items-center gap-1.5 justify-center py-2.5">
               <Icon name="HelpCircle" className="w-5 h-5 text-slate-400" />
+              <NavLink to="HelpCenter">
               <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
                 Help Center
               </p>
+              </NavLink>
             </div>
             <div className="text-xs rounded-full font-semibold items-center bg-red-500 text-white px-1">
               <p className="m-0.5">8</p>

@@ -187,3 +187,11 @@ animation:loader-spin 1.5 linear infinite;}
 .dark .custom-tinymce-wrapper .tox-tinymce.tox-tinymce--focused {
   box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.45) !important; /* Slightly brighter glow in dark */
 }
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(-5%); }
+  50% { transform: translateY(0); }
+}
+.animate-bounce-slow {
+  animation: bounce-slow 3s infinite ease-in-out;
+}

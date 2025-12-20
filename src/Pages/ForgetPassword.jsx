@@ -1,0 +1,102 @@
+import React, { useEffect, useState } from 'react'
+import Modal from '../Components/Modal'
+import useAuth from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import useForm from '../Hooks/useForm';
+
+function ForgetPassword() {
+ const { login, auth } = useAuth();
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+  if (auth?.user?.role === 'hr') navigate('/manager_dashboard');
+  else if (auth?.user?.role === 'Manager') navigate('/hr_dashboard');
+  else if (auth?.user?.role === 'Payroll') navigate('/payroll');
+  else {<>unknown Actor logged in</>}
+}, [auth, navigate]);
+    const handlesub = async (formData) => {
+    setLoading(true);
+    setMessage('');
+    try {
+    //   await login(formData.username, formData.password)
+      navigate('/verification')
+    } catch (err) {
+        // setMessage(err.response?.data?.message || err.message);
+      } finally {
+        setLoading(false);
+    }
+
+  }; 
+   
+const BackToLogin=()=>{
+  navigate('/Login')
+}
+
+  const { values, handleChange, handleSubmit } = useForm(
+    { email:'' },
+    handlesub
+  );
+  return (
+    <div className="h-screen w-screen bg-[url('/pic/Frame11.png')] bg-contain">
+        
+        
+        
+        <Modal isOpen={loading} location={'center'} >
+        <div className="flex items-center justify-center h-screen">
+        <div className="relative">
+        <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+        <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin">
+        </div>
+    </div>
+</div></Modal>
+
+
+<form
+        onSubmit={handleSubmit}
+        className=" flex w-full h-full  justify-center items-center"
+        action=""
+      >
+        <div className="max-w-xl shadow-xl bg-white rounded-2xl p-12 flex flex-col justify-center gap-2 flex-1 w-full ">
+          <div className='flex justify-center'>
+            <img src="/pic/Robot Thumb Up with Artificial Intelligence.png" className='h-8 w-8' alt="" />
+            <p className="py-2 dark:text-slate-200 flex justify-center font-semibold">
+                HRDashboard
+            </p>
+          </div>
+          <div className='flex flex-col justify-center'>
+            <p className="py-2 dark:text-slate-200 flex text-2xl font-bold justify-center ">
+                Reset your password
+            </p>
+            <p className="py-2 text-center dark:text-slate-200 flex text-xl font-normal justify-center ">
+                Enter your email address and we'll send you password reset instructions.
+            </p>
+          </div>
+          <div className="py-2">
+            <label className="w-full dark:text-slate-200 text-xs font-semibold " htmlFor="email">
+              Registered Email<span className="text-red-700">*</span>
+            </label>
+            <input
+              className="my-1 border dark:text-slate-300 outline-green-600 dark:border-slate-600 border-gray-300 p-2 rounded w-full"
+              type="email"
+              onChange={handleChange}
+              value={values.email}
+              name="email"
+              id="email"
+              placeholder="Input your registered email"
+            />
+          </div>
+          <button type="submit" className="items-center justify-center bg-slate-900 text-slate-100 inline-flex px-32 py-2.5 rounded-md text-sm font-semibold ">
+            Send OTP on My email
+          </button>
+          <button type="button" onClick={BackToLogin} className="items-center cursor-pointer justify-center  inline-flex px-32 py-2.5 border-slate-400 border-2 rounded-md text-sm font-semibold text-gray-500">
+            Back to Login
+          </button>
+          
+        </div> 
+      </form>
+      </div>
+  )
+}
+
+export default ForgetPassword

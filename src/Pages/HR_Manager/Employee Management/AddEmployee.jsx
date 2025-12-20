@@ -81,22 +81,22 @@ uploadData.append("one_off", formData.payroll.oneoff);
 uploadData.append("salary", formData.payroll.salary);
 // jobdate
 
-// const docs = formData.documents?.files;
+const docs = formData.documents?.files;
 
-// if (docs) {
-//   const files = docs instanceof File ? [docs] : Array.from(docs);
-//   files.forEach(file => uploadData.append("documents", file));
-// }
+if (docs) {
+  const files = docs instanceof File ? [docs] : Array.from(docs);
+  files.forEach(file => uploadData.append("documents", file));
+}
 //_______________________________________________
 
-const photos = formData.documents?.files;
-console.log(photos)
-if (photos) {
-const photosArray = photos instanceof File ? [photos] : Array.from(photos);
-photosArray.forEach(photo => {
-uploadData.append("photo", photo);
-});
-}
+// const photos = formData.documents?.files;
+// console.log(photos)
+// if (photos) {
+// const photosArray = photos instanceof File ? [photos] : Array.from(photos);
+// photosArray.forEach(photo => {
+// uploadData.append("photo", photo);
+// });
+// }
 
 
 
