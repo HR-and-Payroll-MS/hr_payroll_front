@@ -8,7 +8,7 @@ function EmployeeDirectory() {
   const navigate = useNavigate();
 
   const onRowClick = (id) => {
-    navigate(`/hr_dashboard/users/${id}`, { state: id });
+    navigate(`/hr_dashboard/users/${id}`);
   };
 
 const [filters, setFilters] = useState({});

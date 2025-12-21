@@ -21,6 +21,12 @@ export default function IndexRedirect() {
       case "Payroll":
         navigate("/payroll", { replace: true });
         break;
+      case "Employee":
+        navigate("/employee", { replace: true });
+        break;
+      case "Dep_Man":
+        navigate("/department_manager", { replace: true });
+        break;
 
       default:
         // Role exists but not allowed / unknown

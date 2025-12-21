@@ -8,6 +8,7 @@ import { RenderStepContent } from '../../../../utils/RenderStepContent';
 import EmployeeProfile from './EmployeeProfile';
 import { useLocation, useParams } from 'react-router-dom';
 import { Commet, OrbitProgress } from 'react-loading-indicators';
+import { getLocalData } from '../../../../Hooks/useLocalStorage';
 const editableByHR = {
   general: true,
   job: true,
@@ -22,36 +23,36 @@ const editableByPayroll = {
   documents: false,
 };
 const stepIndexMapByRole = {
-  HR: [0, 1, 2, 3],        // General, Job, Payroll, Documents
+  Manager: [0, 1, 2, 3],        // General, Job, Payroll, Documents
   payroll: [1, 2],        // Job, Payroll
 };
 
 const defaultSteps = ["General", "Job", "Payroll", "Documents"]
-function ViewEmployeeDetail({role='HR'}) {
-  const { state } = useLocation();
-  const { Role } = state || {};
-  const activeStep = Role ?? role;
+function ViewEmployeeDetail() {
+  const role = getLocalData("role")
+  // const { state } = useLocation();
+  // const { Role } = state || {};
+  const activeStep =  role || "Employee";
     useEffect(() => {
   const stepMap =
-    activeStep === "payroll"
-      ? stepIndexMapByRole.payroll
-      : stepIndexMapByRole.HR;
+    activeStep === "Manager" ?stepIndexMapByRole.Manager:
+       stepIndexMapByRole.payroll;
 
   setSteps(
-    stepMap.map((i) => defaultSteps[i])
+    stepMap?.map((i) => defaultSteps[i])
   );
 
   setUiStep(0);
-  setCurrentStep(stepMap[0]); // logical index
+  setCurrentStep(stepMap[0]); 
 }, [activeStep]);
 
   
-  const { axiosPrivate } = useAuth(); // must supply axiosPrivate configured with baseURL + auth
+  const { axiosPrivate } = useAuth(); 
   const [currentStep, setCurrentStep] = useState(0);
   const [uiStep, setUiStep] = useState(0);
   const [employeeData, setEmployeeData] = useState(null);
   const [steps, setSteps] = useState(defaultSteps)
-  const [originalData, setOriginalData] = useState(null); // keep backend snapshot
+  const [originalData, setOriginalData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [editMode, setEditMode] = useState({general: false, job: false, payroll: false, documents: false,});
@@ -130,6 +131,8 @@ function ViewEmployeeDetail({role='HR'}) {
       // ]};
         setEmployeeData(daattaa.data);
         setOriginalData(daattaa.data);
+        // setEmployeeData(daattaa.data[0]);
+        // setOriginalData(daattaa.data[0]);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch employee details.");
@@ -200,7 +203,8 @@ function ViewEmployeeDetail({role='HR'}) {
     );
 if (error)
     return (
-      <div className="p-4 text-center text-red-500 bg-red-50  rounded-lg">
+      <div className="p-4 text-center h-full justify-center items-center flex flex-col text-red-500 bg-slate-50  rounded-lg">
+        <img className='w-2/6' src='/pic/F24.png'/>
         {error}
       </div>
     );
@@ -217,7 +221,7 @@ if (error)
       <Header Title={"Employee Detail"} Breadcrumb={"Employee detail"} />
 
       <div className="flex flex-1 gap-5 overflow-y-scroll rounded-md h-full">
-        <div className="h-fit shadow rounded-xl overflow-clip w-1/4"><EmployeeProfile role={Role  } employeeData={employeeData}/></div>
+        <div className="h-fit shadow rounded-xl overflow-clip w-1/4"><EmployeeProfile role={role  } employeeData={employeeData}/></div>
 
         <div className="flex flex-col rounded-md shadow h-full flex-1 gap-4 p-4 bg-white">
                 <StepHeader
@@ -225,19 +229,19 @@ if (error)
           currentStep={uiStep}
           onStepClick={(index) => {
             const stepMap =
-              Role === "payroll"
+              role === "payroll"
                 ? stepIndexMapByRole.payroll
-                : stepIndexMapByRole.HR;
+                : stepIndexMapByRole.Manager;
 
             setUiStep(index);
-            setCurrentStep(stepMap[index]); // 👈 THIS FIXES EVERYTHING
+            setCurrentStep(stepMap[index]);
           }}
         />
 
           <div className="flex-1 hover-bar overflow-y-auto">
             <RenderStepContent
               currentStep={currentStep}
-              editable={Role === "payroll" ? editableByPayroll : editableByHR}
+              editable={role === "payroll" ? editableByPayroll : editableByHR}
               editMode={editMode}
               employeeData={employeeData}
               handleInputChange={handleInputChange}

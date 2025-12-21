@@ -7,11 +7,11 @@ const FAQItem = ({ faq, userRole, onEdit, onDelete }) => {
     <div 
       className={`
         transition-all duration-300 rounded-xl border 
-        /* Light Mode */
-        bg-white border-gray-100 shadow-sm
-        /* Dark Mode */
-        dark:bg-[#1e293b]/40 dark:border-slate-800/60 dark:shadow-2xl backdrop-blur-sm
-        ${isOpen ? 'ring-1 ring-blue-500/50' : 'hover:border-blue-400 dark:hover:border-slate-600'}
+        
+        bg-white border-gray-100 shadow
+        
+        dark:bg-[#1e293b]/40 dark:border-slate-800/60 dark:shadow-xs dark:shadow-slate-900 dark:inset-shadow-xs dark:inset-shadow-green-700/25 backdrop-blur-sm
+        ${isOpen ? 'ring-1 ring-green-500/50' : 'hover:border-green-400 dark:hover:border-slate-600'}
         w-full mb-4
       `}
     >

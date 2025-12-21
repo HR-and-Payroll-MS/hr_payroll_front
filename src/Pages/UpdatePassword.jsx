@@ -51,7 +51,7 @@ function UpdatePassword() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[url('/pic/Frame11.png')] bg-contain">
+    <div className="h-screen w-screen bg-[url('/pic/F25.png')] bg-contain bg-center">
       
       <Modal isOpen={loading} location={'center'}>
         <div className="flex items-center justify-center h-screen">
@@ -63,7 +63,7 @@ function UpdatePassword() {
       </Modal>
 
       <form onSubmit={handleSubmit} className="flex w-full h-full justify-center items-center">
-        <div className="max-w-xl shadow-xl bg-white rounded-2xl p-10 flex flex-col justify-center gap-4 flex-1 w-full mx-4">
+        <div className="max-w-xl shadow bg-white rounded-2xl p-10 flex flex-col justify-center gap-4 flex-1 w-full mx-4">
           
           <div className='flex justify-center items-center gap-2'>
             <img src="/pic/Robot Thumb Up with Artificial Intelligence.png" className='h-8 w-8' alt="Logo" />
@@ -110,7 +110,7 @@ function UpdatePassword() {
           </div>
 
           {/* Validity Checklist */}
-          <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+          <div className="bg-gray-50 p-4 shadow rounded-lg space-y-2">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Password Requirements</p>
             <ValidationItem label="At least 8 characters" isValid={validation.length} />
             <ValidationItem label="At least one number" isValid={validation.number} />

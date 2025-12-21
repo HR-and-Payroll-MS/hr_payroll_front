@@ -27,6 +27,7 @@ const mainHeaderSearch = {
 };
 
 export default function Header(){
+        const role = getLocalData('role')
         const navigate = useNavigate()
         return <div className={`bg-white flex justify-evenly shadow h-14 gap-3 z-50  dark:bg-slate-800 dark:text-white `}> 
         <div id="left" className="flex py-2.5 w-2/5  justify-between items-center p-4 ">
@@ -48,8 +49,10 @@ export default function Header(){
         </div>
         <div id="middle" className="flex w-3/5 justify-start gap-7 items-center ">
                 <p onClick={()=>navigate("profile",{state:{position:3}})} className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>Documents</p>
-                <p onClick={()=>navigate("Announcement",{state:{position:2}})} className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>Announcements</p>
-                <p onClick={()=>navigate("profile",{state:{position:2}})} className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>Payslip</p>
+                {role==="Manager"?
+                <p onClick={()=>navigate("Announcement",{state:{position:2}})} className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>Announcements</p>:
+                <p onClick={()=>navigate("Announcement",{state:{position:2}})} className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>News</p>
+               } <p onClick={()=>navigate("profile",{state:{position:2}})} className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>Payslip</p>
                 <p className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>Report</p>
         </div>
         <div id="right" className="flex w-1/5 justify-end items-center px-6">

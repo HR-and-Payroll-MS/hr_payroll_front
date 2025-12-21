@@ -16,6 +16,8 @@ export default function Login() {
     if (auth?.user?.role === 'hr') navigate('/manager_dashboard');
     else if (auth?.user?.role === 'Manager') navigate('/hr_dashboard');
     else if (auth?.user?.role === 'Payroll') navigate('/payroll');
+    else if (auth?.user?.role === 'Employee') navigate('/employee');
+    else if (auth?.user?.role === 'Dep_Man') navigate('/department_manager');
   }, [auth, navigate]);
  
   const handleForgotPassword = () => {
@@ -169,9 +171,9 @@ export default function Login() {
   const image_div = (
     <div id="image_div" className="sm:hidden md:hidden lg:flex flex-col flex-1">
       <img src="/pic/image.png" alt="hr" className="flex-3 overflow-hidden object-cover" />
-      <div className="p-8 flex-1 border-t-4 border-green-600 bg-white">
+      <div className="p-8 flex-1 border-t-4 border-green-600 bg-slate-800 dark:bg-white">
         <p className="text-xs font-bold text-green-600 uppercase tracking-widest">HR Solutions</p>
-        <p className="text-4xl font-semibold py-2 text-slate-900">
+        <p className="text-4xl font-semibold py-2 text-slate-300 dark:text-slate-900">
           Let's empower your employees today.
         </p>
         <p className="text-xs text-gray-400 leading-relaxed">
@@ -183,7 +185,7 @@ export default function Login() {
 
   return (
     <div className="flex-1 py-5 px-48 h-screen dark:bg-slate-950 bg-slate-100 w-full flex justify-center">
-      <div className="flex h-full w-full bg-amber-700 sm:flex-col lg:flex-row rounded-2xl shadow-2xl overflow-hidden">
+      <div className="flex h-full w-full bg-amber-700 sm:flex-col lg:flex-row rounded shadow overflow-hidden">
         {image_div}
         {formContainer}
       </div>

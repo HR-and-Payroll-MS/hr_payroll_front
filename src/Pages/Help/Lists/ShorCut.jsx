@@ -26,7 +26,7 @@ const ShorCut = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full p-8 gap-5 bg-white dark:bg-[#0f172a] transition-colors duration-300 overflow-y-auto">
+    <div className="flex flex-col w-full h-full p-8 gap-5 bg-white dark:bg-slate-800 transition-colors duration-300">
       
       {/* Top Header Label */}
       <div className="flex items-center gap-2">
@@ -41,7 +41,7 @@ const ShorCut = () => {
       <hr className="opacity-10 dark:opacity-5 border-slate-500" />
 
       {/* Main Card Container */}
-      <div className="w-full max-w-7xl border border-gray-100 dark:border-slate-800/60 rounded-xl bg-white dark:bg-[#1e293b]/40 p-10 shadow-sm dark:shadow-2xl backdrop-blur-sm">
+      <div className="w-full hover-bar max-w-7xl border h-full overflow-y-auto border-gray-100 shadow dark:border-slate-800/60 rounded-xl bg-white dark:bg-[#1e293b]/40 p-10 dark:shadow-xs dark:shadow-slate-900 inset-shadow-xs inset-shadow-green-700/25 backdrop-blur-sm">
         
         {/* Card Title & Subtitle */}
         <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
@@ -52,9 +52,9 @@ const ShorCut = () => {
         </p>
 
         {/* Shortcuts Table */}
-        <div className="w-full">
+        <div className="w-full ">
           {/* Header Row */}
-          <div className="grid grid-cols-3 bg-slate-50 dark:bg-[#2d3a4f] rounded-lg py-3.5 px-8 mb-6 text-[12px] font-bold uppercase tracking-wide text-slate-600 dark:text-slate-300">
+          <div className="grid shadow grid-cols-3 bg-slate-50 dark:bg-[#2d3a4f] rounded-lg py-3.5 px-8 mb-6 text-[12px] font-bold uppercase tracking-wide text-slate-600 dark:text-slate-300">
             <div className="flex items-center gap-3">
               Shortcuts Key on Windows
               <span className="text-[10px] opacity-40">↕</span>
@@ -97,9 +97,9 @@ const ShorCut = () => {
         <div className="h-[1px] w-full bg-gray-100 dark:bg-slate-800/80 my-12" />
 
         {/* Footer Note Section */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col  gap-4">
           <p className="text-lg font-bold text-slate-800 dark:text-white">Note :</p>
-          <div className="border border-gray-100 dark:border-slate-700/50 rounded-xl p-8 bg-slate-50/50 dark:bg-[#0f172a]/40">
+          <div className="border shadow dark:shadow-xs dark:shadow-slate-900 dark:inset-shadow-xs dark:inset-shadow-green-700/25 border-gray-100 dark:border-slate-700/50 rounded-xl p-8 bg-slate-50/50 dark:bg-[#0f172a]/40">
             <p className="text-sm leading-7 text-slate-600 dark:text-slate-400">
               These shortcuts work anywhere in the dashboard after you log in. 
               Use them to navigate quickly between pages and boost your productivity. 

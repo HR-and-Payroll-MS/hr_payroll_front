@@ -55,7 +55,7 @@ export default function CreateAnnouncement({ onCreate }) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="bg-slate-800 text-white px-4 py-2 rounded"
+        className="bg-slate-800 dark:bg-slate-100 dark:text-slate-900 text-white px-4 py-2 rounded"
       >
         + New Announcement
       </button>
@@ -92,7 +92,7 @@ export default function CreateAnnouncement({ onCreate }) {
           <label className="w-full dark:text-slate-200 text-xs font-semibold ">
               Title <span className="text-red-700">*</span>
             </label>
-            <InputField icon={false} placeholder={"Input Announcement Title"} displayKey="name" onSelect={(i)=>setTitle(i)} />
+            <InputField searchMode="input" icon={false} placeholder={"Input Announcement Title"} displayKey="name" onSelect={(i)=>setTitle(i)} />
           {/* <input className="w-full border rounded px-3 py-2" placeholder="Input Announcement Title" value={title} onChange={(e)=>setTitle(e.target.value)} /> */}
           <label className="w-full dark:text-slate-200 text-xs font-semibold ">
               Content <span className="text-red-700">*</span>

@@ -84,8 +84,8 @@ export const UserContext = createContext();
 
 function App() {
   // useEffect(()=>{
-  //   setLocalData("role","Manager")
-  // //   localStorage.clear();
+    // setLocalData("role","Manager")
+   // // // localStorage.clear();
   // },[])
 
   const sharedSettingsRoutes = (
@@ -100,7 +100,7 @@ function App() {
   <Route path="HelpCenter" element={<HelpCenter />}>
     <Route path="shortcut" element={<ShortCut />} />
     <Route path="ChangePassword" element={<ChangePassword />} />
-    <Route path="WorkSchedule" element={<WorkSchedule />} />
+    <Route path="ORG_chart_page" element={<OrgChartPage />} />
     <Route path="FAQ" element={<FAQPage />} />
   </Route>
 );
@@ -145,6 +145,98 @@ function App() {
             <Route path="clock_in" element={<ClockIn />} />
           </Route>
         </Route>
+        
+        
+        
+         {/* ------------------------- Manager ---------------------- */}
+        <Route element={<Routes allowedRoles={['Manager']} />}>
+          <Route path="hr_dashboard" element={<MainLayout />}>
+            <Route path="clock_in" element={<ClockIn />} />
+            <Route index element={<DashboardLayout />} />
+            {sharedHelpRoutes}
+            {sharedSettingsRoutes}
+            <Route path="Employee_Directory" element={<EmployeeDirectory />} />
+            {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
+            <Route path="users/:id" element={<ViewEmployeeDetail />} />
+            <Route path="View_Employee" element={<ViewEmployee />} />
+            <Route path="Request" element={<LeaveRequestForEmployees />} />
+            <Route path="efficiency_report" element={<EfficiencyReport />} />
+            <Route path="Addemployee" element={<AddEmployee />} />
+            <Route path="efficiencyhr" element={<HREfficiencyForm />} />
+            <Route path="Approve_Reject" element={<LeaveApprovalPage />} />
+            <Route path="Announcement" element={<AnnouncementsPage />} />
+            <Route path="Payroll_report" element={<PayrollReportsPage />} />
+            <Route path="MyPayroll" element={<MyPayrollPage />} />
+            <Route path="policies" element={<Policy />} />
+            {/* <Route path="logout" element={<LogOut />} /> */}
+            <Route path="profile" element={<MyProfile />} />
+            {/* <Route path="send_notification_page" element={<SendNotificationPage/>} /> */}
+            <Route
+              path="send_notification_page"
+              element={<SendNotificationPage />}
+            />
+            {/* <Route path="notification_bell" element={<NotificationBell/>} /> */}
+            <Route
+              path="notification_center_page"
+              element={<NotificationCenterPage />}
+            />
+            <Route path="Employee" element={<Employee />}>
+              <Route path="ManageEmployee" element={<ManageEmployee />} />
+              <Route path="Directory" element={<Directory />}>
+                <Route index element={<DirectoryList />} />
+                <Route path="Detail" element={<DetailEmployee />}>
+                  <Route path="General" element={<General />} />
+                  <Route path="Job" element={<Job />} />
+                </Route>
+              </Route>
+            </Route>
+
+            <Route path="attendance" element={<Attendance />} />
+            <Route path="Employee_Attendance" element={<EmployeeAttendanceList />}/>
+            <Route path="Department_Attendance" element={<EmployeeAttendanceList />}/>
+            <Route
+              path="Employee_Attendance/:id"
+              element={<EmployeeAttendanceDetail />}
+            />
+            <Route path="myattendance" element={<MyAttendance />} />
+
+            
+
+            <Route path="org-chart" element={<DocumentsPage />} />
+            {/* <Route path="Modal_Test" element={<Checklist />} /> */}
+            <Route path="Modal_Test" element={<CVReader />} />
+          </Route>
+        </Route>
+        
+        
+        
+        
+        {/* ------------------------- Employee ---------------------- */}
+        <Route element={<Routes allowedRoles={['Employee']} />}>
+          <Route path="Employee" element={<MainLayout />}>
+            {sharedSettingsRoutes}
+            {sharedHelpRoutes}
+            <Route path="users/:id" element={<ViewEmployeeDetail />} />
+            <Route index element={<DashboardLayout />} />
+            <Route path="generate_payroll" element={<GeneratePayroll />} />
+            <Route path="profile" element={<MyProfile />} />
+            <Route path="send_notification" element={<SendNotificationPage />} />
+            <Route path="view_notification" element={<NotificationCenterPage />}/>
+            <Route path="view_employee_salary_info" element={<ViewEmployeeSalaryInfo />} />
+            <Route path="edit_employee_salary_info" element={<EditEmployeeSalaryInfo />} />
+            {/* <Route path="allowances" element={<AllowanceBonuses />} /> */}
+            <Route path="generate_payroll" element={<GeneratePayroll />} />
+            {/* <Route path="manage_deduction" element={<ManageDeduction />} /> */}
+            <Route path="salary_structure" element={<SalaryStructure />} />
+            <Route path="re_generate_payslips" element={<ReGeneratePayslips />} />
+            <Route path="view_generated_payslips" element={<ViewGeneratedPayslips />} />
+            <Route path="department_wise_paryoll" element={<DepartmentWisePayroll />} />
+            <Route path="payroll_reports" element={<PayrollReports />} />
+            <Route path="tax_reports" element={<TaxReports />} />
+            <Route path="myattendance" element={<MyAttendance />} />
+            <Route path="clock_in" element={<ClockIn />} />
+          </Route>
+        </Route>
 
 
 
@@ -152,8 +244,8 @@ function App() {
 
             <Route path="logout" element={<LogOut/>} />
         {/* ------------------------- hr ---------------------- */}
-        <Route element={<Routes allowedRoles={['Manager']} />}>
-          <Route path="hr_dashboard" element={<MainLayout />}>
+        <Route element={<Routes allowedRoles={['hr']} />}>
+          <Route path="department_manager" element={<MainLayout />}>
             <Route path="clock_in" element={<ClockIn />} />
             <Route index element={<DashboardLayout />} />
             {sharedHelpRoutes}

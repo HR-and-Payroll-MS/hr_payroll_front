@@ -38,6 +38,7 @@ const OrgChartEditor = ({ initialData, userRole }) => {
   }, [setNodes, setEdges]);
 
   const handleModalSubmit = (formData) => {
+    
     if (modalState.mode === 'add') {
       const newNodeId = uuidv4();
       const newNode = {
@@ -69,24 +70,24 @@ const OrgChartEditor = ({ initialData, userRole }) => {
     setIsLayouted(false);
   }, [initialData, canEdit, onAddClick, onEditClick, handleDelete, setNodes, setEdges]);
 
-  // Layouting
   useEffect(() => {
     if (isLayouted || nodes.length === 0) return;
     const { nodes: lNodes, edges: lEdges } = getLayoutedElements(nodes, edges, 'TB');
     setNodes([...lNodes]);
     setEdges([...lEdges]);
     setIsLayouted(true);
+    
   }, [nodes, edges, isLayouted, setNodes, setEdges]);
-
+console.log(edges)
   return (
-    <div className="h-[600px] w-full bg-gray-50 border rounded-xl relative">
+    <div className="h-full w-full bg-gray-50  rounded-xl relative">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         nodeTypes={nodeTypes}
         fitView
-        nodesDraggable={canEdit} // Employees can't drag nodes
+        nodesDraggable={canEdit}
       >
         <Background />
         <Controls />

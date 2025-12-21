@@ -10,9 +10,6 @@ export default function MyAttendance() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  /* =========================================================
-     BACKEND-IDENTICAL MOCKED RESPONSE
-  ========================================================= */
 //   const mockedResponse = {
 //   "count": 15,
 //   "next": null,
@@ -280,9 +277,6 @@ export default function MyAttendance() {
 // }
 
 
-  /* =========================================================
-     TRANSFORM BACKEND DATA → UI DATA
-  ========================================================= */
   const transformAttendanceData = (apiResponse) => {
     const results = apiResponse?.results || [];
 

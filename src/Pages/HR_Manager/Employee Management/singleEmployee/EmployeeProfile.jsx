@@ -115,7 +115,7 @@ function EmployeeProfile({employeeData,role}) {
             </div>
           </div>
     
-         {role==="HR"&& <div  onClick={handleDelete} className="flex bg-red-800 hover:cursor-pointer text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
+         {role==="Manager"&& <div  onClick={handleDelete} className="flex bg-red-800 hover:cursor-pointer text-white items-center justify-center gap-1.5 px-5 py-3 rounded-md">
             <p className="text-xs font-semibold">Delete User</p>
             <Icon className='w-4 h-4' name={'Trash'}/>
           </div>}

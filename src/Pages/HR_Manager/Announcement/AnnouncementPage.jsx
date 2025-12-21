@@ -5,6 +5,7 @@ import AnnouncementDetails from "./AnnouncementDetails";
 import Toast from "./Toast";
 import Header from "../../../Components/Header"
 import FileDrawer from "../../../Components/FileDrawer";
+import { getLocalData } from "../../../Hooks/useLocalStorage";
 const MOCK_ANNOUNCEMENTS = [
   {
     id: "a1",
@@ -35,6 +36,7 @@ export default function AnnouncementsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const [toast, setToast] = useState(null);
+  const role = getLocalData('role')
 
   function openDetails(item) {
     setSelected(item);
@@ -70,7 +72,7 @@ export default function AnnouncementsPage() {
     <div className="p-6 flex h-full flex-col min-h-screen">
       <div className="flex items-center justify-between mb-6">  
         <Header  Title={"Announcements"} subTitle={"Create and broadcast announcements to employees."}>
-          <CreateAnnouncement onCreate={handleCreate} />
+         {role==="Manager"&& <CreateAnnouncement onCreate={handleCreate} />}
         </Header>
       </div>
         

@@ -49,7 +49,7 @@ const FAQPage = () => {
   });
 
   return (
-    <div className="flex flex-col w-full min-h-screen p-8 gap-6 bg-white dark:bg-slate-800 transition-colors duration-300">
+    <div className="flex flex-col w-full h-full p-8 gap-6 bg-white dark:bg-slate-800 transition-colors duration-300">
       
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -81,13 +81,13 @@ const FAQPage = () => {
         <input 
           type="text"
           placeholder="Search questions..."
-          className="w-full pl-11 pr-4 py-2.5 bg-slate-50 dark:bg-[#1e293b]/40 border border-gray-200 dark:border-slate-800/60 rounded-xl text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+          className="w-full pl-11 pr-4 py-2.5 bg-slate-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-800/60 rounded-xl text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-green-500/50 transition-all"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {/* FAQ Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-2">
+      <div className="grid grid-cols-1 p-1 overflow-y-auto hover-bar lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-2">
         {filteredFaqs.length > 0 ? (
           filteredFaqs.map((faq) => (
             <FAQItem 

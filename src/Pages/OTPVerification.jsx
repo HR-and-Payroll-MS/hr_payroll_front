@@ -74,7 +74,7 @@ function OTPVerification() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[url('/pic/Frame11.png')] bg-contain">
+    <div className="h-screen w-screen dark:bg-slate-900 bg-[url('/pic/F26.png')] bg-cover ">
       
       {/* Loading Modal */}
       <Modal isOpen={loading} location={'center'}>
@@ -90,7 +90,7 @@ function OTPVerification() {
         onSubmit={handleVerify}
         className="flex w-full h-full justify-center items-center"
       >
-        <div className="max-w-xl shadow-xl bg-white rounded-2xl p-12 flex flex-col justify-center gap-6 flex-1 w-full">
+        <div className="max-w-4/12 dark:bg-slate-800/5 inset-shadow-slate-200/25 shadow-xs inset-shadow-xs bg-white/5 rounded-2xl p-12 flex flex-col justify-center gap-6 flex-1 w-full">
           
           {/* Logo Section */}
           <div className='flex justify-center items-center gap-2'>
@@ -124,7 +124,7 @@ function OTPVerification() {
                 value={data}
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`w-16 h-16 text-center text-2xl font-bold border-2 rounded-xl outline-none transition-all
+                className={`w-16 h-16 text-center text-2xl font-bold border-1 rounded-xl outline-none transition-all
                   ${isError ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:border-green-600'}
                   dark:bg-slate-800 dark:text-white`}
               />
@@ -140,7 +140,7 @@ function OTPVerification() {
           {/* Submit Button */}
           <button 
             type="submit" 
-            className="w-full bg-slate-900 text-slate-100 py-3 rounded-md text-sm font-semibold hover:bg-slate-800 transition-colors"
+            className="w-full bg-slate-900 dark:bg-slate-800 text-slate-100 py-3 rounded-md text-sm font-semibold cursor-pointer dark:hover:bg-slate-300 dark:hover:text-slate-600 hover:bg-slate-800 transition-colors"
           >
             Verify
           </button>

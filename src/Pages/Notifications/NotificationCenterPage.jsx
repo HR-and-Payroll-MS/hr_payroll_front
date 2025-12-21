@@ -64,7 +64,7 @@ export default function NotificationCenterPage({ role = "EMPLOYEE" }) {
     <div className="p-6 w-full flex flex-col h-full mx-auto">
       {/* Header */}
       <div className="flex justify-between mb-4">
-        <h2 className="font-semibold flex-1 text-xl">Notifications</h2>
+        <h2 className="font-semibold dark:text-slate-100 flex-1 text-xl">Notifications</h2>
           <div  className="flex flex-1 items-center gap-2">
           <InputField
           maxWidth=""
@@ -82,7 +82,7 @@ export default function NotificationCenterPage({ role = "EMPLOYEE" }) {
       </div>
 
       {/* Cards */}
-      <div className="space-y-3  py-3 overflow-y-auto scrollbar-hidden">
+      <div className="space-y-3 border h-full rounded border-slate-400  py-3 overflow-y-auto scrollbar-hidden">
         {view.length > 0 ? (
           view.map((n) => (
             <NotificationCard key={n.id} n={n} canAction={ROLE_RECEIVE_TYPES[role]?.includes(n.category)}

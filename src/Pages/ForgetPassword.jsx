@@ -38,7 +38,7 @@ const BackToLogin=()=>{
     handlesub
   );
   return (
-    <div className="h-screen w-screen bg-[url('/pic/Frame11.png')] bg-contain">
+    <div className="h-screen w-screen bg-[url('/pic/F26.png')] dark:bg-slate-900 bg-no-repeat bg-cover bg-center ">
         
         
         
@@ -57,7 +57,7 @@ const BackToLogin=()=>{
         className=" flex w-full h-full  justify-center items-center"
         action=""
       >
-        <div className="max-w-xl shadow-xl bg-white rounded-2xl p-12 flex flex-col justify-center gap-2 flex-1 w-full ">
+        <div className="max-w-4/12 shadow-xs inset-shadow-2xs bg-white/50 dark:bg-slate-800/75 rounded-2xl p-12 flex flex-col justify-center gap-2 flex-1 w-full ">
           <div className='flex justify-center'>
             <img src="/pic/Robot Thumb Up with Artificial Intelligence.png" className='h-8 w-8' alt="" />
             <p className="py-2 dark:text-slate-200 flex justify-center font-semibold">
@@ -86,10 +86,10 @@ const BackToLogin=()=>{
               placeholder="Input your registered email"
             />
           </div>
-          <button type="submit" className="items-center justify-center bg-slate-900 text-slate-100 inline-flex px-32 py-2.5 rounded-md text-sm font-semibold ">
+          <button type="submit" className="items-center  transition-all duration-300 transform hover:-translate-y-1 justify-center bg-slate-900 dark:bg-slate-600 cursor-pointer text-slate-100 inline-flex px-32 py-2.5 rounded-md text-sm font-semibold ">
             Send OTP on My email
           </button>
-          <button type="button" onClick={BackToLogin} className="items-center cursor-pointer justify-center  inline-flex px-32 py-2.5 border-slate-400 border-2 rounded-md text-sm font-semibold text-gray-500">
+          <button type="button" onClick={BackToLogin} className="items-center cursor-pointer justify-center  inline-flex px-32 py-2.5 border-slate-400 border-2 dark:hover:border-slate-300 hover:border-slate-600 hover:text-slate-600  dark:hover:text-slate-200 rounded-md text-sm font-semibold text-gray-500">
             Back to Login
           </button>
           
