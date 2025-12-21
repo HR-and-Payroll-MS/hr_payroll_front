@@ -62,7 +62,6 @@ const calculateScore = () => {
       name: field.name,
       scored: `${fieldAchieved} out of ${fieldPossible}`
     });
-    console.log("metricReports",metric)
   });
 
   const feedbackReports = savedForm.feedbackSections.map((field) => ({

@@ -77,6 +77,8 @@ import UpdatePassword from './Pages/UpdatePassword';
 import FAQPage from './Pages/Help/Lists/FAQ/FAQPage';
 import HelpCenter from './Pages/Help/HelpCenter';
 import ShortCut from './Pages/Help/Lists/ShorCut';
+import ChatArea from './Pages/message/ChatArea';
+import ChatIndex from './Pages/message/ChatIndex';
 
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
@@ -159,6 +161,7 @@ function App() {
             {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route path="View_Employee" element={<ViewEmployee />} />
+            <Route path="message" element={<ChatIndex />} />
             <Route path="Request" element={<LeaveRequestForEmployees />} />
             <Route path="efficiency_report" element={<EfficiencyReport />} />
             <Route path="Addemployee" element={<AddEmployee />} />
