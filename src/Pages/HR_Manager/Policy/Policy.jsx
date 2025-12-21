@@ -31,13 +31,17 @@ function Policy() {
   useEffect(() => {
     const fetchPolicies = async () => {
       try {
-        // replace with axiosPrivate.get(...) when integrating
-        // const res = await axiosPrivate.get(`/orgs/${organizationId}/policies`);
-        // setPolicyData(res.data);
-        // setOriginalData(res.data);
-        const res = initialPolicies;
-        setPolicyData(res);
-        setOriginalData(JSON.parse(JSON.stringify(res)));
+        // co axiosPrivate.get(...) when integrating
+        const res = await axiosPrivate.get(`/orgs/${0}/policies`);
+        setPolicyData(res.data);
+        setOriginalData(res.data);
+
+
+
+        // const res = initialPolicies;
+        // console.log(res)
+        // setPolicyData(res);
+        // setOriginalData(JSON.parse(JSON.stringify(res)));
       } catch (err) {
         console.error(err);
         setError("Failed to fetch policy data.");
@@ -143,7 +147,7 @@ function Policy() {
       console.log("Saving payload to backend:", payload);
 
       // integrate real save:
-      // await axiosPrivate.put(`/orgs/${organizationId}/policies/${section}`, payload);
+      await axiosPrivate.put(`/orgs/${0}/policies/${section}`, payload);
 
       setOriginalData((prev) => {
         const next = JSON.parse(JSON.stringify(prev || policyData));

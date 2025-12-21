@@ -15,67 +15,68 @@ export default function FormBuilder({ formData, setFormData }) {
       options: [],
     };
 
-    setFormData({
-      ...formData,
-      [section]: [...formData[section], newField],
-    });
+    setFormData((prev) => ({
+      ...prev,
+      [section]: [...(prev[section] || []), newField],
+    }));
   };
 
   const updateField = (section, id, updates) => {
-    setFormData({
-      ...formData,
-      [section]: formData[section].map((f) =>
+    setFormData((prev) => ({
+      ...prev,
+      [section]: (prev[section] || []).map((f) =>
         f.id === id ? { ...f, ...updates } : f
       ),
-    });
+    }));
   };
 
   const deleteField = (section, id) => {
-    setFormData({
-      ...formData,
-      [section]: formData[section].filter((f) => f.id !== id),
-    });
+    setFormData((prev) => ({
+      ...prev,
+      [section]: (prev[section] || []).filter((f) => f.id !== id),
+    }));
   };
 
   const addOption = (section, fieldId) => {
     const newOpt = { id: Date.now().toString(), label: "Option", point: 0 };
-    setFormData({
-      ...formData,
-      [section]: formData[section].map((f) =>
-        f.id === fieldId ? { ...f, options: [...f.options, newOpt] } : f
+    setFormData((prev) => ({
+      ...prev,
+      [section]: (prev[section] || []).map((f) =>
+        f.id === fieldId
+          ? { ...f, options: [...(f.options || []), newOpt] }
+          : f
       ),
-    });
+    }));
   };
 
   const updateOption = (section, fieldId, optId, updates) => {
-    setFormData({
-      ...formData,
-      [section]: formData[section].map((f) => {
+    setFormData((prev) => ({
+      ...prev,
+      [section]: (prev[section] || []).map((f) => {
         if (f.id !== fieldId) return f;
         return {
           ...f,
-          options: f.options.map((o) =>
+          options: (f.options || []).map((o) =>
             o.id === optId ? { ...o, ...updates } : o
           ),
         };
       }),
-    });
+    }));
   };
 
   const deleteOption = (section, fieldId, optId) => {
-    setFormData({
-      ...formData,
-      [section]: formData[section].map((f) => {
+    setFormData((prev) => ({
+      ...prev,
+      [section]: (prev[section] || []).map((f) => {
         if (f.id !== fieldId) return f;
         return {
           ...f,
-          options: f.options.filter((o) => o.id !== optId),
+          options: (f.options || []).filter((o) => o.id !== optId),
         };
       }),
-    });
+    }));
   };
 
-  /* ===== FILE DRAWER STATE (LIKE TableStructures) ===== */
   const [isFormPreviewOpen, setFormPreviewOpen] = useState(false);
   const [isJsonPreviewOpen, setJsonPreviewOpen] = useState(false);
 
@@ -95,12 +96,13 @@ export default function FormBuilder({ formData, setFormData }) {
       <div className="mb-8 bg-slate-50 p-4 rounded shadow">
         <label className="block text-lg font-medium mb-2">Form Title</label>
         <InputField
-        searchMode="input"
+          searchMode="input"
           border="inset-shadow-2xs border border-slate-200"
           maxWidth="bg-white"
           suggestion={false}
           placeholder="Employee Efficiency Format"
           icon={false}
+          value={formData?.title || ""}
           onSelect={(e) => setFormData({ ...formData, title: e })}
         />
       </div>
@@ -111,7 +113,7 @@ export default function FormBuilder({ formData, setFormData }) {
           Performance Metrics (Scorable)
         </h2>
 
-        {formData.performanceMetrics.map((field) => (
+        {(formData?.performanceMetrics || []).map((field) => (
           <FormFieldEditor
             key={field.id}
             field={field}
@@ -119,12 +121,8 @@ export default function FormBuilder({ formData, setFormData }) {
             onUpdate={(id, updates) =>
               updateField("performanceMetrics", id, updates)
             }
-            onDelete={() =>
-              deleteField("performanceMetrics", field.id)
-            }
-            onAddOption={() =>
-              addOption("performanceMetrics", field.id)
-            }
+            onDelete={() => deleteField("performanceMetrics", field.id)}
+            onAddOption={() => addOption("performanceMetrics", field.id)}
             onUpdateOption={(optId, updates) =>
               updateOption("performanceMetrics", field.id, optId, updates)
             }
@@ -148,7 +146,7 @@ export default function FormBuilder({ formData, setFormData }) {
           Feedback Sections (Non-scorable)
         </h2>
 
-        {formData.feedbackSections.map((field) => (
+        {(formData?.feedbackSections || []).map((field) => (
           <FormFieldEditor
             key={field.id}
             field={field}
@@ -156,12 +154,8 @@ export default function FormBuilder({ formData, setFormData }) {
             onUpdate={(id, updates) =>
               updateField("feedbackSections", id, updates)
             }
-            onDelete={() =>
-              deleteField("feedbackSections", field.id)
-            }
-            onAddOption={() =>
-              addOption("feedbackSections", field.id)
-            }
+            onDelete={() => deleteField("feedbackSections", field.id)}
+            onAddOption={() => addOption("feedbackSections", field.id)}
             onUpdateOption={(optId, updates) =>
               updateOption("feedbackSections", field.id, optId, updates)
             }
@@ -179,7 +173,7 @@ export default function FormBuilder({ formData, setFormData }) {
         </button>
       </section>
 
-      {/* ===== FILE DRAWERS (TableStructures STYLE) ===== */}
+      {/* Preview Drawers */}
       {isFormPreviewOpen && (
         <FileDrawer
           transparency="bg-slate-900/30 dark:bg-slate-900/20"
@@ -188,9 +182,7 @@ export default function FormBuilder({ formData, setFormData }) {
           closeModal={setFormPreviewOpen}
         >
           <div className="mt-10 p-6 bg-gray-200 rounded-lg">
-            <h3 className="text-xl font-bold pb-4 mb-3">
-              Live FORM Preview
-            </h3>
+            <h3 className="text-xl font-bold pb-4 mb-3">Live FORM Preview</h3>
             <FormRenderer savedForm={formData} />
           </div>
         </FileDrawer>
@@ -204,9 +196,7 @@ export default function FormBuilder({ formData, setFormData }) {
           closeModal={setJsonPreviewOpen}
         >
           <div className="mt-10 p-6 bg-gray-200 shadow rounded-lg">
-            <h3 className="text-xl font-bold mb-3">
-              Live JSON Preview
-            </h3>
+            <h3 className="text-xl font-bold mb-3">Live JSON Preview</h3>
             <pre className="bg-black text-green-400 p-4 rounded overflow-x-auto text-sm">
               {JSON.stringify(formData, null, 2)}
             </pre>
@@ -214,7 +204,7 @@ export default function FormBuilder({ formData, setFormData }) {
         </FileDrawer>
       )}
 
-      {/* Buttons */}
+      {/* Preview Buttons */}
       <div className="flex gap-4">
         <button
           onClick={openFormPreview}

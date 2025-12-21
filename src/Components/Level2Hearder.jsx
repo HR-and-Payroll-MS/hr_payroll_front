@@ -5,7 +5,7 @@ import Button from './Button';
 import { useState } from 'react';
 import ConfirmPopup from './ConfirmPopup';
 
-export function SearchStatus({ onFiltersChange }) {
+export function SearchStatus({ onFiltersChange ,employeeClicked}) {
   const handleFilter = (item, key) => {
     if (!item) return;
     // console.log("Dropdown selected:", item, "key:", key);
@@ -20,7 +20,9 @@ export function SearchStatus({ onFiltersChange }) {
   };
 
   const handleEmployeeSelect = (employee) => {
-    onFiltersChange({ employee: employee.name });
+    // console.log(employee)
+    if(employeeClicked)employeeClicked(employee?.id);
+    // onFiltersChange({ employee: employee.name });
   };
 
   // const viewOptions = [

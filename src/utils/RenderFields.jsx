@@ -142,7 +142,7 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
 
     return (
       <div key={key} className="w-96 flex gap-2 justify-between text-nowrap">
-        <p className="flex w-full">
+       {label!=="Photo" && <p className="flex w-full">
           <span className="min-w-40 text-gray-400 mr-3">{label}</span>
 
           {isFieldEditable ? (
@@ -158,29 +158,29 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
             ) : (
               <>
                {renderSpecialField(sectionKey, key, value, handleInputChange)
-                ||
-(key.toLowerCase().includes("date") ? (
-  <CustomDatePicker
-    value={value}
-    onChange={(newValue) => handleInputChange(sectionKey, key, newValue)}
-    className="rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500"
-  />
-) : isTimeField ? (
-  <CustomTimePicker
-    value={value}
-    onChange={(newValue) => handleInputChange(sectionKey, key, newValue)}
-    className="rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500"
-  />
-) : (
-  <input
-    type="text"
-    value={value || ""}
-    onChange={(e) => handleInputChange(sectionKey, key, e.target.value)}
-    className="w-full rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500 border border-gray-300"
-  />
-))
-                  
-              }
+                                ||
+                (key.toLowerCase().includes("date") ? (
+                  <CustomDatePicker
+                    value={value}
+                    onChange={(newValue) => handleInputChange(sectionKey, key, newValue)}
+                    className="rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500"
+                  />
+                ) : isTimeField ? (
+                  <CustomTimePicker
+                    value={value}
+                    onChange={(newValue) => handleInputChange(sectionKey, key, newValue)}
+                    className="rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={value || ""}
+                    onChange={(e) => handleInputChange(sectionKey, key, e.target.value)}
+                    className="w-full rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500 border border-gray-300"
+                  />
+                ))
+                                  
+               }
                {/* {sectionKey === "payroll" && key === "employeestatus" ? (<Dropdown onChange={(e) => handleInputChange(sectionKey, key, e)} options={EMPLOYEE_STATUS_OPTIONS.map((o)=>o.label)}/>
                ) :
                 (
@@ -203,16 +203,16 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
                 )}
               </>
             )
-          ) : (
-            <span className="text-gray-700 font-semibold">
-              {value || (
-                <span className="text-gray-400 italic">
-                  Not provided
-                </span>
-              )}
-            </span>
+            ) : (
+              <span className="text-gray-700 font-semibold">
+                {value || (
+                  <span className="text-gray-400 italic">
+                    Not provided
+                  </span>
+                )}
+              </span>
           )}
-        </p>
+        </p>}
         <span className="text-slate-100">|</span>
       </div>
     );
@@ -226,14 +226,13 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
 
 
 
+{/*
 
-
-                // (
-                // <input type={ key.toLowerCase().includes("date") ? "date" : isTimeField ? "time" : "text" }
-                // value={ key.toLowerCase().includes("date") ? formatDateForInput(value) : isTimeField ? extractTime(value) : value || "" } onChange={(e) => { const newValue = isTimeField ? mergeTimeIntoISO(value, e.target.value) : e.target.value; 
-                //   handleInputChange(sectionKey, key, newValue); }} className="w-full  rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500" /> )
+// (
+// <input type={ key.toLowerCase().includes("date") ? "date" : isTimeField ? "time" : "text" }
+// value={ key.toLowerCase().includes("date") ? formatDateForInput(value) : isTimeField ? extractTime(value) : value || "" } onChange={(e) => { const newValue = isTimeField ? mergeTimeIntoISO(value, e.target.value) : e.target.value; 
+//   handleInputChange(sectionKey, key, newValue); }} className="w-full  rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500" /> )
 //                   ------------------------------------------- Date picker___________
-
 //(key.toLowerCase().includes("date") ? (
 //   <CustomDatePicker
 //     value={value}
@@ -255,9 +254,7 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
 // ))
 
 //----------------------- Timepicker too___________
-
-
-
+ */}
 {/* <input
                   type={
                     key.toLowerCase().includes("date")
@@ -282,35 +279,6 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
                   }}
                   className="w-full border rounded px-3 py-1 focus:ring-1 focus:ring-green-500"
                 /> */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //can't handle the date format plus i don't know maybe note is not editable i guess
 
 // import { formatDateForInput } from "./formatDateForInput";

@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useFormattedTableData } from "../utils/useFormattedTableData";
 import { usePagination } from "../Hooks/usePagination";
 import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
 import { Commet, FourSquare } from "react-loading-indicators";
-function Table({ Data,URL,onRowClickInside, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view",D1}) {
+function Table({ Data,URL,onRowClickInside,setExportData, Structure, ke,clickable=true,components ,title=[], onRowClick,totPage=1,nickname="view",D1}) {
   const { data, page,setPage, totalPages, loading } = usePagination(URL,10,Data?Data:[],totPage)
+  const prevDataRef = useRef(null);
+
+  useEffect(() => {
+    // Check if data exists AND if it is different from what we last sent
+    // We use JSON.stringify for a deep comparison to avoid reference issues
+    if (data && JSON.stringify(data) !== JSON.stringify(prevDataRef.current)) {
+      if (setExportData) {
+        setExportData(data);
+        prevDataRef.current = data; // Update the ref
+      }
+    }
+  }, [data, setExportData]);
   const handleRowClick = (rowData,index,data) => {
     if (onRowClick) {
       onRowClick(rowData,index,data)

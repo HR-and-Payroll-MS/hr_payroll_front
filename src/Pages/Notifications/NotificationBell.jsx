@@ -96,9 +96,10 @@ export default function NotificationBell({ role = "EMPLOYEE", onOpenCenter }) {
                         </div>
                       </div>
 
-                      <div className="text-xs text-slate-600 mt-1">
-                        {n.message}
-                      </div>
+                      <div 
+  className="text-xs line-clamp-2 text-slate-600 mt-1"
+  dangerouslySetInnerHTML={{ __html: n.message }} 
+/>
                     </div>
                   </div>
                 ))
