@@ -213,12 +213,14 @@ function App() {
         
         
         
+            <Route path="myattendance" element={<MyAttendance />} />
         
         {/* ------------------------- Employee ---------------------- */}
         <Route element={<Routes allowedRoles={['Employee']} />}>
           <Route path="Employee" element={<MainLayout />}>
             {sharedSettingsRoutes}
             {sharedHelpRoutes}
+            
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route index element={<DashboardLayout />} />
             <Route path="generate_payroll" element={<GeneratePayroll />} />

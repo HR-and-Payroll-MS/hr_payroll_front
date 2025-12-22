@@ -1,8 +1,10 @@
 import React from 'react'
 import Icon from '../../../../Components/Icon';
 import useAuth from '../../../../Context/AuthContext';
+import { useTableContext } from '../../../../Context/TableContext';
 function EmployeeProfile({employeeData,role}) {  
   const {axiosPrivate} = useAuth();
+  const { refreshTableSilently } = useTableContext();
   const handleDelete = async () => {
     
   try {
@@ -10,6 +12,8 @@ function EmployeeProfile({employeeData,role}) {
     
     console.log("Delete response:", response.data);
     console.log("Deleted user:", employeeData?.general?.fullname);
+    
+      refreshTableSilently('users');
 
   } catch (error) {
     console.error("Failed to delete employee:", error);

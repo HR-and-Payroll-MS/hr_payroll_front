@@ -213,7 +213,7 @@ export const sidebarList = {
     label: 'Attendance',
     Visible: false,
     sub: [
-      { subPath: '/', label: 'My Attendance' },
+      { subPath: 'myattendance', label: 'My Attendance' },
     ],
   },
   {
