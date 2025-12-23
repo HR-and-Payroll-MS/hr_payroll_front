@@ -6,7 +6,12 @@ import Icon from "../../Components/Icon";
 import { useNotifications } from "../../Context/NotificationProvider";
 
 export default function NotificationBell({ role = "EMPLOYEE", onOpenCenter }) {
-  const { items, unreadCount, markRead, markAllRead } = useNotifications();
+  // const { items, unreadCount, markRead, markAllRead } = useNotifications();
+const notifications = useNotifications();
+
+if (!notifications) return null;
+
+const { items, unreadCount, markRead, markAllRead } = notifications;
 
   const [open, setOpen] = useState(false);
   const ref = useRef(null);

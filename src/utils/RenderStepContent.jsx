@@ -42,7 +42,7 @@ export const RenderStepContent = ({
             ))}
           </div>
 
-          <div className="flex flex-1 gap-5 p-2 justify-start items-start flex-wrap">
+          <div className="flex  gap-5 p-2 justify-start items-start flex-wrap">
             <RenderFields
               sectionKey="general"
               sectionData={employeeData?.general}
@@ -115,38 +115,6 @@ export const RenderStepContent = ({
           </div>
         </div>
       );
-
-    // case 3:
-    //   return (
-    //     <div className={` ${style} flex-1 flex-col p-4 flex  rounded bg-white `}>
-    //       <div className="flex justify-between items-center mb-2 ">
-    //         <h2 className="font-semibold text-lg">Documents</h2>
-    //         {isEditable("documents") && (editMode?.documents ? (
-    //           <div className="flex gap-2">
-    //             <button onClick={() => handleSave("documents")} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
-    //               Save
-    //             </button>
-    //             <button onClick={() => handleCancel("documents")} className="px-3 py-1 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
-    //               Cancel
-    //             </button>
-    //           </div>
-    //         ) : (
-    //           <button onClick={() => handleEditToggle("documents")} className="px-3 py-1 text-gray-700 rounded hover:bg-slate-100">
-    //             <Icon className="w-4 h-4" name={"Pen"} />
-    //           </button>
-    //         ))}
-    //       </div>
-
-    //       <div className="space-y-2 ">
-    //         <DocumentList
-    //           files={employeeData?.documents?.files || []}
-    //           isEditing={isEditable("documents") && !!editMode?.documents}
-    //           onChange={handleDocumentUpdate}
-    //         />
-    //       </div>
-    //     </div>
-    //   );
-
    case 3:
   return (
     <div className={` ${style} flex-1 flex-col p-4 flex rounded bg-white `}>
@@ -205,12 +173,6 @@ export const RenderStepContent = ({
       <UploadDrawer
         open={drawerOpen}
         onClose={setDrawerOpen}
-        // employee={selectedEmployee}
-        // onUpload={async (payload) => {
-        //   await handleUpload(payload);
-        //   setDrawerOpen(false);
-        // }}
-        // uploading={uploading}
       />
     </div>
   );

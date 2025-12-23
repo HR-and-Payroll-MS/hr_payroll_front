@@ -7,6 +7,7 @@ import ExportTable from '../../../Components/ExportTable';
 import { useTable } from '../../../Context/useTable';
 import Icon from '../../../Components/Icon';
 import { useProfile } from '../../../Context/ProfileContext';
+import EmployeeDirectorySkeleton from '../../../animations/Skeleton/EmployeeDirectorySkeleton';
 
 function EmployeeDirectory() {
   const [isRotating, setIsRotating] = useState(false);
@@ -75,7 +76,7 @@ const handleRotate = () => {
     ["general_maritalstatus"],
   ];
 
-  if (isLoading && (!data || data.length === 0)) return <p className="p-6">Loading Users...</p>;
+  if (isLoading && (!data || data.length === 0)) return <EmployeeDirectorySkeleton />;
 
   return (
     <div className='p-4 flex flex-col h-full'>

@@ -22,7 +22,7 @@ export function connectSocket(path = currentPath) {
 
   reconnection: true,
 
-  reconnectionAttempts: 8,
+  reconnectionAttempts: Infinity,
   reconnectionDelay: 1500,
   reconnectionDelayMax: 8000,
    

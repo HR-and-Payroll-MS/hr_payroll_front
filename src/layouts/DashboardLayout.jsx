@@ -91,18 +91,18 @@ ke=[
         <SummaryCard />
       </div>
       <div className="flex gap-4  w-full flex-2">
-        <div className="bg-gray-50 h-full shadow dark:bg-slate-700 rounded flex-1 ">
+        <div className="bg-gray-50 h-full shadow dark:shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-700 rounded flex-1 ">
           {/* <BarChartExample themeMode={darkMode ? 'dark' : 'light'} /> */}
           <BarChartExample theme={theme} />
         </div>
-        <div className="bg-gray-50 h-full shadow dark:bg-slate-700 rounded flex-1 ">
+        <div className="bg-gray-50 h-full shadow dark:shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-700 rounded flex-1">
           <LineChartExample theme={theme} />
         </div>
-        <div className="bg-gray-50 h-full shadow dark:bg-slate-700 rounded flex-1 ">
+        <div className="bg-gray-50 h-full shadow dark:shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-700 rounded flex-1">
           <PieChartExample theme={theme} />
         </div>
       </div>
-      <div className="flex gap-4 rounded flex-1 h-fit w-full bg-gray-50">
+      <div className="flex gap-4 rounded shadow dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600  flex-1 h-fit w-full bg-gray-50">
          <Table Data={data} URL={"/employees/"} title={title} Structure={structure} ke={ke}/>
       </div>
       <div className="h-fit flex w-full gap-4">
@@ -114,6 +114,198 @@ ke=[
   );
 }
 export default DashboardLayout;
+
+
+
+
+
+
+// function DashboardLayout({ data, structure, title, ke }) {
+//   const [loading, setLoading] = useState(true);
+
+//   // Simulate loading (replace with real data fetch)
+//   useEffect(() => {
+//     const timer = setTimeout(() => setLoading(false), 1500);
+//     return () => clearTimeout(timer);
+//   }, []);
+
+//   if (loading) {
+//     return <DashboardLayoutSkeleton />;
+//   }
+
+//   return (
+//     // Your existing DashboardLayout content
+//     <div className="h-full ...">
+//       <WelcomeOverlay ... />
+//       <SummaryCard />
+//       <div className="grid lg:grid-cols-3 ...">
+//         <BarChartExample />
+//         <LineChartExample />
+//         <PieChartExample />
+//       </div>
+//       <Table Data={data} ... />
+//       {/* Bottom cards */}
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

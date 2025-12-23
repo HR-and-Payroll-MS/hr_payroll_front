@@ -9,6 +9,7 @@ import MyPayrollPage from '../HR_Manager/payroll_management/MyPayrollPage';
 import { getLocalData } from '../../Hooks/useLocalStorage';
 import { useTableContext } from '../../Context/TableContext';
 import { useProfile } from '../../Context/ProfileContext';
+import MyProfileSkeleton from '../../animations/Skeleton/MyProfileSkeleton';
 
 function MyProfile({ currStep = 0 }) {
   const { state } = useLocation();
@@ -105,11 +106,7 @@ function MyProfile({ currStep = 0 }) {
 
   // 7. Loading state handling
   if (profileLoading && !employeeData) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <ThreeDots />
-      </div>
-    );
+    return <MyProfileSkeleton />;
   }
 
   if (error) {

@@ -5,32 +5,12 @@ import { AttendanceStatus } from "../../../Components/Level2Hearder";
 import AttendanceCorrectionPage from "./AttendanceCorrectionPage";
 import useAuth from "../../../Context/AuthContext";
 import { Atom } from "react-loading-indicators";
+import EmployeeAttendanceListSkeleton from "../../../animations/Skeleton/EmployeeAttendanceListSkeleton";
 
 const TABLE_MODES = {
   DEPARTMENT: "DEPARTMENT",
   EMPLOYEE: "EMPLOYEE",
 };
-// const employeeAttendanceMock = [
-//   {
-//     id: 1,
-//     employee: {
-//       name: "John Doe",
-//       email: "john.doe@example.com",
-//       pic: "",
-//     },
-//     attendance: {
-//       date: "2025-11-23",
-//       clockIn: "08:59 AM",
-//       clockInLocation: "HQ Office - Main Gate",
-//       clockOut: "05:02 PM",
-//       clockOutLocation: "HQ Office - Side Exit",
-//       workSchedules: "9:00 AM - 5:00 PM",
-//       paidTime: "8h 03m",
-//       notes: "On time",
-//     },
-//   },
-// ];
-
 function EmployeeAttendanceList() {
   const { axiosPrivate } = useAuth();
 
@@ -146,12 +126,13 @@ const onRowClick = async (rowIndex,index,data) => {
   };
 
   if (!tableConfig) {
-    return (
-      <div className="flex flex-col justify-center items-center h-full">
-        <Atom color="#32cd32" size="medium" text="" textColor="" />
-        Loading departments...
-      </div>
-    );
+    // return (
+    //   <div className="flex flex-col justify-center items-center h-full">
+    //     <Atom color="#32cd32" size="medium" text="" textColor="" />
+    //     Loading departments...
+    //   </div>
+    // );
+   return <EmployeeAttendanceListSkeleton />;
   }
 
   return (

@@ -206,22 +206,22 @@ export default function Sidebar() {
           </div>
 
           <div
-            className={`dark:bg-slate-900 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50 h-fit w-full justify-around items-center m-0.5`}
+            className={`dark:bg-slate-900 inset-shadow-slate-200 inset-shadow-2xs shadow shadow-slate-100 dark:inset-shadow-xs dark:inset-shadow-black dark:shadow dark:shadow-slate-700 flex gap-0.5 rounded-4xl cursor-pointer bg-gray-50 h-fit w-full justify-around items-center m-0.5`}
           >
             <div
               onClick={() => changeTheme('light')}
               className={`flex flex-1 bg-white shadow dark:bg-slate-900 drop-shadow-2xl  rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
             >
               <Icon name="Sun" className="w-4 h-4" />
-              <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
+              <p className="dark:text-slate-100  font-semibold text-gray-700 text-sm">
                 Light
               </p>
             </div>
             <div
               onClick={() => changeTheme('dark')}
-              className={`flex bg-gray-50 dark:bg-slate-700 flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
+              className={`flex bg-gray-50 dark:shadow-slate-950 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-700 flex-1 rounded-4xl m-1 h-9 items-center gap-1.5 justify-center py-2.5`}
             >
-              <Icon name="Moon" className="w-4 h-4" />
+              <Icon name="Moon" className="w-4  h-4" />
               <p className="dark:text-slate-100 font-semibold text-gray-700 text-sm">
                 Dark
               </p>
