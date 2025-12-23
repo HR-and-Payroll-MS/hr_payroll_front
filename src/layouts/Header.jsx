@@ -4,6 +4,8 @@ import Icon from "../Components/Icon";
 import InputField from "../Components/InputField";
 import NotificationBell  from "../Pages/Notifications/NotificationBell";
 import { getLocalData } from "../Hooks/useLocalStorage";
+import { useProfile } from "../Context/ProfileContext";
+import { useEffect } from "react";
 const mainHeaderSearch = {
   Manager: [
     { label: "Dashboard", path: "/hr_dashboard" },
@@ -26,8 +28,16 @@ const mainHeaderSearch = {
   ],
 };
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 export default function Header(){
-        const role = getLocalData('role')
+  const { profile, getProfile, loading } = useProfile();
+
+  
+    
+    useEffect(() => {
+      getProfile(); 
+    }, [getProfile]);
+    const role = getLocalData('role')
         const navigate = useNavigate()
         return <div className={`bg-white flex justify-evenly shadow h-14 gap-3 z-50  dark:bg-slate-800 dark:text-white `}> 
         <div id="left" className="flex py-2.5 w-2/5  justify-between items-center p-4 ">
@@ -59,7 +69,21 @@ export default function Header(){
                 <NotificationBell/>
                 {/* <img className="h-6" src="\svg\message-square-lines-svgrepo-com.svg" alt="" /> */}
                 <DropDownContent svgs={<div className="flex items-center">
-                    <img className="h-6 w-6 rounded-full" src="\pic\download (48).png" alt="" />
+                    {profile?.general?(
+              <img className="h-6 min-w-6 rounded-full" 
+              src={`${BASE_URL}${profile.general.photo}`}
+  
+              alt=""
+            />):(
+            
+            <div className='rounded-full bg-slate-800 dark:bg-slate-600 text-slate-100 h-7 w-7 text-center items-center flex justify-center' >
+                  {(profile?.general?.fullname ?? "")
+                    .split(" ")
+                    .map(n => n[0])
+                    .slice(0, 2)
+                    .join("") || "NA"}
+                            
+              </div>)}
                 </div>}>
                         <ul className="flex flex-col py-2">
                             <li onClick={()=>navigate("profile")} className="px-4 py-1 flex items-center gap-1.5 hover:bg-slate-50 cursor-pointer"><Icon name="CircleUser" className="h-4 w-4"/>view profile</li>

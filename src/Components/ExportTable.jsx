@@ -1,205 +1,13 @@
-// // ExportTable.jsx
-// import React, { useState, useEffect } from "react";
-// import jsPDF from "jspdf";
-// import "jspdf-autotable";
-// import * as XLSX from "xlsx";
-// import { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType } from "docx";
-// import { saveAs } from "file-saver";
-// import useAuth from "../Context/AuthContext"; // assuming you have axiosPrivate here
-
-// export default function ExportTable({
-//   data = [],
-//   url = null, // new prop: if provided, fetch from this URL
-//   title = [],
-//   bodyStructure = [],
-//   keys = [],
-//   fileName = "Report",
-// }) {
-//   const { axiosPrivate } = useAuth();
-//   const [tableData, setTableData] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-
-//   // Flatten nested objects (e.g., { user: { name: "John" } } → { "user.name": "John" })
-//   const flattenObject = (obj, parent = "", res = {}) => {
-//     for (let key in obj) {
-//       const propName = parent ? `${parent}.${key}` : key;
-//       if (typeof obj[key] === "object" && obj[key] !== null && !Array.isArray(obj[key])) {
-//         flattenObject(obj[key], propName, res);
-//       } else {
-//         res[propName] = obj[key];
-//       }
-//     }
-//     return res;
-//   };
-
-//   // Format row based on bodyStructure and keys
-//   const formatRow = (row, structure, keyList) => {
-//     if (structure.length > 0) return structure.map((s) => row[s] ?? "");
-//     if (keyList.length > 0) return keyList.map((k) => row[k] ?? "");
-//     return Object.values(row);
-//   };
-
-//   // Fetch data if URL is provided
-//   useEffect(() => {
-//     if (url) {
-//       const fetchData = async () => {
-//         setLoading(true);
-//         setError("");
-//         try {
-//           const response = await axiosPrivate.get(url);
-//           const fetchedData = response.data?.results || response.data || [];
-//           setTableData(fetchedData);
-//         } catch (err) {
-//           console.error("Failed to fetch data:", err);
-//           setError("Failed to load data for export.");
-//           setTableData([]);
-//         } finally {
-//           setLoading(false);
-//         }
-//       };
-
-//       fetchData();
-//     } else {
-//       // Use provided data prop
-//       setTableData(data);
-//       setLoading(false);
-//     }
-//   }, [url, data, axiosPrivate]);
-
-//   const flattenedData = tableData.map((d) => flattenObject(d));
-//   const formattedData = flattenedData.map((row) => formatRow(row, bodyStructure, keys));
-
-//   // PDF Export
-//   const exportPDF = () => {
-//     const doc = new jsPDF("p", "pt");
-//     doc.setFontSize(12);
-//     doc.text(fileName, 40, 30);
-
-//     doc.autoTable({
-//       head: [title],
-//       body: formattedData,
-//       startY: 50,
-//       styles: { fontSize: 9, cellPadding: 6 },
-//       headStyles: { fillColor: [59, 130, 246], textColor: 255 },
-//       theme: "grid",
-//       margin: { top: 50, left: 20, right: 20 },
-//     });
-
-//     doc.save(`${fileName}.pdf`);
-//   };
-
-//   // Excel Export
-//   const exportExcel = () => {
-//     const ws = XLSX.utils.aoa_to_sheet([title, ...formattedData]);
-//     const wb = XLSX.utils.book_new();
-//     XLSX.utils.book_append_sheet(wb, ws, "Report");
-//     XLSX.writeFile(wb, `${fileName}.xlsx`);
-//   };
-
-//   // DOCX Export
-//   const exportDOCX = async () => {
-//     const tableRows = [
-//       new TableRow({
-//         children: title.map(
-//           (t) =>
-//             new TableCell({
-//               children: [new Paragraph({ text: t, bold: true })],
-//               width: { size: 100 / title.length, type: WidthType.PERCENTAGE },
-//             })
-//         ),
-//       }),
-//       ...formattedData.map((row) =>
-//         new TableRow({
-//           children: row.map(
-//             (cell) =>
-//               new TableCell({
-//                 children: [new Paragraph({ text: String(cell ?? "") })],
-//               })
-//           ),
-//         })
-//       ),
-//     ];
-
-//     const doc = new Document({
-//       sections: [
-//         {
-//           children: [
-//             new Paragraph({ text: fileName, heading: "Heading1", alignment: "center" }),
-//             new Paragraph({ text: "\n" }),
-//             new Table({
-//               rows: tableRows,
-//               width: { size: 100, type: WidthType.PERCENTAGE },
-//             }),
-//           ],
-//         },
-//       ],
-//     });
-
-//     const blob = await Packer.toBlob(doc);
-//     saveAs(blob, `${fileName}.docx`);
-//   };
-
-//   // Loading / Error States
-//   if (loading) {
-//     return (
-//       <div className="text-gray-600 flex items-center gap-2">
-//         <div className="animate-spin h-4 w-4 border-2 border-blue-600 rounded-full border-t-transparent"></div>
-//         Loading data...
-//       </div>
-//     );
-//   }
-
-//   if (error) {
-//     return <div className="text-red-600">{error}</div>;
-//   }
-
-//   if (tableData.length === 0) {
-//     return <div className="text-gray-500">No data available to export.</div>;
-//   }
-
-//   return (
-//     <div className="flex flex-wrap gap-3">
-//       <button
-//         onClick={exportPDF}
-//         className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition shadow"
-//       >
-//         Export PDF
-//       </button>
-//       <button
-//         onClick={exportExcel}
-//         className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition shadow"
-//       >
-//         Export Excel
-//       </button>
-//       <button
-//         onClick={exportDOCX}
-//         className="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition shadow"
-//       >
-//         Export DOCX
-//       </button>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
 // ExportTable.jsx
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
-import "jspdf-autotable";
-import { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, TextRun } from "docx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import Icon from "./Icon";
+import { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType } from "docx";
+import Icon from "./Icon"; 
 
-// Helper: Flatten object (same as your flattenObject)
+// --- Helper: Flatten nested objects (e.g., { user: { name: "John" } } → { "user_name": "John" }) ---
 const flattenObject = (obj, parentKey = "", result = {}) => {
   if (obj === null || typeof obj !== "object") return result;
   for (const key in obj) {
@@ -223,105 +31,801 @@ const flattenObject = (obj, parentKey = "", result = {}) => {
   return result;
 };
 
-// Helper: Format a row using bodyStructure + keys, skipping images
+// --- Helper: Format Row & Filter out Image URLs/Keywords ---
 const formatRow = (flatRow, bodyStructure, keys) => {
+  // Keywords that usually indicate an image field
+  const imageKeywords = ["pic", "photo", "image", "avatar", "icon", "picture", "thumbnail"];
+
   const row = [];
   bodyStructure.forEach((count, index) => {
     const keySet = keys[index];
-    // Skip profile/pic if included
-    const filteredKeys = keySet.filter(k => !k.toLowerCase().includes("pic"));
-    const values = filteredKeys.map(k => flatRow[k] ?? "").join("\n"); // Concatenate with newline
+
+    // Keep only keys that are NOT related to images and don't contain image file extensions
+    const filteredKeys = keySet.filter((k) => {
+      const keyName = k.toLowerCase();
+      const value = String(flatRow[k] || "").toLowerCase();
+
+      const isImageKey = imageKeywords.some(keyword => keyName.includes(keyword));
+      const isImageValue = /\.(jpg|jpeg|png|webp|gif|svg)$/.test(value);
+
+      return !isImageKey && !isImageValue; 
+    });
+
+    const values = filteredKeys.map((k) => flatRow[k] ?? "").join("\n");
     row.push(values);
   });
   return row;
 };
 
-export default function ExportTable({ data = [], title = [], bodyStructure = [], keys = [], fileName = "Report" }) {
-  
-  const flattenedData = data.map(d => flattenObject(d));
-  const formattedData = flattenedData.map(row => formatRow(row, bodyStructure, keys));
+export default function ExportTable({
+  data = [],
+  title = [],
+  bodyStructure = [],
+  keys = [],
+  fileName = "Report",
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  // PDF Export
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Pre-process the data for all export methods
+  const flattenedData = data.map((d) => flattenObject(d));
+  const formattedData = flattenedData.map((row) => formatRow(row, bodyStructure, keys));
+
+  // --- Professional PDF Export ---
   const exportPDF = () => {
-  const doc = new jsPDF("p", "pt");
-  doc.setFontSize(10);
+    const doc = new jsPDF("p", "pt", "a4");
+    
+    // Add Header
+    doc.setFontSize(18);
+    doc.setTextColor(40, 40, 40);
+    doc.text(fileName, 40, 40);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 55);
 
-  autoTable(doc, {
-    head: [title],
-    body: formattedData,
-    styles: { fontSize: 9, cellPadding: 4 },
-    theme: "grid",
-    startY: 20,
-    margin: { top: 20, left: 10, right: 10 },
-  });
+    autoTable(doc, {
+      head: [title],
+      body: formattedData,
+      startY: 75,
+      theme: 'grid',
+      styles: {
+        fontSize: 9,
+        cellPadding: 8,
+        valign: 'middle',
+        font: "helvetica",
+        lineWidth: 0.5,
+        lineColor: [200, 200, 200]
+      },
+      headStyles: {
+        fillColor: [30, 41, 59], // Dark Slate
+        textColor: [255, 255, 255],
+        fontStyle: 'bold',
+      },
+      alternateRowStyles: {
+        fillColor: [248, 250, 252],
+      },
+      margin: { top: 60, left: 40, right: 40, bottom: 40 },
+      didDrawPage: (data) => {
+        const str = 'Page ' + doc.internal.getNumberOfPages();
+        doc.setFontSize(8);
+        doc.text(str, data.settings.margin.left, doc.internal.pageSize.getHeight() - 20);
+      }
+    });
 
-  doc.save(`${fileName}.pdf`);
-};
+    doc.save(`${fileName}.pdf`);
+    setIsOpen(false);
+  };
 
-
-  // Excel Export
+  // --- Excel Export ---
   const exportExcel = () => {
     const ws = XLSX.utils.aoa_to_sheet([title, ...formattedData]);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.utils.book_append_sheet(wb, ws, "Data_Export");
     XLSX.writeFile(wb, `${fileName}.xlsx`);
+    setIsOpen(false);
   };
 
-  // DOCX Export
+  // --- Word Export ---
   const exportDOCX = async () => {
     const tableRows = [
       new TableRow({
-        children: title.map(t =>
-          new TableCell({
-            width: { size: 100 / title.length, type: WidthType.PERCENTAGE },
-            children: [new Paragraph({ text: t, bold: true })],
-          })
-        ),
+        children: title.map(t => new TableCell({
+          width: { size: 100 / title.length, type: WidthType.PERCENTAGE },
+          children: [new Paragraph({ text: t, bold: true })],
+        })),
       }),
-      ...formattedData.map(row =>
-        new TableRow({
-          children: row.map(cell =>
-            new TableCell({
-              children: [new Paragraph({ text: cell })],
-            })
-          ),
-        })
-      ),
+      ...formattedData.map(row => new TableRow({
+        children: row.map(cell => new TableCell({
+          children: [new Paragraph({ text: String(cell) })],
+        })),
+      })),
     ];
 
     const doc = new Document({
-      sections: [
-        {
-          properties: {},
-          children: [new Table({ rows: tableRows, width: { size: 100, type: WidthType.PERCENTAGE } })],
-        },
-      ],
+      sections: [{ children: [new Table({ rows: tableRows, width: { size: 100, type: WidthType.PERCENTAGE } })] }],
     });
 
     const blob = await Packer.toBlob(doc);
     saveAs(blob, `${fileName}.docx`);
+    setIsOpen(false);
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="relative inline-block text-left" ref={dropdownRef}>
+      {/* Professional Toggle Button */}
       <button
-        onClick={exportPDF}
-        className="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-all shadow-sm focus:outline-none dark:bg-slate-700 dark:hover:bg-slate-600"
       >
-        <Icon name={"File"}/>
+        <Icon name="Download" className="w-5 h-5" />
       </button>
-      <button
-        onClick={exportExcel}
-        className="px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700"
-      >
-        <Icon name={"File"}/>
-      </button>
-      <button
-        onClick={exportDOCX}
-        className="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
-      >
-        <Icon name={"File"}/>
-      </button>
+
+      {/* Dropdown Menu */}
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-md shadow-xl ring-1 ring-opacity-5 ring-slate-200 z-50 overflow-hidden animate-in fade-in zoom-in duration-100">
+          <div className="py-1">
+            <button onClick={exportPDF} className="flex w-full items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 gap-3 border-b border-gray-50 dark:border-slate-700">
+              <span className="text-red-500"><Icon name="File" className="w-4 h-4" /></span>
+              <div className="text-left">
+                <p className="font-semibold">PDF Document</p>
+                <p className="text-xs text-gray-400">Best for printing & sharing</p>
+              </div>
+            </button>
+            <button onClick={exportExcel} className="flex w-full items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 gap-3 border-b border-gray-50 dark:border-slate-700">
+              <span className="text-green-500"><Icon name="File" className="w-4 h-4" /></span>
+              <div className="text-left">
+                <p className="font-semibold">Excel Spreadsheet</p>
+                <p className="text-xs text-gray-400">Best for data analysis</p>
+              </div>
+            </button>
+            <button onClick={exportDOCX} className="flex w-full items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 gap-3">
+              <span className="text-blue-500"><Icon name="File" className="w-4 h-4" /></span>
+              <div className="text-left">
+                <p className="font-semibold">Word Document</p>
+                <p className="text-xs text-gray-400">Best for editing text</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // ExportTable.jsx
+// import React, { useState, useRef, useEffect } from "react";
+// import { saveAs } from "file-saver";
+// import * as XLSX from "xlsx";
+// import "jspdf-autotable";
+// import { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType } from "docx";
+// import jsPDF from "jspdf";
+// import autoTable from "jspdf-autotable";
+// import Icon from "./Icon"; 
+
+// // Access Base URL if needed (ensure this matches your .env)
+// const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8000";
+
+// // --- Helper: Convert Image URL to Base64 ---
+// const getBase64ImageFromURL = (url) => {
+//   return new Promise((resolve, reject) => {
+//     const img = new Image();
+//     img.crossOrigin = "Anonymous";
+//     // Handle relative paths by prepending BASE_URL
+//     img.src = url.startsWith("http") ? url : `${BASE_URL}${url}`;
+//     img.onload = () => {
+//       const canvas = document.createElement("canvas");
+//       canvas.width = img.width;
+//       canvas.height = img.height;
+//       const ctx = canvas.getContext("2d");
+//       ctx.drawImage(img, 0, 0);
+//       try {
+//         const dataURL = canvas.toDataURL("image/jpeg");
+//         resolve(dataURL);
+//       } catch (e) {
+//         // If CORS fails, resolve null so we just skip the image
+//         console.warn("CORS blocked image export:", url);
+//         resolve(null);
+//       }
+//     };
+//     img.onerror = () => resolve(null); // Resolve null on error to keep going
+//   });
+// };
+
+// const flattenObject = (obj, parentKey = "", result = {}) => {
+//   if (obj === null || typeof obj !== "object") return result;
+//   for (const key in obj) {
+//     if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+//     const newKey = parentKey ? `${parentKey}_${key}` : key;
+//     const value = obj[key];
+//     if (Array.isArray(value)) {
+//       value.forEach((v, i) => {
+//         if (typeof v === "object" && v !== null) {
+//           flattenObject(v, `${newKey}_${i}`, result);
+//         } else {
+//           result[`${newKey}_${i}`] = v;
+//         }
+//       });
+//     } else if (typeof value === "object" && value !== null) {
+//       flattenObject(value, newKey, result);
+//     } else {
+//       result[newKey] = value;
+//     }
+//   }
+//   return result;
+// };
+
+// // --- Updated Format Row (Now Includes Images) ---
+// const formatRow = (flatRow, bodyStructure, keys) => {
+//   const row = [];
+//   bodyStructure.forEach((count, index) => {
+//     const keySet = keys[index];
+    
+//     // 1. We removed the "pic" filter. Now image paths are included!
+//     // We map all values to a string.
+//     const values = keySet.map((k) => flatRow[k] ?? "").join("\n");
+//     row.push(values);
+//   });
+//   return row;
+// };
+
+// // --- Main Component ---
+// export default function ExportTable({
+//   data = [],
+//   title = [],
+//   bodyStructure = [],
+//   keys = [],
+//   fileName = "Report",
+// }) {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [isGenerating, setIsGenerating] = useState(false); // Loading state for PDF
+//   const dropdownRef = useRef(null);
+
+//   useEffect(() => {
+//     function handleClickOutside(event) {
+//       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+//         setIsOpen(false);
+//       }
+//     }
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//   const flattenedData = data.map((d) => flattenObject(d));
+//   // Standard formatted data (URLs are just strings here)
+//   const formattedData = flattenedData.map((row) => formatRow(row, bodyStructure, keys));
+
+//   // --- PDF Export Logic with Images ---
+//   const exportPDF = async () => {
+//     setIsOpen(false);
+//     setIsGenerating(true);
+
+//     // 1. Pre-process: Find image URLs and convert to Base64
+//     // We assume any string containing extensions like .jpg, .png, .jpeg is an image
+//     const processedData = await Promise.all(
+//       formattedData.map(async (row) => {
+//         return Promise.all(
+//           row.map(async (cellContent) => {
+//             const lines = cellContent.split("\n");
+//             // Check if any line looks like an image URL
+//             const imageLineIndex = lines.findIndex(line => 
+//                /\.(jpeg|jpg|png|webp)$/i.test(line) || 
+//                line.includes("/media/") // Specific to your Django backend
+//             );
+
+//             if (imageLineIndex !== -1) {
+//               const url = lines[imageLineIndex];
+//               const base64 = await getBase64ImageFromURL(url);
+//               // Attach the Base64 to the cell string using a unique separator
+//               if (base64) {
+//                 // Remove the raw URL from text and append the Base64 hidden tag
+//                 lines.splice(imageLineIndex, 1);
+//                 return { 
+//                     text: lines.join("\n"), 
+//                     image: base64 
+//                 };
+//               }
+//             }
+//             return cellContent; // Return original if no image found
+//           })
+//         );
+//       })
+//     );
+
+//     const doc = new jsPDF("p", "pt", "a4");
+    
+//     // Header
+//     doc.setFontSize(18);
+//     doc.setTextColor(40, 40, 40);
+//     doc.text(fileName, 40, 40);
+//     doc.setFontSize(10);
+//     doc.setTextColor(100, 100, 100);
+//     doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 55);
+
+//     autoTable(doc, {
+//       head: [title],
+//       body: processedData.map(row => row.map(cell => (typeof cell === 'object' ? cell.text : cell))), // Pass only text to body initially
+//       startY: 70,
+//       theme: 'grid',
+//       styles: {
+//         fontSize: 9,
+//         cellPadding: 8,
+//         valign: 'middle',
+//         overflow: 'linebreak',
+//         minCellHeight: 30, // Ensure height for images
+//       },
+//       headStyles: {
+//         fillColor: [30, 41, 59],
+//         textColor: 255,
+//         fontStyle: 'bold',
+//       },
+//       alternateRowStyles: {
+//         fillColor: [248, 250, 252],
+//       },
+      
+//       // --- The Magic: Render Image in Cell ---
+//       didDrawCell: function (data) {
+//         if (data.section === 'body' && data.column.index === 0) { // Assuming First Column is 'User'
+//             const rawRow = processedData[data.row.index];
+//             const cellData = rawRow[data.column.index];
+
+//             // If we processed this cell as an object with an image
+//             if (typeof cellData === 'object' && cellData.image) {
+//                 const imgSize = 24; // Size of the profile pic
+//                 const xPos = data.cell.x + 5; // Left padding
+//                 const yPos = data.cell.y + (data.cell.height / 2) - (imgSize / 2); // Center vertically
+                
+//                 // Draw the Image
+//                 doc.addImage(cellData.image, 'JPEG', xPos, yPos, imgSize, imgSize);
+//             }
+//         }
+//       },
+      
+//       // Shift text to the right in the first column to make room for the image
+//       willDrawCell: function(data) {
+//           if (data.section === 'body' && data.column.index === 0) {
+//              const rawRow = processedData[data.row.index];
+//              const cellData = rawRow[data.column.index];
+//              if (typeof cellData === 'object' && cellData.image) {
+//                  // Push text over by 35pts
+//                  data.cell.styles.cellPadding = { top: 8, bottom: 8, left: 35, right: 8 };
+//              }
+//           }
+//       },
+//       margin: { top: 60, left: 40, right: 40, bottom: 40 },
+//     });
+
+//     doc.save(`${fileName}.pdf`);
+//     setIsGenerating(false);
+//   };
+
+//   // --- Excel & Docx (Keep Standard Text) ---
+//   const exportExcel = () => {
+//     // For Excel, we strip the raw URL to keep it clean, or keep it if you prefer
+//     const cleanData = formattedData.map(row => row.map(cell => cell.replace(/(\S+\.(jpg|png|jpeg)|(\/media\/\S+))/gi, "").trim()));
+//     const ws = XLSX.utils.aoa_to_sheet([title, ...cleanData]);
+//     const wb = XLSX.utils.book_new();
+//     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+//     XLSX.writeFile(wb, `${fileName}.xlsx`);
+//     setIsOpen(false);
+//   };
+
+//   const exportDOCX = async () => {
+//     // Basic DOCX (Text only for now)
+//     const tableRows = [
+//       new TableRow({
+//         children: title.map((t) =>
+//           new TableCell({
+//             width: { size: 100 / title.length, type: WidthType.PERCENTAGE },
+//             children: [new Paragraph({ text: t, bold: true })],
+//           })
+//         ),
+//       }),
+//       ...formattedData.map((row) =>
+//         new TableRow({
+//           children: row.map((cell) =>
+//             new TableCell({
+//               children: [new Paragraph({ text: cell.replace(/(\S+\.(jpg|png|jpeg)|(\/media\/\S+))/gi, "").trim() })],
+//             })
+//           ),
+//         })
+//       ),
+//     ];
+//     const doc = new Document({
+//       sections: [{ children: [new Table({ rows: tableRows, width: { size: 100, type: WidthType.PERCENTAGE } })] }],
+//     });
+//     const blob = await Packer.toBlob(doc);
+//     saveAs(blob, `${fileName}.docx`);
+//     setIsOpen(false);
+//   };
+
+//   return (
+//     <div className="relative inline-block text-left" ref={dropdownRef}>
+//       <button
+//         onClick={() => setIsOpen(!isOpen)}
+//         disabled={isGenerating}
+//         className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors shadow-sm focus:outline-none dark:bg-slate-700 dark:hover:bg-slate-600 disabled:opacity-70 disabled:cursor-not-allowed"
+//       >
+//         <Icon name="Download" className="w-5 h-5" />
+//         <span className="font-medium">{isGenerating ? "Preparing..." : "Export"}</span>
+//         {!isGenerating && (
+//              <svg className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+//              </svg>
+//         )}
+//       </button>
+
+//       {isOpen && !isGenerating && (
+//         <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+//           <div className="py-1">
+//             <button onClick={exportPDF} className="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 gap-3">
+//               <span className="text-red-600"><Icon name="File" className="w-4 h-4" /></span> PDF Document
+//             </button>
+//             <button onClick={exportExcel} className="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 gap-3">
+//               <span className="text-green-600"><Icon name="File" className="w-4 h-4" /></span> Excel Spreadsheet
+//             </button>
+//             <button onClick={exportDOCX} className="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 gap-3">
+//               <span className="text-blue-600"><Icon name="File" className="w-4 h-4" /></span> Word Document
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // import React, { useState, useRef, useEffect } from "react";
+// // import { saveAs } from "file-saver";
+// // import * as XLSX from "xlsx";
+// // import "jspdf-autotable";
+// // import { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType } from "docx";
+// // import jsPDF from "jspdf";
+// // import autoTable from "jspdf-autotable";
+// // import Icon from "./Icon"; // Ensure this path is correct
+
+// // // --- Helper Functions (Kept exactly as they were) ---
+// // const flattenObject = (obj, parentKey = "", result = {}) => {
+// //   if (obj === null || typeof obj !== "object") return result;
+// //   for (const key in obj) {
+// //     if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+// //     const newKey = parentKey ? `${parentKey}_${key}` : key;
+// //     const value = obj[key];
+// //     if (Array.isArray(value)) {
+// //       value.forEach((v, i) => {
+// //         if (typeof v === "object" && v !== null) {
+// //           flattenObject(v, `${newKey}_${i}`, result);
+// //         } else {
+// //           result[`${newKey}_${i}`] = v;
+// //         }
+// //       });
+// //     } else if (typeof value === "object" && value !== null) {
+// //       flattenObject(value, newKey, result);
+// //     } else {
+// //       result[newKey] = value;
+// //     }
+// //   }
+// //   return result;
+// // };
+
+// // const formatRow = (flatRow, bodyStructure, keys) => {
+// //   const row = [];
+// //   bodyStructure.forEach((count, index) => {
+// //     const keySet = keys[index];
+// //     const filteredKeys = keySet.filter((k) => !k.toLowerCase().includes("pic"));
+// //     const values = filteredKeys.map((k) => flatRow[k] ?? "").join("\n");
+// //     row.push(values);
+// //   });
+// //   return row;
+// // };
+
+// // // --- Main Component ---
+// // export default function ExportTable({
+// //   data = [],
+// //   title = [],
+// //   bodyStructure = [],
+// //   keys = [],
+// //   fileName = "Report",
+// // }) {
+// //   const [isOpen, setIsOpen] = useState(false);
+// //   const dropdownRef = useRef(null);
+
+// //   // Close dropdown if clicked outside
+// //   useEffect(() => {
+// //     function handleClickOutside(event) {
+// //       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+// //         setIsOpen(false);
+// //       }
+// //     }
+// //     document.addEventListener("mousedown", handleClickOutside);
+// //     return () => {
+// //       document.removeEventListener("mousedown", handleClickOutside);
+// //     };
+// //   }, []);
+
+// //   const flattenedData = data.map((d) => flattenObject(d));
+// //   const formattedData = flattenedData.map((row) => formatRow(row, bodyStructure, keys));
+
+// //   // const exportPDF = () => {
+// //   //   const doc = new jsPDF("p", "pt");
+// //   //   doc.setFontSize(10);
+// //   //   autoTable(doc, {
+// //   //     head: [title],
+// //   //     body: formattedData,
+// //   //     styles: { fontSize: 9, cellPadding: 4 },
+// //   //     theme: "grid",
+// //   //     startY: 20,
+// //   //     margin: { top: 20, left: 10, right: 10 },
+// //   //   });
+// //   //   doc.save(`${fileName}.pdf`);
+// //   //   setIsOpen(false);
+// //   // };
+// // const exportPDF = () => {
+// //     const doc = new jsPDF("p", "pt", "a4"); // 'pt' points are easier for layout
+    
+// //     // --- 1. Add a Professional Header ---
+// //     const pageWidth = doc.internal.pageSize.getWidth();
+// //     doc.setFontSize(18);
+// //     doc.setTextColor(40, 40, 40); // Dark Gray
+// //     doc.text(fileName, 40, 40); // Title at top left
+    
+// //     doc.setFontSize(10);
+// //     doc.setTextColor(100, 100, 100); // Lighter Gray
+// //     const dateStr = new Date().toLocaleDateString();
+// //     doc.text(`Generated on: ${dateStr}`, 40, 55);
+
+// //     // --- 2. Advanced Table Styling ---
+// //     autoTable(doc, {
+// //       head: [title],
+// //       body: formattedData,
+// //       startY: 70, // Start below the custom header
+// //       theme: 'grid', // 'striped', 'grid', or 'plain'
+      
+// //       // Global Styles
+// //       styles: {
+// //         fontSize: 9,
+// //         font: "helvetica", // 'helvetica', 'times', 'courier'
+// //         cellPadding: 8, // More breathing room
+// //         overflow: 'linebreak', // Wrap text if it's too long
+// //         valign: 'middle',
+// //         halign: 'left',
+// //         lineWidth: 0.5, // Thinner, cleaner borders
+// //         lineColor: [200, 200, 200] // Light gray borders
+// //       },
+
+// //       // Header Specific Styles
+// //       headStyles: {
+// //         fillColor: [30, 41, 59], // Dark Slate (Matches your dashboard)
+// //         textColor: [255, 255, 255], // White text
+// //         fontStyle: 'bold',
+// //         fontSize: 5,
+// //         halign: 'left',
+// //         lineWidth: 0 // No border on header cells looks cleaner
+// //       },
+
+// //       // Body (Row) Styles
+// //       bodyStyles: {
+// //         textColor: [50, 50, 50],
+// //       },
+
+// //       // Alternate Row Colors (Zebra Striping)
+// //       alternateRowStyles: {
+// //         fillColor: [248, 250, 252], // Very light gray/blue
+// //       },
+
+// //       // Column Specific Styles (Optional: Center the first column)
+// //       // columnStyles: {
+// //       //   0: { fontStyle: 'bold' } 
+// //       // },
+      
+// //       // Footer/Margins
+// //       margin: { top: 60, left: 40, right: 40, bottom: 40 },
+      
+// //       // Add Page Numbers
+// //       didDrawPage: function (data) {
+// //         // Footer text
+// //         const str = 'Page ' + doc.internal.getNumberOfPages();
+// //         doc.setFontSize(5);
+// //         doc.text(str, data.settings.margin.left, doc.internal.pageSize.getHeight() - 20);
+// //       }
+// //     });
+
+// //     doc.save(`${fileName}.pdf`);
+// //     setIsOpen(false);
+// //   };
+// //   const exportExcel = () => {
+// //     const ws = XLSX.utils.aoa_to_sheet([title, ...formattedData]);
+// //     const wb = XLSX.utils.book_new();
+// //     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+// //     XLSX.writeFile(wb, `${fileName}.xlsx`);
+// //     setIsOpen(false);
+// //   };
+
+// //   const exportDOCX = async () => {
+// //     const tableRows = [
+// //       new TableRow({
+// //         children: title.map(
+// //           (t) =>
+// //             new TableCell({
+// //               width: { size: 100 / title.length, type: WidthType.PERCENTAGE },
+// //               children: [new Paragraph({ text: t, bold: true })],
+// //             })
+// //         ),
+// //       }),
+// //       ...formattedData.map(
+// //         (row) =>
+// //           new TableRow({
+// //             children: row.map(
+// //               (cell) =>
+// //                 new TableCell({
+// //                   children: [new Paragraph({ text: cell })],
+// //                 })
+// //             ),
+// //           })
+// //       ),
+// //     ];
+
+// //     const doc = new Document({
+// //       sections: [
+// //         {
+// //           children: [
+// //             new Table({
+// //               rows: tableRows,
+// //               width: { size: 100, type: WidthType.PERCENTAGE },
+// //             }),
+// //           ],
+// //         },
+// //       ],
+// //     });
+
+// //     const blob = await Packer.toBlob(doc);
+// //     saveAs(blob, `${fileName}.docx`);
+// //     setIsOpen(false);
+// //   };
+
+// //   return (
+// //     <div className="relative inline-block text-left" ref={dropdownRef}>
+// //       {/* Main Trigger Button */}
+// //       <button
+// //         onClick={() => setIsOpen(!isOpen)}
+// //         className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:bg-slate-700 dark:hover:bg-slate-600"
+// //       >
+// //         <Icon name="Download" className="w-5 h-5" /> {/* Assuming 'Download' exists in your Icon set */}
+// //         <span className="font-medium">Export</span>
+// //         <svg
+// //           className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+// //           fill="none"
+// //           stroke="currentColor"
+// //           viewBox="0 0 24 24"
+// //         >
+// //           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+// //         </svg>
+// //       </button>
+
+// //       {/* Dropdown Menu */}
+// //       {isOpen && (
+// //         <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 origin-top-right transition transform ease-out duration-100 scale-100">
+// //           <div className="py-1">
+// //             <button
+// //               onClick={exportPDF}
+// //               className="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 gap-3"
+// //             >
+// //               <span className="text-red-600"><Icon name="File" className="w-4 h-4" /></span>
+// //               PDF Document
+// //             </button>
+// //             <button
+// //               onClick={exportExcel}
+// //               className="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 gap-3"
+// //             >
+// //               <span className="text-green-600"><Icon name="File" className="w-4 h-4" /></span>
+// //               Excel Spreadsheet
+// //             </button>
+// //             <button
+// //               onClick={exportDOCX}
+// //               className="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 gap-3"
+// //             >
+// //               <span className="text-blue-600"><Icon name="File" className="w-4 h-4" /></span>
+// //               Word Document
+// //             </button>
+// //           </div>
+// //         </div>
+// //       )}
+// //     </div>
+// //   );
+// // }

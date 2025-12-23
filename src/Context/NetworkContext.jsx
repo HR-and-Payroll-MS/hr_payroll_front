@@ -44,11 +44,10 @@ export function NetworkProvider({ children }) {
 
         // const res = await axiosPrivate.get("/attendances/check-network/");
         const res = await axiosPrivate.get(`/employees/${id}/attendances/network-status/`);
-        // console.log(res)
+        console.log(res)
         if (!active) return;
-
-        setIsLocal(res.data?.is_office_network);
-        // console.log("here",res.data?.is_office_network)
+        setIsLocal(res.data.is_office_network);
+        console.log("here",res.data.is_office_network)
         // setIsLocal(res.data?.is_office_network ?? false);
         setError(null);
       } catch (err) {

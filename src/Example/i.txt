@@ -1,3 +1,86 @@
+PolicyManagement/
+        ├── PolicyPage.jsx             # Main Container
+        ├── components/
+        │   ├── PolicySidebar.jsx      # Step Navigation
+        │   ├── PolicySectionLayout.jsx # Wrapper for Read/Edit modes
+        │   ├── PolicyModal.jsx        # Generic Dynamic Modal
+        │   └── DynamicFormRenderer.jsx # Maps JSON schema to Inputs
+        └── sections/
+            ├── GeneralPolicy.jsx
+            ├── AttendancePolicy.jsx
+            ├── LeavePolicy.jsx
+            ├── HolidayPolicy.jsx
+            ├── ShiftPolicy.jsx
+            ├── OvertimePolicy.jsx
+            ├── DisciplinaryPolicy.jsx
+            ├── JobStructurePolicy.jsx
+            ├── SalaryStructurePolicy.jsx
+            └── TaxPolicy.jsx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 npm i @nivo/line @nivo/bar @nivo/pie
 https://hr-payroll-fawn.vercel.app/
 

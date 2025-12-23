@@ -79,6 +79,8 @@ import HelpCenter from './Pages/Help/HelpCenter';
 import ShortCut from './Pages/Help/Lists/ShorCut';
 import ChatArea from './Pages/message/ChatArea';
 import ChatIndex from './Pages/message/ChatIndex';
+// import PolicyPage from './Example/Policy/PolicyPage';
+import PolicyPage from './Pages/components/pages/PolicyPage';
 
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
@@ -112,6 +114,7 @@ function App() {
       <>
         {' '}
         <Route path="/login" element={<Login />} />
+        <Route path="/log" element={<PolicyPage />} />
         <Route path="/Forgot_Password" element={<ForgetPassword />} />
         <Route path="/verification" element={<OTPVerification />} />
         <Route path="/UpdatePassword" element={<UpdatePassword />} />

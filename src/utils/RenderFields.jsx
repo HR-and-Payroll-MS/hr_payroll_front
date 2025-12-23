@@ -141,25 +141,26 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
     const showDelete = deletableFields.includes(key);
 
     return (
-      <div key={key} className="w-96 flex gap-2 justify-between text-nowrap">
-       {label!=="Photo" && <p className="flex w-full">
-          <span className="min-w-40 text-gray-400 mr-3">{label}</span>
+  <div key={key} className="w-96 flex gap-2 justify-between text-nowrap">
+    {label !== "Photo" && (
+      /* Changed <p> to <div> to allow <fieldset> and complex components inside */
+      <div className="flex w-full items-center"> 
+        <span className="min-w-40 text-gray-400 mr-3">{label}</span>
 
-          {isFieldEditable ? (
-            key === "notes" ? (
-              <textarea
-                rows={3}
-                value={value || ""}
-                onChange={(e) =>
-                  handleInputChange(sectionKey, key, e.target.value)
-                }
-                className="w-full border rounded px-3 py-1 focus:ring-1 focus:ring-green-500"
-              />
-            ) : (
-              <>
-               {renderSpecialField(sectionKey, key, value, handleInputChange)
-                                ||
-                (key.toLowerCase().includes("date") ? (
+        {isFieldEditable ? (
+          key === "notes" ? (
+            <textarea
+              rows={3}
+              value={value || ""}
+              onChange={(e) =>
+                handleInputChange(sectionKey, key, e.target.value)
+              }
+              className="w-full border rounded px-3 py-1 focus:ring-1 focus:ring-green-500"
+            />
+          ) : (
+            <div className="flex w-full items-center">
+              {renderSpecialField(sectionKey, key, value, handleInputChange) || (
+                key.toLowerCase().includes("date") ? (
                   <CustomDatePicker
                     value={value}
                     onChange={(newValue) => handleInputChange(sectionKey, key, newValue)}
@@ -178,44 +179,32 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
                     onChange={(e) => handleInputChange(sectionKey, key, e.target.value)}
                     className="w-full rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500 border border-gray-300"
                   />
-                ))
-                                  
-               }
-               {/* {sectionKey === "payroll" && key === "employeestatus" ? (<Dropdown onChange={(e) => handleInputChange(sectionKey, key, e)} options={EMPLOYEE_STATUS_OPTIONS.map((o)=>o.label)}/>
-               ) :
-                (
-                <input type={ key.toLowerCase().includes("date") ? "date" : isTimeField ? "time" : "text" }
-                value={ key.toLowerCase().includes("date") ? formatDateForInput(value) : isTimeField ? extractTime(value) : value || "" } onChange={(e) => { const newValue = isTimeField ? mergeTimeIntoISO(value, e.target.value) : e.target.value; 
-                  handleInputChange(sectionKey, key, newValue); }} className="w-full  rounded px-3 py-1 focus:ring-1 outline-0 focus:ring-green-500" /> )
-                  
-                  
-              } */}
+                )
+              )}
 
-
-
-                {showDelete && (
-                  <button type="button" className="ml-2 text-red-500 px-2 py-1 text-sm border border-red-300 rounded hover:bg-red-100"
-                    onClick={() =>
-                      handleInputChange(sectionKey, key, null)
-                    }
-                  >Delete
-                  </button>
-                )}
-              </>
-            )
-            ) : (
-              <span className="text-gray-700 font-semibold">
-                {value || (
-                  <span className="text-gray-400 italic">
-                    Not provided
-                  </span>
-                )}
-              </span>
-          )}
-        </p>}
-        <span className="text-slate-100">|</span>
+              {showDelete && (
+                <button
+                  type="button"
+                  className="ml-2 text-red-500 px-2 py-1 text-sm border border-red-300 rounded hover:bg-red-100"
+                  onClick={() => handleInputChange(sectionKey, key, null)}
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          )
+        ) : (
+          <span className="text-gray-700 font-semibold">
+            {value || (
+              <span className="text-gray-400 italic">Not provided</span>
+            )}
+          </span>
+        )}
       </div>
-    );
+    )}
+    <span className="text-slate-100">|</span>
+  </div>
+);
   });
 };
 

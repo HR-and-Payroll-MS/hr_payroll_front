@@ -158,6 +158,8 @@ import { useEffect, useState } from "react";
 import ImageUploader from "./ImageUploader";
 import useAuth from "../../Context/AuthContext";
 import { getLocalData } from "../../Hooks/useLocalStorage";
+import { useTableContext } from "../../Context/TableContext";
+import { useProfile } from "../../Context/ProfileContext";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 // 🔹 helper: convert base64 → File
@@ -174,10 +176,13 @@ const base64ToFile = (base64, filename) => {
 };
 
 export default function ProfilePicture({ currentPhoto, setEmployeeData }) {
+  
+  const { refreshProfile } = useProfile();
   const { axiosPrivate } = useAuth();
   const [image, setImage] = useState(null);
   const [open, setOpen] = useState(false);
-
+    const { refreshTableSilently } = useTableContext();
+console.log("current photo",currentPhoto)
   // 🔹 upload image when it changes
   useEffect(() => {
     if (!image) return;
@@ -197,7 +202,10 @@ export default function ProfilePicture({ currentPhoto, setEmployeeData }) {
             "Content-Type": "multipart/form-data",
           },
         });
-
+        await refreshProfile();
+        refreshTableSilently('users');
+        
+      
         // Update the parent state so the whole header and app knows about the new photo
         if (response.data) {
            setEmployeeData(response.data);
@@ -213,16 +221,14 @@ export default function ProfilePicture({ currentPhoto, setEmployeeData }) {
   }, [image, axiosPrivate, setEmployeeData]);
 
   // Determine what to display: New selection OR current DB photo
-  const displayImage = image 
-    ? (typeof image === "string" ? image : URL.createObjectURL(image)) 
-    : currentPhoto;
+  const displayImage = image ? (typeof image === "string" ? image : URL.createObjectURL(image)) : `${BASE_URL}${currentPhoto}`;
 
   return (
     <>
       <div className="relative rounded-full bg-amber-800 shadow w-28 h-28">
         {displayImage ? (
           <img
-          src={displayImage||`${BASE_URL}${currentPhoto}`}
+          src={displayImage}
             // src={displayImage}
             className="w-28 h-28 rounded-full border-4 border-white shadow object-cover"
             alt="Profile"

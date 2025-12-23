@@ -55,11 +55,11 @@ export function SearchStatus({ onFiltersChange ,employeeClicked}) {
   return (
     <div id="left" className="flex py-2.5 gap-3 justify-between items-center">
       <InputField
-        searchMode='api'
+        searchMode='input'
         placeholder={'Search Employee'}
         apiEndpoint="/api/employees/search"
         displayKey="name"
-        onSelect={handleEmployeeSelect}
+        onSelect={(e)=>employeeClicked(e)}
       />
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">

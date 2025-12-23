@@ -5,8 +5,22 @@ import { SearchStatus } from '../../../Components/Level2Hearder';
 import { useNavigate } from "react-router-dom";
 import ExportTable from '../../../Components/ExportTable';
 import { useTable } from '../../../Context/useTable';
+import Icon from '../../../Components/Icon';
+import { useProfile } from '../../../Context/ProfileContext';
 
 function EmployeeDirectory() {
+  const [isRotating, setIsRotating] = useState(false);
+  
+    const {refreshProfile} = useProfile();
+
+const handleRotate = () => {
+  setIsRotating(true);
+  // Optional: Reset the state after animation ends (e.g., 500ms)
+  setTimeout(() => setIsRotating(false), 500);
+  
+  // Call your refresh logic here if needed
+  refreshProfile();
+};
   const navigate = useNavigate();
   const [filters, setFilters] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,24 +48,15 @@ function EmployeeDirectory() {
     setExportData(newData);
   }, []);
 
-  // 2. Client-Side Filtering Logic (The "Best" Way)
-  // We use useMemo so this only recalculates when data, filters, or searchTerm changes
   const filteredData = useMemo(() => {
-    // Ensure we are working with an array (handles your .results structure)
     const sourceData = data?.results || data || [];
     
     return sourceData.filter(item => {
-      // A. Search Term Filter (checks fullname)
       const matchesSearch = item?.general?.fullname
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase());
-
-      // B. Dropdown/Status Filters
-      // This checks if the item's properties match all active filters
       const matchesFilters = Object.entries(filters).every(([key, value]) => {
         if (!value) return true;
-        // This handles nested paths (e.g., if key is "gender", check item.general.gender)
-        // Adjust this logic if your SearchStatus sends keys like "payroll_employeestatus"
         return item.general?.[key] === value || item.payroll?.[key] === value || item.job?.[key] === value;
       });
 
@@ -76,16 +81,16 @@ function EmployeeDirectory() {
     <div className='p-4 flex flex-col h-full'>
       <Header Title="Employee Directory" subTitle="View all employees and click to view detail">
         <div className="flex gap-2">
-          <input
-            className="border p-2 rounded-lg text-sm w-64"
-            placeholder="Search by name..."
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
           <button 
             onClick={refresh} 
-            className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
-          >
-            🔄 Refresh
+            className="px-4 py-2 text-blue-600 rounded-lg transition-colors"
+          ><Icon 
+    name="RotateCw"
+    onClick={handleRotate}
+    className={`w-4 h-4 transition-transform duration-500 cursor-pointer ${
+      isRotating ? "rotate-[360deg]" : "rotate-0"
+    }`}
+  />
           </button>
         </div>
         
@@ -100,10 +105,10 @@ function EmployeeDirectory() {
       </Header>
 
       <SearchStatus 
-        employeeClicked={handleSearchClick} 
+        employeeClicked={setSearchTerm} 
         onFiltersChange={updateFilter} 
       />
-
+{console.log(filteredData)}
       <div className="flex-1 mt-4">
         <Table 
           Data={filteredData} 

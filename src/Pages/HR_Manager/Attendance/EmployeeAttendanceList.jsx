@@ -10,30 +10,26 @@ const TABLE_MODES = {
   DEPARTMENT: "DEPARTMENT",
   EMPLOYEE: "EMPLOYEE",
 };
-
-
-
-/* -------- MOCK EMPLOYEE DATA (for drill-down only) -------- */
-const employeeAttendanceMock = [
-  {
-    id: 1,
-    employee: {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      pic: "",
-    },
-    attendance: {
-      date: "2025-11-23",
-      clockIn: "08:59 AM",
-      clockInLocation: "HQ Office - Main Gate",
-      clockOut: "05:02 PM",
-      clockOutLocation: "HQ Office - Side Exit",
-      workSchedules: "9:00 AM - 5:00 PM",
-      paidTime: "8h 03m",
-      notes: "On time",
-    },
-  },
-];
+// const employeeAttendanceMock = [
+//   {
+//     id: 1,
+//     employee: {
+//       name: "John Doe",
+//       email: "john.doe@example.com",
+//       pic: "",
+//     },
+//     attendance: {
+//       date: "2025-11-23",
+//       clockIn: "08:59 AM",
+//       clockInLocation: "HQ Office - Main Gate",
+//       clockOut: "05:02 PM",
+//       clockOutLocation: "HQ Office - Side Exit",
+//       workSchedules: "9:00 AM - 5:00 PM",
+//       paidTime: "8h 03m",
+//       notes: "On time",
+//     },
+//   },
+// ];
 
 function EmployeeAttendanceList() {
   const { axiosPrivate } = useAuth();
@@ -43,11 +39,7 @@ function EmployeeAttendanceList() {
   const [history, setHistory] = useState([]);
   const [dep, setDep] = useState("");
   const [loading, setLoading] = useState(true);
-
-  // 🔒 prevents double-fetch (React StrictMode safe)
   const fetchedRef = useRef(false);
-
-  /* ================= FETCH DEPARTMENTS ================= */
 
   useEffect(() => {
     if (fetchedRef.current) return;
@@ -83,21 +75,18 @@ function EmployeeAttendanceList() {
 
     loadDepartments();
   }, [axiosPrivate]);
-
-  /* ================= ROW CLICK ================= */
-
 const onRowClick = async (rowIndex,index,data) => {
-  // console.log(rowIndex , "rowIndex")
-  // console.log(index , "index")
-  // console.log(data , "data")
-  setDep(data[index].department_name)
-  const id=data[index].department_id
+  console.log(rowIndex , "rowIndex")
+  console.log(index , "index")
+  console.log(data , "data")
+  setDep(data[index]?.department_name)
+  const id=data[index]?.department_id
+  console.log("id",id)
   setLoading(true)
   setHistory((prev) => [...prev, tableConfig]);
   setTableMode(TABLE_MODES.EMPLOYEE);
 
   try {
-    // 🔥 FETCH EMPLOYEES BY DEPARTMENT
     const res = await axiosPrivate.get(
       `/attendances/departments/${id}/`
     );
@@ -139,8 +128,6 @@ const onRowClick = async (rowIndex,index,data) => {
     });
   } catch (err) {
     console.error("Failed to load employees:", err);
-
-    // fallback: empty table instead of crash
     setTableConfig((prev) => ({
       ...prev,
       Data: [],
@@ -151,16 +138,12 @@ const onRowClick = async (rowIndex,index,data) => {
   }
 };
 
-  /* ================= BACK ================= */
-
   const handleBack = () => {
     const prev = history[history.length - 1];
     setHistory((h) => h.slice(0, -1));
     setTableConfig(prev);
     setTableMode(TABLE_MODES.DEPARTMENT);
   };
-
-  /* ================= RENDER ================= */
 
   if (!tableConfig) {
     return (

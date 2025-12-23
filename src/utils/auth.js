@@ -12,7 +12,7 @@ export function getRefreshToken() {
 export async function refreshToken() {
   try {
     const refresh = getRefreshToken();
-    const res = await axiosPublic.post("/auth/jwt/refresh/", { refresh });
+    const res = await axiosPublic.post("/auth/djoser/jwt/refresh/", { refresh });
 
     localStorage.setItem("access", res.data.access);
     return res.data.access;

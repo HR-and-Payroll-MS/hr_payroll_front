@@ -9,20 +9,23 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { TableProvider } from "./TableContext"
+import { ProfileProvider } from "./ProfileContext"
 export default function AppProvider({children})
 {
     return <AuthContextProvider>
               <SocketProvider>
                 <NetworkProvider>
                   <NotificationProvider>
-                    <TableProvider>
-                     <ThemeContext>
-                      {/* <CssBaseline /> */}
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        {children}
-                      </LocalizationProvider>
-                     </ThemeContext>
-                     </TableProvider>
+                    <ProfileProvider>
+                      <TableProvider>
+                        <ThemeContext>
+                          {/* <CssBaseline /> */}
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            {children}
+                          </LocalizationProvider>
+                        </ThemeContext>
+                      </TableProvider>
+                     </ProfileProvider>
                   </NotificationProvider>
                 </NetworkProvider>
               </SocketProvider>

@@ -32,7 +32,7 @@ export default function NotificationBell({ role = "EMPLOYEE", onOpenCenter }) {
         onClick={() => setOpen((v) => !v)}
         className="relative p-2 rounded-md hover:bg-slate-100"
       >
-        <Icon name="BellRing" className="h-6 w-6" />
+        <Icon name="BellRing" className="h-4 w-4" />
 
         {unreadCount > 0 && (
           <span className="absolute top-0 right-1 w-4 h-4 bg-rose-500 text-white text-xs flex items-center justify-center rounded-full">

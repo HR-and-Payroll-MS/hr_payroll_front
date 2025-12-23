@@ -90,7 +90,7 @@ import Icon from '../../Components/Icon'
 export default function ProfileHeader({ employeeData, setEmployeeData }) {
   const general = employeeData?.general || {};
   const job = employeeData?.job || {};
-
+  console.log(employeeData,"employeeData",general,"general", job,"job")
   return (
     <div className="w-full bg-white rounded-md pb-4 overflow-hidden">
       <div 

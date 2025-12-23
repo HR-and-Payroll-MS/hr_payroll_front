@@ -10,7 +10,6 @@ export default function Table({ Data, setExportData, Structure, ke, clickable = 
   const { data, page, setPage, totalPages } = usePagination(5, Data || []);
   const prevDataRef = useRef(null);
 
-  // Sync Export Data
   useEffect(() => {
     if (data && JSON.stringify(data) !== JSON.stringify(prevDataRef.current)) {
       if (setExportData) {
@@ -48,7 +47,7 @@ export default function Table({ Data, setExportData, Structure, ke, clickable = 
       {structuredData.map((i, index) => (
         <tr 
           key={index} 
-          {...(clickable && { onClick: () => handleRowClick(i.at(-1), index, data[index]) })} 
+          {...(clickable && { onClick: () => handleRowClick(i.at(-1), index, data) })} 
           className={`${clickable ? "cursor-pointer" : ""} hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-sm text-gray-700`}
         >
           {i.map((j, jndex) =>
@@ -61,6 +60,22 @@ export default function Table({ Data, setExportData, Structure, ke, clickable = 
         </tr>
       ))}
     </tbody>
+
+    //   <tbody>
+//   {structuredData.map((i, index) => (
+//     <tr key={index} 
+// {...(clickable && { onClick: () => handleRowClick(i.at(-1), index,data),})} className={`${clickable ? "cursor-pointer" : ""} hover:bg-slate-50 dark:hover:bg-slate-700 font-semibold text-sm text-gray-700 `}>
+//       {/* {console.log("Row data for click:",i)} */}
+//       {i.map((j, jndex) =>
+//         jndex !== i.length - 1 && (
+//           <td key={jndex} className="border-b border-gray-100 dark:border-gray-600 px-4 py-2">
+//             <TableStructures nickname={nickname} rawData={Data} Comps={components} data={data[index]} D1={D1} id={bodyStructure[jndex]} item={j} />
+//           </td>
+//         )
+//       )}
+//     </tr>
+//   ))}
+// </tbody>
   ) : (
     <tbody>
       <tr>
@@ -82,7 +97,6 @@ export default function Table({ Data, setExportData, Structure, ke, clickable = 
           {table_content}
         </table>
       </div>
-      {/* Pagination component now controls the page state inside the hook */}
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
@@ -171,7 +185,24 @@ export default function Table({ Data, setExportData, Structure, ke, clickable = 
 //         </tr>
 //       </thead>
 //     );
+
+
+
+
+
+
+
+
+
+
+
+
 //   const structuredData = useFormattedTableData(data, Structure, ke);
+
+
+
+
+
 //  const table_content = loading ? (
 //   <tbody>
 //     <tr>
@@ -184,6 +215,7 @@ export default function Table({ Data, setExportData, Structure, ke, clickable = 
 //       </td>
 //     </tr>
 //   </tbody>
+
 // ) : structuredData.length > 0 ? (
 //   <tbody>
 //   {structuredData.map((i, index) => (
@@ -199,6 +231,12 @@ export default function Table({ Data, setExportData, Structure, ke, clickable = 
 //     </tr>
 //   ))}
 // </tbody>
+
+
+
+
+
+
 // ) : (
 //   <tbody>
 //     <tr>

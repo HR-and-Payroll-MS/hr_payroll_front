@@ -21,7 +21,10 @@ export const TableProvider = ({ children }) => {
 
     setLoadingStates(prev => ({ ...prev, [tableName]: true }));
     try {
+      console.log("herer")
+      console.log('Axios config:', axiosPrivate.getUri({ url }));
       const response = await axiosPrivate.get(url);
+      console.log(url,response)
       const freshData = response.data.results || response.data;
       setTableCache(prev => ({
         ...prev,

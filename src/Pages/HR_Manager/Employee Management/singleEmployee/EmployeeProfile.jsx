@@ -2,11 +2,12 @@ import React from 'react'
 import Icon from '../../../../Components/Icon';
 import useAuth from '../../../../Context/AuthContext';
 import { useTableContext } from '../../../../Context/TableContext';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 function EmployeeProfile({employeeData,role}) {  
   const {axiosPrivate} = useAuth();
   const { refreshTableSilently } = useTableContext();
   const handleDelete = async () => {
-    
+  
   try {
     const response = await axiosPrivate.delete(`/employees/${employeeData?.id}/`);
     
@@ -28,7 +29,7 @@ function EmployeeProfile({employeeData,role}) {
               className="w-20 h-20 object-fill rounded-full"
                 src={
     employeeData?.general?.photo
-      ? `http://172.16.27.124:3000${employeeData.general.photo}`
+      ? `${BASE_URL}${employeeData.general.photo}`
       : "/pic/download (48).png"
   }
               alt="Profile"
