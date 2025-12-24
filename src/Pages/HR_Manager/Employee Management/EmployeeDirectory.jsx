@@ -16,10 +16,7 @@ function EmployeeDirectory() {
 
 const handleRotate = () => {
   setIsRotating(true);
-  // Optional: Reset the state after animation ends (e.g., 500ms)
   setTimeout(() => setIsRotating(false), 500);
-  
-  // Call your refresh logic here if needed
   refreshProfile();
 };
   const navigate = useNavigate();
@@ -27,12 +24,11 @@ const handleRotate = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [ExportData, setExportData] = useState(null);
 
-  // 1. Fetch data using the hook (Name based, no dynamic URL here to prevent loops)
   const { data, isLoading, refresh } = useTable("users");
 
   const onRowClick = (id) => navigate(`/hr_dashboard/users/${id}`);
   const handleSearchClick = (e) => navigate(`/hr_dashboard/users/${e}`);
-
+  const setFilter =(e)=>{setSearchTerm(e)}
   const updateFilter = (obj) => {
     const key = Object.keys(obj)[0];
     const value = obj[key];
@@ -64,6 +60,21 @@ const handleRotate = () => {
       return matchesSearch && matchesFilters;
     });
   }, [data, filters, searchTerm]);
+  // const filteredDataForAll = useMemo(() => {
+  //   const sourceData = data?.results || data || [];
+    
+  //   return sourceData.filter(item => {
+  //     const matchesSearch = item?.general?.fullname
+  //       ?.toLowerCase()
+  //       .includes(searchTerm.toLowerCase());
+  //     const matchesFilters = Object.entries(filters).every(([key, value]) => {
+  //       if (!value) return true;
+  //       return item.general?.[key] === value || item.payroll?.[key] === value || item.job?.[key] === value;
+  //     });
+
+  //     return matchesSearch && matchesFilters;
+  //   });
+  // }, [data, filters, searchTerm]);
 
   const structure = [3, 1, 1, 1, 1, 1];
   const title = ['USER', 'PHONE', 'JOIN DATE', 'GENDER', 'STATUS', 'MARITAL STATUS'];
@@ -107,10 +118,11 @@ const handleRotate = () => {
 
       <SearchStatus 
         employeeClicked={setSearchTerm} 
-        onFiltersChange={updateFilter} 
+        onFiltersChange={setSearchTerm} 
+        setFilter={setFilter}
       />
 {console.log(filteredData)}
-      <div className="flex-1 mt-4">
+      <div className="flex-1 mt-4 h-full max-h-9/12">
         <Table 
           pages={9}
           Data={filteredData} 
@@ -126,6 +138,74 @@ const handleRotate = () => {
 }
 
 export default EmployeeDirectory;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

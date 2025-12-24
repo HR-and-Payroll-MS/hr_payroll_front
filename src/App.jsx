@@ -81,6 +81,7 @@ import ChatArea from './Pages/message/ChatArea';
 import ChatIndex from './Pages/message/ChatIndex';
 // import PolicyPage from './Example/Policy/PolicyPage';
 import PolicyPage from './Pages/components/pages/PolicyPage';
+import TaxCode from './Pages/HR_Manager/TaxCode/TaxCode';
 
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
@@ -166,6 +167,7 @@ function App() {
             <Route path="View_Employee" element={<ViewEmployee />} />
             <Route path="message" element={<ChatIndex />} />
             <Route path="Request" element={<LeaveRequestForEmployees />} />
+            <Route path="tax_code" element={<TaxCode />} />
             <Route path="efficiency_report" element={<EfficiencyReport />} />
             <Route path="Addemployee" element={<AddEmployee />} />
             <Route path="efficiencyhr" element={<HREfficiencyForm />} />
@@ -252,7 +254,8 @@ function App() {
 
             <Route path="logout" element={<LogOut/>} />
         {/* ------------------------- hr ---------------------- */}
-        <Route element={<Routes allowedRoles={['hr']} />}>
+        <Route element={<Routes allowedRoles={['Line Manager']} />}>
+          {console.log("here")}
           <Route path="department_manager" element={<MainLayout />}>
             <Route path="clock_in" element={<ClockIn />} />
             <Route index element={<DashboardLayout />} />

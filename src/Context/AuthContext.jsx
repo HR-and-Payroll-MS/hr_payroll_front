@@ -48,7 +48,6 @@ export function AuthContextProvider({ children }) {
     });
   }, [getAccessToken, onRefresh, logout]);
 
-  // Cleanup interceptors on unmount
   useEffect(() => {
     return () => {
       if (axiosPrivate && typeof axiosPrivate._ejectInterceptors === 'function') {
@@ -57,7 +56,6 @@ export function AuthContextProvider({ children }) {
     };
   }, [axiosPrivate]);
 
-  // Restore auth from localStorage on mount
   useEffect(() => {
     const access = getLocalData('access');
     const userId = getLocalData('id');
@@ -72,7 +70,6 @@ export function AuthContextProvider({ children }) {
     setIsAuthLoading(false);
   }, []);
 
-  // Fetch employees ONLY when user is authenticated
   useEffect(() => {
     if (!auth.user || !auth.accessToken) {
       setSearchEmployees([]);
@@ -96,7 +93,7 @@ export function AuthContextProvider({ children }) {
       } catch (err) {
         console.error('Failed to fetch employees:', err);
         if (err?.response?.status === 401) {
-          logout(); // Token invalid/expired and refresh failed
+          logout();
         }
       } finally {
         setLoading(false);
@@ -106,7 +103,6 @@ export function AuthContextProvider({ children }) {
     fetchEmployees();
   }, [auth.user, auth.accessToken, axiosPrivate, logout]);
 
-  // Manual setUser (optional helper)
   const setUser = useCallback((userData, accessToken) => {
     if (!userData || !accessToken) return;
 
@@ -120,7 +116,6 @@ export function AuthContextProvider({ children }) {
     });
   }, []);
 
-  // LOGIN FUNCTION - FIXED: No more 401 on /users/me/
   const login = useCallback(
     async (username, password) => {
       try {
@@ -134,11 +129,9 @@ export function AuthContextProvider({ children }) {
           throw new Error('Invalid auth response from server');
         }
 
-        // Store tokens
         setLocalData('access', access);
         setLocalData('refresh', refresh);
 
-        // Fetch user profile using the FRESH token directly
         const userRes = await axiosPublic.get('/users/me/', {
           headers: {
             Authorization: `Bearer ${access}`,
@@ -147,10 +140,10 @@ export function AuthContextProvider({ children }) {
 
         const userData = userRes.data;
         console.log(userData)
-        // Store user info
         console.log(userData, '<-- user data after login');
         setLocalData('id', userData.username);
         setLocalData('role', userData.groups?.[0] ?? null);
+        console.log("role",userData.groups?.[0])
         setLocalData('user_id', userData.employee_id); 
 
         // Update auth state → triggers employee fetch automatically

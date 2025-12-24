@@ -10,9 +10,9 @@ function WelcomeOverlay({Title="No Title",subTitle="No sub title",isOpen, setClo
   }
 
   return (
-    <Modal isOpen={isOpen} location={'center'}>
+    <Modal transparency='bg-slate-800/50 dark:bg-slate-950/75' isOpen={isOpen} location={'center'}>
         {/* transform -translate-x-full transition-transform duration-300 ease-in-out */}
-        <div className="  text-center gap-3.5 justify-center  items-center rounded h-fit  lg:w-3/12  sm:w-3/5 md:w-5/12 px-6 pb-6 dark:bg-slate-800 dark:text-slate-300 bg-amber-50 flex flex-col">
+        <div className="  text-center gap-3.5 justify-center dark:shadow-2xl dark:inset-shadow-2xs dark:inset-shadow-slate-700 shadow-2xl inset-shadow-2xs inset-shadow-white  items-center rounded h-fit  lg:w-3/12  sm:w-3/5 md:w-5/12 px-6 pb-6 dark:bg-slate-800 dark:text-slate-300 bg-amber-50 flex flex-col">
           <div className="flex-1 flex gap-1 flex-col p-2  ">
             <img
               className="flex-1 m-1.5 max-h-28 object-cover"

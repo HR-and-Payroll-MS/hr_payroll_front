@@ -17,7 +17,7 @@ export default function Login() {
     else if (auth?.user?.role === 'Manager') navigate('/hr_dashboard');
     else if (auth?.user?.role === 'Payroll') navigate('/payroll');
     else if (auth?.user?.role === 'Employee') navigate('/employee');
-    else if (auth?.user?.role === 'Dep_Man') navigate('/department_manager');
+    else if (auth?.user?.role === 'Line Manager') navigate('/department_manager');
   }, [auth, navigate]);
  
   const handleForgotPassword = () => {

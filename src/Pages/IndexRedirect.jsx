@@ -17,6 +17,9 @@ export default function IndexRedirect() {
       case "Manager":
         navigate("/hr_dashboard", { replace: true });
         break;
+      case "Line Manager":
+        navigate("/department_manager", { replace: true });
+        break;
 
       case "Payroll":
         navigate("/payroll", { replace: true });

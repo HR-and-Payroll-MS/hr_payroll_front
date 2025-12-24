@@ -174,10 +174,9 @@ const base64ToFile = (base64, filename) => {
   }
   return new File([u8arr], filename, { type: mime });
 };
-
-export default function ProfilePicture({ currentPhoto, setEmployeeData }) {
+export default function ProfilePicture({ currentPhoto, setEmployeeData,userName="" }) {
   
-  const { refreshProfile } = useProfile();
+  const { refreshProfile} = useProfile();
   const { axiosPrivate } = useAuth();
   const [image, setImage] = useState(null);
   const [open, setOpen] = useState(false);
@@ -221,23 +220,16 @@ console.log("current photo",currentPhoto)
   }, [image, axiosPrivate, setEmployeeData]);
 
   // Determine what to display: New selection OR current DB photo
-  const displayImage = image ? (typeof image === "string" ? image : URL.createObjectURL(image)) : `${BASE_URL}${currentPhoto}`;
-
+  const displayImage = image ? (typeof image === "string" ? image : URL.createObjectURL(image)) : (currentPhoto?`${BASE_URL}${currentPhoto}`:null);
+  console.log("displayImage",userName)
   return (
     <>
       <div className="relative rounded-full bg-amber-800 shadow w-28 h-28">
         {displayImage ? (
-          <img
-          src={displayImage}
-            // src={displayImage}
-            className="w-28 h-28 rounded-full border-4 border-white shadow object-cover"
-            alt="Profile"
-          />
-
- 
+          <img src={displayImage} className="w-28 h-28 rounded-full border-4 border-white shadow object-cover"/>
         ) : (
           <div className="rounded-full bg-slate-800 dark:bg-slate-600 text-slate-100 flex items-center justify-center w-28 h-28 text-4xl border-4 border-white shadow">
-            {("Profile Picture" ?? "")
+            {(userName ?? "")
               .split(" ")
               .map((n) => n[0])
               .slice(0, 2)

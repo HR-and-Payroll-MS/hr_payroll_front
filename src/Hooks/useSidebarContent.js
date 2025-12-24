@@ -147,7 +147,8 @@ export const sidebarList = {
       Visible: false,
       sub: [
         { subPath: 'efficiencyhr', label: 'Create Efficiency Form' },
-        { subPath: 'policies', label: 'Policy' }
+        { subPath: 'policies', label: 'Policy' },
+        { subPath: 'tax_code', label: 'Tax Code' },
       ],
     },
     // {
@@ -235,7 +236,7 @@ export const sidebarList = {
   },
 ],
 
-  Dep_Man: [
+  "Line Manager": [
   {
     Icons: 'Users',
     path: "null",

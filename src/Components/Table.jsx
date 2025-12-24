@@ -90,8 +90,8 @@ export default function Table({ Data,pages=5, setExportData, Structure, ke, clic
   );
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <div className="flex-1 overflow-y-auto scrollbar-hidden">
+    <div className="flex-1 flex overflow-hidden flex-col h-full">
+      <div className="flex-1 overflow-y-scroll h-full scrollbar-hidden">
         <table className="bg-white dark:bg-slate-800 border-gray-300 w-full">
           {table_header}
           {table_content}

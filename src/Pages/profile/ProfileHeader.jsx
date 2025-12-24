@@ -101,6 +101,7 @@ export default function ProfileHeader({ employeeData, setEmployeeData }) {
         {/* Pass the dynamic photo and state setter */}
         <ProfilePicture 
           currentPhoto={general?.photo} 
+          userName={general?.fullname}
           setEmployeeData={setEmployeeData} 
         />
         

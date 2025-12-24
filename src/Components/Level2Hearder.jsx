@@ -5,7 +5,7 @@ import Button from './Button';
 import { useState } from 'react';
 import ConfirmPopup from './ConfirmPopup';
 
-export function SearchStatus({ onFiltersChange ,employeeClicked}) {
+export function SearchStatus({ onFiltersChange,setFilter ,employeeClicked}) {
   const handleFilter = (item, key) => {
     if (!item) return;
     // console.log("Dropdown selected:", item, "key:", key);
@@ -64,7 +64,8 @@ export function SearchStatus({ onFiltersChange ,employeeClicked}) {
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
-          onChange={(i) => handleFilter(i, 'job_type')}
+          // onChange={(i) => handleFilter(i, 'job_type')}
+          onChange={(i) => {setFilter(i)}}
           options={jobOptions}
           text="text-xs font-semibold"
           placeholder="Job Type"
@@ -74,7 +75,8 @@ export function SearchStatus({ onFiltersChange ,employeeClicked}) {
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
-          onChange={(i) => handleFilter(i, 'gender')}
+          // onChange={(i) => handleFilter(i, 'gender')}
+          onChange={(i) => setFilter(i)}
           options={genderOptions}
           text="text-xs font-semibold"
           placeholder="Gender"
@@ -84,7 +86,8 @@ export function SearchStatus({ onFiltersChange ,employeeClicked}) {
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
-          onChange={(i) => handleFilter(i, 'department')}
+          // onChange={(i) => handleFilter(i, 'department')}
+          onChange={(i) => setFilter(i)}
           options={depOptions}
           text="text-xs font-semibold"
           placeholder="Department"
@@ -94,7 +97,8 @@ export function SearchStatus({ onFiltersChange ,employeeClicked}) {
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
         <Dropdown
-          onChange={(i) => handleFilter(i, 'is_active')}
+          // onChange={(i) => handleFilter(i, 'is_active')}
+          onChange={(i) => setFilter(i)}
           options={statOptions}
           text="text-xs font-semibold"
           placeholder="All Status"
