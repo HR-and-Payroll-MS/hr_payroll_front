@@ -5,9 +5,9 @@ import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
 // import { Commet, FourSquare } from "react-loading-indicators";
-export default function Table({ Data, setExportData, Structure, ke, clickable = true, components, title = [], onRowClick, nickname = "view", D1 }) {
+export default function Table({ Data,pages=5, setExportData, Structure, ke, clickable = true, components, title = [], onRowClick, nickname = "view", D1 }) {
   // Pass the full Data array to the hook. It will handle the slicing.
-  const { data, page, setPage, totalPages } = usePagination(5, Data || []);
+  const { data, page, setPage, totalPages } = usePagination(pages, Data || []);
   const prevDataRef = useRef(null);
 
   useEffect(() => {

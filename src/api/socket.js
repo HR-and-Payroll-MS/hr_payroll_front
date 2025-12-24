@@ -15,7 +15,7 @@ export function connectSocket(path = currentPath) {
   const token = getAccessToken();
   if (!token) return null;
 
-  socket = io("http://172.16.27.124:3000", {
+  socket = io("http://localhost:3000", {
   path,
   transports: ["polling", "websocket"],
   query: { token },

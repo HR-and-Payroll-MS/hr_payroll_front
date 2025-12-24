@@ -97,7 +97,7 @@ const handleRotate = () => {
         
         {ExportData && (
           <ExportTable 
-            data={ExportData} 
+            data={filteredData} 
             title={title} 
             bodyStructure={structure} 
             keys={ke2} 
@@ -112,6 +112,7 @@ const handleRotate = () => {
 {console.log(filteredData)}
       <div className="flex-1 mt-4">
         <Table 
+          pages={9}
           Data={filteredData} 
           setExportData={handleExportData} 
           title={title} 
