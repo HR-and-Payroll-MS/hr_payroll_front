@@ -12,13 +12,13 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (auth?.user?.role === 'hr') navigate('/manager_dashboard');
-    else if (auth?.user?.role === 'Manager') navigate('/hr_dashboard');
-    else if (auth?.user?.role === 'Payroll') navigate('/payroll');
-    else if (auth?.user?.role === 'Employee') navigate('/employee');
-    else if (auth?.user?.role === 'Line Manager') navigate('/department_manager');
-  }, [auth, navigate]);
+  // Inside Login.jsx
+useEffect(() => {
+  // Only redirect to Index if we actually have a user
+  if (auth?.user) {
+    navigate('/', { replace: true });
+  }
+}, [auth, navigate]);
  
   const handleForgotPassword = () => {
     navigate('/Forgot_Password');

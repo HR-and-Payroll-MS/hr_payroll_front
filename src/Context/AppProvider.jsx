@@ -13,22 +13,22 @@ import { ProfileProvider } from "./ProfileContext"
 export default function AppProvider({children})
 {
     return <AuthContextProvider>
-              <SocketProvider>
-                <NetworkProvider>
-                  <NotificationProvider>
-                    <ProfileProvider>
-                      <TableProvider>
+              {/* <SocketProvider> */}
+                {/* <NetworkProvider> */}
+                  {/* <NotificationProvider> */}
+                    {/* <ProfileProvider> */}
+                      {/* <TableProvider> */}
                         <ThemeContext>
                           {/* <CssBaseline /> */}
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             {children}
                           </LocalizationProvider>
                         </ThemeContext>
-                      </TableProvider>
-                     </ProfileProvider>
-                  </NotificationProvider>
-                </NetworkProvider>
-              </SocketProvider>
+                      {/* </TableProvider> */}
+                     {/* </ProfileProvider> */}
+                  {/* </NotificationProvider> */}
+                {/* </NetworkProvider> */}
+              {/* </SocketProvider> */}
             </AuthContextProvider>
 }
 

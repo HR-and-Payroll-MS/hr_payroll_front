@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+
+/* <div class="shadow-[10px_10px_15px_0px_rgba(0,0,0,0.3)]"></div>  <!-- Down-right -->
+<div class="shadow-[-10px_-10px_20px_rgba(0,0,0,0.2)]"></div>   <!-- Up-left --> 
+<div class="shadow-[inset_0_10px_20px_rgba(0,0,0,0.2)]"></div>    <!-- Inset from top -->
+<div class="shadow-[inset_10px_0_15px_0_rgba(0,0,0,0.3)]"></div> <!-- Inset from left -->
+
+<div class="shadow-[0_10px_20px] shadow-blue-500/50"></div>  <!-- Custom offset + colored shadow -->*/
+
 .bgx{
     background-color: #121828;
     color:white;
