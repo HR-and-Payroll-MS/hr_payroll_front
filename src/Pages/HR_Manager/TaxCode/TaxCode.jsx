@@ -191,7 +191,7 @@ function TaxCode() {
     }
     closeEditor();
   };
-const drawer= <>{isModalOpen && <FileDrawer isModalOpen={isModalOpen} closeModal={closeEditor}>
+const drawer= <>{isModalOpen && <FileDrawer width='w-2/3' isModalOpen={isModalOpen} closeModal={closeEditor}>
             <div className="bg-white relative  shadow hover-bar h-full overflow-y-auto ">
                 <div className="bg-slate-50 p-4 sticky z-20  top-0 flex justify-between items-center">
                 <div>

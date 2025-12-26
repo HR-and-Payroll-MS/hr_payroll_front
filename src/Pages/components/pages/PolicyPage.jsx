@@ -12,7 +12,6 @@ import {
   FileText
 } from 'lucide-react';
 
-// --- Mock Data & Helpers ---
 
 const TAX_BRACKETS = [
   { threshold: 5000, rate: 0.2 }, // 20% tax for salary > 5000

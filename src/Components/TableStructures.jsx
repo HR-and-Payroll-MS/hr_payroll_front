@@ -5,12 +5,19 @@ import Drawer from './Drawer';
 import AttendanceCorrectionPage from '../Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
 import PayrollReportDrawer from '../Pages/HR_Manager/payroll_management/PayrollReportDrawer';
 import DocumentList from './DocumentList';
+import PayslipTemplate from './PayslipTemplate';
+import PayslipTemplate2 from './PayslipTemplate2';
 // import { BASE_URL } from '../api/axiosInstance';
+
+const formatMoney = (amount) => {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+};
+
 function EmptyComponent() {
   return <div>No component provided</div>;
 }
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-function TableStructures({data="",id,D1, item,Comps = EmptyComponent,nickname,rawData}) {
+function TableStructures({data="",id,D1,D2, item,Comps = EmptyComponent,nickname,rawData}) {
 
   const [isModalOpen,setModalOpen] =useState(false);
   const openModal =()=>setModalOpen(true);
@@ -167,7 +174,154 @@ function TableStructures({data="",id,D1, item,Comps = EmptyComponent,nickname,ra
                           
                   </div>
       );
-
+      case 71:
+        return(
+          <div className="px-2 text-xs">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-slate-300 shadow flex items-center justify-center text-slate-700 font-bold text-xs">
+                                  {item[0]?.charAt(0)}{item[0]?.split(' ')[1]?.charAt(0)}
+                                </div>
+                                <div>
+                                  <p className="text-sm font-medium text-slate-900">{item[0]}</p>
+                                  <p className="text-xs text-slate-500">{item[1]}</p>
+                                </div>
+                              </div>
+                          
+                  </div>
+      );
+      case 72:
+        return(
+          <div className="px-2 text-xs text-right text-slate-600 font-medium">
+                              {formatMoney(item[0])}
+                          
+                  </div>
+      );
+      case 73:
+        return(
+          <div className="px-2 text-xs text-center">
+                              <span  className={`inline-flex shadow items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                item[0] < 22 ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'
+                              }`}>
+                                {item[0]} days
+                              </span>
+                          
+                  </div>
+      );
+      case 74:
+        return(
+          <div className="px-2 text-xs text-right">
+                               {item[0] > 0 ? (
+                                 <div className="flex flex-col items-end">
+                                   <span className="text-red-600 font-medium">-{formatMoney(item[0])}</span>
+                                   <span className="text-xs text-red-400">({item[0]} days)</span>
+                                 </div>
+                               ) : (
+                                 <span className="text-slate-300">-</span>
+                               )}
+                          
+                  </div>
+      );
+      case 75:
+        return(
+          <div className="px-2 text-xs text-right">
+                               {item[0] > 0 ? (
+                                 <span className="text-emerald-600 font-medium">+{formatMoney(item[0])}</span>
+                               ) : (
+                                 <span className="text-slate-300">-</span>
+                               )}
+                          
+                  </div>
+      );
+      case 76:
+        return(
+          <div className="px-2 text-xs text-right text-slate-600">
+                              {formatMoney(item[0])}
+                          
+                  </div>
+      );
+      case 77:
+        return(
+          <div className="px-2 text-xs text-right font-bold text-slate-800 bg-slate-50/50 group-hover:bg-slate-100/50">
+                              {formatMoney(item[0])}
+                          
+                  </div>
+      );
+      case 78:
+        return(
+          <div className="px-2 text-xs  text-start">
+            {console.log(D1)}
+                                        {D1 === 'draft' ? (
+                                          <button 
+                                            className="text-slate-600  shadow-xs hover:text-indigo-800 hover:bg-indigo-50 p-2 rounded-lg transition-colors"
+                                         onClick={openModal}> Edit
+                              { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
+                                        <Comps editable={true} payroll={data}/>
+                                        {/* <Comps month={D2} demoEmployees={rawData} Id={`${data?.id}`}/> */}
+                                        {/* {console.log("aaaaaaaaaaaaaaaaaaaaaaaa",data[id]?.id)} */}
+                                        {/* {console.log("data in table structure---->",data," id---->",id," item---->",item," rawData---->",rawData,"D1",D1)} */}
+                              </FileDrawer>)}
+                                          </button>
+                                        ) : (D1 === 'generate' ? (
+                                          <button 
+                                            // onClick={() => setSelectedEmployee(emp)}
+                                            className=" text-yellow-800 shadow-xs hover:bg-indigo-50 p-2 rounded-lg transition-colors"
+                                          onClick={openModal}> View
+                              { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
+                                      <Comps payroll={data}/>
+                                        {/* {console.log("aaaaaaaaaaaaaaaaaaaaaaaa",data[id]?.id)} */}
+                                        {/* {console.log("data in table structure---->",data," id---->",id," item---->",item," rawData---->",rawData,"D1",D1)} */}
+                              </FileDrawer>)}
+                                          </button>
+                                        ) : (
+                                          <span className="inline-flex shadow-xs items-center gap-1 text-gray-600 text-xs uppercase border border-gray-200 bg-gray-100 px-2 py-1 rounded">
+                                             <Icon name={"CheckCircle"} className="w-3 h-3" /> Submitted
+                                          </span>
+                                        )
+                                        )}
+                          
+                  </div>
+      );
+      case 771:
+        return(
+          <div className="px-2 text-xs text-start font-semibold" >
+                    {item[0]||"-"}       
+                  </div>
+      );
+      case 772:
+        return(
+          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}</div>
+      );
+      case 773:
+        return(
+          <div className="px-2 text-xs font-semibold text-right text-red-600">{item[0]||"-"}
+                          
+                  </div>
+      );
+      case 774:
+        return(
+          <div className="px-2 text-xs font-semibold text-right text-emerald-600">{item[0]||"-"}
+                          
+                  </div>
+      );
+      case 775:
+        return(
+          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}
+                          
+                  </div>
+      );
+      case 776:
+        return(
+          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}
+                          
+                  </div>
+      );
+      case 777:
+        return(
+          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}
+                          
+                  </div>
+      );
+      
       default:
         return <p>-</p>;
     }

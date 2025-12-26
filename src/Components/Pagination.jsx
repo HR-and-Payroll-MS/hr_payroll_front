@@ -52,7 +52,7 @@ import Icon from './Icon'
 // ............................       Working Pagination         ......................................
 export const Pagination=({ page, totalPages=1, onPageChange})=> {
   return (totalPages>1 &&
-    <div id="middle" className="flex  justify-between py-2 items-center ">
+    <div id="middle" className="flex  justify-between p-2 items-center ">
                 
                 <div className="flex items-center  gap-1.5">
                     <button onClick={()=>onPageChange(page - 1)} disabled={page === 1} className={` dark:border-slate-700 py-1.5 dark:hover:bg-slate-600 hover:bg-slate-200 px-1 border-gray-100 shadow-2xl border h-full`}>
@@ -86,7 +86,7 @@ export const Pagination=({ page, totalPages=1, onPageChange})=> {
 
 
 
-                    <button onClick={()=>onPageChange(page + 1)} disabled={page === totalPages}  className={` dark:hover:bg-slate-600 hover:bg-slate-200 dark:border-slate-700 dark:text-slate-300 py-1.5 px-1 border-gray-100 shadow-2xl border h-full`}> 
+                    <button onClick={()=>onPageChange(page + 1)} disabled={page === totalPages}  className={` dark:hover:bg-slate-600  hover:bg-slate-200 dark:border-slate-700 dark:text-slate-300 py-1.5 px-1 border-gray-100 shadow hover:inset-shadow-xs shadow-slate-200 border h-full`}> 
                         <Icon name={"ChevronRight"} className="w-4 h-4 text-slate-700 dark:text-slate-300"/>
                     </button>
                 </div>
@@ -97,13 +97,13 @@ export const Pagination=({ page, totalPages=1, onPageChange})=> {
 
 
 
-                {/* <div className="flex items-center gap-1.5">
-                    <p className={` dark:text-slate-300 font-semibold text-gray-500  text-xs`}>Showing 1 to 8 of 8 entries</p>
-                    <button className={` dark:border-slate-700 flex items-center py-1.5 px-2 border border-gray-100 rounded`}>
+                <div className="flex items-center gap-1.5">
+                    <p className={` dark:text-slate-300 font-semibold text-gray-500  text-xs`}>Total Page entries {totalPages}</p>
+                    {/* <button className={` dark:border-slate-700 flex items-center py-1.5 px-2 border border-gray-100 rounded`}>
                         <p className={` dark:text-slate-300 font-semibold text-gray-700  text-xs`}>Show 8</p>
                         <Icon name={"ChevronUp"} className="w-4 h-4 text-slate-700 dark:text-slate-300"/>
-                    </button>
-                </div> */}
+                    </button> */}
+                </div>
         </div>
   )
 }

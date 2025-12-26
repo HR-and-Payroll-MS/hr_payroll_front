@@ -5,7 +5,7 @@ import { Pagination } from "./Pagination";
 import ThreeDots from "../animations/ThreeDots";
 import TableStructures from "./TableStructures";
 // import { Commet, FourSquare } from "react-loading-indicators";
-export default function Table({ Data,pages=5, setExportData, Structure, ke, clickable = true, components, title = [], onRowClick, nickname = "view", D1 }) {
+export default function Table({ Data,pages=5,titleStructure=[], setExportData, Structure, ke, clickable = true, components, title = [], onRowClick, nickname = "view", D1,D2 }) {
   // Pass the full Data array to the hook. It will handle the slicing.
   const { data, page, setPage, totalPages } = usePagination(pages, Data || []);
   const prevDataRef = useRef(null);
@@ -26,16 +26,16 @@ export default function Table({ Data,pages=5, setExportData, Structure, ke, clic
   };
 
   const bodyStructure = Structure;
-  
+  console.log(ke)
   // Format the 10 items currently visible on this page
   const structuredData = useFormattedTableData(data, Structure, ke);
 
   const table_header = (
-    <thead className="bg-slate-100 sticky top-0 dark:bg-slate-700 rounded-xl">
+    <thead className="bg-slate-100 sticky shadow top-0 dark:bg-slate-700 ">
       <tr>
         {title.map((id, i) => (
           <th key={i} className="px-4 py-3 text-left">
-            <TableStructures id={11} item={[id]} />
+            <TableStructures  id={titleStructure[i]||11} item={[id]} />
           </th>
         ))}
       </tr>

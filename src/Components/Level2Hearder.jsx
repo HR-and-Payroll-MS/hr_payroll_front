@@ -367,13 +367,13 @@ export function AnnouncementSearch({ setQ, setPriority }) {
     </div>
   );
 }
-export function Generatepayroll({ setQ, setPriority,noCancel, action,icon, onDateClick, size, className, text,popup,setpopup, message, onConfirm, onCancel, confirmText, cancelText }) {
+export function Generatepayroll({
+   setPriority,
+   employees,
+   }) {
   const handleFilter = (employee) => {
     console.log('search', employee);
     setPriority(employee);
-  };
-  const handleEmployeeSelect = (employee) => {
-    setQ(employee);
   };
   const PayrollCycle = [
     { content: 'Monthly', svg: null },
@@ -387,33 +387,22 @@ export function Generatepayroll({ setQ, setPriority,noCancel, action,icon, onDat
   ];
 
   return (
-    <div
-      id="left"
-      className="flex p-2.5 gap-3 w-full justify-between items-center"
-    >
-      <div className='flex gap-3 flex-1'>
-      <SearchDate isSingle={true} onSubmit={onDateClick} />
-      {/* <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-        <Dropdown
-          onChange={(i) => handleFilter(i)}
-          options={Department}
-          text="text-xs font-semibold"
-          placeholder="Department 1"
-          border="border gap-1 border-gray-100"
-        />
-      </div> */}
-      <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-        <Dropdown
-          onChange={(i) => handleFilter(i)}
-          options={PayrollCycle}
-          text="text-xs font-semibold"
-          placeholder="Monthly"
-          border="border gap-1 border-gray-100"
-        />
-      </div></div>
-      <Button onClick={()=>setpopup(true)} text={text||'Generate Payroll'} icon={icon||"CloudLightning"}/>
-      {popup&&<ConfirmPopup noCancel={noCancel} onConfirm={action} confirmText={confirmText||'Generate Payroll'} message={message||'are you sure you want to generate payroll?'} cancelText={cancelText||"Cancel"} onCancel={()=>setpopup(false)} isOpen={popup}/>}
-    </div>
+    <div className="px-6  border-slate-200 flex justify-between items-center bg-white">
+      <h3 className="font-semibold text-slate-800">Employee Payroll Sheet</h3>
+      <div className='flex gap-2'>
+        <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+          <Dropdown  options={Department} text="text-xs font-semibold" placeholder="Department 1" border="border gap-1 border-gray-100" />
+        </div> 
+        <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+          <Dropdown onChange={(i) => handleFilter(i)} options={PayrollCycle} text="text-xs font-semibold" placeholder="Monthly" border="border gap-1 border-gray-100" />
+        </div>
+        <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+          <span className="text-xs p-4 h-fit font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
+            {employees} Active Records
+          </span>
+        </div> 
+      </div>
+      </div>
   );
 }
 export function ViewEditPayslips({ setQ, setPriority, action }) {
@@ -574,6 +563,84 @@ export function AttendanceStatus({ onFiltersChange }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

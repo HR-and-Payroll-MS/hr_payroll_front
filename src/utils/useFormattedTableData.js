@@ -7,7 +7,8 @@ export function useFormattedTableData(rawData, bodyStructure, keys) {
     let resultArray = [];
     // console.log(key)
     switch (body) {
-      case 3:
+      case 71:
+        case 3:
         resultArray.push(raw[key[0]]);
         resultArray.push(raw[key[1]]);
         resultArray.push(raw[key[2]]);
@@ -16,7 +17,7 @@ export function useFormattedTableData(rawData, bodyStructure, keys) {
         resultArray.push(raw[key[0]]);
         resultArray.push(raw[key[1]]);
         break;
-      case 1:
+      case 1:case 72:case 73: case 74:case 75:case 76:case 77:case 78:case 79:
         resultArray.push(raw[key[0]]);
         break;
       default:
