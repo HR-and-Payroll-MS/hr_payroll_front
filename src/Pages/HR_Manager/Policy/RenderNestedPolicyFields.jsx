@@ -4,6 +4,7 @@ import DocumentList from "../../../Components/DocumentList";
 import AddNewItemModal from "../../../utils/AddNewItemModal";
 import { policyFormSchemas } from "./PolicyFormSchemas";
 import InputField from "../../../Components/InputField";
+import { Trash2 } from "lucide-react";
 
 // Convert camelCase/snake_case → Human label
 const humanLabel = (key) =>
@@ -60,174 +61,154 @@ const RenderNestedPolicyFields = ({
   }, [modalConfig, handleAddItem, sectionKey]);
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      {entries.map(([key, value]) => {
-        const fullPath = path ? `${path}.${key}` : key;
+  <div className="w-full flex flex-col gap-6">
+    {entries.map(([key, value]) => {
+      const fullPath = path ? `${path}.${key}` : key;
 
-        // NESTED OBJECT
-        if (value && typeof value === "object" && !Array.isArray(value) && !value.__type) {
-          return (
-            <div key={fullPath} className="w-full  shadow rounded p-3 bg-slate-50">
-              <h3 className="font-semibold mb-2">{humanLabel(key)}</h3>
-              <MemoizedRenderFields
-                data={value}
-                sectionKey={sectionKey}
-                path={fullPath}
-                handleInputChange={handleInputChange}
-                editMode={editMode}
-                formSchemas={formSchemas}
-                handleAddItem={handleAddItem}
-                handleRemoveItem={handleRemoveItem}
-              />
+      // --- NESTED OBJECT CONTAINER ---
+      if (value && typeof value === "object" && !Array.isArray(value) && !value.__type) {
+        return (
+          <div key={fullPath} className="w-full shadow-sm dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 rounded-xl p-5 bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 transition-colors">
+            <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4 flex items-center gap-2">
+              <div className="w-1 h-3 bg-blue-500 rounded-full" /> {humanLabel(key)}
+            </h3>
+            <MemoizedRenderFields
+              data={value}
+              sectionKey={sectionKey}
+              path={fullPath}
+              handleInputChange={handleInputChange}
+              editMode={editMode}
+              formSchemas={formSchemas}
+              handleAddItem={handleAddItem}
+              handleRemoveItem={handleRemoveItem}
+            />
+          </div>
+        );
+      }
+
+      // --- ARRAY FIELD CONTAINER ---
+      if (Array.isArray(value)) {
+        return (
+          <div key={fullPath} className="w-full rounded-xl p-5 shadow-sm bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:border-slate-800 transition-colors">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 flex items-center gap-2">
+                 <div className="w-1 h-3 bg-emerald-500 rounded-full" /> {humanLabel(key)}
+              </h3>
+              {isEditing && (
+                <button
+                  onClick={() => openAddModalFor(key, fullPath)}
+                  className="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] font-black uppercase tracking-tighter rounded-md shadow-sm hover:text-blue-600 transition-all active:scale-95"
+                >
+                  + Add {humanLabel(key).replace(/s$/, '')}
+                </button>
+              )}
             </div>
-          );
-        }
 
-        // ARRAY FIELD
-        if (Array.isArray(value)) {
-          return (
-            <div key={fullPath} className="w-full rounded p-3 shadow bg-slate-50">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold">{humanLabel(key)}</h3>
-                {isEditing && (
-                  <button
-                    onClick={() => openAddModalFor(key, fullPath)}
-                    className="px-2 py-1 shadow bg-green-100 text-sm rounded"
-                  >
-                    + Add
-                  </button>
-                )}
-              </div>
+            <div className="flex flex-col gap-4">
+              {value.length === 0 && (
+                <div className="text-xs text-slate-400 italic p-4 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
+                  No {humanLabel(key).toLowerCase()} recorded
+                </div>
+              )}
 
-              <div className="flex flex-col gap-3">
-                {value.length === 0 && <div className="text-sm text-gray-500">No items</div>}
+              {value.map((item, idx) => {
+                const itemPath = `${fullPath}[${idx}]`;
 
-                {value.map((item, idx) => {
-                  const itemPath = `${fullPath}[${idx}]`;
-
-                  if (typeof item === "object") {
-                    return (
-                      <div key={itemPath} className="p-3 bg-white inset-shadow-xs rounded flex flex-col gap-3">
-                        {isEditing && (
-                          <div className="flex justify-end">
-                            <button
-                              onClick={() => handleRemoveItem(sectionKey, fullPath, idx)}
-                              className="text-red-500 px-2 py-1 border rounded"
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        )}
-                        <MemoizedRenderFields
-                          data={item}
-                          sectionKey={sectionKey}
-                          path={itemPath}
-                          handleInputChange={handleInputChange}
-                          editMode={editMode}
-                          formSchemas={formSchemas}
-                          handleAddItem={handleAddItem}
-                          handleRemoveItem={handleRemoveItem}
-                        />
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={itemPath} className="flex items-center gap-3">
-                      <div className="flex-1">{String(item)}</div>
-                      {isEditing && (
+                return (
+                  <div key={itemPath} className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm relative group">
+                    {isEditing && (
+                      <div className="absolute top-2 right-2">
                         <button
                           onClick={() => handleRemoveItem(sectionKey, fullPath, idx)}
-                          className="text-red-500 px-2 py-1 border rounded"
+                          className="text-slate-300 hover:text-red-500 p-1.5 transition-colors"
+                          title="Delete Item"
                         >
-                          Delete
+                          <Trash2 size={14} />
                         </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+                      </div>
+                    )}
+                    
+                    {typeof item === "object" ? (
+                      <MemoizedRenderFields
+                        data={item}
+                        sectionKey={sectionKey}
+                        path={itemPath}
+                        handleInputChange={handleInputChange}
+                        editMode={editMode}
+                        formSchemas={formSchemas}
+                        handleAddItem={handleAddItem}
+                        handleRemoveItem={handleRemoveItem}
+                      />
+                    ) : (
+                      <div className="text-sm font-semibold dark:text-slate-200">{String(item)}</div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-          );
-        }
+          </div>
+        );
+      }
 
-        // TYPED FIELD: DROPDOWN
-        if (value?.__type === "dropdown") {
-          return (
-            <div key={fullPath} className="w-full flex gap-3 items-center">
-              <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
-              <div className="flex-1">
-                {isEditing ? (
-                  <Dropdown
-                    options={value.options}
-                    value={value.value}
-                    placeholder={humanLabel(key)}
-                    onChange={(v) => handleInputChange(sectionKey, `${fullPath}.value`, v)}
-                  />
-                ) : (
-                  <div className="font-semibold">{String(value.value)}</div>
-                )}
-              </div>
-            </div>
-          );
-        }
-
-        // TYPED FIELD: DOCUMENTS
-        if (value?.__type === "documents") {
-          return (
-            <div key={fullPath} className="w-full flex gap-3 items-start">
-              <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
-              <div className="flex-1">
+      // --- FIELD ROW (Primitive, Dropdown, Docs) ---
+      return (
+        <div key={fullPath} className="w-full flex flex-col md:flex-row gap-2 md:items-center py-2 border-b border-slate-50 dark:border-slate-800/50 last:border-0">
+          <div className="min-w-[220px] text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tight">
+            {humanLabel(key)}
+          </div>
+          
+          <div className="flex-1">
+            {isEditing ? (
+              value?.__type === "dropdown" ? (
+                <Dropdown
+                  options={value.options}
+                  value={value.value}
+                  placeholder={humanLabel(key)}
+                  onChange={(v) => handleInputChange(sectionKey, `${fullPath}.value`, v)}
+                />
+              ) : value?.__type === "documents" ? (
                 <DocumentList
                   files={value.value || []}
                   isEditing={isEditing}
                   onChange={(files) => handleInputChange(sectionKey, `${fullPath}.value`, files)}
                 />
-              </div>
-            </div>
-          );
-        }
-
-        // PRIMITIVE FIELD
-        return (
-          <div key={fullPath} className="w-full flex gap-3 items-center">
-            <div className="min-w-[220px] text-gray-500">{humanLabel(key)}</div>
-            <div className="flex-1">
-              {isEditing ? (
+              ) : (
                 <input
                   value={value ?? ""}
                   onChange={(e) => handleInputChange(sectionKey, fullPath, e.target.value)}
-                  className="flex items-center px-2.5 py-1.5 rounded outline-green-600 text-slate-700 dark:text-slate-200 border dark:border-slate-500 border-slate-300"/>
-                //  <InputField
-                //   border="inset-shadow-2xs border border-slate-200" 
-                //   maxWidth=" bg-white" 
-                //   suggestion={false} 
-                //   placeholder={value} 
-                //   icon={false} 
-                //   onSelect={(e) => handleInputChange(sectionKey, fullPath, e)}/>
-                         
-              ) : (
-                <div className="font-semibold">
-                  {value ? String(value) : <span className="text-gray-400 italic">Not provided</span>}
-                </div>
-              )}
-            </div>
+                  className="w-full md:w-2/3 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-medium focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                />
+              )
+            ) : (
+              <div className="text-sm font-bold text-slate-700 dark:text-slate-200">
+                {value?.__type === "documents" ? (
+                   <DocumentList files={value.value || []} isEditing={false} />
+                ) : value?.__type === "dropdown" ? (
+                   String(value.value)
+                ) : value ? (
+                  String(value)
+                ) : (
+                  <span className="text-slate-300 dark:text-slate-600 italic font-normal text-xs uppercase tracking-tighter">Empty</span>
+                )}
+              </div>
+            )}
           </div>
-        );
-      })}
+        </div>
+      );
+    })}
 
-      {/* Add New Item Modal */}
-      {modalConfig && (
-        <AddNewItemModal
-          isOpen={modalOpen}
-          onClose={() => { setModalOpen(false); setModalConfig(null); }}
-          onSave={onModalSave}
-          title={modalConfig.title}
-          fields={modalConfig.fields}
-        />
-      )}
-    </div>
-  );
+    {/* MODAL stays functional */}
+    {modalConfig && (
+      <AddNewItemModal
+        isOpen={modalOpen}
+        onClose={() => { setModalOpen(false); setModalConfig(null); }}
+        onSave={onModalSave}
+        title={modalConfig.title}
+        fields={modalConfig.fields}
+      />
+    )}
+  </div>
+);
 };
 
 const MemoizedRenderFields = React.memo(RenderNestedPolicyFields);

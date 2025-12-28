@@ -1,110 +1,116 @@
-import Dropdown from '../Dropdown'
+import React from "react";
+import Dropdown from '../Dropdown';
+import { Briefcase, Clock, FileText, Calendar } from "lucide-react";
 
-const LineManager = ["John Doe", "Jane Smith", "Michael Johnson", "Emily Davis"]
-const PositionTypes = ["Full-Time", "Part-Time", "Contracht"]
-const JobTitles = ["HR Manager", "Department Manager", "Payroll Officer", "Employee"]
-const EmploymentTypes = ["Permanent", "Temporary", "Casual"]
-// Job Title represents the specific role of an employee,
-//  such as HR Manager, Department Manager, Payroll Officer,
-//   or Employee. Position Type describes the nature of the job,
-//    like full-time, part-time, or contract. 
-//    Employment Type indicates the employment arrangement,
-//     such as permanent, temporary, or casual. Line Manager 
-//     refers to the person who directly supervises the employee.
-
+const LineManager = ["John Doe", "Jane Smith", "Michael Johnson", "Emily Davis"];
+const PositionTypes = ["Full-Time", "Part-Time", "Contracht"];
+const JobTitles = ["HR Manager", "Department Manager", "Payroll Officer", "Employee"];
+const EmploymentTypes = ["Permanent", "Temporary", "Casual"];
 
 const StepJob = ({ data , onChange }) => {
-    const employmentInfo= <div className="border p-2 rounded-lg border-gray-200">
-                    <div className="flex mx-4 py-4 border-b border-gray-200">
-                        <p className="flex-1 text-xl font-semibold text-gray-700">Employment Information</p>
-                        <img className="h-5 opacity-25" src="\svg\fullscreen-exit-alt-svgrepo-com.svg" alt="" />
-                    </div>
-                   <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap  ">
-                            <div className="w-96 flex gap-2   text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Employee ID</p>
-                                <input type="text" value={data.employeeid} onChange={(e) => onChange({ employeeid: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Service Year</p>
-                                <input type="text" value={data.serviceyear} onChange={(e) => onChange({ serviceyear: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Join Date</p>
-                                <input type="date" value={data.joindate} onChange={(e) => onChange({ joindate: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
-                            </div>                            
-                        </div>
-                    </div>
-    const jobTimeLine= <div className="border p-2 rounded-lg border-gray-200">
-                    <div className="flex mx-4 py-4 border-b border-gray-200">
-                        <p className="flex-1 text-xl font-semibold text-gray-700">Job TimeLine</p>
-                        <img className="h-5 opacity-25" src="\svg\fullscreen-exit-alt-svgrepo-com.svg" alt="" />
-                    </div>
-                   <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap  ">
-                            <div className="w-96 flex gap-2   text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Job Title</p>
-                                <Dropdown padding='p-0.5' options={JobTitles} onChange={(e) => onChange({ jobtitle: e })}/>{/* <input type="text" value={data.jobtitle} onChange={(e) => onChange({ jobtitle: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />    */}
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Position Type</p>
-                                <Dropdown padding='p-0.5' options={PositionTypes} onChange={(e) => onChange({ positiontype: e })}/>
-                                {/* <input type="text" value={data.positiontype} onChange={(e) => onChange({ positiontype: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />    */}
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Employment Type</p>
-                                <Dropdown padding='p-0.5' options={EmploymentTypes} onChange={(e) => onChange({ EmploymentTypes: e })}/>
-                                {/* <input type="text" value={data.employmenttype} onChange={(e) => onChange({ employmenttype: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " /> */}
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Line Manager</p>
-                                <Dropdown padding='p-0.5' options={LineManager} onChange={(e) => onChange({ linemanager: e })}/>
-                                {/* <input type="text" value={data.linemanager} onChange={(e) => onChange({ linemanager: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   */}
-                            </div>
-                        </div>
-                    </div>
-    const contractTimeLine= <div className="border p-2 rounded-lg border-gray-200">
-                    <div className="flex mx-4 py-4 border-b border-gray-200">
-                        <p className="flex-1 text-xl font-semibold text-gray-700">Contract Timeline</p>
-                        <img className="h-5 opacity-25" src="\svg\fullscreen-exit-alt-svgrepo-com.svg" alt="" />
-                    </div>
-                   <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap  ">
-                            <div className="w-96 flex gap-2   text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Contract Number</p>
-                                <input  type="text" value={data.contractnumber} onChange={(e) => onChange({ contractnumber: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Contract Name</p>
-                                <input type="text" value={data.contractname} onChange={(e) => onChange({ contractname: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Contract Type</p>
-                                <input type="text" value={data.contracttype} onChange={(e) => onChange({ contracttype: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />   
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">Start Date</p>
-                                <input type="date" value={data.startdate} onChange={(e) => onChange({ startdate: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />
-                            </div>
-                            <div className="w-96 flex gap-2  text-nowrap">
-                                <p className="min-w-40 text-gray-400 ">End Date</p>
-                                <input type="date" value={data.enddate} onChange={(e) => onChange({ enddate: e.target.value })} className="w-full border outline-none border-slate-300 rounded px-3 " />  
-                            </div>
-                        </div>
-                    </div>
-    const workSchedule= <div className="border p-2 rounded-lg border-gray-200">
-                    <div className="flex mx-4 py-4 border-b border-gray-200">
-                        <p className="flex-1 text-xl font-semibold text-gray-700">Work Schedule</p>
-                        <img className="h-5 opacity-25" src="\svg\fullscreen-exit-alt-svgrepo-com.svg" alt="" />
-                    </div>
-                   </div>
-    const General=<div className="flex flex-col gap-8 scrollbar-hidden overflow-y-scroll">
-        {employmentInfo}
-        {jobTimeLine}
-        {contractTimeLine}
-        {workSchedule}
-    </div>
+    const employmentInfo = (
+        <div className="bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-all mb-8 border border-slate-100 dark:border-transparent">
+            <div className="flex mx-4 py-4 border-b dark:border-slate-700 items-center">
+                <p className="flex-1 text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">Employment Information</p>
+                <Briefcase size={18} className="opacity-40 text-blue-500 dark:text-blue-400" />
+            </div>
+            <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap">
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Employee ID</p>
+                    <input type="text" value={data.employeeid} onChange={(e) => onChange({ employeeid: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />   
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Service Year</p>
+                    <input type="text" value={data.serviceyear} onChange={(e) => onChange({ serviceyear: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />   
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Join Date</p>
+                    <input type="date" value={data.joindate} onChange={(e) => onChange({ joindate: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />   
+                </div>
+            </div>
+        </div>
+    );
 
-       return General
+    const jobTimeLine = (
+        <div className="bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-all mb-8 border border-slate-100 dark:border-transparent">
+            <div className="flex mx-4 py-4 border-b dark:border-slate-700 items-center">
+                <p className="flex-1 text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">Job TimeLine</p>
+                <Clock size={18} className="opacity-40 text-blue-500 dark:text-blue-400" />
+            </div>
+            <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap">
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Job Title</p>
+                    <div className="w-full"><Dropdown padding='p-1.5' options={JobTitles} onChange={(e) => onChange({ jobtitle: e })}/></div>
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Position Type</p>
+                    <div className="w-full"><Dropdown padding='p-1.5' options={PositionTypes} onChange={(e) => onChange({ positiontype: e })}/></div>
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Employment Type</p>
+                    <div className="w-full"><Dropdown padding='p-1.5' options={EmploymentTypes} onChange={(e) => onChange({ EmploymentTypes: e })}/></div>
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Line Manager</p>
+                    <div className="w-full"><Dropdown padding='p-1.5' options={LineManager} onChange={(e) => onChange({ linemanager: e })}/></div>
+                </div>
+            </div>
+        </div>
+    );
 
-    }
-    export default StepJob
+    const contractTimeLine = (
+        <div className="bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-all mb-8 border border-slate-100 dark:border-transparent">
+            <div className="flex mx-4 py-4 border-b dark:border-slate-700 items-center">
+                <p className="flex-1 text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">Contract Timeline</p>
+                <FileText size={18} className="opacity-40 text-blue-500 dark:text-blue-400" />
+            </div>
+            <div id="left" className="flex gap-5 p-4 justify-start items-start flex-wrap">
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Contract Number</p>
+                    <input type="text" value={data.contractnumber} onChange={(e) => onChange({ contractnumber: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />   
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Contract Name</p>
+                    <input type="text" value={data.contractname} onChange={(e) => onChange({ contractname: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />   
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Contract Type</p>
+                    <input type="text" value={data.contracttype} onChange={(e) => onChange({ contracttype: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />   
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Start Date</p>
+                    <input type="date" value={data.startdate} onChange={(e) => onChange({ startdate: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />
+                </div>
+                <div className="w-96 flex gap-2 text-nowrap items-center">
+                    <p className="min-w-40 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">End Date</p>
+                    <input type="date" value={data.enddate} onChange={(e) => onChange({ enddate: e.target.value })} className="w-full bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded px-3 py-1.5 outline-none focus:border-blue-500 transition-all shadow-sm" />   
+                </div>
+            </div>
+        </div>
+    );
 
-                        
+    const workSchedule = (
+        <div className="bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-all border border-slate-100 dark:border-transparent">
+            <div className="flex mx-4 py-4 border-b dark:border-slate-700 items-center">
+                <p className="flex-1 text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">Work Schedule</p>
+                <Calendar size={18} className="opacity-40 text-blue-500 dark:text-blue-400" />
+            </div>
+            <div className="p-8 text-center text-xs text-slate-400 italic">
+                Schedule configuration content goes here...
+            </div>
+        </div>
+    );
+
+    const General = (
+        <div className="flex flex-col gap-4 scrollbar-hidden overflow-y-scroll pb-10">
+            {employmentInfo}
+            {jobTimeLine}
+            {contractTimeLine}
+            {workSchedule}
+        </div>
+    );
+
+    return General;
+};
+
+export default StepJob;

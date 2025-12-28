@@ -133,38 +133,81 @@ const AddEmployee = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col mx-auto p-6 bg-white rounded-2xl">
-      <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
+    <div className="w-full h-full flex flex-col mx-auto p-4 md:p-6 bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-all overflow-hidden">
+  
+  {/* Step Header remains at the top */}
+  <div className="shrink-0 border-b border-slate-400 dark:border-slate-700 pb-4">
+    <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
+  </div>
 
-      <div className="mt-6 hover-bar overflow-y-auto flex-1 ">{renderStep()}</div>
+  {/* Render Step - Now scrollable with your custom scrollbar style */}
+  <div className="mt-6 overflow-y-auto flex-1 scrollbar-hidden pr-2">
+    {renderStep()}
+  </div>
 
-      <div className="flex justify-between mt-8">
-        {currentStep > 0 && (
-          <button
-            onClick={prevStep}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-          >
-            Previous
-          </button>
-        )}
+  {/* Footer Navigation - Fixed at bottom */}
+  <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-400 dark:border-slate-700 shrink-0">
+    {currentStep > 0 ? (
+      <button
+        onClick={prevStep}
+        className="px-6 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-200 rounded font-bold text-xs uppercase tracking-wider hover:bg-slate-200 dark:hover:bg-slate-600 transition-all active:scale-95"
+      >
+        Previous
+      </button>
+    ) : (
+      <div /> // Spacer to keep Next button on the right
+    )}
 
-        {currentStep < steps.length - 1 ? (
-          <button
-            onClick={nextStep}
-            className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            Next
-          </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            {loading ? <ThreeDots /> : "submit"}
-          </button>
-        )}
-      </div>
-    </div>
+    {currentStep < steps.length - 1 ? (
+      <button
+        onClick={nextStep}
+        className="px-8 py-2 bg-blue-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95"
+      >
+        Next
+      </button>
+    ) : (
+      <button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="px-8 py-2 bg-emerald-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 shadow-lg shadow-emerald-200 dark:shadow-none transition-all active:scale-95 disabled:opacity-50"
+      >
+        {loading ? <ThreeDots /> : "Submit Record"}
+      </button>
+    )}
+  </div>
+</div>
+    // <div className="w-full h-full flex flex-col mx-auto p-6 bg-white rounded-2xl">
+    //   <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
+
+    //   <div className="mt-6 hover-bar overflow-y-auto flex-1 ">{renderStep()}</div>
+
+    //   <div className="flex justify-between mt-8">
+    //     {currentStep > 0 && (
+    //       <button
+    //         onClick={prevStep}
+    //         className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+    //       >
+    //         Previous
+    //       </button>
+    //     )}
+
+    //     {currentStep < steps.length - 1 ? (
+    //       <button
+    //         onClick={nextStep}
+    //         className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+    //       >
+    //         Next
+    //       </button>
+    //     ) : (
+    //       <button
+    //         onClick={handleSubmit}
+    //         className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+    //       >
+    //         {loading ? <ThreeDots /> : "submit"}
+    //       </button>
+    //     )}
+    //   </div>
+    // </div>
   );
 };
 

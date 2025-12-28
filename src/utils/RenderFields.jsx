@@ -145,7 +145,7 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
     {label !== "Photo" && (
       /* Changed <p> to <div> to allow <fieldset> and complex components inside */
       <div className="flex w-full items-center"> 
-        <span className="min-w-40 text-gray-400 mr-3">{label}</span>
+        <span className="min-w-40 dark:text-slate-300 text-gray-400 mr-3">{label}</span>
 
         {isFieldEditable ? (
           key === "notes" ? (
@@ -194,9 +194,9 @@ const isTimeField = ["clockin", "clockout", "offset", "onset"].includes(normaliz
             </div>
           )
         ) : (
-          <span className="text-gray-700 font-semibold">
+          <span className="text-green-800 dark:text-green-200 font-semibold">
             {value || (
-              <span className="text-gray-400 italic">Not provided</span>
+              <span className="text-gray-400 dark:text-slate-300 italic">Not provided</span>
             )}
           </span>
         )}

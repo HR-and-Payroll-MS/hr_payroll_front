@@ -70,7 +70,7 @@ export default function NotificationCenterPage({ role = "EMPLOYEE" }) {
 
   /* 🔹 LIST VIEW Logic */
   return (
-    <div className="p-6 w-full flex flex-col h-full mx-auto max-w-5xl">
+    <div className="p-6 w-full flex flex-col h-full mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h2 className="font-bold text-2xl text-slate-800 dark:text-slate-100 flex-1">
           Notification Center

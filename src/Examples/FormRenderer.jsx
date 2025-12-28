@@ -121,114 +121,125 @@ export default function FormRenderer({ savedForm, employeeId: propEmployeeId }) 
       setSubmitting(false);
     }
   };
+return (
+  <div className="mx-auto p-6 bg-white dark:bg-slate-900 shadow-lg rounded-xl border border-slate-200 dark:border-slate-800 max-w-3xl transition-colors">
+    {/* Compact Header */}
+    <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div>
+        <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+          {savedForm?.title}
+        </h1>
+        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Performance Review Preview</p>
+      </div>
+      <div className="h-8 w-1 bg-blue-500 rounded-full" />
+    </div>
 
-  return (
-    <div className="shadow bg-slate-50 mx-auto p-6 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8 text-center text-slate-800">
-        {savedForm?.title}
-      </h1>
+    {/* PERFORMANCE METRICS SECTION */}
+    <div className="space-y-6">
+      <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-500 mb-2">
+        Efficiency Metrics
+      </h2>
 
-      {/* Performance Metrics */}
       {savedForm?.performanceMetrics.map((field) => (
-        <div key={field.id} className="mb-8">
-          <label className="block text-lg font-medium mb-2 text-slate-700">
+        <div key={field.id} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center group">
+          <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
             {field.name}
-            <span className="text-sm text-gray-500 ml-2">(Weight: {field.weight})</span>
+            <span className="block text-[9px] font-medium text-slate-400 mt-0.5">Max: {field.weight} pts</span>
           </label>
 
-          {field.type === "number" && (
-            <input
-              type="number"
-              min="0"
-              max={field.weight}
-              step="0.1"
-              onChange={(e) => handleChange(field.id, e.target.value)}
-              className="border outline-none rounded-lg p-4 w-full bg-white border-slate-300 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition"
-              placeholder={`Enter value (max ${field.weight})`}
-            />
-          )}
+          <div className="md:col-span-2">
+            {field.type === "number" && (
+              <input
+                type="number"
+                min="0"
+                max={field.weight}
+                step="0.1"
+                onChange={(e) => handleChange(field.id, e.target.value)}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg outline-none text-xs font-semibold focus:border-blue-500 transition-all"
+                placeholder="Score value"
+              />
+            )}
 
-          {field.type === "dropdown" && (
-            <Dropdown
-              onChange={(value) => handleChange(field.id, value)}
-              options={field.options.map((item) => `${item.label} → ${item.point} points`)}
-              placeholder="Select an option"
-            />
-          )}
+            {field.type === "dropdown" && (
+              <Dropdown
+                onChange={(value) => handleChange(field.id, value)}
+                options={field.options.map((item) => `${item.label} (${item.point} pts)`)}
+                placeholder="Select level"
+              />
+            )}
+          </div>
         </div>
       ))}
+    </div>
 
-      {/* Feedback Sections */}
-      <h2 className="text-2xl font-bold mt-12 mb-6 text-slate-700">Feedback</h2>
+    {/* FEEDBACK SECTION */}
+    <div className="mt-10 space-y-6">
+      <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 mb-2">
+        Qualitative Notes
+      </h2>
 
       {savedForm?.feedbackSections.map((field) => (
-        <div key={field.id} className="mb-8">
-          <label className="block text-lg font-medium mb-2 text-slate-700">
+        <div key={field.id} className="space-y-2">
+          <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
             {field.name}
           </label>
 
           {field.type === "textarea" ? (
             <textarea
               onChange={(e) => handleChange(field.id, e.target.value)}
-              className="border bg-white outline-none border-slate-300 rounded-lg p-4 w-full h-32 resize-none focus:border-green-500 focus:ring-4 focus:ring-green-100"
-              placeholder="Write your feedback here..."
-            />
-          ) : field.type === "dropdown" ? (
-            <Dropdown
-              onChange={(value) => handleChange(field.id, value)}
-              options={field.options.map((item) => item.label)}
-              placeholder="Choose one"
+              className="w-full h-20 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg outline-none text-xs resize-none focus:border-emerald-500 transition-all"
+              placeholder="Comments..."
             />
           ) : (
             <InputField
-              border="border border-slate-300 rounded-lg"
-              maxWidth="w-full bg-white"
+              border="border border-slate-200 dark:border-slate-800"
+              maxWidth="w-full bg-slate-50 dark:bg-slate-950 rounded-lg text-xs"
               suggestion={false}
               icon={false}
               onSelect={(value) => handleChange(field.id, value)}
-              placeholder="Enter response"
+              placeholder="Short response"
             />
           )}
         </div>
       ))}
+    </div>
 
-      {/* Submit Button */}
-      <div className="mt-12 text-center">
-        <button
-          onClick={calculateAndSubmit}
-          disabled={submitting}
-          className={`px-8 py-4 text-lg font-semibold text-white rounded-lg shadow-lg transition ${
-            submitting
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700 active:scale-95"
-          }`}
-        >
-          {submitting ? "Submitting Report..." : "Submit & Calculate Efficiency"}
-        </button>
-
-        {submitStatus === "success" && (
-          <p className="mt-4 text-green-600 font-medium">Report saved successfully!</p>
-        )}
-        {submitStatus === "error" && (
-          <p className="mt-4 text-red-600 font-medium">Failed to save report.</p>
-        )}
+    {/* COMPACT SUBMISSION AREA */}
+    <div className="mt-10 pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div className="text-left">
+         {submitStatus === "success" && <p className="text-emerald-500 text-[10px] font-bold uppercase tracking-tight">Saved</p>}
+         {submitStatus === "error" && <p className="text-red-500 text-[10px] font-bold uppercase tracking-tight">Error</p>}
       </div>
 
-      {/* Result Display */}
-      {finalScore !== null && (
-        <div className="mt-12 p-10 bg-green-50 border-2 border-green-200 rounded-xl text-center">
-          <h2 className="text-5xl font-extrabold text-green-800">
-            Final Efficiency Score: {finalScore}%
-          </h2>
-          <p className="mt-4 text-lg text-green-700">
-            Report generated for Employee ID: <strong>{employeeId}</strong>
-          </p>
-        </div>
-      )}
-
-      {report && <MetricCards/>}
+      <button
+        onClick={calculateAndSubmit}
+        disabled={submitting}
+        className={`px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 shadow-md ${
+          submitting
+            ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+            : "bg-emerald-600 text-white hover:bg-emerald-500"
+        }`}
+      >
+        {submitting ? "Processing..." : "Submit Report"}
+      </button>
     </div>
-  );
+
+    {/* COMPACT RESULT DISPLAY */}
+    {finalScore !== null && (
+      <div className="mt-8 p-6 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl flex items-center justify-between shadow-lg">
+        <div className="text-left">
+          <p className="text-emerald-100 text-[9px] font-black uppercase tracking-widest">Efficiency Score</p>
+          <p className="text-white text-[10px] opacity-80">ID: {employeeId}</p>
+        </div>
+        <h2 className="text-4xl font-black text-white tracking-tighter">
+          {finalScore}%
+        </h2>
+      </div>
+    )}
+
+    {report && <div className="mt-8"><MetricCards /></div>}
+  </div>
+);
 }
 
 

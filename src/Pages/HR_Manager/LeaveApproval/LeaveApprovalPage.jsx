@@ -126,47 +126,54 @@ return Object.entries(map).map(([name, days]) => ({ name, days }));
 
 
 return (
-<div className="p-6 bg-white  min-h-screen">
-        <div className="flex items-center justify-between">
-            <div>
-                <h1 className="text-2xl font-semibold">Leave Requests</h1>
-                <p className="text-sm text-gray-600">Approve or deny leave requests — opens details in your Drawer</p>
+  <div className="h-full w-full flex flex-col gap-4 p-4 md:p-7 dark:bg-slate-800 bg-gray-50 overflow-hidden transition-colors">
+    {/* HEADER SECTION - Matching your Header component style */}
+    <div className="flex items-center justify-between shrink-0">
+      <div>
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Leave Requests</h1>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          Approve or deny leave requests — opens details in your Drawer
+        </p>
+      </div>
+    </div>
+
+    {/* MAIN CONTENT - Inset Shadow Container */}
+    <div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 overflow-hidden transition-all">
+      <div className="flex-1 overflow-y-auto scrollbar-hidden">
+        <RequestList
+          requests={filtered}
+          employees={employees}
+          filter={filter}
+          setFilter={setFilter}
+          onOpen={openDetails}
+        />
+      </div>
+    </div>
+
+    {/* DRAWER CONTENT - Using the same container logic */}
+    {drawerOpen && (
+      <FileDrawer isModalOpen={drawerOpen} closeModal={setDrawerOpen}>
+        {selectedRequest && (
+          <div className="h-full flex flex-col bg-white dark:bg-slate-800 transition-colors">
+            {/* Scrollable Details Area */}
+            <div className="flex-1 overflow-y-auto p-4 scrollbar-hidden">
+              <RequestDetails req={selectedRequest} employees={employees} />
             </div>
-        </div>
-
-
-        <div className="flex">
-            <div className="flex-1 ">
-                <RequestList
-                    requests={filtered}
-                    employees={employees}
-                    filter={filter}
-                    setFilter={setFilter}
-                    onOpen={openDetails}
-                    />
+            
+            {/* Fixed Action Panel at Bottom */}
+            <div className="shrink-0 p-4 border-t dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
+              <ActionPanel 
+                request={selectedRequest} 
+                onApprove={(c) => handleDecision(selectedRequest.id, 'approved', c)} 
+                onDeny={(c) => handleDecision(selectedRequest.id, 'denied', c)} 
+              />
             </div>
+          </div>
+        )}
+      </FileDrawer>
+    )}
 
-        </div>
-
-
-
-
-        {drawerOpen && <FileDrawer isModalOpen={drawerOpen} closeModal={setDrawerOpen}>
-            {selectedRequest && (
-            <div className="p-4 h-full flex flex-col">
-                <RequestDetails req={selectedRequest} employees={employees} />
-                <div className="mt-4 flex-1">
-                    <ActionPanel 
-                        request={selectedRequest} 
-                        onApprove={(c)=>handleDecision(selectedRequest.id,'approved',c)} 
-                        onDeny={(c)=>handleDecision(selectedRequest.id,'denied',c)} />
-                </div>
-            </div>
-            )}
-        </FileDrawer>}
-
-
-        <ToastContainer toasts={toasts} />
-</div>
+    <ToastContainer toasts={toasts} />
+  </div>
 );
 }

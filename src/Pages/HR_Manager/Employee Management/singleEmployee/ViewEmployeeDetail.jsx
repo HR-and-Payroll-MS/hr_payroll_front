@@ -216,45 +216,60 @@ if (error)
       </div>
     );
 
-  return (
-    <div className="flex flex-col w-full h-full justify-start bg-gray-50 dark:bg-slate-900">
-      <Header Title={"Employee Detail"} Breadcrumb={"Employee detail"} />
+return (
+  <div className="flex flex-col w-full  h-full justify-start bg-white dark:bg-slate-800 transition-colors duration-300">
+    <Header className={"px-6"} Title={"Employee Detail"} Breadcrumb={"Employee detail"} />
 
-      <div className="flex flex-1 gap-5 overflow-y-scroll rounded-md h-full">
-        <div className="h-fit shadow rounded-xl overflow-clip w-1/4"><EmployeeProfile role={role  } employeeData={employeeData}/></div>
+    {/* Main container spacing and gap matching your dashboard example */}
+    <div className="flex flex-1 gap-4 p-2.5 overflow-hidden h-full">
+      
+      {/* Sidebar: Employee Profile Card */}
+      {/* Applying the 'sunken' look to the sidebar wrapper */}
+      <div className="w-1/4 h-full bg-gray-50 dark:bg-slate-700 shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 rounded overflow-hidden">
+          <EmployeeProfile role={role} employeeData={employeeData} />
+      </div>
 
-        <div className="flex flex-col rounded-md shadow h-full flex-1 gap-4 p-4 bg-white">
-                <StepHeader
-          steps={steps}
-          currentStep={uiStep}
-          onStepClick={(index) => {
-            const stepMap =
-              role === "payroll"
-                ? stepIndexMapByRole.payroll
-                : stepIndexMapByRole.Manager;
+      {/* Main Content Area */}
+      <div className="flex flex-col flex-1 gap-4 h-full overflow-hidden">
+        
+        {/* Step Navigation Container - Sunken Look */}
+        <div className="bg-gray-50 dark:bg-slate-700 shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 rounded p-1">
+          <StepHeader
+            steps={steps}
+            currentStep={uiStep}
+            onStepClick={(index) => {
+              const stepMap =
+                role === "payroll"
+                  ? stepIndexMapByRole.payroll
+                  : stepIndexMapByRole.Manager;
 
-            setUiStep(index);
-            setCurrentStep(stepMap[index]);
-          }}
-        />
+              setUiStep(index);
+              setCurrentStep(stepMap[index]);
+            }}
+          />
+        </div>
 
-          <div className="flex-1 hover-bar overflow-y-auto">
-            <RenderStepContent
-              currentStep={currentStep}
-              editable={role === "payroll" ? editableByPayroll : editableByHR}
-              editMode={editMode}
-              employeeData={employeeData}
-              handleInputChange={handleInputChange}
-              handleSave={handleSave}
-              handleCancel={handleCancel}
-              handleEditToggle={handleEditToggle}
-              handleDocumentUpdate={handleDocumentUpdate}
-            />
+        {/* Dynamic Content Area - Sunken Look for the Content Box */}
+        <div className="flex-1 overflow-y-auto scrollbar-hidden bg-gray-50 dark:bg-slate-700 shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 rounded p-6">
+          <div className="max-w-5xl mx-auto">
+             <RenderStepContent
+                currentStep={currentStep}
+                editable={role === "payroll" ? editableByPayroll : editableByHR}
+                editMode={editMode}
+                employeeData={employeeData}
+                handleInputChange={handleInputChange}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+                handleEditToggle={handleEditToggle}
+                handleDocumentUpdate={handleDocumentUpdate}
+              />
           </div>
         </div>
+
       </div>
     </div>
-  );
+  </div>
+);
 
 }
 

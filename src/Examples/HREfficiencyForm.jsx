@@ -81,27 +81,45 @@ export default function HREfficiencyForm() {
       </div>
     );
   }
+return (
+  <div className="flex flex-col gap-3 w-full p-2 h-full justify-start dark:bg-slate-900 bg-gray-50 overflow-hidden transition-colors">
+    
+    {/* HEADER SECTION - Reduced height/spacing */}
+    <div className="flex justify-between items-center shrink-0 px-2"> 
+      <Header 
+        Title={"Efficiency Builder"} 
+        Breadcrub={"Configure metrics"}
+      />
+    </div>
 
-  return (
-    <div className="p-4 mx-auto h-full hover-bar overflow-y-auto">
-      <Header Title={"HR: Efficiency Form Builder & Preview"} />
+    {/* MAIN CONTENT AREA */}
+    <div className="flex-1 rounded-lg shadow-sm dark:shadow-black border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 overflow-hidden transition-all">
+      <div className="h-full w-full flex flex-col">
+        
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto scrollbar-hidden p-4">
+          <FormBuilder formData={formData} setFormData={setFormData} />
+        </div>
 
-      <FormBuilder formData={formData} setFormData={setFormData} />
+        {/* COMPACT STICKY FOOTER - Takes up very little vertical space */}
+        <div className="px-4 py-2 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex justify-end gap-2 items-center">
+          <button
+            onClick={handleReset}
+            className="px-3 py-1 text-[10px] font-bold uppercase tracking-tight text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+          >
+            Reset
+          </button>
+          
+          <button
+            onClick={handleSave}
+            className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded shadow-sm transition-all active:scale-95"
+          >
+            Save Config
+          </button>
+        </div>
 
-      <div className="mt-8 flex justify-start gap-4">
-        <button
-          onClick={handleSave}
-          className="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition"
-        >
-          Save Form Configuration
-        </button>
-        <button
-          onClick={handleReset}
-          className="px-6 py-3 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
-        >
-          Reset to Empty
-        </button>
       </div>
     </div>
-  );
+  </div>
+);
 }

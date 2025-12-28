@@ -145,7 +145,7 @@ export default function MyAttendance() {
   return (
     <div className="p-6 space-y-6 h-full hover-bar overflow-y-auto">
       <div>
-        <h1 className="text-2xl font-bold">My Attendance</h1>
+        <h1 className="text-2xl dark:text-slate-200 text-shadow-xs font-bold">My Attendance</h1>
         <p className="text-sm text-slate-500">
           Your attendance overview and statistics
         </p>

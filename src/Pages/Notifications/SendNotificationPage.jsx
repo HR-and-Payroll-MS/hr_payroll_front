@@ -90,79 +90,126 @@ export default function SendNotificationPage() {
   }
 
   return (
-    <form onSubmit={submit} className="mx-auto overflow-y-auto hover-bar h-full p-6 space-y-4 max-w-3xl">
-      <h2 className="text-xl font-bold text-slate-800">Send Notification</h2>
+  <form 
+    onSubmit={submit} 
+    className="mx-auto overflow-y-auto scrollbar-hidden h-full p-5 space-y-5 bg-white dark:bg-slate-900 transition-colors"
+  >
+    {/* Header Section */}
+    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+      <div>
+        <h2 className="text-lg font-black tracking-tight text-slate-800 dark:text-white uppercase">
+          Broadcast
+        </h2>
+        <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+          Send System Notification
+        </p>
+      </div>
+      <div className="w-8 h-1 bg-blue-500 rounded-full" />
+    </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Send To</label>
+    {/* Target Selection Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-1.5">
+        <label className="block text-[10px] font-black uppercase tracking-tight text-slate-400 dark:text-slate-500">
+          Recipient Type
+        </label>
+        <Dropdown
+          options={receiverOptions}
+          placeholder="Select Type"
+          value={receiverType}
+          onChange={(val) => {
+            setReceiverType(val);
+            setTarget("");
+          }}
+          className="dark:bg-slate-950"
+        />
+      </div>
+
+      {receiverType === "GROUP" && (
+        <div className="space-y-1.5 animate-in fade-in slide-in-from-left-2 duration-200">
+          <label className="block text-[10px] font-black uppercase tracking-tight text-slate-400 dark:text-slate-500">
+            Target Group
+          </label>
           <Dropdown
-            options={receiverOptions}
-            placeholder="Select Type"
-            value={receiverType} // Ensure dropdown respects state
-            onChange={(val) => {
-              setReceiverType(val);
-              setTarget(""); // Clear target when switching types
-            }}
+            options={groups}
+            placeholder="Select Group"
+            value={target}
+            onChange={setTarget}
+            className="dark:bg-slate-950"
           />
         </div>
+      )}
 
-        {receiverType === "GROUP" && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Select Group</label>
-            <Dropdown
-              options={groups}
-              placeholder="Select Group"
-              value={target} // Ensure dropdown respects state
-              onChange={setTarget}
-            />
-          </div>
-        )}
+      {receiverType === "USER" && (
+        <div className="space-y-1.5 animate-in fade-in slide-in-from-left-2 duration-200">
+          <label className="block text-[10px] font-black uppercase tracking-tight text-slate-400 dark:text-slate-500">
+            User ID Reference
+          </label>
+          <InputField
+            placeholder="e.g., 502"
+            icon={false}
+            value={target}
+            onChangeValue={setTarget}
+            type="number"
+            border="border-slate-200 dark:border-slate-700"
+            maxWidth="bg-slate-50 dark:bg-slate-950 h-9 text-xs"
+          />
+        </div>
+      )}
+    </div>
 
-        {receiverType === "USER" && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">User ID</label>
-            <InputField
-              placeholder="Enter User ID (e.g., 5)"
-              icon={false}
-              value={target} // ⚡️ This forces the input to clear visually
-              onChangeValue={setTarget} // Changed from onSelect to standard onChangeValue
-              type="number"
-            />
-          </div>
-        )}
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+    {/* Content Section */}
+    <div className="space-y-4">
+      <div className="space-y-1.5">
+        <label className="block text-[10px] font-black uppercase tracking-tight text-slate-400 dark:text-slate-500">
+          Subject Line
+        </label>
         <InputField 
-          placeholder="Notification Title" 
+          placeholder="Enter notification title..." 
           searchMode="input" 
           icon={false} 
-          value={title} // ⚡️ This forces the input to clear visually
-          onChangeValue={setTitle} 
+          value={title}
+          onChangeValue={setTitle}
+          border="border-slate-200 dark:border-slate-700"
+          maxWidth="bg-slate-50 dark:bg-slate-950 h-10 text-xs font-bold"
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Message</label>
-        {/* The 'key' prop is the magic trick here. When it changes, React destroys and rebuilds the component */}
-        <TextEditor 
-          key={resetKey} 
-          onChange={setMessage} 
-        />
+      <div className="space-y-1.5">
+        <label className="block text-[10px] font-black uppercase tracking-tight text-slate-400 dark:text-slate-500">
+          Message Body
+        </label>
+        <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden bg-slate-50 dark:bg-slate-950 transition-all focus-within:ring-2 focus-within:ring-blue-500/10">
+          <TextEditor 
+            key={resetKey} 
+            onChange={setMessage} 
+          />
+        </div>
       </div>
+    </div>
 
-      <div className="pt-2">
-        <button 
-          disabled={loading}
-          className="px-6 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded transition-colors disabled:opacity-50 flex items-center gap-2"
-        >
-          {loading ? "Sending..." : "Send Notification"}
-        </button>
-      </div>
-    </form>
-  );
+    {/* Action Footer */}
+    <div className="pt-4 flex justify-end border-t border-slate-100 dark:border-slate-800">
+      <button 
+        disabled={loading}
+        className={`px-6 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-md flex items-center gap-2 ${
+          loading 
+          ? "bg-slate-200 text-slate-400 cursor-not-allowed" 
+          : "bg-slate-900 dark:bg-blue-600 text-white hover:opacity-90"
+        }`}
+      >
+        {loading ? (
+          <>
+            <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            Processing...
+          </>
+        ) : (
+          "Dispatch Notification"
+        )}
+      </button>
+    </div>
+  </form>
+);
 }
 
 

@@ -222,35 +222,40 @@ console.log("current photo",currentPhoto)
   // Determine what to display: New selection OR current DB photo
   const displayImage = image ? (typeof image === "string" ? image : URL.createObjectURL(image)) : (currentPhoto?`${BASE_URL}${currentPhoto}`:null);
   console.log("displayImage",userName)
-  return (
-    <>
-      <div className="relative rounded-full bg-amber-800 shadow w-28 h-28">
-        {displayImage ? (
-          <img src={displayImage} className="w-28 h-28 rounded-full border-4 border-white shadow object-cover"/>
-        ) : (
-          <div className="rounded-full bg-slate-800 dark:bg-slate-600 text-slate-100 flex items-center justify-center w-28 h-28 text-4xl border-4 border-white shadow">
-            {(userName ?? "")
-              .split(" ")
-              .map((n) => n[0])
-              .slice(0, 2)
-              .join("") || "NA"}
-          </div>
-        )}
-
-        <button
-          onClick={() => setOpen(true)}
-          className="absolute bottom-1 right-1 bg-white p-2 rounded-full shadow hover:bg-gray-100 transition-transform active:scale-90"
-        >
-          <Camera size={18} />
-        </button>
-      </div>
-
-      {open && (
-        <ImageUploader
-          setImage={setImage}
-          onClose={() => setOpen(false)}
+ return (
+  <>
+    <div className="relative rounded-full shadow-lg w-28 h-28 group">
+      {displayImage ? (
+        <img 
+          src={displayImage} 
+          className="w-28 h-28 rounded-full border-4 border-white dark:border-slate-700 shadow-md object-cover transition-colors"
         />
+      ) : (
+        <div className="rounded-full bg-slate-800 dark:bg-slate-600 text-slate-100 flex items-center justify-center w-28 h-28 text-4xl font-bold border-4 border-white dark:border-slate-700 shadow-md transition-colors">
+          {(userName ?? "")
+            .split(" ")
+            .map((n) => n[0])
+            .slice(0, 2)
+            .join("") || "NA"}
+        </div>
       )}
-    </>
-  );
+
+      {/* Edit Button - Styled to match your primary action buttons */}
+      <button
+        onClick={() => setOpen(true)}
+        className="absolute bottom-1 right-1 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 p-2 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all"
+      >
+        <Camera size={16} />
+      </button>
+    </div>
+
+    {/* Uploader Modal/Overlay */}
+    {open && (
+      <ImageUploader
+        setImage={setImage}
+        onClose={() => setOpen(false)}
+      />
+    )}
+  </>
+);
 }

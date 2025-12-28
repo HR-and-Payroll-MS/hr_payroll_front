@@ -126,25 +126,26 @@ function MyProfile({ currStep = 0 }) {
   }
 
   return (
-    <div className="flex flex-col w-full h-full justify-start overflow-y-auto scrollbar-hidden bg-slate-50 dark:bg-slate-900">
-      
-      <div className="h-fit rounded-xl">
-        <ProfileHeader 
-          employeeData={employeeData} 
-          setEmployeeData={setEmployeeData} 
-        />
-      </div>
+  <div className="h-full w-full flex flex-col gap-4 scrollbar-hidden overflow-y-auto bg-transparent">
+    <div className="bg-gray-50 dark:bg-slate-700  rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-colors">
+      <ProfileHeader 
+        employeeData={employeeData} 
+        setEmployeeData={setEmployeeData} 
+      />
+    </div>
 
-      <div className="flex flex-col rounded-md h-full flex-1 gap-4 ">
+    <div className="flex flex-col flex-1 gap-4">
+      <div className="bg-white dark:bg-slate-700 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-colors">
         <StepHeader
-          classname="flex justify-start items-start px-4 my-2 m-0 *:h-12 min-h-fit max-h-fit gap-5 border-b border-gray-200 bg-transparent "
-          notcurrentsytle="border-gray-50"
+          classname="flex justify-start items-center px-6 h-14 gap-6 border-b border-gray-200 dark:border-slate-600 bg-transparent text-sm font-medium"
+          notcurrentstyle="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
           steps={steps}
           currentStep={currentStep}
           onStepClick={setCurrentStep}
         />
 
-        <div className="flex-1 flex flex-col gap-3.5 pb-1 ">
+        {/* STEP CONTENT WRAPPER */}
+        <div className="p-6 shadow">
           <RenderStepContent
             style=''
             myDocument={true}
@@ -163,17 +164,21 @@ function MyProfile({ currStep = 0 }) {
               documents: true,
             }}
           />
-          
-          {currentStep === 2 && (
-            <MyPayrollPage
-              headerfont="text-xl"
-              background={'rounded bg-white shadow-sm mx-4 mb-4'}
-            />
-          )}
         </div>
       </div>
+
+      {/* PAYROLL SECTION - Conditional Rendering */}
+      {currentStep === 2 && (
+        <div className="bg-white  dark:bg-slate-700 p-6 border-b border-gray-300 shadow-slate-400 rounded shadow-sm dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-colors">
+          <MyPayrollPage
+            headerfont="text-lg font-bold text-slate-800 dark:text-slate-100 uppercase tracking-tight"
+            background={'bg-transparent'}
+          />
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 }
 
 export default MyProfile;

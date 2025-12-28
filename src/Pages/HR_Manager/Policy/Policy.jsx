@@ -191,22 +191,30 @@ if (loading)
       <div className="p-4 text-center text-gray-500">No policy data available.</div>
     );
 
-  return (
-    <div className="flex flex-col px-4 w-full h-full justify-start bg-gray-50 dark:bg-slate-900">
+ return (
+  <div className="flex flex-col gap-4 w-full p-2 h-full justify-start dark:bg-slate-900 bg-gray-50 overflow-hidden transition-colors">
+    {/* HEADER SECTION */}
+    <div className="flex justify-evenly shrink-0"> 
       <Header Title={"Policy"} subTitle={"Company Policies"} />
-      <div className="flex flex-1 gap-5 overflow-y-scroll scrollbar-hidden rounded-md h-full">
-        <div className="h-full flex flex-col shadow rounded-md overflow-clip w-fit">
-          <StepHeader
-            childclassname="flex rounded-md text-md w-fit p-2 justify-between items-center"
-            classname="flex bg-white w-fit px-6 flex-col  h-full  p-2 "
-            steps={steps}
-            iscurrentstyle="bg-slate-50 dark:bg-slate-700 shadow "
-            currentStep={currentStep}
-            onStepClick={setCurrentStep}
-          />
-        </div>
+    </div>
 
-        <div className="flex-1  relative bg-white rounded-md shadow overflow-y-auto scrollbar-hidden">
+    <div className="flex flex-1 gap-5 rounded-md overflow-hidden">
+      
+      {/* LEFT SIDEBAR - Restored StepHeader with your exact props */}
+      <div className="h-full w-1/5 shadow rounded-md dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 bg-white dark:bg-slate-800 overflow-y-auto scrollbar-hidden transition-all">
+        <StepHeader
+          childclassname="flex dark:text-slate-300 rounded-md text-md w-full p-2 justify-between items-center"
+          classname="flex bg-white dark:bg-slate-800 justify-start items-start text-start w-full flex-col h-full p-2 gap-2 transition-colors"
+          steps={steps}
+          iscurrentstyle="bg-slate-100 dark:bg-slate-700 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 shadow-sm"
+          currentStep={currentStep}
+          onStepClick={setCurrentStep}
+        />
+      </div>
+
+      {/* RIGHT CONTENT - Main Content Area */}
+      <div className="flex flex-1 h-full bg-white dark:bg-slate-800 rounded-md shadow dark:shadow-slate-600 dark:inset-shadow-xs dark:inset-shadow-slate-600 overflow-hidden transition-all">
+        <div className="h-full w-full overflow-y-auto scrollbar-hidden">
           <RenderStepPolicy
             currentStep={currentStep}
             editMode={editMode}
@@ -220,8 +228,10 @@ if (loading)
           />
         </div>
       </div>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default Policy;
