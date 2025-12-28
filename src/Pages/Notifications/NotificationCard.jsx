@@ -1,62 +1,59 @@
 import Icon from "../../Components/Icon";
-import { notificationIcon, formatTime } from "./utils";
+import { formatTime, notificationIcon } from "./utils";
 
 export default function NotificationCard({ n, onView, onDelete, onMarkRead, canAction }) {
   return (
-    <div className={`p-3 rounded hover:bg-slate-50 cursor-pointer shadow bg-white`}>
-      <div className="flex gap-3">
-        <div className="text-xl">{notificationIcon(n.category)}</div>
+    <div
+      onClick={onView} // This triggers the setSelected in the parent page
+      className={`group relative p-4 mx-3 rounded-lg border transition-all cursor-pointer hover:shadow-md ${
+        n.unread ? "bg-white border-indigo-200" : "bg-slate-50 border-transparent"
+      }`}
+    >
+      {/* Unread Indicator */}
+      {n.unread && (
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-600 rounded-l-lg" />
+      )}
+
+      <div className="flex gap-4">
+        <div className="mt-1">{notificationIcon(n.category)}</div>
+        
         <div className="flex-1">
-          <div className="flex justify-between">
-            <div>
-              <div className="font-medium">{n.title}</div>
-              <div className="text-xs text-slate-500">{formatTime(n.createdAt)}</div>
-            </div>
-            <div className="flex gap-2">
-              <button className=""
-                //  onClick={()=>onMarkRead(n)}
-                 >{n.unread?<Icon name="Dot" className=" text-red-600 "/>:""}</button>
-              {canAction && <button className=" text-white text-xs rounded" onClick={()=>onView(n)}><Icon name="Eye" className="h-4 text-indigo-600 w-4"/></button>}
-              <button className="" onClick={()=>onDelete(n)}><Icon name="Trash2" className="h-4 hover:fill-red-700  text-red-700 w-4"/></button>
-            </div>
+          <div className="flex justify-between items-start">
+            <h4 className={`text-sm ${n.unread ? "font-bold" : "font-medium"} text-slate-800`}>
+              {n.title}
+            </h4>
+            <span className="text-[10px] text-slate-400">{formatTime(n.createdAt)}</span>
           </div>
-          <p className="text-sm text-slate-600 line-clamp-2">  {n.message} </p>
+          
+          <p className="text-xs text-slate-600 line-clamp-1 mt-1">{n.message}</p>
+        </div>
+
+        {/* Action Buttons - Stop Propagation to prevent opening detail when clicking delete */}
+        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          {n.unread && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onMarkRead();
+              }}
+              className="p-1 hover:bg-indigo-100 text-indigo-600 rounded"
+              title="Mark as read"
+            >
+              <Icon name="Check" className="w-4 h-4" />
+            </button>
+          )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            className="p-1 hover:bg-rose-100 text-rose-600 rounded"
+            title="Delete"
+          >
+            <Icon name="Trash2" className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>
   );
 }
-// UI component for displaying a single notification (title, message, time, read/unread).
-
-
-
-
-// import Icon from "../../Components/Icon";
-// import { notificationIcon, formatTime } from "./utils";
-
-// export default function NotificationCard({ n, onView, onDelete, onMarkRead, canAction }) {
-//   return (
-//     <div className={`p-3 rounded hover:bg-slate-50 cursor-pointer shadow bg-white`}>
-//       <div className="flex gap-3">
-//         <div className="text-xl">{notificationIcon(n.category)}</div>
-//         <div className="flex-1">
-//           <div className="flex justify-between">
-//             <div>
-//               <div className="font-medium">{n.title}</div>
-//               <div className="text-xs text-slate-500">{formatTime(n.createdAt)}</div>
-//             </div>
-//             <div className="flex gap-2">
-//               <button className=""
-//                 //  onClick={()=>onMarkRead(n)}
-//                  >{n.unread?<Icon name="Dot" className=" text-red-600 "/>:""}</button>
-//               {canAction && <button className=" text-white text-xs rounded" onClick={()=>onView(n)}><Icon name="Eye" className="h-4 text-indigo-600 w-4"/></button>}
-//               <button className="" onClick={()=>onDelete(n)}><Icon name="Trash2" className="h-4 hover:fill-red-700  text-red-700 w-4"/></button>
-//             </div>
-//           </div>
-//           <p className="text-sm text-slate-600 line-clamp-2">  {n.message} </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-// // UI component for displaying a single notification (title, message, time, read/unread).

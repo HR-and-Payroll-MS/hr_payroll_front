@@ -1,51 +1,59 @@
 import { NavLink, Outlet } from "react-router-dom";
 import Header from "../../Components/Header";
+import { Command, HelpCircle, Network } from "lucide-react";
 
 export default function HelpCenter(){
 
-    
-           
-    const middle=<div id="middle" className="flex bg-white dark:bg-slate-800 w-full  flex-col  h-full p-2 gap-4">    
-                <div id="child1" >
-                    <NavLink to="shortcut"  className={({ isActive }) => `flex dark:hover:bg-slate-700 rounded-md w-full hover:bg-slate-50 justify-between items-center  ${isActive ? "hover:bg-slate-50 shadow bg-slate-50 dark:bg-slate-700 " : "" }`}>
-                        <div className="flex items-center gap-1.5 justify-start p-2 rounded ">
-                            <img className="h-5 opacity-25" src="\svg\music-library-svgrepo-com.svg" alt="" />
-                            <p className="font-bold text-gray-700 dark:text-slate-200  text-xs">Keyboard Shortcut</p>
-                        </div>
-                    </NavLink>
-                </div>  
-                <div id="child" >
-                    <NavLink to="FAQ" className={({ isActive }) => `flex dark:hover:bg-slate-700 hover:bg-slate-50 rounded-md w-full justify-between items-center  ${isActive ? " bg-slate-50  shadow dark:bg-slate-700 " : "" }`}>
-                        <div className="flex items-center gap-1.5 justify-start p-2 rounded ">
-                            <img className="h-5 opacity-25" src="\svg\music-library-svgrepo-com.svg" alt="" />
-                            <p className="font-bold text-gray-700 dark:text-slate-200  text-xs">Frequently Asked Questions</p>
-                        </div>
-                    </NavLink>
-                </div>  
-                <div id="child" >
-                    <NavLink to="ORG_chart_page" className={({ isActive }) => `flex dark:hover:bg-slate-700 hover:bg-slate-50 rounded-md w-full justify-between items-center  ${isActive ? " bg-slate-50  shadow dark:bg-slate-700 " : "" }`}>
-                        <div className="flex items-center gap-1.5 justify-start p-2 rounded ">
-                            <img className="h-5 opacity-25" src="\svg\music-library-svgrepo-com.svg" alt="" />
-                            <p className="font-bold text-gray-700 dark:text-slate-200  text-xs">ORG Chart</p>
-                        </div>
-                    </NavLink>
-                </div>  
-             </div>  ;
-    return  (
-    <div className="flex flex-col gap-4 w-full p-7 h-full justify-start dark:bg-slate-900 bg-gray-50  ">
-                <div className=" flex justify-evenly  "> 
-                            <Header Title={"Settings"} Breadcrub={"Manage your Dashboard here"}/>
+    const middle = (
+        <div id="middle" className="flex bg-white dark:bg-slate-800 w-full flex-col h-full p-2 gap-2 transition-colors"> 
+            <div id="child1">
+                <NavLink to="shortcut" className={({ isActive }) => `flex dark:hover:bg-slate-700 rounded-md w-full hover:bg-slate-50 justify-between items-center transition-all ${isActive ? "bg-slate-100 dark:bg-slate-700 shadow-sm" : "" }`}>
+                    <div className="flex items-center gap-1.5 justify-start p-2 rounded">
+                        <Command size={18} className="opacity-40 dark:text-slate-200" />
+                        <p className="font-bold text-gray-700 dark:text-slate-200 text-xs">Keyboard Shortcut</p>
+                    </div>
+                </NavLink>
+            </div>  
+
+            <div id="child">
+                <NavLink to="FAQ" className={({ isActive }) => `flex dark:hover:bg-slate-700 hover:bg-slate-50 rounded-md w-full justify-between items-center transition-all ${isActive ? "bg-slate-100 dark:bg-slate-700 shadow-sm" : "" }`}>
+                    <div className="flex items-center gap-1.5 justify-start p-2 rounded">
+                        <HelpCircle size={18} className="opacity-40 dark:text-slate-200" />
+                        <p className="font-bold text-gray-700 dark:text-slate-200 text-xs">Frequently Asked Questions</p>
+                    </div>
+                </NavLink>
+            </div>  
+
+            <div id="child">
+                <NavLink to="ORG_chart_page" className={({ isActive }) => `flex dark:hover:bg-slate-700 hover:bg-slate-50 rounded-md w-full justify-between items-center transition-all ${isActive ? "bg-slate-100 dark:bg-slate-700 shadow-sm" : "" }`}>
+                    <div className="flex items-center gap-1.5 justify-start p-2 rounded">
+                        <Network size={18} className="opacity-40 dark:text-slate-200" />
+                        <p className="font-bold text-gray-700 dark:text-slate-200 text-xs">ORG Chart</p>
+                    </div>
+                </NavLink>
+            </div>  
+        </div>
+    );
+
+    return (
+        <div className="flex flex-col gap-4 w-full p-2 h-full justify-start dark:bg-slate-900 bg-gray-50 overflow-hidden">
+            <div className="flex justify-evenly shrink-0"> 
+                <Header Title={"Help Center"} Breadcrub={"Find guides and shortcuts here"}/>
+            </div>
+
+            <div className="flex flex-1 gap-5 rounded-md overflow-hidden">
+                {/* Left Sidebar - Contains your {middle} */}
+                <div className="h-full shadow rounded-md dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 w-1/5 overflow-y-auto scrollbar-hidden transition-all"> 
+                    {middle}
                 </div>
-                <div className="flex h-full flex-1 gap-5 rounded-md">
-                        <div className="h-11/12 shadow rounded-md overflow-clip w-1/5 "> 
-                            {middle}
-                        </div>
-                        <div className=" flex rounded-md shadow flex-1 h-full  dark:bg-slate-800 bg-white "> 
-                            {/* <CompanyInfo/> */}
-                            {/* <ChangePassword/> */}
-                            {/* <WorkSchedule/> */}
-                            <Outlet/>
-                        </div>
+
+                {/* Right Content - Properly contained for scrolling */}
+                <div className="flex rounded-md shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 flex-1 h-full dark:bg-slate-800 bg-white overflow-hidden transition-all"> 
+                    <div className="h-full w-full overflow-y-auto scrollbar-hidden">
+                        <Outlet/>
+                    </div>
                 </div>
-    </div>)
+            </div>
+        </div>
+    );
 }

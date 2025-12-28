@@ -31,7 +31,7 @@ export default function Table({ Data,pages=5,titleStructure=[], setExportData, S
   const structuredData = useFormattedTableData(data, Structure, ke);
 
   const table_header = (
-    <thead className="bg-slate-100 sticky shadow top-0 dark:bg-slate-700 ">
+    <thead className="bg-slate-100 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 sticky shadow top-0 dark:bg-slate-700 ">
       <tr>
         {title.map((id, i) => (
           <th key={i} className="px-4 py-3 text-left">

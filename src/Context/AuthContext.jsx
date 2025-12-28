@@ -68,35 +68,36 @@ export function AuthContextProvider({ children }) {
     setIsAuthLoading(false);
   }, []);
 
-  // Fetch Employees - only runs when logged in
-  useEffect(() => {
-    if (!auth.user || !auth.accessToken) {
-      setSearchEmployees([]);
-      return;
-    }
+  // // Fetch Employees - only runs when logged in
+  // useEffect(() => {
+  //   if (!auth.user || !auth.accessToken) {
+  //     setSearchEmployees([]);
+  //     return;
+  //   }
 
-    const fetchEmployees = async () => {
-      setLoading(true);
-      try {
-        const res = await axiosPrivate.get('/employees/');
-        const data = res.data.results.map((e) => ({
-          id: e.id,
-          fullname: e.general?.fullname || '',
-          emailaddress: e.general?.emailaddress || '',
-          photo: e.general?.photo || '/pic/download (48).png',
-          employeeid: e.job?.employeeid || '',
-          department: e.job?.department || '',
-        }));
-        setSearchEmployees(data);
-      } catch (err) {
-        console.error('AuthContext: Failed to fetch employees');
-      } finally {
-        setLoading(false);
-      }
-    };
+  //   const fetchEmployees = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const res = await axiosPrivate.get('/employees/');
+  //       cosole.log("AuthContext: Fetched employees", res);  
+  //       const data = res.data.results.map((e) => ({
+  //         id: e.id,
+  //         fullname: e.general?.fullname || '',
+  //         emailaddress: e.general?.emailaddress || '',
+  //         photo: e.general?.photo || '/pic/download (48).png',
+  //         employeeid: e.job?.employeeid || '',
+  //         department: e.job?.department || '',
+  //       }));
+  //       setSearchEmployees(data);
+  //     } catch (err) {
+  //       console.error('AuthContext: Failed to fetch employees');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchEmployees();
-  }, [auth.user, auth.accessToken, axiosPrivate]);
+  //   fetchEmployees();
+  // }, [auth.user, auth.accessToken, axiosPrivate]);
 
   const login = useCallback(async (username, password) => {
     try {

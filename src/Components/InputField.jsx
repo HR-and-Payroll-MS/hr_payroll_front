@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Icon from "./Icon";
 import SuggestionBox from "./SuggestionBox";
 import useAuth from "../Context/AuthContext";
+import useData from "../Context/DataContextProvider";
 
 function InputField({
   placeholder = "Search...",
@@ -16,7 +17,7 @@ function InputField({
   icon = true,
   border = "border",
 
-  searchMode = "api", // "api" | "global" | "input"
+  searchMode = "api",
   globalData = [],
 }) {
   const [query, setQuery] = useState("");
@@ -24,9 +25,13 @@ function InputField({
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const containerRef = useRef(null);
-  const { searchEmployees } = useAuth();
+  const { employees } = useData();
+  
+//  useEffect(() => {
+//   employees.get();
+// }, []); 
 
-  /* ================= INPUT CHANGE ================= */
+
   const handleInputChange = (e) => {
     const val = e.target.value;
     setQuery(val);
@@ -41,12 +46,10 @@ function InputField({
     setShowSuggestions(true);
   };
 
-  /* ================= SEARCH LOGIC ================= */
   useEffect(() => {
     if (searchMode === "input") return;
 
     const delay = setTimeout(() => {
-      // 🌍 GLOBAL SEARCH
       if (searchMode === "global") {
         if (!query.trim()) {
           setSuggestions([]);
@@ -62,34 +65,39 @@ function InputField({
         return;
       }
 
-      if (apiEndpoint && query.trim().length > 1) {
-        const filtered = (searchEmployees || []).filter(emp => {
+       if (apiEndpoint && query.trim().length > 1) {
+      employees.get().then((data) => {
+        if (!data) return; // safety
+        const filtered = data.filter(emp => {
           const text = `${emp.employeeid || ""} ${emp.emailaddress || ""} ${emp.department || ""} ${emp.fullname || ""}`.toLowerCase();
           return text.includes(query.toLowerCase());
         });
         setSuggestions(filtered);
-      }
+      });
+    }
+
+      // if (apiEndpoint && query.trim().length > 1) {
+      //   const filtered = (employees?.data || []).filter(emp => {
+      //     const text = `${emp.employeeid || ""} ${emp.emailaddress || ""} ${emp.department || ""} ${emp.fullname || ""}`.toLowerCase();
+      //     return text.includes(query.toLowerCase());
+      //   });
+      //   setSuggestions(filtered);
+      // }
     }, 400);
 
     return () => clearTimeout(delay);
-  }, [query, searchMode, globalData, apiEndpoint, searchEmployees, displayKey]);
-
-  /* ================= SELECT ================= */
+  }, [query, searchMode, globalData, apiEndpoint, employees, displayKey]);
   const handleSelect = (item) => {
     setQuery(item[displayKey] || "");
     setSuggestions([]);
     setShowSuggestions(false);
     onSelect?.(item);
   };
-
-  /* ================= AUTO HIDE ================= */
   useEffect(() => {
     if (!showSuggestions) return;
     const t = setTimeout(() => setShowSuggestions(false), 20000);
     return () => clearTimeout(t);
   }, [showSuggestions]);
-
-  /* ================= CLICK OUTSIDE ================= */
   useEffect(() => {
     const close = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {

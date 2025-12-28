@@ -48,6 +48,7 @@ import AccessDenied from './Pages/clockIn_out/AccessDenied';
 import MyProfile from './Pages/profile/MyProfile';
 import LeaveApprovalPage from './Pages/HR_Manager/LeaveApproval/LeaveApprovalPage';
 import AnnouncementsPage from './Pages/HR_Manager/Announcement/AnnouncementPage';
+import NewsFeedPage from './Pages/HR_Manager/Announcement/example/NewsFeedPage';
 import PayrollReportsPage from './Pages/HR_Manager/payroll_management/PayrollReportsPage';
 import MyPayrollPage from './Pages/HR_Manager/payroll_management/MyPayrollPage';
 import NotificationCenterPage from './Pages/Notifications/NotificationCenterPage';
@@ -130,6 +131,7 @@ function App() {
           <Route path="Payroll" element={<MainLayout />}>
             {sharedSettingsRoutes}
             {sharedHelpRoutes}
+            <Route path="U" element={<NewsFeedPage/>} />
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route index element={<DashboardLayout />} />
             <Route path="generate_payroll" element={<GeneratePayroll />} />

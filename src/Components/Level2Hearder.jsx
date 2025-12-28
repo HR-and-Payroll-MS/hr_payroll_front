@@ -387,17 +387,17 @@ export function Generatepayroll({
   ];
 
   return (
-    <div className="px-6  border-slate-200 flex justify-between items-center bg-white">
-      <h3 className="font-semibold text-slate-800">Employee Payroll Sheet</h3>
+    <div className="px-6 dark:border-slate-700   border-slate-200 dark:bg-slate-800 flex justify-between items-center bg-white">
+      <h3 className="font-semibold dark:text-slate-300 text-slate-800">Employee Payroll Sheet</h3>
       <div className='flex gap-2'>
-        <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+        <div className="flex dark:text-slate-300  dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
           <Dropdown  options={Department} text="text-xs font-semibold" placeholder="Department 1" border="border gap-1 border-gray-100" />
         </div> 
         <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
           <Dropdown onChange={(i) => handleFilter(i)} options={PayrollCycle} text="text-xs font-semibold" placeholder="Monthly" border="border gap-1 border-gray-100" />
         </div>
-        <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-          <span className="text-xs p-4 h-fit font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
+        <div className="flex dark:text-slate-200 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
+          <span className="text-xs p-4 h-fit font-medium  text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
             {employees} Active Records
           </span>
         </div> 

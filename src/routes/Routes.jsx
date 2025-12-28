@@ -10,6 +10,8 @@ import { NotificationProvider } from "../Context/NotificationProvider";
 import { ProfileProvider } from "../Context/ProfileContext";
 import { TableProvider } from "../Context/TableContext";
 import { NetworkProvider } from '../Context/NetworkContext';
+import { AnnouncementProvider } from '../Context/AnnouncementContext';
+import { DataContextProvider } from '../Context/DataContextProvider';
 
 export default function ProtectedRoutes({ allowedRoles }) {
   const { auth, setAuth, isAuthLoading } = useAuth();
@@ -51,11 +53,15 @@ export default function ProtectedRoutes({ allowedRoles }) {
     <SocketProvider>
       <NetworkProvider>
         <NotificationProvider>
-          <ProfileProvider>
-            <TableProvider>
-              <Outlet /> 
-            </TableProvider>
-          </ProfileProvider>
+          <AnnouncementProvider>
+            <ProfileProvider>
+              <DataContextProvider>
+                <TableProvider>
+                  <Outlet /> 
+                </TableProvider>
+              </DataContextProvider>
+            </ProfileProvider>
+          </AnnouncementProvider>
         </NotificationProvider>
       </NetworkProvider>
     </SocketProvider>

@@ -84,7 +84,7 @@ function TableStructures({data="",id,D1,D2, item,Comps = EmptyComponent,nickname
       case 11:
         return (
           <div className="flex w-full justify-start items-center">
-            <p className="font-semibold text-gray-500  text-xs  dark:text-slate-200">
+            <p className="font-semibold text-gray-500  text-xs  dark:text-slate-50">
               {item[0] || "Header"}
             </p>
           </div>
@@ -178,12 +178,12 @@ function TableStructures({data="",id,D1,D2, item,Comps = EmptyComponent,nickname
         return(
           <div className="px-2 text-xs">
                               <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-slate-300 shadow flex items-center justify-center text-slate-700 font-bold text-xs">
+                                <div className="w-8 h-8 rounded-full bg-slate-300 shadow flex items-center justify-center dark:bg-slate-300 text-slate-700 font-bold text-xs">
                                   {item[0]?.charAt(0)}{item[0]?.split(' ')[1]?.charAt(0)}
                                 </div>
                                 <div>
-                                  <p className="text-sm font-medium text-slate-900">{item[0]}</p>
-                                  <p className="text-xs text-slate-500">{item[1]}</p>
+                                  <p className="text-sm font-medium dark:text-slate-100 text-slate-900">{item[0]}</p>
+                                  <p className="text-xs dark:text-slate-300 dark:bg-slate-300 text-slate-500">{item[1]}</p>
                                 </div>
                               </div>
                           
@@ -283,41 +283,41 @@ function TableStructures({data="",id,D1,D2, item,Comps = EmptyComponent,nickname
       );
       case 771:
         return(
-          <div className="px-2 text-xs text-start font-semibold" >
+          <div className="px-2 text-xs dark:text-slate-50 text-start font-semibold" >
                     {item[0]||"-"}       
                   </div>
       );
       case 772:
         return(
-          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}</div>
+          <div className="px-2 text-xs dark:text-slate-50 font-semibold text-right">{item[0]||"-"}</div>
       );
       case 773:
         return(
-          <div className="px-2 text-xs font-semibold text-right text-red-600">{item[0]||"-"}
+          <div className="px-2 text-xs dark:text-slate-50 font-semibold text-right text-red-600">{item[0]||"-"}
                           
                   </div>
       );
       case 774:
         return(
-          <div className="px-2 text-xs font-semibold text-right text-emerald-600">{item[0]||"-"}
+          <div className="px-2 text-xs dark:text-slate-50 font-semibold text-right text-emerald-600">{item[0]||"-"}
                           
                   </div>
       );
       case 775:
         return(
-          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}
+          <div className="px-2 text-xs font-semibold dark:text-slate-50 text-right">{item[0]||"-"}
                           
                   </div>
       );
       case 776:
         return(
-          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}
+          <div className="px-2 text-xs dark:text-slate-50 font-semibold text-right">{item[0]||"-"}
                           
                   </div>
       );
       case 777:
         return(
-          <div className="px-2 text-xs font-semibold text-right">{item[0]||"-"}
+          <div className="px-2 text-xs dark:text-slate-50 font-semibold text-right">{item[0]||"-"}
                           
                   </div>
       );

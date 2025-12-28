@@ -1,38 +1,90 @@
 import React from "react";
+import SocialPost from "./SocialPost";
+import { useAnnouncements } from "../../../Context/AnnouncementContext";
 
-/*
-  AnnouncementDetails - shows full message, attachments, simple read stats
-  - onDelete is provided for HR to remove/archive the announcement
-  - Replace read tracking with API when ready
-*/
+export default function AnnouncementDetails({ announcement, onClose }) {
+  const { removeAnnouncement } = useAnnouncements();
 
-export default function AnnouncementDetails({ announcement, onDelete }) {
-  const { title, body, priority, audience, createdAt, reads, totalRecipients } = announcement;
+  const handleDelete = async () => {
+    if (window.confirm("Archive this post?")) {
+      await removeAnnouncement(announcement.id || announcement._id);
+      onClose();
+    }
+  };
 
   return (
-    <div className="space-y-4 flex h-full flex-col">
-      <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-xl font-semibold">{title}</h2>
-          <div className="text-xs text-gray-500">Priority: {priority} • To: {audience}</div>
-          <div className="text-xs text-gray-400 mt-1">Published: {new Date(createdAt).toLocaleString()}</div>
-        </div>
-
-        <div className="text-right">
-          <div className="text-sm text-gray-600">{reads} / {totalRecipients} read</div>
-          <button onClick={onDelete} className="mt-3 text-sm text-red-600 underline">Archive / Delete</button>
-        </div>
+    <div className="flex flex-col h-full bg-white">
+      <div className="flex-1 overflow-y-auto p-2">
+        <SocialPost announcement={announcement} isDetailView={true} />
       </div>
-
-      <div className="prose overflow-y-auto scrollbar-hidden  flex-1d max-w-none text-sm">
-        {/* <p>{body}</p> */}
-         <div dangerouslySetInnerHTML={{ __html: body }}/>
-      </div>
-
-      <div>
-        <h4 className="font-medium">Attachments</h4>
-        <div className="text-sm text-gray-500">No attachments</div>
+      <div className="p-4 border-t flex justify-between items-center bg-slate-50">
+        <span className="text-[10px] font-black text-slate-400 uppercase">Admin Mode</span>
+        <button onClick={handleDelete} className="bg-red-50 text-red-600 px-6 py-2 rounded-xl text-xs font-black border border-red-100">
+          Archive Post
+        </button>
       </div>
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React from "react";
+// import SocialPost from "./SocialPost";
+
+// export default function AnnouncementDetails({ announcement, onDelete }) {
+//   return (
+//     <div className="flex flex-col h-full bg-white dark:bg-slate-950">
+//       <div className="flex-1 overflow-y-auto scrollbar-hidden">
+//         {/* We reuse SocialPost with isDetailView=true to show everything expanded */}
+//         <SocialPost announcement={announcement} isDetailView={true} />
+//       </div>
+
+//       <div className="p-5 bg-slate-50 dark:bg-slate-900 border-t dark:border-slate-800 flex items-center justify-between">
+//         <div>
+//            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[2px]">Manager Controls</p>
+//            <p className="text-xs text-slate-500 font-medium">{announcement.reads} Views generated so far</p>
+//         </div>
+//         <button 
+//           onClick={() => onDelete(announcement.id)} 
+//           className="bg-red-50 dark:bg-red-900/20 text-red-600 px-6 py-2.5 rounded-2xl text-xs font-black hover:bg-red-100 transition border border-red-100 dark:border-red-900/50"
+//         >
+//           Archive Post
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }

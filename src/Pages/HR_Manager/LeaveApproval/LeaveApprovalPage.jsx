@@ -146,17 +146,6 @@ return (
                     />
             </div>
 
-
-            {/* <div className="w-2/5 border-l-slate-400 border-l">
-                <div className="p-4 rounded ">
-                    <h3 className="font-medium">Analytics</h3>
-                    <div className="h-40 mt-3">
-                        <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={analytics}><XAxis dataKey="name" /><YAxis /><Tooltip /><Bar dataKey="days" /></BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-            </div> */}
         </div>
 
 

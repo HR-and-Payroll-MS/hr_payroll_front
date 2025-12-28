@@ -1,149 +1,114 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Dropdown from "../../../Components/Dropdown";
-import InputField from "../../../Components/InputField";
 import TextEditor from "../../../Components/TextEditor";
-import LexicalEditor from "../../../Components/LexicalEditor";
+import SocialPost from "./SocialPost"; 
+import { useAnnouncements } from "../../../Context/AnnouncementContext";
 
-/*
-  Simple create announcement trigger + small form modal
-  - Minimal UI: title, body, priority, audience
-  - Emits onCreate(newAnnouncement) and closes
-  - Replace local state submission with API POST when ready
-*/
-
-export default function CreateAnnouncement({ onCreate }) {
+export default function CreateAnnouncement() {
+  const { publishAnnouncement } = useAnnouncements();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [step, setStep] = useState(1); 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [priority, setPriority] = useState("Normal");
-  const [audience, setAudience] = useState("All employees");  
-  
-  // const [savedJSON, setSavedJSON] = useState(null);
-  // const [savedHTML, setSavedHTML] = useState("");
+  const [attachments, setAttachments] = useState([]);
+  const fileInputRef = useRef(null);
 
-  // const handleEditorChange = ({ json, html }) => {
-  //   setSavedJSON(json);
-  //   setSavedHTML(html);
-  // };
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    const newFiles = files.map(file => {
+      const type = file.type.split('/')[0];
+      return {
+        file,
+        name: file.name,
+        type: ['image', 'video', 'audio'].includes(type) ? type : 'file',
+        url: URL.createObjectURL(file), // Local blob for preview
+        size: (file.size / 1024).toFixed(1) + " KB"
+      };
+    });
+    setAttachments(prev => [...prev, ...newFiles]);
+  };
 
-  // const sendToServer = () => {
-  //   console.log("=== RAW JSON TO SERVER ===");
-  //   console.log(savedJSON);
+  const handlePublish = async () => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('body', body);
+    formData.append('priority', priority);
+    attachments.forEach(item => formData.append('attachments', item.file));
 
-  //   console.log("=== HTML TO SERVER ===");
-  //   console.log(savedHTML);
+    try {
+      await publishAnnouncement(formData);
+      resetForm();
+    } catch (err) {
+      alert("Failed to publish. Ensure backend handles 'attachments' field.");
+    }
+  };
 
-  //   alert("Pretending to send both JSON + HTML to server 😎");
-  // };
+  const resetForm = () => {
+    attachments.forEach(a => URL.revokeObjectURL(a.url)); // Cleanup memory
+    setOpen(false); setStep(1); setTitle(""); setBody(""); setAttachments([]);
+  };
 
-  const handleChange = (content) => {
-    setValue(content);
-    console.log("Content was updated:", content);
-  }
-
-  function submit() {
-    if (!title.trim()) return alert("Add a title");
-    const payload = { title, body, priority, audience };
-    // TODO: replace with API call:
-    // fetch('/api/announcements', { method: 'POST', body: JSON.stringify(payload) })
-    onCreate(payload);
-    setTitle(""); setBody(""); setPriority("Normal"); setAudience("All employees"); setOpen(false);
-  }
-
-  if (!open) {
-    return (
-      <button
-        onClick={() => setOpen(true)}
-        className="bg-slate-800 dark:bg-slate-100 dark:text-slate-900 text-white px-4 py-2 rounded"
-      >
-        + New Announcement
-      </button>
-    );
-  }
-
-  const status = [
-      {content:'Low',svg:null},
-      {content:'Normal',svg:null},
-      {content:'High',svg:null},
-      {content:'Urgent',svg:null},
-    ];     
-  const Audience = [
-      {content:'All Employee',svg:null},
-      {content:'Department Managers',svg:null},
-      {content:'Payroll Officers',svg:null},
-      {content:'Employees',svg:null},
-    ];     
+  if (!open) return (
+    <button onClick={() => setOpen(true)} className="bg-blue-600 text-white px-5 py-2 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition">
+      + New Post
+    </button>
+  );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
-      <div className="bg-white w-full max-w-2xl rounded shadow-lg p-6 z-50">
-        <h2 className="text-lg font-semibold mb-3">Create Announcement</h2>
-
-        <div className="space-y-3">
-          <div className="flex gap-3">
-            
-             <Dropdown onChange={(i) => setPriority(i)} options={status} text="text-xs font-semibold" placeholder="Choose Priority" border="border gap-1 border-gray-100"/>
-             <Dropdown onChange={(i) => setAudience(i)} options={Audience} text="text-xs font-semibold" placeholder="Choose Audience" border="border gap-1 border-gray-100"/>
-   
-            {/*<input className="flex-1 border rounded px-3 py-2" value={audience} onChange={(e)=>setAudience(e.target.value)} /> */}
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+      <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
+        <div className="p-5 border-b flex justify-between items-center">
+          <div>
+            <h2 className="font-black text-xl">{step === 1 ? "Compose News" : "Final Review"}</h2>
+            <p className="text-[10px] uppercase font-bold text-slate-400">
+              {step === 1 ? "Drafting content" : "This is how it looks for employees"}
+            </p>
           </div>
-          <label className="w-full dark:text-slate-200 text-xs font-semibold ">
-              Title <span className="text-red-700">*</span>
-            </label>
-            <InputField searchMode="input" icon={false} placeholder={"Input Announcement Title"} displayKey="name" onSelect={(i)=>setTitle(i)} />
-          {/* <input className="w-full border rounded px-3 py-2" placeholder="Input Announcement Title" value={title} onChange={(e)=>setTitle(e.target.value)} /> */}
-          <label className="w-full dark:text-slate-200 text-xs font-semibold ">
-              Content <span className="text-red-700">*</span>
-            </label>
-          {/* <textarea className="w-full border rounded px-3 py-2 h-32" placeholder="Input Content here" value={body} onChange={(e)=>setBody(e.target.value)} /> */}
-          <TextEditor onChange={(content)=>setBody(content)}/>
-          
-         {/* <LexicalEditor onChange={handleEditorChange} /> */}
+          <button onClick={resetForm} className="text-slate-400 text-2xl hover:text-red-500">×</button>
+        </div>
+        
+        <div className="p-6 overflow-y-auto bg-slate-50/30">
+          {step === 1 ? (
+            <div className="space-y-4">
+              <Dropdown onChange={setPriority} options={[{content:'Normal'},{content:'High'},{content:'Urgent'}]} placeholder="Priority" border="border rounded-lg px-3 py-1 bg-white text-xs font-bold"/>
+              <input className="w-full text-2xl font-black outline-none bg-transparent" placeholder="Headline..." value={title} onChange={(e)=>setTitle(e.target.value)} />
+              <div className="bg-white rounded-xl border p-2 min-h-[200px]"><TextEditor onChange={setBody} /></div>
+              
+              <div className="grid grid-cols-4 gap-2">
+                {attachments.map((f, i) => (
+                  <div key={i} className="relative aspect-square bg-white rounded-lg border overflow-hidden">
+                    {f.type === 'image' ? <img src={f.url} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center h-full text-[10px] font-bold text-slate-400 p-1 text-center">{f.name}</div>}
+                    <button onClick={() => setAttachments(attachments.filter((_, idx) => idx !== i))} className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs">×</button>
+                  </div>
+                ))}
+              </div>
+              <div className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center bg-white cursor-pointer hover:bg-slate-50" onClick={() => fileInputRef.current.click()}>
+                <span className="text-2xl mb-1">📎</span>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Attach Media / Documents</span>
+                <input type="file" ref={fileInputRef} className="hidden" multiple onChange={handleFileChange} />
+              </div>
+            </div>
+          ) : (
+            <div className="border-4 border-blue-100 rounded-3xl p-1">
+               <SocialPost announcement={{ title, body, priority, attachments, createdAt: new Date() }} isDetailView={true} />
+            </div>
+          )}
+        </div>
 
-          <div className="flex justify-start gap-2">
-            <button onClick={()=>setOpen(false)} className="px-4 hover:cursor-pointer py-2 border rounded">Cancel</button>
-            <button onClick={submit} className="px-4 py-2 bg-slate-800 hover:cursor-pointer text-white rounded">Publish</button>
-          </div>
+        <div className="p-5 border-t flex gap-3 bg-white rounded-b-2xl">
+          {step === 1 ? (
+            <button disabled={!title || !body} onClick={() => setStep(2)} className="w-full bg-slate-900 text-white font-black py-4 rounded-xl disabled:opacity-30">
+              Continue to Preview →
+            </button>
+          ) : (
+            <>
+              <button onClick={() => setStep(1)} className="flex-1 bg-slate-100 font-black py-4 rounded-xl">Back to Edit</button>
+              <button onClick={handlePublish} className="flex-[2] bg-green-600 text-white font-black py-4 rounded-xl shadow-lg">Confirm & Publish</button>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-
-
-// export default function App() {
-
-
-//   return (
-//     <div className="p-6 space-y-6 max-w-2xl mx-auto">
-//       <h1 className="text-2xl font-bold">Lexical Demo</h1>
-
-      // <LexicalEditor onChange={handleEditorChange} />
-
-//       <button
-//         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-//         onClick={sendToServer}
-//       >
-//         Save / Send to Server
-//       </button>
-
-//       <div>
-//         <h2 className="text-lg font-semibold">Saved JSON</h2>
-//         <pre className="bg-gray-100 p-3 rounded-lg text-sm overflow-auto">
-//           {JSON.stringify(savedJSON, null, 2)}
-//         </pre>
-//       </div>
-
-//       <div>
-//         <h2 className="text-lg font-semibold">HTML Output</h2>
-//         <div
-//           className="p-3 bg-gray-100 rounded-lg"
-//           dangerouslySetInnerHTML={{ __html: savedHTML }}
-//         />
-//       </div>
-//     </div>
-//   );
-// }

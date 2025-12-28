@@ -11,6 +11,8 @@ import ViewerLoader from './ViewerLoader';
 import Modal from '../../../Components/Modal'; // Your new Modal component
 import PayslipTemplate2 from '../../../Components/PayslipTemplate2'; // The view-only template
 import EmployeePayslipTemplate from '../../../Components/EmployeePayslipTemplate';
+import ClockoutModal from '../../../Components/Modals/ClockoutModal';
+
 
 const MOCK_BACKEND_PAYROLL = [
   { 
@@ -132,10 +134,10 @@ const yearOptions = Array.from({ length: 20 }, (_, i) => (currentYear - i).toStr
 const formatMoney = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
 const MetricCard = ({ title, amount, icon: Icon, colorClass, warning }) => (
-  <div className={`bg-white p-6 rounded shadow flex items-start justify-between relative overflow-hidden ${warning ? 'ring-2 ring-red-500' : ''}`}>
+  <div className={`bg-white dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-800 p-6 rounded shadow flex items-start justify-between relative overflow-hidden ${warning ? 'ring-2 ring-red-500' : ''}`}>
     <div>
       <p className="text-sm font-medium text-slate-500 mb-1">{title}</p>
-      <h3 className="text-2xl font-bold text-slate-800">{formatMoney(amount)}</h3>
+      <h3 className="text-2xl dark:text-slate-100 font-bold text-slate-800">{formatMoney(amount)}</h3>
       {warning && <p className="text-[10px] text-red-500 font-bold mt-1 animate-pulse">⚠ CONFIG MISSING</p>}
     </div>
     <div className={`p-3 rounded-lg ${colorClass}`}>
@@ -158,7 +160,7 @@ const TaxCoverageSummary = ({ employees }) => {
   const missingDepts = [...new Set(employees.filter(e => !e.taxCode).map(e => e.department))];
 
   return (
-    <div className="bg-slate-50 border-x border-b border-slate-200 p-3 rounded-b-lg mb-2 flex flex-col gap-3">
+    <div className="bg-slate-50 dark:bg-slate-900 border-x border-b dark:border-slate-700 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 border-slate-200 p-3 rounded-b-lg mb-2 flex flex-col gap-3">
       <div className="flex items-center gap-3 w-full">
         <span className="text-xs font-semibold text-slate-500 w-24">Coverage:</span>
         <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
@@ -174,7 +176,7 @@ const TaxCoverageSummary = ({ employees }) => {
           ))}
         </div>
         {missing > 0 && (
-          <div className="flex gap-2 items-center text-red-600 bg-red-50 px-3 py-1 rounded border border-red-100">
+          <div className="flex gap-2 items-center dark:border-slate-700  text-red-600 bg-red-50 px-3 py-1 rounded border border-red-100">
             <AlertCircle size={12} />
             <span className="font-semibold">Missing in:</span>
             <span>{missingDepts.join(", ")}</span>
@@ -192,6 +194,7 @@ function GeneratePayroll() {
   const [syncing, setSyncing] = useState(false);
   const [month, setMonth] = useState(dayjs().format('MMMM'));
   const [year, setYear] = useState(currentYear.toString());
+  const [isOpen, setIsOpen] = useState(false)
   
   // Modal states
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -282,8 +285,8 @@ function GeneratePayroll() {
   if (loading) return <ViewerLoader />;
 
   return (
-    <div className="h-full bg-slate-50 flex flex-col w-full text-slate-900 font-sans">
-      <Header className={"bg-white px-6"} Title={"Payroll Processor"}
+    <div className="h-full dark:bg-slate-900 flex flex-col w-full text-slate-900 font-sans">
+      <Header className={"bg-white dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-800 px-6"} Title={"Payroll Processor"}
         subTitle={
           <div className="flex items-center text-sm text-slate-500">
             <Dropdown padding='py-1' border='' onChange={setMonth} placeholder={month} options={allMonths} /> <span>/</span>
@@ -294,7 +297,7 @@ function GeneratePayroll() {
         <div className="flex gap-3">
           {status === 'draft' ? (
             <>
-              <button onClick={handleSyncAttendance} disabled={syncing} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 text-slate-700 text-xs rounded-lg hover:bg-slate-50 disabled:opacity-50">
+              <button onClick={handleSyncAttendance} disabled={syncing} className="flex items-center gap-2 px-4 py-2 dark:border-slate-700  border border-slate-300 text-slate-700 text-xs rounded-lg hover:bg-slate-50 dark:bg-slate-900 disabled:opacity-50">
                 <RefreshCw size={14} className={syncing ? "animate-spin" : ""} /> Sync Attendance
               </button>
               <button onClick={() => setStatus('generate')} className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 shadow text-xs active:scale-95">
@@ -303,7 +306,7 @@ function GeneratePayroll() {
             </>
           ) : (status === 'generate' ? (
             <>
-              <button onClick={() => setStatus('draft')} className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg">
+              <button onClick={() => setStatus('draft')} className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 text-slate-700 text-xs rounded-lg">
                 <Icon name={"ArrowLeft"} className="w-4 h-4" /> Re-Generate
               </button>
               <button onClick={handleFinalize} className="flex items-center gap-2 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 shadow text-xs active:scale-95">
@@ -316,7 +319,7 @@ function GeneratePayroll() {
         </div>
       </Header>
 
-      <main className="h-screen relative overflow-y-scroll bg-slate-100 flex flex-col p-2 gap-2">
+      <main className="h-screen relative overflow-y-scroll dark:bg-slate-950 bg-slate-100 flex flex-col p-2 gap-2">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 shrink-0">
           <MetricCard title="Total Gross Payout" amount={totals.gross} icon={Users} colorClass="bg-blue-50 text-blue-600" />
           <MetricCard title="Total Taxes (Statutory)" amount={totals.tax} icon={DollarSign} colorClass="bg-amber-50 text-amber-600" warning={totals.tax === 0 && totals.gross > 0} />
@@ -325,7 +328,7 @@ function GeneratePayroll() {
 
         {(status === 'draft' || status === 'generate') && (
             <>
-            <div className="bg-white border border-slate-200 p-3 rounded-t-lg shadow-sm flex flex-wrap items-center gap-4 relative z-10">
+            <div className="bg-white dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-800 border dark:border-slate-700 border-slate-200 p-3 rounded-t-lg shadow-sm flex flex-wrap items-center gap-4 relative ">
                 <div className="flex items-center gap-2 text-slate-500 text-xs uppercase font-bold tracking-wider">
                   <Settings size={14} /> Tax Configuration
                 </div>
@@ -349,7 +352,7 @@ function GeneratePayroll() {
             </>
         )}
 
-        <div className="bg-white rounded shadow border flex-1 flex flex-col border-slate-200 min-h-0">
+        <div className="bg-white dark:border-slate-700 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-800 rounded shadow border flex-1 flex flex-col border-slate-200 min-h-0">
           <Generatepayroll employees={employees.length} />
           <div className="flex-1 overflow-y-auto">
             {/* Pass the viewPayslip function to the table to handle row clicks */}
@@ -365,15 +368,17 @@ function GeneratePayroll() {
               // onRowClick={viewPayslip} 
             />
           </div>
-          <div className="sticky bottom-0 bg-slate-50 px-6 py-4 shadow border-t border-slate-200 flex justify-end gap-8 text-xs">
+          <ClockoutModal isOpen={isOpen} close={() => setIsOpen(false)}/>  
+          <div className="sticky bottom-0 bg-slate-50 dark:bg-slate-900 px-6 py-4 shadow border-t dark:border-slate-800 border-slate-200 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 flex justify-end gap-8 text-xs">
             <div className='flex-1'>
                <span className="text-slate-400">
                   {employees.filter(e => !e.taxCode).length > 0 ? `⚠️ ${employees.filter(e => !e.taxCode).length} missing tax codes` : "All tax codes assigned"}
                </span>
             </div>
+            <div onClick={()=>setIsOpen(true)}>modal?</div>
             <div>Gross: <span className="font-semibold">{formatMoney(totals.gross)}</span></div>
             <div>Tax: <span className="font-semibold">{formatMoney(totals.tax)}</span></div>
-            <div className="text-indigo-600 font-bold">Net Pay: {formatMoney(totals.net)}</div>
+            <div className="text-indigo-600 dark:text-indigo-300 font-bold">Net Pay: {formatMoney(totals.net)}</div>
           </div>
         </div>
       </main>
@@ -383,6 +388,7 @@ function GeneratePayroll() {
     </div>
   );
 }
+
 
 export default GeneratePayroll;
 

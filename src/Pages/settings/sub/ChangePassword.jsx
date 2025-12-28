@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 
 export default function ChangePassword() {
-    // 1. State for form data
     const [formData, setFormData] = useState({
         oldPassword: '',
         newPassword: '',
         confirmPassword: ''
     });
 
-    // 2. State for toggling password visibility
     const [showPasswords, setShowPasswords] = useState({
         old: false,
         new: false,
@@ -19,7 +17,6 @@ export default function ChangePassword() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // 3. Password Validity Check Logic
     const validatePassword = (password) => {
         const minLength = password.length >= 8;
         const hasUpper = /[A-Z]/.test(password);
@@ -30,7 +27,6 @@ export default function ChangePassword() {
         return minLength && hasUpper && hasLower && hasNumber && hasSpecial;
     };
 
-    // 4. Handle Submit to Backend
     const handleSave = async () => {
         const { oldPassword, newPassword, confirmPassword } = formData;
 
@@ -50,7 +46,6 @@ export default function ChangePassword() {
         }
 
         try {
-            // Replace with your actual API endpoint
             console.log("Sending to backend:", { oldPassword, newPassword });
             alert("Password updated successfully (check console)");
         } catch (error) {

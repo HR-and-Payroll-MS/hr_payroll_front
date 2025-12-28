@@ -3,6 +3,15 @@ import React, { memo } from 'react';
 import { Handle, Position } from 'reactflow';
 import { PlusCircle, Trash2, Edit2, User } from 'lucide-react';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+// {item[0]?(
+//               <img className="h-6 w-6 rounded-full" 
+//               src={`${BASE_URL}${item[0]}`}
+  
+//               alt=""
+//             />):(
+            
+
 const CustomNodeCard = ({ data, id }) => {
   const { isRoot, canEdit } = data; // canEdit passed from parent based on User Role
 
@@ -13,7 +22,14 @@ const CustomNodeCard = ({ data, id }) => {
 
       <div className="w-[200px] bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col items-center text-center hover:shadow-md transition-all">
         <div className="w-16 h-16 mb-3 rounded-full overflow-hidden bg-gray-100 border-2 border-white shadow-sm">
-          {data.image ? <img src={data.image} className="w-full h-full object-cover" /> : <User className="text-gray-400" size={32} />}
+          {data.image ? <img src={`${BASE_URL}${data.image}`} className="w-full h-full object-cover" /> :             <div className='rounded-full w-full h-full bg-slate-800 dark:bg-slate-600 text-slate-100 text-center items-center flex justify-center' >
+                  {data.name
+                    .split(" ")
+                    .map(n => n[0])
+                    .slice(0, 2)
+                    .join("") || "NA"}
+                            
+              </div>}
         </div>
         <h3 className="font-semibold text-gray-800 text-sm truncate w-full">{data.name}</h3>
         <p className="text-xs text-gray-500 truncate w-full">{data.role}</p>
