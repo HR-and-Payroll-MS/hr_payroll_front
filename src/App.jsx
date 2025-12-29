@@ -54,23 +54,23 @@ import MyPayrollPage from './Pages/HR_Manager/payroll_management/MyPayrollPage';
 import NotificationCenterPage from './Pages/Notifications/NotificationCenterPage';
 import SendNotificationPage from './Pages/Notifications/SendNotificationPage';
 import ProfileHeader from './Pages/profile/ProfileHeader';
-import ViewEmployeeSalaryInfo from './Pages/Payroll_Officer/employee_payroll_data/ViewEmployeeSalaryInfo'
-import EditEmployeeSalaryInfo from './Pages/Payroll_Officer/employee_payroll_data/EditEmployeeSalaryInfo'
-import AllowanceBonuses from './Pages/Payroll_Officer/payroll_management/AllowanceBonuses'
-import GeneratePayroll from './Pages/Payroll_Officer/payroll_management/GeneratePayroll'
-import ManageDeduction from './Pages/Payroll_Officer/payroll_management/ManageDeduction'
-import SalaryStructure from './Pages/Payroll_Officer/payroll_management/SalaryStructure'
-import ReGeneratePayslips from './Pages/Payroll_Officer/payslips/ReGeneratePayslips'
-import ViewGeneratedPayslips from './Pages/Payroll_Officer/payslips/ViewGeneratedPayslips'
-import DepartmentWisePayroll from './Pages/Payroll_Officer/reports/DepartmentWisePayroll'
-import PayrollReports from './Pages/Payroll_Officer/reports/PayrollReports'
-import TaxReports from './Pages/Payroll_Officer/reports/TaxReports'
+import ViewEmployeeSalaryInfo from './Pages/Payroll_Officer/employee_payroll_data/ViewEmployeeSalaryInfo';
+import EditEmployeeSalaryInfo from './Pages/Payroll_Officer/employee_payroll_data/EditEmployeeSalaryInfo';
+import AllowanceBonuses from './Pages/Payroll_Officer/payroll_management/AllowanceBonuses';
+import GeneratePayroll from './Pages/Payroll_Officer/payroll_management/GeneratePayroll';
+import ManageDeduction from './Pages/Payroll_Officer/payroll_management/ManageDeduction';
+import SalaryStructure from './Pages/Payroll_Officer/payroll_management/SalaryStructure';
+import ReGeneratePayslips from './Pages/Payroll_Officer/payslips/ReGeneratePayslips';
+import ViewGeneratedPayslips from './Pages/Payroll_Officer/payslips/ViewGeneratedPayslips';
+import DepartmentWisePayroll from './Pages/Payroll_Officer/reports/DepartmentWisePayroll';
+import PayrollReports from './Pages/Payroll_Officer/reports/PayrollReports';
+import TaxReports from './Pages/Payroll_Officer/reports/TaxReports';
 import FormBuilder from './Examples/FormBuilder';
 import FormField from './Examples/FormField';
 import HREfficiencyForm from './Examples/HREfficiencyForm';
 import EfficiencyReport from './Pages/HR_Manager/Report/EfficiencyReport';
 import IndexRedirect from './Pages/IndexRedirect';
-import LeaveRequestForEmployees from './Pages/HR_Manager/LeaveApproval/LeaveRequestForEmployees';
+import LeaveRequestForEmployees from './Pages/LeaveRequestForEmployees';
 import OrgChartPage from './Pages/ORG_CHART/OrgChartPage';
 import ForgetPassword from './Pages/ForgetPassword';
 import OTPVerification from './Pages/OTPVerification';
@@ -90,26 +90,32 @@ export const UserContext = createContext();
 
 function App() {
   // useEffect(()=>{
-    // setLocalData("role","Manager")
-   // // // localStorage.clear();
+  // setLocalData("role","Manager")
+  // // // localStorage.clear();
   // },[])
 
   const sharedSettingsRoutes = (
-  <Route path="setting" element={<Settingz />}>
-    <Route path="CompanyInfo" element={<CompanyInfo />} />
-    <Route path="ChangePassword" element={<ChangePassword />} />
-    <Route path="WorkSchedule" element={<WorkSchedule />} />
-    <Route path="FAQ" element={<FAQPage />} />
-  </Route>
-);
+    <Route path="setting" element={<Settingz />}>
+      <Route path="CompanyInfo" element={<CompanyInfo />} />
+      <Route path="ChangePassword" element={<ChangePassword />} />
+      <Route path="WorkSchedule" element={<WorkSchedule />} />
+      <Route path="FAQ" element={<FAQPage />} />
+    </Route>
+  );
   const sharedHelpRoutes = (
-  <Route path="HelpCenter" element={<HelpCenter />}>
-    <Route path="shortcut" element={<ShortCut />} />
-    <Route path="ChangePassword" element={<ChangePassword />} />
-    <Route path="ORG_chart_page" element={<OrgChartPage />} />
-    <Route path="FAQ" element={<FAQPage />} />
-  </Route>
-);
+    <Route path="HelpCenter" element={<HelpCenter />}>
+      <Route path="shortcut" element={<ShortCut />} />
+      <Route path="ChangePassword" element={<ChangePassword />} />
+      <Route path="ORG_chart_page" element={<OrgChartPage />} />
+      <Route path="FAQ" element={<FAQPage />} />
+    </Route>
+  );
+  const sharedNotificationRoutes = (
+    <>
+      <Route path="send_notification" element={<SendNotificationPage />} />
+      <Route path="view_notification" element={<NotificationCenterPage />} />
+    </>
+  );
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -120,9 +126,7 @@ function App() {
         <Route path="/Forgot_Password" element={<ForgetPassword />} />
         <Route path="/verification" element={<OTPVerification />} />
         <Route path="/UpdatePassword" element={<UpdatePassword />} />
-        <Route index element={<IndexRedirect />} /> 
-         
-        
+        <Route index element={<IndexRedirect />} />
         <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="/ORG" element={<OrgChartPage />} />
         <Route path="/access-denied" element={<AccessDenied />} />
@@ -131,32 +135,50 @@ function App() {
           <Route path="Payroll" element={<MainLayout />}>
             {sharedSettingsRoutes}
             {sharedHelpRoutes}
-            <Route path="U" element={<NewsFeedPage/>} />
+            <Route path="U" element={<NewsFeedPage />} />
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route index element={<DashboardLayout />} />
             <Route path="generate_payroll" element={<GeneratePayroll />} />
             <Route path="profile" element={<MyProfile />} />
-            <Route path="send_notification" element={<SendNotificationPage />} />
-            <Route path="view_notification" element={<NotificationCenterPage />}/>
-            <Route path="view_employee_salary_info" element={<ViewEmployeeSalaryInfo />} />
-            <Route path="edit_employee_salary_info" element={<EditEmployeeSalaryInfo />} />
+            <Route
+              path="send_notification"
+              element={<SendNotificationPage />}
+            />
+            <Route
+              path="view_notification"
+              element={<NotificationCenterPage />}
+            />
+            <Route
+              path="view_employee_salary_info"
+              element={<ViewEmployeeSalaryInfo />}
+            />
+            <Route
+              path="edit_employee_salary_info"
+              element={<EditEmployeeSalaryInfo />}
+            />
             {/* <Route path="allowances" element={<AllowanceBonuses />} /> */}
             <Route path="generate_payroll" element={<GeneratePayroll />} />
             {/* <Route path="manage_deduction" element={<ManageDeduction />} /> */}
             <Route path="salary_structure" element={<SalaryStructure />} />
-            <Route path="re_generate_payslips" element={<ReGeneratePayslips />} />
-            <Route path="view_generated_payslips" element={<ViewGeneratedPayslips />} />
-            <Route path="department_wise_paryoll" element={<DepartmentWisePayroll />} />
+            <Route
+              path="re_generate_payslips"
+              element={<ReGeneratePayslips />}
+            />
+            <Route
+              path="view_generated_payslips"
+              element={<ViewGeneratedPayslips />}
+            />
+            <Route
+              path="department_wise_paryoll"
+              element={<DepartmentWisePayroll />}
+            />
             <Route path="payroll_reports" element={<PayrollReports />} />
             <Route path="tax_reports" element={<TaxReports />} />
             <Route path="myattendance" element={<MyAttendance />} />
             <Route path="clock_in" element={<ClockIn />} />
           </Route>
         </Route>
-        
-        
-        
-         {/* ------------------------- Manager ---------------------- */}
+        {/* ------------------------- Manager ---------------------- */}
         <Route element={<Routes allowedRoles={['Manager']} />}>
           <Route path="hr_dashboard" element={<MainLayout />}>
             <Route path="clock_in" element={<ClockIn />} />
@@ -168,7 +190,6 @@ function App() {
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route path="View_Employee" element={<ViewEmployee />} />
             <Route path="message" element={<ChatIndex />} />
-            <Route path="Request" element={<LeaveRequestForEmployees />} />
             <Route path="tax_code" element={<TaxCode />} />
             <Route path="efficiency_report" element={<EfficiencyReport />} />
             <Route path="Addemployee" element={<AddEmployee />} />
@@ -202,62 +223,81 @@ function App() {
             </Route>
 
             <Route path="attendance" element={<Attendance />} />
-            <Route path="Employee_Attendance" element={<EmployeeAttendanceList />}/>
-            <Route path="Department_Attendance" element={<EmployeeAttendanceList />}/>
+            <Route
+              path="Employee_Attendance"
+              element={<EmployeeAttendanceList />}
+            />
+            <Route
+              path="Department_Attendance"
+              element={<EmployeeAttendanceList />}
+            />
             <Route
               path="Employee_Attendance/:id"
               element={<EmployeeAttendanceDetail />}
             />
             <Route path="myattendance" element={<MyAttendance />} />
 
-            
-
             <Route path="org-chart" element={<DocumentsPage />} />
             {/* <Route path="Modal_Test" element={<Checklist />} /> */}
             <Route path="Modal_Test" element={<CVReader />} />
           </Route>
         </Route>
-        
-        
-        
-            <Route path="myattendance" element={<MyAttendance />} />
-        
+        <Route path="myattendance" element={<MyAttendance />} />
         {/* ------------------------- Employee ---------------------- */}
         <Route element={<Routes allowedRoles={['Employee']} />}>
           <Route path="Employee" element={<MainLayout />}>
             {sharedSettingsRoutes}
             {sharedHelpRoutes}
-            
+            {sharedNotificationRoutes}
+
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
+            <Route path="MyPayroll" element={<MyPayrollPage />} />
+            <Route path="Request" element={<LeaveRequestForEmployees />} />
             <Route index element={<DashboardLayout />} />
             <Route path="generate_payroll" element={<GeneratePayroll />} />
             <Route path="profile" element={<MyProfile />} />
-            <Route path="send_notification" element={<SendNotificationPage />} />
-            <Route path="view_notification" element={<NotificationCenterPage />}/>
-            <Route path="view_employee_salary_info" element={<ViewEmployeeSalaryInfo />} />
-            <Route path="edit_employee_salary_info" element={<EditEmployeeSalaryInfo />} />
+            <Route
+              path="send_notification"
+              element={<SendNotificationPage />}
+            />
+            <Route
+              path="view_notification"
+              element={<NotificationCenterPage />}
+            />
+            <Route
+              path="view_employee_salary_info"
+              element={<ViewEmployeeSalaryInfo />}
+            />
+            <Route
+              path="edit_employee_salary_info"
+              element={<EditEmployeeSalaryInfo />}
+            />
             {/* <Route path="allowances" element={<AllowanceBonuses />} /> */}
             <Route path="generate_payroll" element={<GeneratePayroll />} />
             {/* <Route path="manage_deduction" element={<ManageDeduction />} /> */}
             <Route path="salary_structure" element={<SalaryStructure />} />
-            <Route path="re_generate_payslips" element={<ReGeneratePayslips />} />
-            <Route path="view_generated_payslips" element={<ViewGeneratedPayslips />} />
-            <Route path="department_wise_paryoll" element={<DepartmentWisePayroll />} />
+            <Route
+              path="re_generate_payslips"
+              element={<ReGeneratePayslips />}
+            />
+            <Route
+              path="view_generated_payslips"
+              element={<ViewGeneratedPayslips />}
+            />
+            <Route
+              path="department_wise_paryoll"
+              element={<DepartmentWisePayroll />}
+            />
             <Route path="payroll_reports" element={<PayrollReports />} />
             <Route path="tax_reports" element={<TaxReports />} />
             <Route path="myattendance" element={<MyAttendance />} />
             <Route path="clock_in" element={<ClockIn />} />
           </Route>
         </Route>
-
-
-
-
-
-            <Route path="logout" element={<LogOut/>} />
+        <Route path="logout" element={<LogOut />} />
         {/* ------------------------- hr ---------------------- */}
         <Route element={<Routes allowedRoles={['Line Manager']} />}>
-          {console.log("here")}
+          {console.log('here')}
           <Route path="department_manager" element={<MainLayout />}>
             <Route path="clock_in" element={<ClockIn />} />
             <Route index element={<DashboardLayout />} />
@@ -300,61 +340,25 @@ function App() {
             </Route>
 
             <Route path="attendance" element={<Attendance />} />
-            <Route path="Employee_Attendance" element={<EmployeeAttendanceList />}/>
-            <Route path="Department_Attendance" element={<EmployeeAttendanceList />}/>
+            <Route
+              path="Employee_Attendance"
+              element={<EmployeeAttendanceList />}
+            />
+            <Route
+              path="Department_Attendance"
+              element={<EmployeeAttendanceList />}
+            />
             <Route
               path="Employee_Attendance/:id"
               element={<EmployeeAttendanceDetail />}
             />
             <Route path="myattendance" element={<MyAttendance />} />
 
-            
-
             <Route path="org-chart" element={<DocumentsPage />} />
             {/* <Route path="Modal_Test" element={<Checklist />} /> */}
             <Route path="Modal_Test" element={<CVReader />} />
           </Route>
         </Route>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         {/* ------------------------- manager ---------------------- */}
         <Route element={<Routes allowedRoles={['']} />}>
           <Route path="manager_dashboard" element={<MainLayout />}>

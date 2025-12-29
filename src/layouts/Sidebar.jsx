@@ -183,7 +183,7 @@ export default function Sidebar() {
           <div className="flex w-full justify-between items-center m-0.5">
             <div className="flex items-center gap-1.5 justify-center py-2.5">
               <Icon name="HelpCircle" className="w-5 h-5 text-slate-400" />
-              <NavLink to="HelpCenter">
+              <NavLink to="HelpCenter/shortcut">
               <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
                 Help Center
               </p>
@@ -197,7 +197,7 @@ export default function Sidebar() {
           <div className="flex w-full justify-between items-center m-0.5">
             <div className="flex items-center gap-1.5 justify-center py-2.5">
               <Icon name="Settings" className="w-5 h-5 text-slate-400" />
-              <NavLink to="Setting">
+              <NavLink to="Setting/CompanyInfo">
                 <p className="font-semibold text-gray-700 text-sm dark:text-slate-300">
                   Settings
                 </p>

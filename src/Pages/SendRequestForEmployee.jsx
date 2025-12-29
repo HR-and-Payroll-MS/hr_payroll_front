@@ -1,100 +1,112 @@
-import React, { useState } from 'react'
-import Dropdown from '../../../Components/Dropdown';
-import TextEditor from '../../../Components/TextEditor';
-import SearchDate from '../../../Components/SearchDate';
-import FileUploader from '../../../Components/FileUploader';
-import useAuth from '../../../Context/AuthContext';
+import React, { useState } from 'react';
+import Dropdown from '../Components/Dropdown';
+import TextEditor from '../Components/TextEditor';
+import SearchDate from '../Components/SearchDate';
+import FileUploader from '../Components/FileUploader';
+import useAuth from '../Context/AuthContext';
 
-export default function SendRequestForEmployee({ role="HR_MANAGER" }) {
-   const [message,setMessage]=useState("");
-   const [category,setCategory]=useState("hr");
-   const [file,setFile]=useState(null);
-   const [date,setDate]=useState(null);
-   const {axiosPrivate}= useAuth()
+export default function SendRequestForEmployee({ role = 'HR_MANAGER' }) {
+  const [message, setMessage] = useState('');
+  const [category, setCategory] = useState('hr');
+  const [file, setFile] = useState(null);
+  const [date, setDate] = useState(null);
+  const { axiosPrivate } = useAuth();
   const LEAVE_TYPES = [
-  "Annual",
-  "Sick",
-  "Casual",
-  "Maternity",
-  "Paternity",
-  "Unpaid",
-  "Compensatory",
-  "Bereavement",
-  "Study",
-  "Sabbatical",
-];
+    'Annual',
+    'Sick',
+    'Casual',
+    'Maternity',
+    'Paternity',
+    'Unpaid',
+    'Compensatory',
+    'Bereavement',
+    'Study',
+    'Sabbatical',
+  ];
 
- function toISODate(date) {
-  if (!date) return null;
+  function toISODate(date) {
+    if (!date) return null;
 
-  const d = new Date(date);
-  return d.toISOString().split("T")[0]; // YYYY-MM-DD
-}
-
-async function submit(e) {
-  e.preventDefault();
-
-  console.log("message", message);
-  console.log("category", category);
-  console.log("file", file);
-  console.log("date", date);
-
-  const startDateISO = toISODate(date?.from);
-  const endDateISO = toISODate(date?.to);
-
-  try {
-    let res;
-
-    if (file instanceof File) {
-      const fd = new FormData();
-      fd.append("type", category);
-      fd.append("startDate", startDateISO);
-      fd.append("endDate", endDateISO);
-      if (message) fd.append("reason", message);
-      fd.append("attachment", file);
-      console.log(startDateISO,endDateISO)
-      res = await axiosPrivate.post("/leaves/requests/", fd);
-    } else {
-      const payload = {
-        type: category,
-        startDate: startDateISO,
-        endDate: endDateISO,
-        ...(message ? { reason: message } : {}),
-      };
-
-      res = await axiosPrivate.post("/leaves/requests/", payload);
-    }
-
-    console.log("BACKEND RESPONSE →", res.data);
-    alert("Request sent (check network tab)");
-  } catch (err) {
-    console.error("BACKEND ERROR →", err);
-    alert("Request failed – check console");
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // YYYY-MM-DD
   }
-}
 
- 
-   return (
-     <form onSubmit={submit} className=" mx-auto p- space-y-4">
-       <div className="flex items-center gap-2">
+  async function submit(e) {
+    e.preventDefault();
+
+    console.log('message', message);
+    console.log('category', category);
+    console.log('file', file);
+    console.log('date', date);
+
+    const startDateISO = toISODate(date?.from);
+    const endDateISO = toISODate(date?.to);
+
+    try {
+      let res;
+
+      if (file instanceof File) {
+        const fd = new FormData();
+        fd.append('type', category);
+        fd.append('startDate', startDateISO);
+        fd.append('endDate', endDateISO);
+        if (message) fd.append('reason', message);
+        fd.append('attachment', file);
+        console.log(startDateISO, endDateISO);
+        res = await axiosPrivate.post('/leaves/requests/', fd);
+      } else {
+        const payload = {
+          type: category,
+          startDate: startDateISO,
+          endDate: endDateISO,
+          ...(message ? { reason: message } : {}),
+        };
+
+        res = await axiosPrivate.post('/leaves/requests/', payload);
+      }
+
+      console.log('BACKEND RESPONSE →', res.data);
+      alert('Request sent (check network tab)');
+    } catch (err) {
+      console.error('BACKEND ERROR →', err);
+      alert('Request failed – check console');
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className=" mx-auto p- space-y-4">
+      <div className="flex items-center gap-2">
         <p>Type</p>
-         {/* <InputField placeholder="Title..." maxWidth={"w-full"} icon={false} onSelect={setTitle}/> */}
-         <Dropdown padding="p-1.5 w-120" width='w-120' onChange={setCategory} placeholder="Casual" options={LEAVE_TYPES}/>
-            <SearchDate onSubmit={setDate} applyButton={false} style=''/><FileUploader btnBackground='hover:bg-slate-50' IconName='Link2' buttonOnly={true} label='Attach File' onFileSelect={setFile}>.</FileUploader>
-       </div>
-       <TextEditor onChange={setMessage}/>
-       
-       <button type="submit" className="px-4 py-2 bg-slate-800 text-white rounded">Send</button>
-     </form>
-   );
+        {/* <InputField placeholder="Title..." maxWidth={"w-full"} icon={false} onSelect={setTitle}/> */}
+        <Dropdown
+          padding="p-1.5 w-120"
+          width="w-120"
+          onChange={setCategory}
+          placeholder="Casual"
+          options={LEAVE_TYPES}
+        />
+        <SearchDate onSubmit={setDate} applyButton={false} style="" />
+        <FileUploader
+          btnBackground="hover:bg-slate-50"
+          IconName="Link2"
+          buttonOnly={true}
+          label="Attach File"
+          onFileSelect={setFile}
+        >
+          .
+        </FileUploader>
+      </div>
+      <TextEditor onChange={setMessage} />
+
+      <button
+        type="submit"
+        className="px-4 py-2 bg-slate-800 text-white rounded"
+      >
+        Send
+      </button>
+    </form>
+  );
 }
-
-
-
-
-
-
-
 
 // import React, { useState } from 'react';
 // import Dropdown from '../../../Components/Dropdown';
@@ -220,115 +232,6 @@ async function submit(e) {
 
 // export default SendRequestForEmployee;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import React, { useState } from 'react';
 // import Dropdown from '../../../Components/Dropdown';
 // import TextEditor from '../../../Components/TextEditor';
@@ -441,17 +344,6 @@ async function submit(e) {
 // }
 
 // export default SendRequestForEmployee;
-
-
-
-
-
-
-
-
-
-
-
 
 // /* leave types :-annual,sick leave,casual leave,maternity leave,paternity leave,parental */
 

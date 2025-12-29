@@ -261,13 +261,14 @@ function TableStructures({data="",id,D1,D2, item,Comps = EmptyComponent,nickname
                                         {/* {console.log("data in table structure---->",data," id---->",id," item---->",item," rawData---->",rawData,"D1",D1)} */}
                               </FileDrawer>)}
                                           </button>
-                                        ) : (D1 === 'generate' ? (
+                                        ) : ( D1 === 'generate' ? (
                                           <button 
                                             // onClick={() => setSelectedEmployee(emp)}
                                             className=" text-yellow-800 shadow-xs hover:bg-indigo-50 p-2 rounded-lg transition-colors"
                                           onClick={openModal}> View
                               { isModalOpen&& (<FileDrawer transparency={"bg-slate-900/30 dark:bg-slate-900/20"} width='w-1/2' isModalOpen={isModalOpen} closeModal={setModalOpen}>
                                       <Comps payroll={data}/>
+                                      {console.log("i'm here just to check my own payslip")}
                                         {/* {console.log("aaaaaaaaaaaaaaaaaaaaaaaa",data[id]?.id)} */}
                                         {/* {console.log("data in table structure---->",data," id---->",id," item---->",item," rawData---->",rawData,"D1",D1)} */}
                               </FileDrawer>)}

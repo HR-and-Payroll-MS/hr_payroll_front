@@ -3,6 +3,8 @@ import MyPayslipList from "../../MyPayslipList";
 import MyPayslipDrawer from "./MyPayslipDrawer";
 import Table from '../../../Components/Table'
 import PayrollReportDrawer from "./PayrollReportDrawer";
+import PayslipTemplate from "../../../Components/PayslipTemplate";
+import EmployeePayslipTemplate from "../../../Components/EmployeePayslipTemplate";
 
 function MyPayrollPage({background,headerfont="text-2xl"}) {
   // static placeholder data
@@ -32,7 +34,10 @@ function MyPayrollPage({background,headerfont="text-2xl"}) {
   return (
     <div className={`p-5 ${background}`}>
     <h1 className={` font-semibold mb-4 ${headerfont}`}>Payslips</h1>
-<Table Data={payslips} Structure={structure} ke={key} title={title} nickname="View Payslip" components={MyPayslipDrawer}/>
+
+{/* <Table D1= "generate" Data={payslips} Structure={structure} ke={key} title={title} nickname="View Payslip" components={PayslipTemplate}/> */}
+<Table D1= "generate" Data={payslips} Structure={structure} ke={key} title={title} nickname="View Payslip" components={EmployeePayslipTemplate}/>
+{/* <Table Data={payslips} Structure={structure} ke={key} title={title} nickname="View Payslip" components={MyPayslipDrawer}/> */}
 
      
     </div>

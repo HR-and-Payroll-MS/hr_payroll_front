@@ -191,10 +191,52 @@
 
 import React, { useRef } from "react";
 import html2pdf from "html2pdf.js";
-
+const mockData= { 
+    id: 'EMP001', 
+    department: 'Finance', 
+    jobTitle: "Senior Accountant", 
+    bankAccount: "GTB ****3248", 
+    name: "Sarah Jenkins", 
+    baseSalary: 6000, 
+    bonus: 500,
+    attendedDays: 22, 
+    lopDays: 0,
+    taxCode: 'Standard', 
+    taxVersion: '2025 v1.0',
+    taxAmount: 1200, 
+    netPay: 5300,
+    taxDisplay: "Standard (2025 v1.0)",
+    // FULL PAYLOAD FOR TEMPLATE
+    details: {
+      company: { 
+        name: "TechCorp Solutions Ltd", 
+        address: "123 Business Avenue, Lagos, Nigeria", 
+        phone: "+234 812 345 6789", 
+        email: "payroll@techcorp.com", 
+        logoUrl: "https://via.placeholder.com/64" 
+      },
+      month: "December 2025",
+      paymentDate: "2025-12-30",
+      paymentMethod: "Bank Transfer",
+      earnings: [
+        { label: "Basic Salary", amount: 6000 },
+        { label: "Performance Bonus", amount: 500 },
+        { label: "Housing Allowance", amount: 1000 }
+      ],
+      deductions: [
+        { label: "Income Tax (PAYE)", amount: 1200 },
+        { label: "Pension Contribution", amount: 500 },
+        { label: "Health Insurance", amount: 200 },
+        { label: "Lateness Deduction", amount: 0 }
+      ],
+      gross: 7500,
+      totalDeductions: 1900,
+      net: 5600
+    }
+  }
 const EmployeePayslipTemplate = ({ payroll }) => {
   const payslipRef = useRef();
-
+payroll=mockData
   if (!payroll) return null;
 
   const source = payroll.details || payroll;
@@ -225,19 +267,18 @@ const EmployeePayslipTemplate = ({ payroll }) => {
     <div style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
       
       {/* Download Button */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+      <div  style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
         <button 
           onClick={handleDownloadPDF}
           style={{ 
             padding: "10px 20px", 
-            backgroundColor: "#4f46e5", 
+            backgroundColor: "#052f4a", 
             color: "white", 
             border: "none", 
             borderRadius: "6px", 
             cursor: "pointer", 
             fontSize: "0.9rem", 
             fontWeight: 700,
-            boxShadow: "0 4px 6px -1px rgba(79, 70, 229, 0.4)"
           }}
         >
           📥 Download Payslip (PDF)

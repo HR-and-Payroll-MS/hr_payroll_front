@@ -197,12 +197,12 @@ export const sidebarList = {
     label: 'Notification',
     Visible: true,
     sub: [
-      { subPath: 'Employee/ManageEmployee', label: 'Send Notification' },
-      { subPath: 'Employee/Directory', label: 'View Notification' },
+      { subPath: 'send_notification', label: 'Send Notification' },
+      { subPath: 'view_notification', label: 'View Notification' },
     ],
   },
   {
-    path: "null",
+    path: "Request",
     Icons: 'CalendarX',
     label: 'Leave Request',
     Visible: false,
@@ -218,7 +218,7 @@ export const sidebarList = {
     ],
   },
   {
-    path: 'null',
+    path: 'MyPayroll',
     Icons: 'Receipt',
     label: 'View Payslips',
     Visible: false,
@@ -230,8 +230,8 @@ export const sidebarList = {
     label: 'Profile',
     Visible: false,
     sub: [
-      { subPath: '/', label: 'Change Password' },
-      { subPath: '/', label: 'My Profile' },
+      { subPath: 'Setting/ChangePassword', label: 'Change Password' },
+      { subPath: 'profile', label: 'My Profile' },
     ],
   },
 ],
