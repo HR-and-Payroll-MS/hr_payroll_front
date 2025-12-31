@@ -10,7 +10,7 @@ import { useNetwork } from '../Context/NetworkContext';
 
 export default function Sidebar() {
 
-  const clockinPath={Payroll:"payroll",Manager:"hr_dashboard"}
+  const clockinPath={Payroll:"payroll",Manager:"hr_dashboard",Employee:"employee","Line Manager":"department_manager"}
 
   const { auth } = useAuth();
   const {isLocal, checking} = useNetwork()

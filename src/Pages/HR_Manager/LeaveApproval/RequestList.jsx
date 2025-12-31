@@ -24,7 +24,7 @@ export default function RequestList({ requests, employees, filter, setFilter, on
   return (
     <div className="flex flex-col h-full transition-colors">
   {/* Filter Header Area */}
-  <div className="p-4 border-b dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 sticky top-0 z-10 backdrop-blur-sm">
+  <div className="p-4 border-b border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 sticky top-0 z-10 backdrop-blur-sm">
     <div className="flex gap-2">
       <ApproveReject FiltersChange={setFilter}/>
     </div>
@@ -40,12 +40,12 @@ export default function RequestList({ requests, employees, filter, setFilter, on
         <div 
           key={req.id} 
           onClick={() => onOpen(req)} 
-          className="group relative p-4 bg-white dark:bg-slate-700/50 rounded shadow-sm border border-slate-100 dark:border-slate-700 cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all active:scale-[0.99]"
+          className="group relative p-4 bg-white dark:bg-slate-700/50 rounded shadow-sm border border-slate-100 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700  transition-all active:scale-[0.99]"
         >
           {/* Status Indicator Bar */}
           <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l ${
             req.status === 'approved' ? 'bg-emerald-500' : 
-            req.status === 'denied' ? 'bg-red-500' : 'bg-blue-500'
+            req.status === 'denied' ? 'bg-red-500' : 'bg-green-500'
           }`} />
 
           <div className="flex justify-between items-start pl-2">
@@ -66,7 +66,7 @@ export default function RequestList({ requests, employees, filter, setFilter, on
               </div>
             </div>
 
-            <div className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-blue-500 transition-colors">
+            <div className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-green-500 transition-colors">
               View Details →
             </div>
           </div>

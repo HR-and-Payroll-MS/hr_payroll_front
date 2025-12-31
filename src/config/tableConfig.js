@@ -4,6 +4,7 @@ export const TABLE_ENDPOINTS = {
   payroll: '/payroll/reports/',
   inventory: '/inventory/items/',
   directory: '/employees/directory/',
+  DepartmentAttendance:'/attendances/departments/',
 };
 
 export const USE_MOCK_DATA = false;

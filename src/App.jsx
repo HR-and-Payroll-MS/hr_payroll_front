@@ -83,6 +83,9 @@ import ChatIndex from './Pages/message/ChatIndex';
 // import PolicyPage from './Example/Policy/PolicyPage';
 import PolicyPage from './Pages/components/pages/PolicyPage';
 import TaxCode from './Pages/HR_Manager/TaxCode/TaxCode';
+import EmployeeAttendance from './Pages/Department_manager/EmployeeAttendance';
+import EmployeeEfficiency from './Pages/Department_manager/EmployeeEfficiency';
+import EfficiencyFillForm from './Pages/Department_manager/EfficiencyFillForm';
 
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
@@ -116,6 +119,12 @@ function App() {
       <Route path="view_notification" element={<NotificationCenterPage />} />
     </>
   );
+  const sharedGlobalRoutes = (
+    <>
+      <Route path="myattendance" element={<MyAttendance />} />
+    </>
+  );
+
   const { theme } = useTheme();
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -135,19 +144,21 @@ function App() {
           <Route path="Payroll" element={<MainLayout />}>
             {sharedSettingsRoutes}
             {sharedHelpRoutes}
+            {sharedNotificationRoutes}
+            {sharedGlobalRoutes}
             <Route path="U" element={<NewsFeedPage />} />
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route index element={<DashboardLayout />} />
             <Route path="generate_payroll" element={<GeneratePayroll />} />
             <Route path="profile" element={<MyProfile />} />
-            <Route
+            {/* <Route
               path="send_notification"
               element={<SendNotificationPage />}
             />
             <Route
               path="view_notification"
               element={<NotificationCenterPage />}
-            />
+            /> */}
             <Route
               path="view_employee_salary_info"
               element={<ViewEmployeeSalaryInfo />}
@@ -174,7 +185,6 @@ function App() {
             />
             <Route path="payroll_reports" element={<PayrollReports />} />
             <Route path="tax_reports" element={<TaxReports />} />
-            <Route path="myattendance" element={<MyAttendance />} />
             <Route path="clock_in" element={<ClockIn />} />
           </Route>
         </Route>
@@ -183,8 +193,10 @@ function App() {
           <Route path="hr_dashboard" element={<MainLayout />}>
             <Route path="clock_in" element={<ClockIn />} />
             <Route index element={<DashboardLayout />} />
-            {sharedHelpRoutes}
             {sharedSettingsRoutes}
+            {sharedHelpRoutes}
+            {sharedNotificationRoutes}
+            {sharedGlobalRoutes}
             <Route path="Employee_Directory" element={<EmployeeDirectory />} />
             {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
@@ -202,15 +214,15 @@ function App() {
             {/* <Route path="logout" element={<LogOut />} /> */}
             <Route path="profile" element={<MyProfile />} />
             {/* <Route path="send_notification_page" element={<SendNotificationPage/>} /> */}
-            <Route
+            {/* <Route
               path="send_notification_page"
               element={<SendNotificationPage />}
-            />
+            /> */}
             {/* <Route path="notification_bell" element={<NotificationBell/>} /> */}
-            <Route
+            {/* <Route
               path="notification_center_page"
               element={<NotificationCenterPage />}
-            />
+            /> */}
             <Route path="Employee" element={<Employee />}>
               <Route path="ManageEmployee" element={<ManageEmployee />} />
               <Route path="Directory" element={<Directory />}>
@@ -249,6 +261,7 @@ function App() {
             {sharedSettingsRoutes}
             {sharedHelpRoutes}
             {sharedNotificationRoutes}
+            {sharedGlobalRoutes}
 
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
             <Route path="MyPayroll" element={<MyPayrollPage />} />
@@ -303,6 +316,17 @@ function App() {
             <Route index element={<DashboardLayout />} />
             {sharedHelpRoutes}
             {sharedSettingsRoutes}
+            {sharedNotificationRoutes}
+            {sharedGlobalRoutes}
+            <Route path="Approve_Reject" element={<LeaveApprovalPage />} />
+            <Route path="Efficiency_Report" element={<EmployeeEfficiency />} />
+            <Route path="Request" element={<LeaveRequestForEmployees />} />
+            <Route path="efficiency_fill_form/:id" element={<EfficiencyFillForm />} />
+            <Route
+              path="Employee_Attendance"
+              element={<EmployeeAttendance />}
+            />
+            {/* <Route path="Employee_Directory" element={<EmployeeDirectory />} /> */}
             <Route path="Employee_Directory" element={<EmployeeDirectory />} />
             {/* <Route path="users/:id" element={<ViewEmployee />} /> */}
             <Route path="users/:id" element={<ViewEmployeeDetail />} />
@@ -319,15 +343,15 @@ function App() {
             {/* <Route path="logout" element={<LogOut />} /> */}
             <Route path="profile" element={<MyProfile />} />
             {/* <Route path="send_notification_page" element={<SendNotificationPage/>} /> */}
-            <Route
+            {/* <Route
               path="send_notification_page"
               element={<SendNotificationPage />}
-            />
+            /> */}
             {/* <Route path="notification_bell" element={<NotificationBell/>} /> */}
-            <Route
+            {/* <Route
               path="notification_center_page"
               element={<NotificationCenterPage />}
-            />
+            /> */}
             <Route path="Employee" element={<Employee />}>
               <Route path="ManageEmployee" element={<ManageEmployee />} />
               <Route path="Directory" element={<Directory />}>

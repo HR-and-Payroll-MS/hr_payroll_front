@@ -30,8 +30,6 @@ const stepIndexMapByRole = {
 const defaultSteps = ["General", "Job", "Payroll", "Documents"]
 function ViewEmployeeDetail() {
   const role = getLocalData("role")
-  // const { state } = useLocation();
-  // const { Role } = state || {};
   const activeStep =  role || "Employee";
     useEffect(() => {
   const stepMap =
@@ -64,75 +62,8 @@ function ViewEmployeeDetail() {
          const daattaa = await axiosPrivate.get(`/employees/${employeeId}`);
          console.log(daattaa.data.documents[0]);
 
-      //    const daattaa = {data:[
-      //     {
-      //     id: 1,
-      //     general: {
-      //       gender: "e",
-      //       dateofbirth: "7-04-15",
-      //       maritalstatus: "gle",
-      //       nationality: "iopian",
-      //       personaltaxid: "9584732",
-      //       emailaddress: "b.taye@example.com",
-      //       socialinsurance: "558932",
-      //       healthinsurance: "229584",
-      //       phonenumber: "+911223344",
-      //       primaryaddress: " Sunshine Avenue",
-      //       country: "Eopia",
-      //       state: "Ad Ababa",
-      //       city: "Ad Ababa",
-      //       postcode: "0",
-      //       emefullname: "ta Taye",
-      //       emephonenumber: "+254556677",
-      //       emestate: "Ad Ababa",
-      //       emecity: "Ad Ababa",
-      //       emepostcode: "1",
-      //     },
-      //     job: {
-      //       fullname: "be Beso",
-      //       employeeid: "001",
-      //       serviceyear: "3",
-      //       joindate: "203-10-10",
-      //       jobtitle: "Frnd Developer",
-      //       positiontype: "Fuime",
-      //       employmenttype: "Pnent",
-      //       linemanager: "Sl Bekele",
-      //       contractnumber: "C42",
-      //       contractname: "Frod Developer Contract",
-      //       contracttype: "Indite",
-      //       startdate: "2022-0",
-      //       enddate: "",
-      //     },
-      //     payroll: {
-      //       employeestatus: "Ae",
-      //       employmenttype: "Pnent",
-      //       jobdate: "202-10",
-      //       lastworkingdate: "",
-      //       salary: 25000,
-      //       offset: "20:00",
-      //       onset: "10:00",
-      //     },
-      //     documents: {
-      //       files: [
-      //         {
-      //           name: "Empent Contract.pdf",
-      //           url: "https://example.com/files/contract.pdf",
-      //         },
-      //         {
-      //           name: "tailwind_cheat_sheet.pdf",
-      //           url: "https://example.com/files/idcard.png",
-      //           type: "application/pdf",
-      //           size: 3717,
-      //           webkitRelativePath: ""
-      //         },
-      //       ],
-      //     },
-      //   }
-      // ]};
-        setEmployeeData(daattaa.data);
+       setEmployeeData(daattaa.data);
         setOriginalData(daattaa.data);
-        // setEmployeeData(daattaa.data[0]);
-        // setOriginalData(daattaa.data[0]);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch employee details.");
@@ -219,20 +150,11 @@ if (error)
 return (
   <div className="flex flex-col w-full  h-full justify-start bg-white dark:bg-slate-800 transition-colors duration-300">
     <Header className={"px-6"} Title={"Employee Detail"} Breadcrumb={"Employee detail"} />
-
-    {/* Main container spacing and gap matching your dashboard example */}
     <div className="flex flex-1 gap-4 p-2.5 overflow-hidden h-full">
-      
-      {/* Sidebar: Employee Profile Card */}
-      {/* Applying the 'sunken' look to the sidebar wrapper */}
       <div className="w-1/4 h-full bg-gray-50 dark:bg-slate-700 shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 rounded overflow-hidden">
           <EmployeeProfile role={role} employeeData={employeeData} />
       </div>
-
-      {/* Main Content Area */}
       <div className="flex flex-col flex-1 gap-4 h-full overflow-hidden">
-        
-        {/* Step Navigation Container - Sunken Look */}
         <div className="bg-gray-50 dark:bg-slate-700 shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 rounded p-1">
           <StepHeader
             steps={steps}
@@ -248,8 +170,6 @@ return (
             }}
           />
         </div>
-
-        {/* Dynamic Content Area - Sunken Look for the Content Box */}
         <div className="flex-1 overflow-y-auto scrollbar-hidden bg-gray-50 dark:bg-slate-700 shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 rounded p-6">
           <div className="max-w-5xl mx-auto">
              <RenderStepContent

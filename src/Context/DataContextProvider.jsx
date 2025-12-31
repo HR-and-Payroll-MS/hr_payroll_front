@@ -14,7 +14,7 @@ export function DataContextProvider({ children }) {
         id: e.id,
         fullname: e.general?.fullname || "",
         emailaddress: e.general?.emailaddress || "",
-        photo: e.general?.photo || "/pic/download (48).png",
+        photo: e.general?.photo || "",
         employeeid: e.job?.employeeid || "",
         department: e.job?.department || "",
       })),

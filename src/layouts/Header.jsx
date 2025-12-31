@@ -64,7 +64,7 @@ export default function Header(){
                 <p className={`font-semibold text-gray-700  text-sm  dark:font-slate-300 dark:text-slate-300 hover:cursor-pointer hover:text-slate-900 `}>Report</p>
         </div>
         <div id="right" className="flex w-1/5 justify-end items-center px-6">
-                <NotificationBell role={role} onOpenCenter={() => navigate("/hr_dashboard/notification_center_page")}/>
+                <NotificationBell role={role} onOpenCenter={() => navigate("view_notification")}/>
                 {/* <img className="h-6" src="\svg\message-square-lines-svgrepo-com.svg" alt="" /> */}
                 <DropDownContent svgs={<div className="flex items-center">
                     {profile?.general?(

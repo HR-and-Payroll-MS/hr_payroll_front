@@ -28,15 +28,20 @@ function EmployeeProfile({employeeData,role}) {
           <div className="relative group">
             {/* Emerald Accent Glow */}
             <div className="absolute -inset-1 bg-gradient-to-tr from-emerald-500 to-emerald-200 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-            <img
-              className="relative w-24 h-24 object-cover rounded-full border-4 border-white dark:border-slate-600 shadow-sm"
-              src={
-                employeeData?.general?.photo
-                  ? `${BASE_URL}${employeeData.general.photo}`
-                  : "/pic/download (48).png"
-              }
+            
+              {employeeData?.general?.photo?<img className="relative w-24 h-24 object-cover rounded-full border-4 border-white dark:border-slate-600 shadow-sm"
+              src={`${BASE_URL}${employeeData.general.photo}`}
               alt="Profile"
-            />
+            />: (
+        <div className="rounded-full bg-slate-800 dark:bg-slate-600 text-slate-100 flex items-center justify-center w-28 h-28 text-4xl font-bold border-4 border-white dark:border-slate-700 shadow-md transition-colors">
+          {(employeeData.general.fullname ?? "")
+            .split(" ")
+            .map((n) => n[0])
+            .slice(0, 2)
+            .join("") || "NA"}
+        </div>
+      )}
+              
           </div>
     
           <div className="flex flex-col items-center gap-1 text-center">

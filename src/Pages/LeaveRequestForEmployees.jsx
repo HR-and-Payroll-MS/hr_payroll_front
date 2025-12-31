@@ -91,11 +91,11 @@ function LeaveRequestForEmployees() {
     }
   };
   return (
-    <div className="flex flex-col gap-1 h-full">
+    <div className="flex flex-col h-full">
       <div className="p-3 px-6 dark:bg-slate-700 bg-slate-50 shadow">
         <Header className={''} Title={'Leave Request Page'} />
       </div>
-      <div className="w-full relative flex-1 flex flex-col mx-auto p-6 overflow-y-auto hover-bar ">
+      <div className="w-full relative flex-1 flex flex-col mx-auto p-4  overflow-y-auto hover-bar ">
         <StepHeader
           style="float  top-0"
           steps={steps}
@@ -106,7 +106,7 @@ function LeaveRequestForEmployees() {
           {currentStep === 0 && (
             <LeaveRequest setQ={setQ} setdate={setdate} setstatus={setstatus} />
           )}
-          <div className="border border-t-0 p-2 dark:border-slate-600 border-slate-200 hover-bar overflow-y-auto flex-1 ">
+          <div className="  dark:border-slate-600 border-slate-200 hover-bar overflow-y-auto flex-1 ">
             {' '}
             {renderStep()}
           </div>

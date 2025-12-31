@@ -55,8 +55,8 @@ export const sidebarList = {
     label: 'Notification',
     Visible: false,
     sub: [
-      { subPath: 'view_notification', label: 'View Notification' },
       { subPath: 'send_notification', label: 'Send Notification' },
+      { subPath: 'view_notification', label: 'View Notification' },
     ],
   },
   {
@@ -174,8 +174,8 @@ export const sidebarList = {
       label: 'Notifications',
       Visible: false,
       sub: [
-        { subPath: 'notification_center_page', label: 'View Notifications' },
-        { subPath: 'send_notification_page', label: 'Send Notifications' },
+      { subPath: 'send_notification', label: 'Send Notification' },
+      { subPath: 'view_notification', label: 'View Notification' },
       ],
     },
     // {
@@ -239,7 +239,7 @@ export const sidebarList = {
   "Line Manager": [
   {
     Icons: 'Users',
-    path: "null",
+    path:'Employee_Directory',
     label: 'Employees',
     Visible: false,
     sub: null
@@ -250,8 +250,8 @@ export const sidebarList = {
     label: 'Attendance',
     Visible: false,
     sub: [
-      { subPath: 'checklist', label: 'View Attendance' },
-      { subPath: '/', label: 'Track Employee Attendance' },
+      { subPath: 'myAttendance', label: 'View Attendance' },
+      { subPath: 'Employee_Attendance', label: 'Track Employee Attendance' },
     ],
   },
   {
@@ -260,8 +260,8 @@ export const sidebarList = {
     label: 'Leave Management',
     Visible: false,
     sub: [
-      { subPath: 'Employee/ManageEmployee', label: 'Approve/Reject Leave Requests'},
-      { subPath: 'leave_request', label: 'Request Leave' },
+      { subPath: 'Approve_Reject', label: 'Approve/Reject Leave Requests'},
+      { subPath: 'Request', label: 'Request Leave' },
     ],
   },
   {
@@ -270,11 +270,71 @@ export const sidebarList = {
     label: 'Notifications',
     Visible: false,
     sub: [
-      { subPath: '/', label: 'View Notifications' },
-      { subPath: '/', label: 'Send Notifications' },
+      { subPath: 'send_notification', label: 'Send Notification' },
+      { subPath: 'view_notification', label: 'View Notification' },
     ],
   },
+  {
+    Icons: 'Bell',
+    path: "Efficiency_Report",
+    label: 'Employee Efficienct',
+    Visible: false,
+    sub: null,
+  },
+
 ],
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Admin: [
     {
       path: null,

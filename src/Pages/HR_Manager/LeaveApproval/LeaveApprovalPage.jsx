@@ -5,6 +5,8 @@ import ActionPanel from './ActionPanel';
 import ToastContainer from './ToastContainer';
 import { ResponsiveContainer, BarChart, XAxis, YAxis, Tooltip, Bar } from 'recharts';
 import FileDrawer from '../../../Components/FileDrawer';
+import Header from '../../../Components/Header';
+import { SubTitle } from 'chart.js';
 
 
 const EMPLOYEES = [
@@ -126,15 +128,16 @@ return Object.entries(map).map(([name, days]) => ({ name, days }));
 
 
 return (
-  <div className="h-full w-full flex flex-col gap-4 p-4 md:p-7 dark:bg-slate-800 bg-gray-50 overflow-hidden transition-colors">
+  <div className="h-full bg-white w-full flex flex-col gap-4 p-4 md:p-7 dark:bg-slate-800 overflow-hidden transition-colors">
     {/* HEADER SECTION - Matching your Header component style */}
     <div className="flex items-center justify-between shrink-0">
-      <div>
+      {/* <div>
         <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Leave Requests</h1>
         <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
-          Approve or deny leave requests — opens details in your Drawer
+          
         </p>
-      </div>
+      </div> */}
+    <Header Title={"Leave Requests"} subTitle={"Approve or deny leave requests — opens details in your Drawer"}/>
     </div>
 
     {/* MAIN CONTENT - Inset Shadow Container */}
@@ -161,7 +164,7 @@ return (
             </div>
             
             {/* Fixed Action Panel at Bottom */}
-            <div className="shrink-0 p-4 border-t dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
+            <div className="shrink-0 p-4 border-t border-slate-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
               <ActionPanel 
                 request={selectedRequest} 
                 onApprove={(c) => handleDecision(selectedRequest.id, 'approved', c)} 

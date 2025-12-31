@@ -388,11 +388,11 @@ const drawer= <>{isModalOpen && (
 )}</>
   if (view === 'DASHBOARD') {
      return (
-  <div className="flex h-full w-full flex-col gap-4 scrollbar-hidden overflow-y-auto">
+  <div className="flex h-full bg-slate-50 dark:bg-slate-900 w-full flex-col gap-4 scrollbar-hidden overflow-y-auto">
     {drawer}
 
     {/* HEADER SECTION - Matches Attendance Header */}
-    <div className="bg-gray-50 dark:bg-slate-700 p-6 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 flex flex-col md:flex-row items-center justify-between gap-4 transition-colors">
+    <div className="bg-white dark:bg-slate-700 p-6 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 flex flex-col md:flex-row items-center justify-between gap-4 transition-colors">
       <Header Title={"Tax Configuration"}>
         <button
           onClick={() => {
@@ -417,7 +417,7 @@ const drawer= <>{isModalOpen && (
     </div>
 
     {/* LIST SECTION - Styled as a cohesive card container */}
-    <div className="bg-gray-50 dark:bg-slate-700 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-colors flex-1 overflow-hidden flex flex-col">
+    <div className="bg-white dark:bg-slate-700 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-colors flex-1 overflow-hidden flex flex-col">
       <div className="flex flex-col p-2 flex-1">
         {allTaxCodes.map((code) => (
           <div
@@ -426,7 +426,7 @@ const drawer= <>{isModalOpen && (
               setSelectedCodeId(code.id);
               setView('VERSION_LIST');
             }}
-            className="group flex items-center gap-4 p-4 border-b border-gray-100 dark:border-slate-600/50 last:border-0 hover:bg-white dark:hover:bg-slate-600/30 transition-all cursor-pointer rounded-lg"
+            className="group flex items-center gap-4 p-4 border-b border-gray-100 dark:border-slate-600/50 last:border-0 hover:bg-slate-100 dark:hover:bg-slate-600/30 transition-all cursor-pointer rounded-lg"
           >
             {/* ICON/STATUS INDICATOR */}
             <div className={`p-2 rounded-lg ${code.isEnabled ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>

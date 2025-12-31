@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import useAuth from "../Context/AuthContext";
 
  function MetricCards({
-  employeeId = 20,
+  employeeId ,
   reportId,
   endpoint = null,
 }) {
