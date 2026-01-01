@@ -11,190 +11,8 @@ import ViewerLoader from './ViewerLoader';
 import PayslipTemplate2 from '../../../Components/PayslipTemplate2'; 
 import ClockoutModal from '../../../Components/Modals/ClockoutModal';
 
-const MOCK_BACKEND_PAYROLL = [
-  { 
-    id: 'EMP001', 
-    department: 'Finance', 
-    jobTitle: "Senior Accountant", 
-    bankAccount: "GTB ****3248", 
-    name: "Sarah Jenkins", 
-    baseSalary: 6000, 
-    bonus: 500,
-    attendedDays: 22, 
-    lopDays: 0,
-    taxCode: 'Standard', 
-    taxVersion: '2025 v1.0',
-    taxAmount: 1200, 
-    netPay: 5300,
-    taxDisplay: "Standard (2025 v1.0)",
-    details: {
-      company: { 
-        name: "TechCorp Solutions Ltd", 
-        address: "123 Business Avenue, Lagos, Nigeria", 
-        phone: "+234 812 345 6789", 
-        email: "payroll@techcorp.com", 
-        logoUrl: "https://via.placeholder.com/64" 
-      },
-      month: "December 2025",
-      paymentDate: "2025-12-30",
-      paymentMethod: "Bank Transfer",
-      earnings: [
-        { label: "Basic Salary", amount: 6000 },
-        { label: "Performance Bonus", amount: 500 },
-        { label: "Housing Allowance", amount: 1000 }
-      ],
-      deductions: [
-        { label: "Income Tax (PAYE)", amount: 1200 },
-        { label: "Pension Contribution", amount: 500 },
-        { label: "Health Insurance", amount: 200 },
-        { label: "Lateness Deduction", amount: 0 }
-      ],
-      gross: 7500,
-      totalDeductions: 1900,
-      net: 5600
-    }
-  },
-  { 
-    id: 'EMP003', 
-    department: 'HR', 
-    jobTitle: "Human Resources Manager", 
-    bankAccount: "UBA ****9988", 
-    name: "Amara Osei", 
-    baseSalary: 7000, 
-    bonus: 500,
-    attendedDays: 22, 
-    lopDays: 0,
-    taxCode: 'Exempt', 
-    taxVersion: 'Medical v2',
-    taxAmount: 75, 
-    netPay: 7425,
-    taxDisplay: "Exempt (Medical v2)",
-    details: {
-      company: { 
-        name: "TechCorp Solutions Ltd", 
-        address: "123 Business Avenue, Lagos, Nigeria", 
-        phone: "+234 812 345 6789", 
-        email: "payroll@techcorp.com"
-      },
-      month: "December 2025",
-      paymentDate: "2025-12-30",
-      paymentMethod: "Bank Transfer",
-      earnings: [
-        { label: "Basic Salary", amount: 7000 },
-        { label: "Bonus", amount: 500 }
-      ],
-      deductions: [
-        { label: "Medical Admin Fee (1%)", amount: 75 }
-      ],
-      gross: 7500,
-      totalDeductions: 75,
-      net: 7425
-    }
-  },
-  { 
-    id: 'EMP004', 
-    department: 'IT', 
-    jobTitle: "External Consultant", 
-    bankAccount: "ZEN ****7744", 
-    name: "David Kim", 
-    baseSalary: 3000, 
-    bonus: 0,
-    attendedDays: 20, 
-    lopDays: 2,
-    taxCode: 'Contractor', 
-    taxVersion: 'Flat Rate A',
-    taxAmount: 450, 
-    netPay: 2550,
-    taxDisplay: "Contractor (Flat Rate A)",
-    details: {
-      company: { name: "TechCorp Solutions Ltd", address: "123 Business Avenue, Lagos", phone: "+234 812 345 6789", email: "payroll@techcorp.com" },
-      month: "December 2025",
-      paymentDate: "2025-12-30",
-      paymentMethod: "Wire Transfer",
-      earnings: [
-        { label: "Consultancy Fees", amount: 3000 }
-      ],
-      deductions: [
-        { label: "Withholding Tax (15%)", amount: 450 }
-      ],
-      gross: 3000,
-      totalDeductions: 450,
-      net: 2550
-    }
-  }
-];
-
-const allMonths = Array.from({ length: 12 }, (_, i) => dayjs().month(i).format('MMMM'));
-const currentYear = new Date().getFullYear();
-const yearOptions = Array.from({ length: 20 }, (_, i) => (currentYear - i).toString());
-
-const formatMoney = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-
-const MetricCard = ({ title, amount, icon: Icon, colorClass, warning }) => (
-  <div className={`bg-white dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-800 p-6 rounded shadow flex items-start justify-between relative overflow-hidden ${warning ? 'ring-2 ring-red-500' : ''}`}>
-    <div>
-      <p className="text-sm font-medium text-slate-500 mb-1">{title}</p>
-      <h3 className="text-2xl dark:text-slate-100 font-bold text-slate-800">{formatMoney(amount)}</h3>
-      {warning && <p className="text-[10px] text-red-500 font-bold mt-1 animate-pulse">⚠ CONFIG MISSING</p>}
-    </div>
-    <div className={`p-3 rounded-lg ${colorClass}`}>
-      <Icon size={24} />
-    </div>
-  </div>
-);
-
-const TaxCoverageSummary = ({ employees, isExpanded, onToggle }) => {
-  const total = employees.length;
-  const withTax = employees.filter(e => e.taxCode).length;
-  const missing = total - withTax;
-
-  const distribution = employees.reduce((acc, curr) => {
-    if (curr.taxCode) acc[curr.taxCode] = (acc[curr.taxCode] || 0) + 1;
-    return acc;
-  }, {});
-
-  const missingDepts = [...new Set(employees.filter(e => !e.taxCode).map(e => e.department))];
-
-  return (
-    <div 
-      onClick={onToggle}
-      className={`bg-slate-50 dark:bg-slate-900 border dark:border-slate-700 dark:shadow-slate-900 dark:shadow-md border-slate-200 p-3 shadow-sm flex items-center justify-between cursor-pointer transition-all duration-300 ${isExpanded ? 'rounded-b-lg border-t-0' : 'rounded-lg mb-2'}`}
-    >
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 pr-2 border-r border-slate-200 dark:border-slate-700">
-           <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-           <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Active Regimes:</span>
-        </div>
-        <div className="flex gap-4 items-center flex-wrap">
-          {Object.entries(distribution).length > 0 ? (
-            Object.entries(distribution).map(([code, count]) => (
-              <span key={code} className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
-                {code}: <span className="text-indigo-600 dark:text-indigo-400">{count}</span>
-              </span>
-            ))
-          ) : (
-            <span className="text-xs text-slate-400 italic">No regimes applied yet</span>
-          )}
-        </div>
-      </div>
-
-      <div className="flex items-center gap-3">
-        {missing > 0 && (
-          <div className="flex gap-2 items-center text-[10px] text-red-600 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded border border-red-100 dark:border-red-900/30">
-            <AlertCircle size={12} />
-            <span className="font-bold uppercase italic">Missing: {missingDepts.join(", ")}</span>
-          </div>
-        )}
-        <div className="text-[10px] font-bold bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-600 dark:text-slate-400">
-          {withTax}/{total} READY
-        </div>
-      </div>
-    </div>
-  );
-};
 
 function GeneratePayroll() {
-  // ROLE & WORKFLOW LOGIC (Manually change userRole to test)
   const [userRole] = useState('payroll_officer'); // Options: 'payroll_officer' or 'hr_manager'
   const [status, setStatus] = useState('draft'); // draft, generated, submitted, finalized
 
@@ -324,7 +142,7 @@ function GeneratePayroll() {
         </div>
       </Header>
 
-      <main className="h-screen relative overflow-y-scroll dark:bg-slate-950 bg-slate-100 flex flex-col p-2 gap-2">
+      <main className="h-screen relative overflow-y-scroll hover-bar dark:bg-slate-950 bg-slate-100 flex flex-col p-2 gap-2">
         
         {/* COLLAPSIBLE METRICS */}
         <div className="flex flex-col shrink-0">
@@ -396,3 +214,192 @@ function GeneratePayroll() {
 }
 
 export default GeneratePayroll;
+
+
+
+
+
+
+
+const allMonths = Array.from({ length: 12 }, (_, i) => dayjs().month(i).format('MMMM'));
+const currentYear = new Date().getFullYear();
+const yearOptions = Array.from({ length: 20 }, (_, i) => (currentYear - i).toString());
+
+const formatMoney = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+
+const MetricCard = ({ title, amount, icon: Icon, colorClass, warning }) => (
+  <div className={`bg-white dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-800 p-6 rounded shadow flex items-start justify-between relative overflow-hidden ${warning ? 'ring-2 ring-red-500' : ''}`}>
+    <div>
+      <p className="text-sm font-medium text-slate-500 mb-1">{title}</p>
+      <h3 className="text-2xl dark:text-slate-100 font-bold text-slate-800">{formatMoney(amount)}</h3>
+      {warning && <p className="text-[10px] text-red-500 font-bold mt-1 animate-pulse">⚠ CONFIG MISSING</p>}
+    </div>
+    <div className={`p-3 rounded-lg ${colorClass}`}>
+      <Icon size={24} />
+    </div>
+  </div>
+);
+
+const TaxCoverageSummary = ({ employees, isExpanded, onToggle }) => {
+  const total = employees.length;
+  const withTax = employees.filter(e => e.taxCode).length;
+  const missing = total - withTax;
+
+  const distribution = employees.reduce((acc, curr) => {
+    if (curr.taxCode) acc[curr.taxCode] = (acc[curr.taxCode] || 0) + 1;
+    return acc;
+  }, {});
+
+  const missingDepts = [...new Set(employees.filter(e => !e.taxCode).map(e => e.department))];
+
+  return (
+    <div 
+      onClick={onToggle}
+      className={`bg-slate-50 dark:bg-slate-900 border dark:border-slate-700 dark:shadow-slate-900 dark:shadow-md border-slate-200 p-3 shadow-sm flex items-center justify-between cursor-pointer transition-all duration-300 ${isExpanded ? 'rounded-b-lg border-t-0' : 'rounded-lg mb-2'}`}
+    >
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 pr-2 border-r border-slate-200 dark:border-slate-700">
+           <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+           <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Active Regimes:</span>
+        </div>
+        <div className="flex gap-4 items-center flex-wrap">
+          {Object.entries(distribution).length > 0 ? (
+            Object.entries(distribution).map(([code, count]) => (
+              <span key={code} className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+                {code}: <span className="text-indigo-600 dark:text-indigo-400">{count}</span>
+              </span>
+            ))
+          ) : (
+            <span className="text-xs text-slate-400 italic">No regimes applied yet</span>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        {missing > 0 && (
+          <div className="flex gap-2 items-center text-[10px] text-red-600 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded border border-red-100 dark:border-red-900/30">
+            <AlertCircle size={12} />
+            <span className="font-bold uppercase italic">Missing: {missingDepts.join(", ")}</span>
+          </div>
+        )}
+        <div className="text-[10px] font-bold bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-600 dark:text-slate-400">
+          {withTax}/{total} READY
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const MOCK_BACKEND_PAYROLL = [
+  { 
+    id: 'EMP001', 
+    department: 'Finance', 
+    jobTitle: "Senior Accountant", 
+    bankAccount: "GTB ****3248", 
+    name: "Sarah Jenkins", 
+    baseSalary: 6000, 
+    bonus: 500,
+    attendedDays: 22, 
+    lopDays: 0,
+    taxCode: 'Standard', 
+    taxVersion: '2025 v1.0',
+    taxAmount: 1200, 
+    netPay: 5300,
+    taxDisplay: "Standard (2025 v1.0)",
+    details: {
+      company: { 
+        name: "TechCorp Solutions Ltd", 
+        address: "123 Business Avenue, Lagos, Nigeria", 
+        phone: "+234 812 345 6789", 
+        email: "payroll@techcorp.com", 
+        logoUrl: "https://via.placeholder.com/64" 
+      },
+      month: "December 2025",
+      paymentDate: "2025-12-30",
+      paymentMethod: "Bank Transfer",
+      earnings: [
+        { label: "Basic Salary", amount: 6000 },
+        { label: "Performance Bonus", amount: 500 },
+        { label: "Housing Allowance", amount: 1000 }
+      ],
+      deductions: [
+        { label: "Income Tax (PAYE)", amount: 1200 },
+        { label: "Pension Contribution", amount: 500 },
+        { label: "Health Insurance", amount: 200 },
+        { label: "Lateness Deduction", amount: 0 }
+      ],
+      gross: 7500,
+      totalDeductions: 1900,
+      net: 5600
+    }
+  },
+  { 
+    id: 'EMP003', 
+    department: 'HR', 
+    jobTitle: "Human Resources Manager", 
+    bankAccount: "UBA ****9988", 
+    name: "Amara Osei", 
+    baseSalary: 7000, 
+    bonus: 500,
+    attendedDays: 22, 
+    lopDays: 0,
+    taxCode: 'Exempt', 
+    taxVersion: 'Medical v2',
+    taxAmount: 75, 
+    netPay: 7425,
+    taxDisplay: "Exempt (Medical v2)",
+    details: {
+      company: { 
+        name: "TechCorp Solutions Ltd", 
+        address: "123 Business Avenue, Lagos, Nigeria", 
+        phone: "+234 812 345 6789", 
+        email: "payroll@techcorp.com"
+      },
+      month: "December 2025",
+      paymentDate: "2025-12-30",
+      paymentMethod: "Bank Transfer",
+      earnings: [
+        { label: "Basic Salary", amount: 7000 },
+        { label: "Bonus", amount: 500 }
+      ],
+      deductions: [
+        { label: "Medical Admin Fee (1%)", amount: 75 }
+      ],
+      gross: 7500,
+      totalDeductions: 75,
+      net: 7425
+    }
+  },
+  { 
+    id: 'EMP004', 
+    department: 'IT', 
+    jobTitle: "External Consultant", 
+    bankAccount: "ZEN ****7744", 
+    name: "David Kim", 
+    baseSalary: 3000, 
+    bonus: 0,
+    attendedDays: 20, 
+    lopDays: 2,
+    taxCode: 'Contractor', 
+    taxVersion: 'Flat Rate A',
+    taxAmount: 450, 
+    netPay: 2550,
+    taxDisplay: "Contractor (Flat Rate A)",
+    details: {
+      company: { name: "TechCorp Solutions Ltd", address: "123 Business Avenue, Lagos", phone: "+234 812 345 6789", email: "payroll@techcorp.com" },
+      month: "December 2025",
+      paymentDate: "2025-12-30",
+      paymentMethod: "Wire Transfer",
+      earnings: [
+        { label: "Consultancy Fees", amount: 3000 }
+      ],
+      deductions: [
+        { label: "Withholding Tax (15%)", amount: 450 }
+      ],
+      gross: 3000,
+      totalDeductions: 450,
+      net: 2550
+    }
+  }
+];

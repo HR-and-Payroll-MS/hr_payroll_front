@@ -112,7 +112,7 @@ export const sidebarList = {
     {
       Icons: 'Timer',
       path: "Announcement",
-      label: 'Announcement',
+      label: 'Announcement/News',
       Visible: false,
       sub:false
     },
@@ -133,9 +133,9 @@ export const sidebarList = {
       Visible: false,
       sub: [
         { subPath: 'Payroll_report', label: 'Payroll Reports' },
-        { subPath: '/', label: 'Attendance Reports' },
-        { subPath: 'Request', label: 'Leave Reports' },
-        { subPath: '/', label: 'Overtime Reports' },
+        // { subPath: '/', label: 'Attendance Reports' },
+        // { subPath: 'Request', label: 'Leave Reports' },
+        // { subPath: '/', label: 'Overtime Reports' },
         { subPath: 'efficiency_report', label: 'employee efficiency Reports' },
         { subPath: '/', label: 'Employee Compliant Report' },
       ],
@@ -204,7 +204,7 @@ export const sidebarList = {
   {
     path: "Request",
     Icons: 'CalendarX',
-    label: 'Leave Request',
+    label: 'View/Send Requests',
     Visible: false,
     sub: null
   },
@@ -261,7 +261,7 @@ export const sidebarList = {
     Visible: false,
     sub: [
       { subPath: 'Approve_Reject', label: 'Approve/Reject Leave Requests'},
-      { subPath: 'Request', label: 'Request Leave' },
+      { subPath: 'Request', label: 'view/Send Requests' },
     ],
   },
   {

@@ -5,332 +5,260 @@ import SearchDate from '../Components/SearchDate';
 import FileUploader from '../Components/FileUploader';
 import useAuth from '../Context/AuthContext';
 
-export default function SendRequestForEmployee({ role = 'HR_MANAGER' }) {
+export default function SendRequestForEmployee() {
+  const [requestType, setRequestType] = useState('Leave');
+  const [leaveCategory, setLeaveCategory] = useState('Annual');
   const [message, setMessage] = useState('');
-  const [category, setCategory] = useState('hr');
   const [file, setFile] = useState(null);
   const [date, setDate] = useState(null);
   const { axiosPrivate } = useAuth();
-  const LEAVE_TYPES = [
-    'Annual',
-    'Sick',
-    'Casual',
-    'Maternity',
-    'Paternity',
-    'Unpaid',
-    'Compensatory',
-    'Bereavement',
-    'Study',
-    'Sabbatical',
-  ];
+
+  const REQUEST_TYPES = ['Leave', 'Complaint', 'Internal Application', 'Resource Request', 'Resignation'];
+  const LEAVE_TYPES = ['Annual', 'Sick', 'Casual', 'Maternity', 'Paternity', 'Unpaid', 'Compensatory'];
 
   function toISODate(date) {
     if (!date) return null;
-
     const d = new Date(date);
-    return d.toISOString().split('T')[0]; // YYYY-MM-DD
+    return d.toISOString().split('T')[0];
   }
 
   async function submit(e) {
     e.preventDefault();
-
-    console.log('message', message);
-    console.log('category', category);
-    console.log('file', file);
-    console.log('date', date);
-
+    const destination = requestType === 'Leave' ? 'DEPARTMENT_MANAGER' : 'HR_MANAGER';
     const startDateISO = toISODate(date?.from);
     const endDateISO = toISODate(date?.to);
 
+    const fd = new FormData();
+    fd.append('mainType', requestType);
+    fd.append('subType', requestType === 'Leave' ? leaveCategory : 'N/A');
+    fd.append('routedTo', destination);
+    fd.append('reason', message);
+    if (startDateISO) fd.append('startDate', startDateISO);
+    if (endDateISO) fd.append('endDate', endDateISO);
+    if (file instanceof File) fd.append('attachment', file);
+
     try {
-      let res;
-
-      if (file instanceof File) {
-        const fd = new FormData();
-        fd.append('type', category);
-        fd.append('startDate', startDateISO);
-        fd.append('endDate', endDateISO);
-        if (message) fd.append('reason', message);
-        fd.append('attachment', file);
-        console.log(startDateISO, endDateISO);
-        res = await axiosPrivate.post('/leaves/requests/', fd);
-      } else {
-        const payload = {
-          type: category,
-          startDate: startDateISO,
-          endDate: endDateISO,
-          ...(message ? { reason: message } : {}),
-        };
-
-        res = await axiosPrivate.post('/leaves/requests/', payload);
-      }
-
-      console.log('BACKEND RESPONSE →', res.data);
-      alert('Request sent (check network tab)');
+      await axiosPrivate.post('/leaves/requests/', fd);
+      alert(`Request sent to ${destination.replace('_', ' ')}`);
     } catch (err) {
-      console.error('BACKEND ERROR →', err);
-      alert('Request failed – check console');
+      console.error(err);
+      alert('Request failed');
     }
   }
 
   return (
-    <form onSubmit={submit} className=" mx-auto p- space-y-4">
-      <div className="flex items-center gap-2">
-        <p>Type</p>
-        {/* <InputField placeholder="Title..." maxWidth={"w-full"} icon={false} onSelect={setTitle}/> */}
-        <Dropdown
-          padding="p-1.5 w-120"
-          width="w-120"
-          onChange={setCategory}
-          placeholder="Casual"
-          options={LEAVE_TYPES}
-        />
-        <SearchDate onSubmit={setDate} applyButton={false} style="" />
-        <FileUploader
-          btnBackground="hover:bg-slate-50"
-          IconName="Link2"
-          buttonOnly={true}
-          label="Attach File"
-          onFileSelect={setFile}
-        >
-          .
-        </FileUploader>
+    <div className="h-full w-full p-2.5 flex flex-col gap-4 overflow-y-auto scrollbar-hidden">
+      {/* Header Section */}
+      <div className="flex flex-col gap-1 px-2 py-4">
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Submit a New Request</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm">Please fill in the details below. Requests are automatically routed to HR or your Department Manager.</p>
       </div>
-      <TextEditor onChange={setMessage} />
 
-      <button
-        type="submit"
-        className="px-4 py-2 bg-slate-800 text-white rounded"
-      >
-        Send
-      </button>
-    </form>
+      <form onSubmit={submit} className="flex flex-col gap-4">
+        {/* Top Controls Bar - Matching the Table/Graph container style */}
+        <div className="bg-gray-50 dark:bg-slate-700 p-4 rounded shadow dark:shadow-black dark:inset-shadow-xs flex flex-wrap items-center gap-6">
+          
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-300 uppercase">Request Type</label>
+            <Dropdown
+              padding="p-1.5 w-60"
+              width="w-60"
+              onChange={setRequestType}
+              placeholder="Select Type"
+              options={REQUEST_TYPES}
+            />
+          </div>
+
+          {requestType === 'Leave' && (
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-bold text-slate-500 dark:text-slate-300 uppercase">Leave Category</label>
+              <Dropdown
+                padding="p-1.5 w-60"
+                width="w-60"
+                onChange={setLeaveCategory}
+                placeholder="Select Category"
+                options={LEAVE_TYPES}
+              />
+            </div>
+          )}
+
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-300 uppercase">Select Date Range</label>
+            <SearchDate onSubmit={setDate} applyButton={false} />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-bold text-slate-500 dark:text-slate-300 uppercase">Attachments</label>
+            <FileUploader
+              btnBackground="bg-white dark:bg-slate-600 dark:text-white"
+              IconName="Link2"
+              buttonOnly={true}
+              label="Attach File"
+              onFileSelect={setFile}
+            />
+          </div>
+        </div>
+
+        {/* Editor Section - Full width matching the Table style */}
+        <div className="bg-gray-50 dark:bg-slate-700 p-4 rounded shadow dark:shadow-black flex-1 min-h-[300px]">
+           <label className="text-xs font-bold text-slate-500 dark:text-slate-300 uppercase block mb-2">
+             {requestType === 'Complaint' ? 'Detailed Description' : 'Message / Reason'}
+           </label>
+           <TextEditor onChange={setMessage} />
+        </div>
+
+        {/* Action Footer */}
+        <div className="flex justify-between items-center bg-gray-50 dark:bg-slate-700 p-4 rounded shadow">
+          <div className="text-sm">
+             <span className="text-slate-400">Destination:</span>
+             <span className="ml-2 px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 rounded text-xs font-bold uppercase">
+               {requestType === 'Leave' ? 'Dept Manager' : 'HR Manager'}
+             </span>
+          </div>
+          <button
+            type="submit"
+            className="px-8 py-2.5 bg-[#052f4a] hover:bg-[#0a4166] text-white rounded font-bold transition-all shadow-md"
+          >
+            SEND REQUEST
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 
-// import React, { useState } from 'react';
-// import Dropdown from '../../../Components/Dropdown';
-// import TextEditor from '../../../Components/TextEditor';
-// import SearchDate from '../../../Components/SearchDate';
-// import FileUploader from '../../../Components/FileUploader';
-// import useAuth from '../../../Context/AuthContext';
 
-// function SendRequestForEmployee() {
-//   const {axiosPrivate}= useAuth()
-//   const [message, setMessage] = useState("");
-//   const [leaveType, setLeaveType] = useState("");
-//   const [startDate, setStartDate] = useState("");
-//   const [endDate, setEndDate] = useState("");
-//   const [attachment, setAttachment] = useState("");
 
-//   const LEAVE_TYPES = [
-//     "Annual",
-//     "Sick",
-//     "Casual",
-//     "Maternity",
-//     "Paternity",
-//     "Unpaid",
-//     "Compensatory",
-//     "Bereavement",
-//     "Study",
-//     "Sabbatical",
-//   ];
 
-//   const LEAVE_POLICY_MAP = {
-//     Annual: 1,
-//     Sick: 2,
-//     Casual: 3,
-//     Maternity: 4,
-//     Paternity: 5,
-//     Unpaid: 6,
-//     Compensatory: 7,
-//     Bereavement: 8,
-//     Study: 9,
-//     Sabbatical: 10,
-//   };
 
-//   const submit = async (e) => {
-//     e.preventDefault();
 
-//     const payload = {
-//       start_date: startDate || "",
-//       end_date: endDate || "",
-//       start_time: new Date().toISOString(),
-//       end_time: new Date().toISOString(),
-//       duration: "0",
-//       notes: message || "",
-//       attachment: attachment || "",
-//       policy: LEAVE_POLICY_MAP[leaveType] || 0,
-//       assigned_approver: 0,
-//     };
 
-//     console.log("SENDING PAYLOAD →", payload);
 
-//     try {
-//       const res = await axiosPrivate.post(
-//         "/leaves/requests/",
-//         payload
-//       );
-//       console.log("BACKEND RESPONSE →", res.data);
-//       alert("Request sent (check network tab)");
-//     } catch (err) {
-//       console.error("BACKEND ERROR →", err);
-//       alert("Request failed – check console");
-//     }
-//   };
 
-//   return (
-//     <form onSubmit={submit} className="mx-auto space-y-4">
 
-//       <div className="flex items-center gap-3">
-//         <p>Type</p>
 
-//         <Dropdown
-//           options={LEAVE_TYPES}
-//           placeholder="Select Leave Type"
-//           onChange={(value) => {
-//             console.log("LEAVE TYPE:", value);
-//             setLeaveType(value);
-//           }}
-//         />
 
-//         <SearchDate
-//           applyButton={false}
-//           onChange={(range) => {
-//             console.log("DATE RANGE:", range);
-//             setStartDate(range?.startDate || "");
-//             setEndDate(range?.endDate || "");
-//           }}
-//         />
 
-//         <FileUploader
-//           buttonOnly
-//           label="Attach File"
-//           onFileSelect={(file) => {
-//             console.log("FILE:", file);
-//             setAttachment(file?.name || "");
-//           }}
-//         />
-//       </div>
 
-//       <TextEditor
-//         onChange={(value) => {
-//           console.log("MESSAGE:", value);
-//           setMessage(value);
-//         }}
-//       />
 
-//       <button
-//         type="submit"
-//         className="px-4 py-2 bg-slate-800 text-white rounded"
-//       >
-//         Send
-//       </button>
-//     </form>
-//   );
-// }
 
-// export default SendRequestForEmployee;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React, { useState } from 'react';
-// import Dropdown from '../../../Components/Dropdown';
-// import TextEditor from '../../../Components/TextEditor';
-// import SearchDate from '../../../Components/SearchDate';
-// import FileUploader from '../../../Components/FileUploader';
-// import useAuth from '../../../Context/AuthContext';
+// import Dropdown from '../Components/Dropdown';
+// import TextEditor from '../Components/TextEditor';
+// import SearchDate from '../Components/SearchDate';
+// import FileUploader from '../Components/FileUploader';
+// import useAuth from '../Context/AuthContext';
 
-// function SendRequestForEmployee({ role = "HR_MANAGER" }) {
-//   const [message, setMessage] = useState("");
-//   const [leaveType, setLeaveType] = useState(null);
-//   const [dateRange, setDateRange] = useState({
-//     start_date: "",
-//     end_date: "",
-//   });
-//   const [attachment, setAttachment] = useState(null);
-//   const {axiosPrivate} = useAuth();
+// export default function SendRequestForEmployee({ role = 'HR_MANAGER' }) {
+//   const [message, setMessage] = useState('');
+//   const [category, setCategory] = useState('hr');
+//   const [file, setFile] = useState(null);
+//   const [date, setDate] = useState(null);
+//   const { axiosPrivate } = useAuth();
 //   const LEAVE_TYPES = [
-//     { label: "Annual", value: 1 },
-//     { label: "Sick", value: 2 },
-//     { label: "Casual", value: 3 },
-//     { label: "Maternity", value: 4 },
-//     { label: "Paternity", value: 5 },
-//     { label: "Unpaid", value: 6 },
-//     { label: "Compensatory", value: 7 },
-//     { label: "Bereavement", value: 8 },
-//     { label: "Study", value: 9 },
-//     { label: "Sabbatical", value: 10 },
+//     'Annual',
+//     'Sick',
+//     'Casual',
+//     'Maternity',
+//     'Paternity',
+//     'Unpaid',
+//     'Compensatory',
+//     'Bereavement',
+//     'Study',
+//     'Sabbatical',
 //   ];
 
-//   const calculateDuration = (start, end) => {
-//     const startDate = new Date(start);
-//     const endDate = new Date(end);
-//     const diffTime = endDate - startDate;
-//     return diffTime / (1000 * 60 * 60 * 24) + 1;
-//   };
+//   function toISODate(date) {
+//     if (!date) return null;
+
+//     const d = new Date(date);
+//     return d.toISOString().split('T')[0]; // YYYY-MM-DD
+//   }
 
 //   async function submit(e) {
 //     e.preventDefault();
 
-//     if (!dateRange.start_date || !dateRange.end_date || !leaveType) return;
+//     console.log('message', message);
+//     console.log('category', category);
+//     console.log('file', file);
+//     console.log('date', date);
 
-//     const payload = {
-//       start_date: dateRange.start_date,
-//       end_date: dateRange.end_date,
-//       start_time: new Date().toISOString(),
-//       end_time: new Date().toISOString(),
-//       duration: calculateDuration(
-//         dateRange.start_date,
-//         dateRange.end_date
-//       ).toString(),
-//       notes: message,
-//       attachment: attachment || "",
-//       policy: leaveType.value,
-//       assigned_approver: 0,
-//     };
+//     const startDateISO = toISODate(date?.from);
+//     const endDateISO = toISODate(date?.to);
 
 //     try {
-//       const response = await axiosPrivate.post(
-//         "/leaves/requests",
-//         payload
-//       );
-//       console.log("Leave request sent:", response.data);
-//     } catch (error) {
-//       console.error("Error sending leave request", error);
+//       let res;
+
+//       if (file instanceof File) {
+//         const fd = new FormData();
+//         fd.append('type', category);
+//         fd.append('startDate', startDateISO);
+//         fd.append('endDate', endDateISO);
+//         if (message) fd.append('reason', message);
+//         fd.append('attachment', file);
+//         console.log(startDateISO, endDateISO);
+//         res = await axiosPrivate.post('/leaves/requests/', fd);
+//       } else {
+//         const payload = {
+//           type: category,
+//           startDate: startDateISO,
+//           endDate: endDateISO,
+//           ...(message ? { reason: message } : {}),
+//         };
+
+//         res = await axiosPrivate.post('/leaves/requests/', payload);
+//       }
+
+//       console.log('BACKEND RESPONSE →', res.data);
+//       alert('Request sent (check network tab)');
+//     } catch (err) {
+//       console.error('BACKEND ERROR →', err);
+//       alert('Request failed – check console');
 //     }
 //   }
 
 //   return (
-//     <form onSubmit={submit} className="mx-auto space-y-4">
+//     <form onSubmit={submit} className=" mx-auto p- space-y-4">
 //       <div className="flex items-center gap-2">
 //         <p>Type</p>
-
+//         {/* <InputField placeholder="Title..." maxWidth={"w-full"} icon={false} onSelect={setTitle}/> */}
 //         <Dropdown
-//           padding="p-1.5"
+//           padding="p-1.5 w-120"
 //           width="w-120"
-//           placeholder="Select Leave Type"
-//           options={LEAVE_TYPES.map((e)=>e.label)}
-//           onChange={setLeaveType}
+//           onChange={setCategory}
+//           placeholder="Casual"
+//           options={LEAVE_TYPES}
 //         />
-
-//         <SearchDate
-//           applyButton={false}
-//           onChange={(range) =>
-//             setDateRange({
-//               start_date: range.startDate,
-//               end_date: range.endDate,
-//             })
-//           }
-//         />
-
+//         <SearchDate onSubmit={setDate} applyButton={false} style="" />
 //         <FileUploader
 //           btnBackground="hover:bg-slate-50"
 //           IconName="Link2"
 //           buttonOnly={true}
 //           label="Attach File"
-//           onFileSelect={(file) => setAttachment(file)}
-//         />
+//           onFileSelect={setFile}
+//         >
+//           .
+//         </FileUploader>
 //       </div>
-
 //       <TextEditor onChange={setMessage} />
 
 //       <button
@@ -342,47 +270,3 @@ export default function SendRequestForEmployee({ role = 'HR_MANAGER' }) {
 //     </form>
 //   );
 // }
-
-// export default SendRequestForEmployee;
-
-// /* leave types :-annual,sick leave,casual leave,maternity leave,paternity leave,parental */
-
-// // 1. Paid Leaves
-
-// // Annual Leave / Vacation Leave – standard paid time off employees accrue annually.
-
-// // Sick Leave – paid leave when the employee is unwell.
-
-// // Casual Leave – short-term leave for personal reasons, usually paid.
-
-// // Maternity Leave – for childbirth, typically paid (duration varies by country).
-
-// // Paternity Leave – for new fathers, sometimes paid.
-
-// // Parental / Adoption Leave – for adoption or child care.
-
-// // 2. Unpaid / Special Leaves
-
-// // Unpaid Leave – taken without pay, sometimes used when paid leave is exhausted.
-
-// // Leave Without Pay (LWOP) – similar to unpaid leave, HR term.
-
-// // Compensatory Off / Time Off in Lieu – if the employee worked extra hours/days.
-
-// // Study / Educational Leave – for courses, certifications, exams.
-
-// // Sabbatical Leave – extended unpaid leave for personal or professional reasons.
-
-// // 3. Emergency / Short-term Leaves
-
-// // Bereavement / Compassionate Leave – in case of death or serious illness of family.
-
-// // Public / National Holidays – sometimes recorded as “leave type” if you track separately.
-
-// // 4. Other Organizational Specific Types
-
-// // Work From Home (WFH) – sometimes treated as a leave type for attendance purposes.
-
-// // Half-Day Leave – could be part of annual, sick, or casual leave.
-
-// // Medical Leave / Hospitalization – sometimes separate from general sick leave.

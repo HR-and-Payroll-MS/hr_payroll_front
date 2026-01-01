@@ -261,7 +261,7 @@ function TableStructures({data="",id,D1,D2, item,Comps = EmptyComponent,nickname
                                         {/* {console.log("data in table structure---->",data," id---->",id," item---->",item," rawData---->",rawData,"D1",D1)} */}
                               </FileDrawer>)}
                                           </button>
-                                        ) : ( D1 === 'generate' ? (
+                                        ) : (
                                           <button 
                                             // onClick={() => setSelectedEmployee(emp)}
                                             className=" text-yellow-800 shadow-xs hover:bg-indigo-50 p-2 rounded-lg transition-colors"
@@ -273,11 +273,7 @@ function TableStructures({data="",id,D1,D2, item,Comps = EmptyComponent,nickname
                                         {/* {console.log("data in table structure---->",data," id---->",id," item---->",item," rawData---->",rawData,"D1",D1)} */}
                               </FileDrawer>)}
                                           </button>
-                                        ) : (
-                                          <span className="inline-flex shadow-xs items-center gap-1 text-gray-600 text-xs uppercase border border-gray-200 bg-gray-100 px-2 py-1 rounded">
-                                             <Icon name={"CheckCircle"} className="w-3 h-3" /> Submitted
-                                          </span>
-                                        )
+                                       
                                         )}
                           
                   </div>

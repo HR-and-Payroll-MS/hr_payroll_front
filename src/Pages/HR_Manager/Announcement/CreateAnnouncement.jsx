@@ -22,7 +22,7 @@ export default function CreateAnnouncement() {
         file,
         name: file.name,
         type: ['image', 'video', 'audio'].includes(type) ? type : 'file',
-        url: URL.createObjectURL(file), // Local blob for preview
+        url: URL.createObjectURL(file),
         size: (file.size / 1024).toFixed(1) + " KB"
       };
     });
@@ -40,71 +40,121 @@ export default function CreateAnnouncement() {
       await publishAnnouncement(formData);
       resetForm();
     } catch (err) {
-      alert("Failed to publish. Ensure backend handles 'attachments' field.");
+      alert("Failed to publish.");
     }
   };
 
   const resetForm = () => {
-    attachments.forEach(a => URL.revokeObjectURL(a.url)); // Cleanup memory
+    attachments.forEach(a => URL.revokeObjectURL(a.url));
     setOpen(false); setStep(1); setTitle(""); setBody(""); setAttachments([]);
   };
 
   if (!open) return (
-    <button onClick={() => setOpen(true)} className="dark:bg-slate-600 bg-slate-900 text-white px-5 py-2 rounded dark:shadow-slate-900 dark:shadow dark:inset-shadow-xs dark:inset-shadow-slate-600 font-bold shadow-lg hover:bg-slate-700 transition">
-      + New Post
+    <button 
+      onClick={() => setOpen(true)} 
+      className="bg-[#052f4a] text-white px-6 py-2 rounded shadow dark:shadow-black font-bold hover:bg-slate-800 transition flex items-center gap-2 text-sm uppercase tracking-wider"
+    >
+      <span>+</span> Create Announcement
     </button>
   );
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-      <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
-        <div className="p-5 border-b flex justify-between items-center">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+      {/* Container matching Dashboard Layout: bg-gray-50, shadow, rounded */}
+      <div className="bg-gray-50 dark:bg-slate-700 w-full max-w-4xl rounded shadow-2xl dark:shadow-black dark:inset-shadow-xs flex flex-col max-h-[90vh] border border-slate-200 dark:border-slate-600 animate-scaleIn">
+        
+        {/* Header Section */}
+        <div className="p-5 border-b border-slate-200 dark:border-slate-600 flex justify-between items-center bg-white dark:bg-slate-800">
           <div>
-            <h2 className="font-black text-xl">{step === 1 ? "Compose News" : "Final Review"}</h2>
+            <h2 className="font-bold text-xl text-slate-800 dark:text-white uppercase tracking-tight">
+              {step === 1 ? "New Internal Announcement" : "Review Publication"}
+            </h2>
             <p className="text-[10px] uppercase font-bold text-slate-400">
-              {step === 1 ? "Drafting content" : "This is how it looks for employees"}
+              {step === 1 ? "Configure communication details" : "Final view before employee broadcast"}
             </p>
           </div>
-          <button onClick={resetForm} className="text-slate-400 text-2xl hover:text-red-500">×</button>
+          <button onClick={resetForm} className="text-slate-400 hover:text-red-500 transition-colors text-2xl">×</button>
         </div>
         
-        <div className="p-6 overflow-y-auto bg-slate-50/30">
+        <div className="p-6 overflow-y-auto scrollbar-hidden space-y-6">
           {step === 1 ? (
-            <div className="space-y-4">
-              <Dropdown onChange={setPriority} options={[{content:'Normal'},{content:'High'},{content:'Urgent'}]} placeholder="Priority" border="border rounded-lg px-3 py-1 bg-white text-xs font-bold"/>
-              <input className="w-full text-2xl font-black outline-none bg-transparent" placeholder="Headline..." value={title} onChange={(e)=>setTitle(e.target.value)} />
-              <div className="bg-white rounded-xl border p-2 min-h-[200px]"><TextEditor onChange={setBody} /></div>
+            <div className="flex flex-col gap-6">
               
-              <div className="grid grid-cols-4 gap-2">
-                {attachments.map((f, i) => (
-                  <div key={i} className="relative aspect-square bg-white rounded-lg border overflow-hidden">
-                    {f.type === 'image' ? <img src={f.url} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center h-full text-[10px] font-bold text-slate-400 p-1 text-center">{f.name}</div>}
-                    <button onClick={() => setAttachments(attachments.filter((_, idx) => idx !== i))} className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs">×</button>
-                  </div>
-                ))}
+              {/* Row 1: Priority and Title */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Priority</label>
+                  <Dropdown 
+                    onChange={setPriority} 
+                    options={[{content:'Normal'},{content:'High'},{content:'Urgent'}]} 
+                    placeholder="Select Priority" 
+                    padding="p-2 w-full" 
+                    className="bg-white dark:bg-slate-800 border rounded shadow-sm"
+                  />
+                </div>
+                <div className="md:col-span-3 flex flex-col gap-1.5">
+                  <label className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Headline / Subject</label>
+                  <input 
+                    className="w-full bg-white dark:bg-slate-800 dark:text-white border border-slate-200 dark:border-slate-600 rounded p-2 text-sm font-semibold outline-none focus:ring-1 ring-[#052f4a]" 
+                    placeholder="e.g. Monthly Town Hall Meeting..." 
+                    value={title} 
+                    onChange={(e)=>setTitle(e.target.value)} 
+                  />
+                </div>
               </div>
-              <div className="border-2 border-dashed rounded-xl p-6 flex flex-col items-center bg-white cursor-pointer hover:bg-slate-50" onClick={() => fileInputRef.current.click()}>
-                <span className="text-2xl mb-1">📎</span>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Attach Media / Documents</span>
-                <input type="file" ref={fileInputRef} className="hidden" multiple onChange={handleFileChange} />
+
+              {/* Row 2: Content Editor */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Message Body</label>
+                <div className="bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-600 p-2 min-h-[300px] shadow-inner">
+                  <TextEditor onChange={setBody} />
+                </div>
+              </div>
+              
+              {/* Row 3: Attachments */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Attached Media</label>
+                <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+                  {attachments.map((f, i) => (
+                    <div key={i} className="relative aspect-square bg-slate-200 dark:bg-slate-800 rounded border dark:border-slate-500 overflow-hidden group">
+                      {f.type === 'image' ? <img src={f.url} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center h-full text-[9px] font-bold text-slate-500 p-2 text-center break-all uppercase">{f.name}</div>}
+                      <button onClick={() => setAttachments(attachments.filter((_, idx) => idx !== i))} className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow-md">×</button>
+                    </div>
+                  ))}
+                  <div 
+                    className="border-2 border-dashed border-slate-300 dark:border-slate-500 rounded aspect-square flex flex-col items-center justify-center bg-white dark:bg-slate-800/50 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 transition"
+                    onClick={() => fileInputRef.current.click()}
+                  >
+                    <span className="text-xl">+</span>
+                    <span className="text-[8px] font-bold text-slate-400 uppercase">Add File</span>
+                    <input type="file" ref={fileInputRef} className="hidden" multiple onChange={handleFileChange} />
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="border-4 border-blue-100 rounded-3xl p-1">
+            <div className="bg-white dark:bg-slate-800 p-6 rounded shadow-inner min-h-[400px]">
                <SocialPost announcement={{ title, body, priority, attachments, createdAt: new Date() }} isDetailView={true} />
             </div>
           )}
         </div>
 
-        <div className="p-5 border-t flex gap-3 bg-white rounded-b-2xl">
+        {/* Footer Actions */}
+        <div className="p-5 border-t border-slate-200 dark:border-slate-600 flex gap-4 bg-white dark:bg-slate-800">
           {step === 1 ? (
-            <button disabled={!title || !body} onClick={() => setStep(2)} className="w-full bg-slate-900 text-white font-black py-4 rounded-xl disabled:opacity-30">
-              Continue to Preview →
+            <button 
+              disabled={!title || !body} 
+              onClick={() => setStep(2)} 
+              className="ml-auto bg-[#052f4a] text-white font-bold px-8 py-3 rounded uppercase text-xs tracking-widest disabled:opacity-20 hover:bg-slate-800 transition shadow-md active:scale-95"
+            >
+              Continue to Preview
             </button>
           ) : (
             <>
-              <button onClick={() => setStep(1)} className="flex-1 bg-slate-100 font-black py-4 rounded-xl">Back to Edit</button>
-              <button onClick={handlePublish} className="flex-[2] bg-green-600 text-white font-black py-4 rounded-xl shadow-lg">Confirm & Publish</button>
+              <button onClick={() => setStep(1)} className="px-6 py-3 bg-slate-100 dark:bg-slate-600 dark:text-white font-bold rounded uppercase text-xs">Back to Edit</button>
+              <button onClick={handlePublish} className="ml-auto bg-green-700 text-white font-bold px-10 py-3 rounded shadow-lg uppercase text-xs tracking-widest hover:bg-green-800 transition active:scale-95">
+                Confirm & Publish
+              </button>
             </>
           )}
         </div>

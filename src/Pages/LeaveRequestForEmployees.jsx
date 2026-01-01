@@ -6,67 +6,67 @@ import Header from '../Components/Header';
 import { AnnouncementSearch, LeaveRequest } from '../Components/Level2Hearder';
 
 function LeaveRequestForEmployees() {
-  const [formData, setFormData] = useState({
-    general: {
-      firstname: '',
-      lastname: '',
-      gender: '',
-      dateofbirth: '',
-      maritalstatus: '',
-      nationality: '',
-      personaltaxid: '',
-      emailaddress: '',
-      socialinsurance: '',
-      healthinsurance: '',
-      phonenumber: '',
-      primaryaddress: '',
-      country: '',
-      state: '',
-      city: '',
-      postcode: '',
-      emefullname: '',
-      emephonenumber: '',
-      emestate: '',
-      emecity: '',
-      emepostcode: '',
-    },
-    job: {
-      employeeid: '',
-      serviceyear: '',
-      joindate: '',
-      jobtitle: '',
-      positiontype: '',
-      employmenttype: '',
-      linemanager: '',
-      contractnumber: '',
-      contractname: '',
-      contracttype: '',
-      startDate: '',
-      enddate: '',
-    },
-    payroll: {
-      employeestatus: '',
-      employmenttype: '',
-      jobdate: '',
-      lastworkingdate: '',
-      salary: '',
-      offset: '',
-      oneoff: '',
-    },
-    documents: { files: null },
-  });
+  // const [formData, setFormData] = useState({
+  //   general: {
+  //     firstname: '',
+  //     lastname: '',
+  //     gender: '',
+  //     dateofbirth: '',
+  //     maritalstatus: '',
+  //     nationality: '',
+  //     personaltaxid: '',
+  //     emailaddress: '',
+  //     socialinsurance: '',
+  //     healthinsurance: '',
+  //     phonenumber: '',
+  //     primaryaddress: '',
+  //     country: '',
+  //     state: '',
+  //     city: '',
+  //     postcode: '',
+  //     emefullname: '',
+  //     emephonenumber: '',
+  //     emestate: '',
+  //     emecity: '',
+  //     emepostcode: '',
+  //   },
+  //   job: {
+  //     employeeid: '',
+  //     serviceyear: '',
+  //     joindate: '',
+  //     jobtitle: '',
+  //     positiontype: '',
+  //     employmenttype: '',
+  //     linemanager: '',
+  //     contractnumber: '',
+  //     contractname: '',
+  //     contracttype: '',
+  //     startDate: '',
+  //     enddate: '',
+  //   },
+  //   payroll: {
+  //     employeestatus: '',
+  //     employmenttype: '',
+  //     jobdate: '',
+  //     lastworkingdate: '',
+  //     salary: '',
+  //     offset: '',
+  //     oneoff: '',
+  //   },
+  //   documents: { files: null },
+  // });
   const [currentStep, setCurrentStep] = useState(0);
   const [date, setdate] = useState('all');
   const [status, setstatus] = useState('all');
   const [q, setQ] = useState('');
 
-  const steps = ['View Leave Requests', 'Send Leave Request'];
-  const handleDataChange = (section, newData) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]: { ...prev[section], ...newData },
-    }));
-  };
+  const steps = ['View Requests', 'Send Request'];
+  // const handleDataChange = (section, newData) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [section]: { ...prev[section], ...newData },
+  //   }));
+  // };
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) setCurrentStep((prev) => prev + 1);

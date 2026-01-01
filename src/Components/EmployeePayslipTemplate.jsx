@@ -264,23 +264,14 @@ payroll=mockData
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
+    <div className="relative" style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
       
       {/* Download Button */}
-      <div  style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-        <button 
-          onClick={handleDownloadPDF}
-          style={{ 
-            padding: "10px 20px", 
-            backgroundColor: "#052f4a", 
-            color: "white", 
-            border: "none", 
-            borderRadius: "6px", 
-            cursor: "pointer", 
-            fontSize: "0.9rem", 
-            fontWeight: 700,
-          }}
-        >
+      <div  className="sticky top-0" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+       <button 
+  onClick={handleDownloadPDF}
+  className="bg-[#052f4a] dark:bg-slate-300 dark:text-slate-900 text-white px-[20px] py-[10px] rounded-[6px] text-[0.9rem] font-bold cursor-pointer border-none"
+>
           📥 Download Payslip (PDF)
         </button>
       </div>

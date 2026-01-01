@@ -48,6 +48,7 @@ export const AnnouncementProvider = ({ children }) => {
   }, [socketObj]);
 
   const publishAnnouncement = async (formData) => {
+    console.log("Publishing Announcement--reached here hehehehehe:", formData);
     return await axiosPrivate.post('/announcements', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
