@@ -86,6 +86,7 @@ import TaxCode from './Pages/HR_Manager/TaxCode/TaxCode';
 import EmployeeAttendance from './Pages/Department_manager/EmployeeAttendance';
 import EmployeeEfficiency from './Pages/Department_manager/EmployeeEfficiency';
 import EfficiencyFillForm from './Pages/Department_manager/EfficiencyFillForm';
+import OvertimeInitiationPage from './Pages/Department_manager/OverTimeInitiationPage';
 
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
@@ -321,6 +322,7 @@ function App() {
             <Route path="Approve_Reject" element={<LeaveApprovalPage />} />
             <Route path="Efficiency_Report" element={<EmployeeEfficiency />} />
             <Route path="Request" element={<LeaveRequestForEmployees />} />
+            <Route path="OverTimeInitiation" element={<OvertimeInitiationPage />} />
             <Route path="efficiency_fill_form/:id" element={<EfficiencyFillForm />} />
             <Route
               path="Employee_Attendance"

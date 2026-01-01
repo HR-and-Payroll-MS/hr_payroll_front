@@ -97,7 +97,7 @@ export default function AttendanceCorrectionPage({ Data }) {
   const handleSave =  
   async () => {
     try {
-      // console.log("Updated Data to Save:", updatedData);
+      console.log("Updated Data to Save:", updatedData);
       const payload = {};
       Object.entries(updatedData.attendance || {}).forEach(([k, v]) => {
         if (ATTENDANCE_FIELD_MAP[k]) payload[ATTENDANCE_FIELD_MAP[k]] = v;

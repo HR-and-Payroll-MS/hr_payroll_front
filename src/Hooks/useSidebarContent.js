@@ -281,6 +281,13 @@ export const sidebarList = {
     Visible: false,
     sub: null,
   },
+  {
+    Icons: 'Bell',
+    path: "OverTimeInitiation",
+    label: 'Initiate OverTime',
+    Visible: false,
+    sub: null,
+  },
 
 ],
 

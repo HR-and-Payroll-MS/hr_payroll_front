@@ -17,25 +17,12 @@ export const initialPolicies = {
       penaltyRule: "3 late arrivals per month = 1 warning",
     },
     lateEarlyRules: {
-      halfDayLateAfterMinutes: 120,
-      halfDayEarlyLeaveMinutes: 120,
+     earlyleaveminutes: 20,
       acceptableLateMinutes: 10,
     },
     absentRules: {
       absentAfterMinutes: 240,
       noClockInAbsent: true,
-    },
-    overtimeRules: {
-      overtimeAllowed: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
-      overtimeApprovalRequired: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
-      minMinutes: 60,
-      maxDailyHours: 4,
-      maxWeeklyHours: 20,
-    },
-    breakRules: {
-      lunchBreakAutoDeduct: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
-      lunchBreakMinutes: 60,
-      breakType: { __type: "dropdown", options: ["fixed", "flexible"], value: "fixed" },
     },
     attendanceCorrection: {
       documentationRequired: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
@@ -61,11 +48,6 @@ export const initialPolicies = {
       sickLeaveCertificateAfterDays: 2,
       bereavementRequired: true,
       studyLeaveDocs: "Enrollment letter",
-    },
-    approvalWorkflow: {
-      annualLeave: ["manager", "hr"],
-      sickLeave: ["hr"],
-      maternityLeave: ["hr"],
     },
   },
 
@@ -132,20 +114,6 @@ export const initialPolicies = {
       gradeA: 25000,
       gradeB: 20000,
       gradeC: 15000,
-    },
-   allowances: [
-  { name: "Transport", value: 1000 },
-  { name: "Housing", value: 2000 },
-]
-
-,
-    deductions: {
-      pensionPercent: 7,
-      taxBracket: [
-        { min: 0, max: 10000, rate: 5 ,appliedfor:"Department" },
-        { min: 10001, max: 20000, rate: 15 ,appliedfor:"All"},
-        { min: 20001, max: 40000, rate: 25 ,appliedfor:"All"},
-      ],
     },
   },
 };
