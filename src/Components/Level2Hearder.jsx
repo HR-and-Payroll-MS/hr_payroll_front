@@ -558,7 +558,7 @@ export function AttendanceStatus({ onFiltersChange }) {
       </div>
 
       <div className="flex dark:text-slate-300 dark:border-slate-700 text-gray-700 items-center justify-between rounded-md">
-        <SearchDate/>
+        <SearchDate isSingle={true} style=''/>
       </div>
     </div>
   );

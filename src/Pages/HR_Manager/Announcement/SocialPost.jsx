@@ -17,7 +17,7 @@ export default function SocialPost({ announcement, isDetailView = false }) {
   useEffect(() => { setActiveMedia(media[0]); }, [announcement]);
 
   return (
-    <div className={`bg-white dark:bg-slate-900 overflow-hidden ${isDetailView ? '' : 'rounded-3xl shadow-sm border border-slate-100 mb-8'}`}>
+    <div className={`bg-white dark:bg-slate-900 overflow-hidden ${isDetailView ? '' : 'rounded shadow border border-slate-100 mb-3'}`}>
       <div className="p-5 flex gap-4 items-center">
         <div className="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-black text-xs">HR</div>
         <div className="flex-1">

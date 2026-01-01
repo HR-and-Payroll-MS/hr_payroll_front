@@ -23,21 +23,31 @@ export default function DropDownContent({ children , svgs }) {
     setOpen((v) => !v);
   }
 
-//   function handleItemClick(n) {
-//     store.markRead(n.id);
-//     if (onOpenCenter) onOpenCenter();
-//   }
-
   return (
-    <div className="relative" ref={ref}>
-      <button onClick={handleOpen} className="relative p-2 rounded-md hover:bg-slate-100">
+  <div className="relative" ref={ref}>
+    {/* TRIGGER BUTTON */}
+    <button 
+      onClick={handleOpen} 
+      className="relative p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+    >
+      <div className="opacity-70 group-hover:opacity-100 transition-opacity dark:invert">
         {svgs}
-      </button>
-      {open && (
-        <div onClick={() => setOpen(false)} className="absolute -right-0 mt-2 w-36   bg-white rounded-lg shadow-xl z-50">
-            {children}
+      </div>
+    </button>
+
+    {open && (
+      <div 
+        onClick={() => setOpen(false)} 
+        className="absolute right-0 mt-2 w-44 bg-white dark:bg-slate-800 rounded shadow-2xl z-50 dark:shadow-2xl dark:inset-shadow-2xs dark:inset-shadow-slate-700 inset-shadow-2xs inset-shadow-white flex flex-col animate-scaleIn overflow-hidden border border-slate-100 dark:border-transparent"
+      >
+        <div className="flex flex-col py-1">
+          {/* Note: For the best look, ensure the 'children' (buttons/links) 
+            inside use: text-[10px] uppercase font-bold tracking-wider 
+          */}
+          {children}
         </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+  </div>
+);
 }

@@ -117,7 +117,7 @@ export default function FileUploader({
       )}
 
       {selectedFile && (
-        <div className="w-full flex items-center justify-between mt-2 bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+        <div className="w-full flex items-center justify-between mt-2 dark:bg-slate-700 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
           <div
             onClick={() => setIsModalOpen(true)}
             className="flex group items-center space-x-2"
@@ -126,7 +126,7 @@ export default function FileUploader({
               name={IconName}
               className="text-red-600 group-hover:text-green-700 h-5 w-5 flex-shrink-0"
             />
-            <div className="flex hover:cursor-pointer group flex-col">
+            <div className="flext hover:cursor-pointer group flex-col">
               <p className="text-sm group-hover:text-green-700 font-medium text-gray-800">
                 {selectedFile.name}
               </p>

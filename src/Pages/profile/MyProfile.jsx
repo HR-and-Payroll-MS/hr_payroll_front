@@ -126,7 +126,7 @@ function MyProfile({ currStep = 0 }) {
   }
 
   return (
-  <div className="h-full w-full flex flex-col gap-4 scrollbar-hidden overflow-y-auto bg-transparent">
+  <div className="h-full bg-slate-50 dark:bg-slate-900 w-full flex flex-col gap-4 scrollbar-hidden overflow-y-auto ">
     <div className="bg-gray-50 dark:bg-slate-700  rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-colors">
       <ProfileHeader 
         employeeData={employeeData} 

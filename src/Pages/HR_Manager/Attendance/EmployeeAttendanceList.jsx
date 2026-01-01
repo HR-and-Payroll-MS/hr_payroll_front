@@ -135,11 +135,11 @@ const onRowClick = async (rowIndex,index,data) => {
         <div className="flex gap-4 items-center mb-2">
           <button
             onClick={handleBack}
-            className="px-4 py-2 bg-slate-800 text-white rounded"
+            className="px-4 py-2 bg-slate-200 dark:bg-slate-700 cursor-pointer hover:underline dark:text-white rounded"
           >
             ← Back
           </button>
-          <p className="font-semibold text-lg">{dep} Department</p>
+          <p className="font-semibold dark:text-slate-200 text-slate-800 text-lg">{dep} Department</p>
         </div>
       )}
 

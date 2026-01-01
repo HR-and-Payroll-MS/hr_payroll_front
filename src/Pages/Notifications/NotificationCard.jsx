@@ -5,18 +5,18 @@ export default function NotificationCard({ n, onView, onDelete, onMarkRead }) {
   return (
     <div
       onClick={onView}
-      className="group relative p-4 bg-white dark:bg-slate-700/50 rounded shadow-sm border border-slate-100 dark:border-slate-700 cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all active:scale-[0.99] mb-3"
+      className="group relative p-4 bg-white dark:bg-slate-700/50 rounded shadow-sm border border-slate-100 dark:border-slate-700 cursor-pointer hover:border-green-400/15 dark:hover:border-green-500/15 hover:shadow-md transition-all active:scale-[0.99] mb-3"
     >
       {/* Status Indicator Bar - Matching the Leave Request style */}
       <div 
         className={`absolute left-0 top-0 bottom-0 w-1 rounded-l transition-colors ${
-          n.unread ? "bg-blue-500" : "bg-slate-300 dark:bg-slate-600"
+          n.unread ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600"
         }`} 
       />
 
       <div className="flex gap-4 items-center pl-2">
         {/* Icon Area */}
-        <div className={`p-2 rounded ${n.unread ? 'bg-blue-50 dark:bg-blue-500/10' : 'opacity-60'}`}>
+        <div className={`p-2 rounded ${n.unread ? 'bg-green-50 dark:bg-green-500/10' : 'opacity-60'}`}>
           {notificationIcon(n.category)}
         </div>
         
@@ -25,7 +25,7 @@ export default function NotificationCard({ n, onView, onDelete, onMarkRead }) {
             <h4 className={`text-[11px] uppercase tracking-wider font-bold ${n.unread ? "text-slate-800 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}>
               {n.title}
               {n.unread && (
-                <span className="ml-2 text-[9px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 rounded">
+                <span className="ml-2 text-[9px] px-1.5 py-0.5 bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-300 rounded">
                   NEW
                 </span>
               )}
@@ -36,7 +36,11 @@ export default function NotificationCard({ n, onView, onDelete, onMarkRead }) {
           </div>
           
           <p className={`text-sm mt-1 line-clamp-1 ${n.unread ? "text-slate-600 dark:text-slate-300 font-medium" : "text-slate-400 dark:text-slate-500 italic"}`}>
-            "{n.message}"
+            {/* "{n.message}" */}
+            <div 
+                      className="text-xs line-clamp-2 text-slate-500"
+                      dangerouslySetInnerHTML={{ __html: n.message }} 
+                    />
           </p>
         </div>
 
@@ -48,7 +52,7 @@ export default function NotificationCard({ n, onView, onDelete, onMarkRead }) {
                 e.stopPropagation();
                 onMarkRead();
               }}
-              className="p-1.5 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded transition-colors"
+              className="p-1.5 text-green-500 hover:bg-green-50 dark:hover:bg-green-500/10 rounded transition-colors"
               title="Mark as Read"
             >
               <Icon name="Check" className="w-4 h-4" />

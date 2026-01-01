@@ -84,9 +84,9 @@ export default function Header(){
               </div>)}
                 </div>}>
                         <ul className="flex flex-col py-2">
-                            <li onClick={()=>navigate("profile")} className="px-4 py-1 flex items-center gap-1.5 hover:bg-slate-50 cursor-pointer"><Icon name="CircleUser" className="h-4 w-4"/>view profile</li>
+                            <li onClick={()=>navigate("profile")} className="px-4 py-1 flex items-center gap-1.5 dark:hover:bg-slate-700 hover:bg-slate-50 cursor-pointer"><Icon name="CircleUser" className="h-4 w-4"/>view profile</li>
                             {/* <li className="px-4 py-1 flex items-center gap-1.5 hover:bg-slate-50 cursor-pointer"><Icon name="CircleUser" className="h-4 w-4"/><NavLink to="profile">view profile</NavLink></li> */}
-                            <li onClick={()=>navigate("/logout")} className="px-4 py-1 flex items-center gap-1.5 hover:bg-slate-50 cursor-pointer"><Icon name="LogOut" className="h-4 w-4"/>Logout</li>
+                            <li onClick={()=>navigate("/logout")} className="px-4 py-1 flex items-center gap-1.5 dark:hover:bg-slate-700 hover:bg-slate-50 cursor-pointer"><Icon name="LogOut" className="h-4 w-4"/>Logout</li>
                         </ul>
                 </DropDownContent>
                 

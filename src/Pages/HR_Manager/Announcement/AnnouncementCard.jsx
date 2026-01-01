@@ -12,7 +12,7 @@ function priorityColor(p) {
 export default function AnnouncementCard({ announcement, onOpen }) {
   const { title, body, priority, audience, createdAt, reads, totalRecipients } = announcement;
   return (
-    <div className="p-4 bg-white dark:bg-slate-900 shadow rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer border border-transparent hover:border-blue-200 transition" onClick={onOpen}>
+    <div className="p-4 bg-white dark:bg-slate-800 dark:shadow-slate-900 dark:shadow dark:inset-shadow-xs dark:inset-shadow-slate-600 shadow rounded hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer border border-transparent  transition" onClick={onOpen}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">

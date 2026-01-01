@@ -94,7 +94,7 @@ export const UserContext = createContext();
 function App() {
   // useEffect(()=>{
   // setLocalData("role","Manager")
-  // // // localStorage.clear();
+  // // localStorage.clear();
   // },[])
 
   const sharedSettingsRoutes = (

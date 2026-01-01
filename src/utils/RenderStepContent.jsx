@@ -2,7 +2,9 @@ import { useState } from "react";
 import DocumentList from "../Components/DocumentList";
 import Icon from "../Components/Icon";
 import UploadDrawer from "../Example/UploadDrawer";
-import { RenderFields } from "./renderFields";
+import AddEmployee from "../Pages/HR_Manager/Employee Management/AddEmployee";
+import { RenderFields } from "./RenderFields";
+import useAuth from "../Context/AuthContext";
 
 export const RenderStepContent = ({
   style = "", // Removed default border to let the design system handle it
@@ -17,6 +19,85 @@ export const RenderStepContent = ({
   handleDocumentUpdate,
   editable = { general: true, job: true, payroll: true, documents: true }
 }) => {
+
+
+  const [uploading, setUploading] = useState(false);
+  const { axiosPrivate } = useAuth()
+const handleUpload = async ({ files, type, notes, onProgress }) => {
+  if (!employeeData?.id) {
+    console.error("No employee selected");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+
+    // Backend fields (adjust names if backend differs)
+    formData.append("type", type || "");
+    formData.append("notes", notes || "");
+
+    // Normalize files
+    const docs =
+      files instanceof File
+        ? [files]
+        : files?.files
+        ? Array.from(files.files)
+        : Array.isArray(files)
+        ? files
+        : [];
+
+    if (!docs.length) {
+      console.error("No files to upload");
+      return;
+    }
+
+    docs.forEach((file) => {
+      formData.append("documents", file); // backend expects "documents"
+    });
+
+    // Debug (FormData can't be console.logged directly)
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    const response = await axiosPrivate.post(
+      `/employees/${employeeData.id}/upload-document/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (event) => {
+          if (onProgress && event.total) {
+            const percent = Math.round((event.loaded * 100) / event.total);
+            onProgress(percent);
+          }
+        },
+      }
+    );
+
+    console.log("Upload successful:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error uploading documents:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+  
   const isEditable = (section) => editable[section];
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -138,7 +219,7 @@ export const RenderStepContent = ({
             />
           </div>
 
-          <UploadDrawer open={drawerOpen} onClose={setDrawerOpen} />
+          <UploadDrawer onUpload={async (payload) => { await handleUpload(payload); setDrawerOpen(false);}} uploading={uploading} employee={employeeData} open={drawerOpen} onClose={setDrawerOpen} />
         </div>
       );
 

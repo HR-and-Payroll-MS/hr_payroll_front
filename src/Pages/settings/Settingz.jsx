@@ -32,7 +32,7 @@ export default function Setting() {
           className={({ isActive }) => `
             flex items-center gap-3 px-3 py-2.5 rounded transition-all group
             ${isActive 
-              ? "bg-slate-100 dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm" 
+              ? "bg-slate-100 dark:bg-slate-700 text-green-600 dark:text-green-400 shadow-sm" 
               : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50"
             }
           `}
@@ -73,7 +73,7 @@ export default function Setting() {
 
         {/* RIGHT CONTENT (Scrollable Child) */}
         <div className="flex-1 h-full bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 flex flex-col overflow-hidden transition-colors"> 
-          <div className="flex-1 overflow-y-auto p-6 scrollbar-hidden">
+          <div className="flex-1 overflow-y-auto px-6 scrollbar-hidden">
             <Outlet />
           </div>
         </div>

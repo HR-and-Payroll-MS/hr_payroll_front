@@ -67,7 +67,7 @@ export default function NotificationCenterPage({ role = "EMPLOYEE" }) {
         </div>
         <div className="flex items-center gap-2">
            <InputField
-            maxWidth="w-48"
+            maxWidth="min-w-128"
             searchMode="input"
             placeholder="Search..."
             onChangeValue={setQ}

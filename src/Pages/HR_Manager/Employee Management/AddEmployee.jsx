@@ -161,7 +161,7 @@ const AddEmployee = () => {
     {currentStep < steps.length - 1 ? (
       <button
         onClick={nextStep}
-        className="px-8 py-2 bg-blue-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95"
+        className="px-8 py-2 bg-green-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all active:scale-95"
       >
         Next
       </button>

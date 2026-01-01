@@ -101,7 +101,7 @@ export default function Sidebar() {
             >
               <Icon
                 name={lists.Icons || 'User'}
-                className={`w-5 h-5 ${
+                className={`w-4 h-4 ${
                   location.pathname === lists.path
                     ? 'text-green-700'
                     : 'text-slate-400'
@@ -263,8 +263,8 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`bg-white dark:bg-slate-800 dark:text-white flex h-full dark:shadow-slate-600  ${
-        collapsed ? 'w-16' : 'w-64'
+      className={`bg-white  dark:bg-slate-800 dark:text-white flex h-full dark:shadow-slate-600  ${
+        collapsed ? 'w-16' : 'w-64 min-w-64'
       } transition-all duration-300 flex-col items-center shadow px-2.5 py-0.5`}
     >
       {top1}

@@ -94,13 +94,17 @@ export default function AttendanceCorrectionPage({ Data }) {
     setUpdatedData(prev => ({ ...prev, [sectionKey]: processValue(field, value, prev[sectionKey] || {}) }));
   };
 
-  const handleSave = async () => {
+  const handleSave =  
+  async () => {
     try {
+      // console.log("Updated Data to Save:", updatedData);
       const payload = {};
       Object.entries(updatedData.attendance || {}).forEach(([k, v]) => {
         if (ATTENDANCE_FIELD_MAP[k]) payload[ATTENDANCE_FIELD_MAP[k]] = v;
       });
+      
       if (Object.keys(payload).length > 0) {
+        console.log("PATCH payload (backend format):", payload);  
         await axiosPrivate.patch(`/attendances/${userData.attendance.attendance_id}/`, payload);
         setOriginalData(userData);
       }

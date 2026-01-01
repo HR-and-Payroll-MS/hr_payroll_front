@@ -83,7 +83,7 @@ const DocumentList = ({ files = [], isEditing = false, onChange , justOpen=false
       {files.map((file, index) => (
         <div
           key={file?.id ?? index}
-          className="flex justify-between items-center p-2 bg-slate-100 shadow rounded mb-2"
+          className="flex dark:text-slate-300 justify-between items-center p-2 bg-slate-100 dark:bg-slate-700 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 shadow rounded mb-2"
         >
           <span
             onClick={() => openViewer(file)}

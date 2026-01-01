@@ -50,7 +50,7 @@ export default function CreateAnnouncement() {
   };
 
   if (!open) return (
-    <button onClick={() => setOpen(true)} className="bg-blue-600 text-white px-5 py-2 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition">
+    <button onClick={() => setOpen(true)} className="dark:bg-slate-600 bg-slate-900 text-white px-5 py-2 rounded dark:shadow-slate-900 dark:shadow dark:inset-shadow-xs dark:inset-shadow-slate-600 font-bold shadow-lg hover:bg-slate-700 transition">
       + New Post
     </button>
   );

@@ -28,9 +28,9 @@ export function NetworkProvider({ children }) {
         console.log("NetworkProvider: Checking status for user", id);
         
         const res = await axiosPrivate.get(`/employees/${id}/attendances/network-status/`);
-        
+        console.log("Network status response:", res);
         if (!active) return;
-        setIsLocal(res.data.is_office_network);
+        setIsLocal(res.data.allowed);
         setError(null);
       } catch (err) {
         if (!active) return;

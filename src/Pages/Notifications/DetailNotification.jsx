@@ -6,7 +6,7 @@ function DetailNotification({ n, setSelected, store }) {
     <div className="h-full flex flex-col bg-white dark:bg-slate-800 transition-colors">
       
       {/* 1. HEADER AREA - Matching Drawer Header style */}
-      <div className="p-4 border-b dark:border-slate-700 flex items-center justify-between bg-white dark:bg-slate-800 sticky top-0 z-10">
+      <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-white dark:bg-slate-800 sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSelected(null)}
@@ -40,7 +40,11 @@ function DetailNotification({ n, setSelected, store }) {
         {/* Message Bubble - Similar to the "Reason" or "Notes" styling */}
         <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-700 rounded-xl p-5 mb-6">
           <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed whitespace-pre-wrap italic">
-            "{n.message}"
+            {/* "{n.message}" */}
+            <div 
+                      className="text-xs text-slate-500"
+                      dangerouslySetInnerHTML={{ __html: n.message }} 
+                    />
           </p>
         </div>
 
@@ -58,7 +62,7 @@ function DetailNotification({ n, setSelected, store }) {
       </div>
 
       {/* 3. FIXED ACTION PANEL - Bottom Docked matching Leave Request style */}
-      <div className="shrink-0 p-4 border-t dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50 flex gap-3">
+      <div className="shrink-0 p-4 border-t border-slate-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50 flex gap-3">
         {n.unread && (
           <button
             onClick={() => {

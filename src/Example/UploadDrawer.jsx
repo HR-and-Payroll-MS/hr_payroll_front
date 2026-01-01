@@ -5,6 +5,8 @@ import FileUploader from '../Components/FileUploader';
 import Icon from '../Components/Icon';
 const DOC_TYPES = [{svg:null,content:'ID Card'}, {svg:null,content:'Contract'}, {svg:null,content:'Tax Form'}, {svg:null,content:'Certificate'}, {svg:null,content:'Other'}];
 export default function UploadDrawer({open,onClose,employee,onUpload,uploading,}) {
+
+  console.log(employee)
   const [type, setType] = useState(DOC_TYPES[0].content);
   const [notes, setNotes] = useState('');
   const [files, setFiles] = useState([]);
