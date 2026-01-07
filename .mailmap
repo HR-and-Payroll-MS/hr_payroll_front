@@ -1,0 +1,16 @@
+# Git mailmap file
+# This file helps map commit author emails to canonical identities
+# Format: Proper Name <proper@email.com> <commit@email.com>
+#
+# To add your mapping:
+# 1. Find your GitHub username
+# 2. Get your verified GitHub email from https://github.com/settings/emails
+# 3. Add a line below mapping your commit email to your verified email
+#
+# Example:
+# John Doe <john@users.noreply.github.com> <john.doe@gmail.com>
+#
+# Team members: Please add your mappings below to ensure proper contribution attribution
+# ======================================================================================
+
+# Add your email mappings here
