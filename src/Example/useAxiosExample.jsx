@@ -1,18 +1,18 @@
+import useAuth from '../Context/AuthContext'
 import React, { useEffect } from 'react'
-import useAxiosPrivate from "../Hooks/useAxiosPrivate"
-function useAxiosExample() 
-{
-    const axiosPrivate = useAxiosPrivate()
+import { useState } from 'react'
+function UseAxiosExample() {
+    const { axiosPrivate } = useAuth();
     const [data, setData] = useState("");
 
-    useEffect(()=>{
+    useEffect(() => {
         let mounted = true;
         axiosPrivate
             .get("/protected")
             .then((res) => mounted && setData(res.data.data))
-            .catch((err)=>console.error(err))
-            return ()=>(mounted = false);
-    },[axiosPrivate]);
+            .catch((err) => console.error(err))
+        return () => (mounted = false);
+    }, [axiosPrivate]);
 
     return <div >Protected Content: {data}</div>
 }

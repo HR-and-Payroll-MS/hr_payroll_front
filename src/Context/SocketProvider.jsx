@@ -1,23 +1,33 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { connectSocket, disconnectSocket } from "../api/socket";
+import useAuth from "./AuthContext";
 
 const SocketContext = createContext(null);
 
 export function SocketProvider({ children }) {
+  const { auth, refreshAccessToken } = useAuth();
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    disconnectSocket();
     const s = connectSocket();
 
     if (s) {
       setSocket(s);
+
+      s.on("connect_error", async (err) => {
+        if (err.message === "jwt_expired" || err.message === "unauthorized") {
+          console.log("Socket auth error, refreshing token...");
+          await refreshAccessToken(); // Trigger context refresh
+        }
+      });
     }
 
     return () => {
       disconnectSocket();
       setSocket(null);
     };
-  }, []);
+  }, [auth.accessToken, refreshAccessToken]);
 
   if (!socket) {
     return (

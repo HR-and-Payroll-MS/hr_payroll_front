@@ -12,10 +12,21 @@ export function getRefreshToken() {
 export async function refreshToken() {
   try {
     const refresh = getRefreshToken();
+    if (!refresh) return null;
+
     const res = await axiosPublic.post("/auth/djoser/jwt/refresh/", { refresh });
 
-    localStorage.setItem("access", res.data.access);
-    return res.data.access;
+    const newAccess = res.data.access;
+    const newRefresh = res.data.refresh;
+
+    if (newAccess) {
+      localStorage.setItem("access", newAccess);
+    }
+    if (newRefresh) {
+      localStorage.setItem("refresh", newRefresh);
+    }
+
+    return newAccess;
   } catch (err) {
     console.log("Failed to refresh token:", err);
     return null;

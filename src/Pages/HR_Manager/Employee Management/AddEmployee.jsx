@@ -13,7 +13,7 @@ import { useTableContext } from "../../../Context/TableContext";
 
 const AddEmployee = () => {
   const { refreshTableSilently } = useTableContext();
-  
+
   const [loading, setLoading] = useState(false);
   const { axiosPrivate } = useAuth();
   const [formData, setFormData] = useState({
@@ -22,11 +22,24 @@ const AddEmployee = () => {
       primaryaddress: "", country: "", state: "", city: "", postcode: "",
       emefullname: "", emephonenumber: "", emestate: "", emecity: "", emepostcode: ""
     },
-    job: { employeeid: "", serviceyear: "", joindate: "", jobtitle: "", positiontype: "", employmenttype: "", linemanager: "", contractnumber: "", contractname: "", contracttype: "", startDate: "", enddate: "" },
-    payroll: { employeestatus: "", employmenttype: "", jobdate: "", lastworkingdate: "", salary: "", offset: "", oneoff: "" },
+    job: { employeeid: "", serviceyear: "", joindate: "", jobtitle: "", positiontype: "", employmenttype: "", department_id: "", contractnumber: "", contractname: "", contracttype: "", startDate: "", enddate: "", current_shift: "" },
+    payroll: { employeestatus: "", employmenttype: "", jobdate: "", lastworkingdate: "", salary: "", offset: "", oneoff: "", bank_id: null, bank_name: null, account_number: "" },
     documents: { files: null },
   });
   const [currentStep, setCurrentStep] = useState(0);
+  const [departments, setDepartments] = useState([]);
+
+  React.useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await axiosPrivate.get("/departments/");
+        setDepartments(response.data.results || response.data);
+      } catch (error) {
+        console.error("Failed to fetch departments", error);
+      }
+    };
+    fetchDepartments();
+  }, [axiosPrivate]);
 
   const steps = ["General", "Job", "Payroll", "Documents", "Review"];
   const handleDataChange = (section, newData) => {
@@ -61,20 +74,42 @@ const AddEmployee = () => {
     uploadData.append("social_insurance", formData.general.socialinsurance);
     uploadData.append("health_care", formData.general.healthinsurance);
     uploadData.append("phone", formData.general.phonenumber);
+    // Address
+    uploadData.append("primary_address", formData.general.primaryaddress);
+    uploadData.append("country", formData.general.country);
+    uploadData.append("state", formData.general.state);
+    uploadData.append("city", formData.general.city);
+    uploadData.append("postcode", formData.general.postcode);
+    // Emergency Contact
+    uploadData.append("emefullname", formData.general.emefullname);
+    uploadData.append("emephonenumber", formData.general.emephonenumber);
+    uploadData.append("emestate", formData.general.emestate);
+    uploadData.append("emecity", formData.general.emecity);
+    uploadData.append("emepostcode", formData.general.emepostcode);
 
     // Job
-    uploadData.append("line_manager", formData.job.linemanager);
+    if (formData.job.department_id) {
+      uploadData.append("department_id", formData.job.department_id);
+    }
     uploadData.append("position", formData.job.positiontype);
     uploadData.append("employment_type", formData.job.employmenttype);
     uploadData.append("job_title", formData.job.jobtitle);
     uploadData.append("join_date", formData.job.joindate);
+    uploadData.append("join_date", formData.job.joindate);
     uploadData.append("service_years", formData.job.serviceyear);
+    uploadData.append("current_shift", formData.job.current_shift);
     // Payroll
     uploadData.append("status", formData.payroll.employeestatus);
     uploadData.append("last_working_date", formData.payroll.lastworkingdate);
     uploadData.append("offset", formData.payroll.offset);
     uploadData.append("one_off", formData.payroll.oneoff);
+    uploadData.append("one_off", formData.payroll.oneoff);
     uploadData.append("salary", formData.payroll.salary);
+    // Bank Details
+    if (formData.payroll.bank_id) {
+      uploadData.append("bank_id", formData.payroll.bank_id);
+    }
+    uploadData.append("account_number", formData.payroll.account_number);
 
     const docs = formData.documents?.files;
 
@@ -117,6 +152,7 @@ const AddEmployee = () => {
           <StepJob
             data={formData.job}
             onChange={(newData) => handleDataChange("job", newData)}
+            departments={departments}
           />
         );
       case 2:
@@ -134,48 +170,48 @@ const AddEmployee = () => {
 
   return (
     <div className="w-full h-full flex flex-col mx-auto p-4 md:p-6 bg-white dark:bg-slate-800 rounded shadow dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 transition-all overflow-hidden">
-  
-  {/* Step Header remains at the top */}
-  <div className="shrink-0 border-b border-slate-400 dark:border-slate-700 pb-4">
-    <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
-  </div>
 
-  {/* Render Step - Now scrollable with your custom scrollbar style */}
-  <div className="mt-6 overflow-y-auto flex-1 scrollbar-hidden pr-2">
-    {renderStep()}
-  </div>
+      {/* Step Header remains at the top */}
+      <div className="shrink-0 border-b border-slate-400 dark:border-slate-700 pb-4">
+        <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
+      </div>
 
-  {/* Footer Navigation - Fixed at bottom */}
-  <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-400 dark:border-slate-700 shrink-0">
-    {currentStep > 0 ? (
-      <button
-        onClick={prevStep}
-        className="px-6 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-200 rounded font-bold text-xs uppercase tracking-wider hover:bg-slate-200 dark:hover:bg-slate-600 transition-all active:scale-95"
-      >
-        Previous
-      </button>
-    ) : (
-      <div /> // Spacer to keep Next button on the right
-    )}
+      {/* Render Step - Now scrollable with your custom scrollbar style */}
+      <div className="mt-6 overflow-y-auto flex-1 scrollbar-hidden pr-2">
+        {renderStep()}
+      </div>
 
-    {currentStep < steps.length - 1 ? (
-      <button
-        onClick={nextStep}
-        className="px-8 py-2 bg-green-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all active:scale-95"
-      >
-        Next
-      </button>
-    ) : (
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="px-8 py-2 bg-emerald-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 shadow-lg shadow-emerald-200 dark:shadow-none transition-all active:scale-95 disabled:opacity-50"
-      >
-        {loading ? <ThreeDots /> : "Submit Record"}
-      </button>
-    )}
-  </div>
-</div>
+      {/* Footer Navigation - Fixed at bottom */}
+      <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-400 dark:border-slate-700 shrink-0">
+        {currentStep > 0 ? (
+          <button
+            onClick={prevStep}
+            className="px-6 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-200 rounded font-bold text-xs uppercase tracking-wider hover:bg-slate-200 dark:hover:bg-slate-600 transition-all active:scale-95"
+          >
+            Previous
+          </button>
+        ) : (
+          <div /> // Spacer to keep Next button on the right
+        )}
+
+        {currentStep < steps.length - 1 ? (
+          <button
+            onClick={nextStep}
+            className="px-8 py-2 bg-green-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all active:scale-95"
+          >
+            Next
+          </button>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="px-8 py-2 bg-emerald-600 text-white rounded font-bold text-xs uppercase tracking-wider hover:bg-emerald-700 shadow-lg shadow-emerald-200 dark:shadow-none transition-all active:scale-95 disabled:opacity-50"
+          >
+            {loading ? <ThreeDots /> : "Submit Record"}
+          </button>
+        )}
+      </div>
+    </div>
     // <div className="w-full h-full flex flex-col mx-auto p-6 bg-white rounded-2xl">
     //   <StepHeader steps={steps} currentStep={currentStep} onStepClick={goToStep} />
 

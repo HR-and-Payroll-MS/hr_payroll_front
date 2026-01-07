@@ -3,26 +3,50 @@ export const initialPolicies = {
     companyName: "Example Co",
     effectiveDate: "2025-01-01",
     adminContact: "hr@example.com",
-    policyVersion: "v1.0",
+    policyVersion: "v2.0",
   },
 
   attendancePolicy: {
     shiftTimes: [
-      { name: "Day Shift", start: "09:00", end: "17:00" },
-      { name: "Night Shift", start: "18:00", end: "02:00" },
+      { name: "Day Shift", start: "09:00", "end": "17:00" },
+      { name: "Night Shift", start: "18:00", "end": "02:00" },
     ],
     gracePeriod: {
-      minutesAllowed: 10,
-      lateAfter: 10,
-      penaltyRule: "3 late arrivals per month = 1 warning",
+      minutesAllowed: 15,
+      lateAfter: 15,
+      allowedOccurrencesPerMonth: 3,
+      penaltyRule: "Salary deduction after limit exceeded",
     },
     lateEarlyRules: {
-     earlyleaveminutes: 20,
+      earlyleaveminutes: 20,
       acceptableLateMinutes: 10,
+      halfDayLateAfterMinutes: 120,
+      halfDayEarlyLeaveMinutes: 120,
+      acceptableLateMinutes: 15,
     },
     absentRules: {
       absentAfterMinutes: 240,
       noClockInAbsent: true,
+    },
+    workFromHome: {
+      allowedDaysPerMonth: 4,
+      approvalRequired: {
+        __type: "dropdown",
+        options: ["Yes", "No"],
+        value: "Yes",
+      },
+    },
+    overtimeRules: {
+      overtimeAllowed: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
+      overtimeApprovalRequired: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
+      minMinutes: 60,
+      maxDailyHours: 4,
+      maxWeeklyHours: 20,
+    },
+    breakRules: {
+      lunchBreakAutoDeduct: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
+      lunchBreakMinutes: 60,
+      breakType: { __type: "dropdown", options: ["fixed", "flexible"], value: "fixed" },
     },
     attendanceCorrection: {
       documentationRequired: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
@@ -34,15 +58,22 @@ export const initialPolicies = {
     leaveTypes: [
       { id: "annual", name: "Annual Leave", paid: true, daysPerYear: 21 },
       { id: "sick", name: "Sick Leave", paid: true, daysPerYear: 15 },
+      { id: "casual", name: "Casual Leave", paid: true, daysPerYear: 7 },
     ],
     accrualRules: {
       monthlyAccrualDays: 1.75,
       carryoverLimit: 12,
-      expiryMonths: 12,
+      expiryMonths: 18,
+      proRataJoining: true,
     },
     eligibilityRules: {
       maternityMinServiceMonths: 3,
       sabbaticalMinYears: 5,
+      casualLeaveProbation: false,
+    },
+    encashmentRules: {
+      allowedAtSeparation: true,
+      maxEncashableDays: 30,
     },
     documentationRules: {
       sickLeaveCertificateAfterDays: 2,
@@ -54,13 +85,13 @@ export const initialPolicies = {
   holidayPolicy: {
     fixedHolidays: [
       { date: "2025-01-01", name: "New Year" },
-      { date: "2025-04-20", name: "National Day" },
+      { date: "2025-05-01", name: "Labor Day" },
     ],
-    floatingHolidays: [{ name: "Easter", rule: "auto-calc" }],
-    companyHolidays: [{ date: "2025-12-31", name: "Company Foundation Day" }],
+    floatingHolidays: [{ name: "Religious Holiday", rule: "Employee Choice (1/year)" }],
+    companyHolidays: [{ date: "2025-12-31", name: "Year End Closure" }],
     holidayPayRules: {
       holidayIsPaid: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
-      holidayOvertimeRate: 2,
+      holidayOvertimeRate: 2.0,
     },
   },
 
@@ -69,31 +100,69 @@ export const initialPolicies = {
     weeklyOff: ["Sat", "Sun"],
     shiftPatterns: [
       { id: 1, name: "Fixed Day Shift", type: "fixed" },
-      { id: 2, name: "Night Rotation", type: "rotational" },
+      { id: 2, name: "Night Rotation", "type": "rotational" },
     ],
     rotationRules: {
-      rotationEveryDays: 7,
+      rotationEveryDays: 14,
       nightShiftAllowance: 300,
     },
   },
 
   overtimePolicy: {
-    overtimeRate: 1.5,
-    weekendRate: 2,
-    holidayRate: 2,
+    rates: {
+      standardRate: 1.5,
+      weekendRate: 2.0,
+      holidayRate: 2.0,
+    },
+    compOff: {
+      allowed: true,
+      expireDays: 60,
+    },
     minOvertimeMinutes: 30,
     approvalRequired: { __type: "dropdown", options: ["Yes", "No"], value: "Yes" },
   },
 
+  probationPolicy: {
+    durationMonths: 3,
+    extensionMonths: 3,
+    noticePeriodDuringProbationDays: 15,
+    trainingRequired: true,
+  },
+
+  expensePolicy: {
+    dailyPerDiem: 500,
+    travelLimits: {
+      flightClass: "Economy",
+      hotelPerNight: 2000,
+    },
+    approvalWorkflow: ["manager", "finance"],
+  },
+
+  loanPolicy: {
+    maxAmountMultiplier: 3,
+    maxRepaymentMonths: 12,
+    interestRate: 0,
+    eligibilityMinServiceMonths: 6,
+  },
+
+  terminationPolicy: {
+    noticePeriodDays: {
+      probation: 15,
+      confirmed: 30,
+      senior: 60,
+    },
+    handoverChecklist: ["Laptop", "ID Card", "Keys"],
+  },
+
   disciplinaryPolicy: {
     warningRules: {
-      firstWarning: "3 lateness in a month",
-      secondWarning: "6 lateness in a month",
-      thirdWarning: "Disciplinary meeting",
+      firstWarning: "Verbal Warning",
+      secondWarning: "Written Warning",
+      thirdWarning: "Final Warning / Suspension",
     },
     penalties: {
-      repeatedLatePenalty: "Salary deduction",
-      absencePenalty: "Written warning",
+      repeatedLatePenalty: "Deduction",
+      absencePenalty: "Warning Letter",
     },
     escalation: {
       steps: ["manager", "hr", "director"],
@@ -101,19 +170,61 @@ export const initialPolicies = {
   },
 
   jobStructurePolicy: {
-    jobLevels: ["Junior", "Mid", "Senior", "Lead"],
-    departments: ["HR", "Finance", "Engineering", "Operations"],
+    jobLevels: ["Intern", "Junior", "Mid", "Senior", "Lead", "Manager", "Director"],
+    departments: ["HR", "Finance", "Engineering", "Operations", "Sales", "Marketing"],
     promotionRules: {
       minimumMonthsPerLevel: 12,
-      requiredPerformanceRating: "B or higher",
+      requiredPerformanceRating: "Exceeds Expectations",
     },
   },
 
   salaryStructurePolicy: {
-    baseSalaryTemplate: {
-      gradeA: 25000,
-      gradeB: 20000,
-      gradeC: 15000,
+    allowances: [
+      { name: "Transport", calculationType: "Fixed Amount", value: 1500, isTaxable: true, isRecurring: true },
+      { name: "Housing", calculationType: "Fixed Amount", value: 3000, isTaxable: true, isRecurring: true },
+    ],
+    standardDeductions: [
+      { name: "Social Security", calculationType: "Percentage of Gross", value: 5, isPreTax: true },
+    ],
+    taxRules: [
+      { name: "Bracket 1", minIncome: 0, maxIncome: 10000, rate: 0 },
+      { name: "Bracket 2", minIncome: 10001, maxIncome: 25000, rate: 10 },
+      { name: "Bracket 3", minIncome: 25001, maxIncome: 50000, rate: 20 },
+    ],
+  },
+
+  recruitmentPolicy: {
+    onboarding: {
+      probationMonths: 3,
+      extensionMonths: 3,
+      autoGenerateId: true,
+      idPrefix: "EMP-",
+    },
+    requiredDocuments: [
+      { name: "Passport", isRequired: true, expiryAlertDays: 30 },
+      { name: "Resume", isRequired: true, expiryAlertDays: 0 },
+    ],
+  },
+
+  efficiencyPolicy: {
+    performanceReviews: {
+      frequency: "Bi-Annually",
+      ratingScale: 5,
+      selfAssessmentRequired: true,
+    },
+    kpis: [
+      { name: "Attendance Score", weight: 20 },
+      { name: "Project Completion", weight: 50 },
+    ],
+  },
+
+  announcementPolicy: {
+    categories: [
+      { name: "General", color: "#3B82F6" },
+      { name: "Urgent", color: "#EF4444" },
+    ],
+    retention: {
+      autoArchiveDays: 365,
     },
   },
 };

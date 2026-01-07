@@ -32,18 +32,15 @@ import EmployeeDirectory from './Pages/HR_Manager/Employee Management/EmployeeDi
 import { useTheme } from './Context/ThemeContext';
 import ViewEmployee from './Pages/HR_Manager/Employee Management/ViewEmployee';
 import DocumentsPage from './Pages/HR_Manager/Employee Management/UploadDocuments';
-import EmployeeAttendanceDetail from './Example/AttendanceExample/EmployeeAttendaceDetail';
-// import MyAttendance from './Example/AttendanceExample/MyAttendance';
-import CVReader from './Example/CVReader';
-import { setLocalData } from './Hooks/useLocalStorage';
-import EmployeeAttendanceList from './Pages/HR_Manager/Attendance/EmployeeAttendanceList';
-import { Checkup3 } from './Example/checkup';
 import ViewEmployeeDetail from './Pages/HR_Manager/Employee Management/singleEmployee/ViewEmployeeDetail';
 import ClockIn from './Pages/clockIn_out/ClockIn';
 import UploadDocuments from './Pages/HR_Manager/Employee Management/UploadDocuments';
 import MyAttendance from './Pages/HR_Manager/Attendance/MyAttendance';
 import Policy from './Pages/HR_Manager/Policy/Policy';
 import AttendanceCorrectionPage from './Pages/HR_Manager/Attendance/AttendanceCorrectionPage';
+import EmployeeAttendanceList from './Pages/HR_Manager/Attendance/EmployeeAttendanceList';
+import EmployeeAttendanceDetail from './Example/AttendanceExample/EmployeeAttendaceDetail';
+import CVReader from './Example/CVReader';
 import AccessDenied from './Pages/clockIn_out/AccessDenied';
 import MyProfile from './Pages/profile/MyProfile';
 import LeaveApprovalPage from './Pages/HR_Manager/LeaveApproval/LeaveApprovalPage';
@@ -87,6 +84,8 @@ import EmployeeAttendance from './Pages/Department_manager/EmployeeAttendance';
 import EmployeeEfficiency from './Pages/Department_manager/EmployeeEfficiency';
 import EfficiencyFillForm from './Pages/Department_manager/EfficiencyFillForm';
 import OvertimeInitiationPage from './Pages/Department_manager/OverTimeInitiationPage';
+import LoanList from './Pages/HR_Manager/Loans/LoanList';
+import ExpenseList from './Pages/HR_Manager/Expenses/ExpenseList';
 
 // import { NotificationBell, NotificationCenterPage, SendNotificationPage } from './Pages/HR_Manager/Notifications/MockData';
 
@@ -211,6 +210,8 @@ function App() {
             <Route path="Announcement" element={<AnnouncementsPage />} />
             <Route path="Payroll_report" element={<PayrollReportsPage />} />
             <Route path="MyPayroll" element={<MyPayrollPage />} />
+            <Route path="loans" element={<LoanList />} />
+            <Route path="expenses" element={<ExpenseList />} />
             <Route path="policies" element={<Policy />} />
             {/* <Route path="logout" element={<LogOut />} /> */}
             <Route path="profile" element={<MyProfile />} />

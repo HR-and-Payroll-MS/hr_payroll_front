@@ -18,6 +18,13 @@ function Policy() {
     "Disciplinary Policy",
     "Job Structure Policy",
     "Salary Structure Policy",
+    "Recruitment Policy",
+    "Efficiency Policy",
+    "Announcement Policy",
+    "Probation Policy",
+    "Expense Policy",
+    "Loan Policy",
+    "Termination Policy",
   ];
   const [currentStep, setCurrentStep] = useState(0);
   const [policyData, setPolicyData] = useState(null);
@@ -32,9 +39,11 @@ function Policy() {
     const fetchPolicies = async () => {
       try {
         // co axiosPrivate.get(...) when integrating
-        const res = await axiosPrivate.get(`/orgs/${0}/policies`);
-        setPolicyData(res.data);
-        setOriginalData(res.data);
+        const res = await axiosPrivate.get(`/orgs/${organizationId}/policies`);
+        // Merge with defaults to ensure completely new sections appear
+        const merged = { ...initialPolicies, ...(res.data || {}) };
+        setPolicyData(merged);
+        setOriginalData(merged);
 
 
 
@@ -56,23 +65,23 @@ function Policy() {
   // HANDLE CHANGE (deep)
   const handleInputChange = (section, fieldPath, value) => {
     setPolicyData((prev) => {
-              const next = JSON.parse(JSON.stringify(prev));
-              const setNested = (obj, path, val) => {
-                          const parts = path.replace(/\[(\d+)\]/g, (m, p1) => `.${p1}`).split(".").filter(Boolean);
-                          let cur = obj;
-                          for (let i = 0; i < parts.length - 1; i++) {
-                            if (cur[parts[i]] === undefined) cur[parts[i]] = {};
-                            cur = cur[parts[i]];
-                          }
-                          cur[parts[parts.length - 1]] = val;
-                      };
-//replace(/\[(\d+)\]/g...) → turns [2] into .2
-// split(".") → splits into array pieces
-// filter(Boolean) → removes empty values
+      const next = JSON.parse(JSON.stringify(prev));
+      const setNested = (obj, path, val) => {
+        const parts = path.replace(/\[(\d+)\]/g, (m, p1) => `.${p1}`).split(".").filter(Boolean);
+        let cur = obj;
+        for (let i = 0; i < parts.length - 1; i++) {
+          if (cur[parts[i]] === undefined) cur[parts[i]] = {};
+          cur = cur[parts[i]];
+        }
+        cur[parts[parts.length - 1]] = val;
+      };
+      //replace(/\[(\d+)\]/g...) → turns [2] into .2
+      // split(".") → splits into array pieces
+      // filter(Boolean) → removes empty values
 
-              if (!next[section]) next[section] = {};
-              setNested(next[section], fieldPath, value);
-              return next;
+      if (!next[section]) next[section] = {};
+      setNested(next[section], fieldPath, value);
+      return next;
     });
   };
 
@@ -147,7 +156,7 @@ function Policy() {
       console.log("Saving payload to backend:", payload);
 
       // integrate real save:
-      await axiosPrivate.put(`/orgs/${0}/policies/${section}`, payload);
+      await axiosPrivate.put(`/orgs/${organizationId}/policies/${section}`, payload);
 
       setOriginalData((prev) => {
         const next = JSON.parse(JSON.stringify(prev || policyData));
@@ -172,7 +181,7 @@ function Policy() {
     });
     setEditMode((prev) => ({ ...prev, [section]: false }));
   };
-if (loading)
+  if (loading)
     return (
       <div className="flex justify-center items-center h-64">
         <ThreeDots />
@@ -191,47 +200,47 @@ if (loading)
       <div className="p-4 text-center text-gray-500">No policy data available.</div>
     );
 
- return (
-  <div className="flex flex-col gap-4 w-full p-2 h-full justify-start dark:bg-slate-900 bg-gray-50 overflow-hidden transition-colors">
-    {/* HEADER SECTION */}
-    <div className="flex justify-evenly shrink-0"> 
-      <Header Title={"Policy"} subTitle={"Company Policies"} />
-    </div>
-
-    <div className="flex flex-1 gap-5 rounded-md overflow-hidden">
-      
-      {/* LEFT SIDEBAR - Restored StepHeader with your exact props */}
-      <div className="h-full w-1/5 shadow rounded-md dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 bg-white dark:bg-slate-800 overflow-y-auto scrollbar-hidden transition-all">
-        <StepHeader
-          childclassname="flex dark:text-slate-300 rounded-md text-md w-full p-2 justify-between items-center"
-          classname="flex bg-white dark:bg-slate-800 justify-start items-start text-start w-full flex-col h-full p-2 gap-2 transition-colors"
-          steps={steps}
-          iscurrentstyle="bg-slate-100 dark:bg-slate-700 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 shadow-sm"
-          currentStep={currentStep}
-          onStepClick={setCurrentStep}
-        />
+  return (
+    <div className="flex flex-col gap-4 w-full p-2 h-full justify-start dark:bg-slate-900 bg-gray-50 overflow-hidden transition-colors">
+      {/* HEADER SECTION */}
+      <div className="flex justify-evenly shrink-0">
+        <Header Title={"Policy"} subTitle={"Company Policies"} />
       </div>
 
-      {/* RIGHT CONTENT - Main Content Area */}
-      <div className="flex flex-1 h-full bg-white dark:bg-slate-800 rounded-md shadow dark:shadow-slate-600 dark:inset-shadow-xs dark:inset-shadow-slate-600 overflow-hidden transition-all">
-        <div className="h-full w-full overflow-y-auto scrollbar-hidden">
-          <RenderStepPolicy
+      <div className="flex flex-1 gap-5 rounded-md overflow-hidden">
+
+        {/* LEFT SIDEBAR - Restored StepHeader with your exact props */}
+        <div className="h-full w-1/5 shadow rounded-md dark:shadow-black dark:inset-shadow-xs dark:inset-shadow-slate-600 bg-white dark:bg-slate-800 overflow-y-auto scrollbar-hidden transition-all">
+          <StepHeader
+            childclassname="flex dark:text-slate-300 rounded-md text-md w-full p-2 justify-between items-center"
+            classname="flex bg-white dark:bg-slate-800 justify-start items-start text-start w-full flex-col h-full p-2 gap-2 transition-colors"
+            steps={steps}
+            iscurrentstyle="bg-slate-100 dark:bg-slate-700 dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 shadow-sm"
             currentStep={currentStep}
-            editMode={editMode}
-            policyData={policyData}
-            handleInputChange={handleInputChange}
-            handleSave={handleSave}
-            handleCancel={handleCancel}
-            handleEditToggle={handleEditToggle}
-            handleAddItem={handleAddItem}
-            handleRemoveItem={handleRemoveItem}
+            onStepClick={setCurrentStep}
           />
         </div>
-      </div>
 
+        {/* RIGHT CONTENT - Main Content Area */}
+        <div className="flex flex-1 h-full bg-white dark:bg-slate-800 rounded-md shadow dark:shadow-slate-600 dark:inset-shadow-xs dark:inset-shadow-slate-600 overflow-hidden transition-all">
+          <div className="h-full w-full overflow-y-auto scrollbar-hidden">
+            <RenderStepPolicy
+              currentStep={currentStep}
+              editMode={editMode}
+              policyData={policyData}
+              handleInputChange={handleInputChange}
+              handleSave={handleSave}
+              handleCancel={handleCancel}
+              handleEditToggle={handleEditToggle}
+              handleAddItem={handleAddItem}
+              handleRemoveItem={handleRemoveItem}
+            />
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default Policy;

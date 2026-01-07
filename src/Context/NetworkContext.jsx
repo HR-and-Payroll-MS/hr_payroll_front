@@ -12,9 +12,8 @@ export function NetworkProvider({ children }) {
   const { axiosPrivate, auth } = useAuth();
 
   useEffect(() => {
-    const id = getLocalData("user_id");
-    
     // Safety check: Don't call API if user isn't logged in
+    const id = getLocalData("user_id") || auth?.user?.employeeId;
     if (!id || !auth?.accessToken) {
       setChecking(false);
       return;

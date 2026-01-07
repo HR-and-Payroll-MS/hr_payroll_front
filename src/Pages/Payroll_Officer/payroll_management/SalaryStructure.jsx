@@ -23,13 +23,9 @@ function SalaryStructure() {
   useEffect(() => {
     const fetchPolicies = async () => {
       try {
-        // replace with axiosPrivate.get(...) when integrating
-        // const res = await axiosPrivate.get(`/orgs/${organizationId}/policies`);
-        // setPolicyData(res.data);
-        // setOriginalData(res.data);
-        const res = initialPolicies;
-        setPolicyData(res);
-        setOriginalData(JSON.parse(JSON.stringify(res)));
+        const res = await axiosPrivate.get(`/orgs/${organizationId}/policies`);
+        setPolicyData(res.data);
+        setOriginalData(res.data);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch policy data.");
@@ -44,23 +40,23 @@ function SalaryStructure() {
   // HANDLE CHANGE (deep)
   const handleInputChange = (section, fieldPath, value) => {
     setPolicyData((prev) => {
-              const next = JSON.parse(JSON.stringify(prev));
-              const setNested = (obj, path, val) => {
-                          const parts = path.replace(/\[(\d+)\]/g, (m, p1) => `.${p1}`).split(".").filter(Boolean);
-                          let cur = obj;
-                          for (let i = 0; i < parts.length - 1; i++) {
-                            if (cur[parts[i]] === undefined) cur[parts[i]] = {};
-                            cur = cur[parts[i]];
-                          }
-                          cur[parts[parts.length - 1]] = val;
-                      };
-//replace(/\[(\d+)\]/g...) → turns [2] into .2
-// split(".") → splits into array pieces
-// filter(Boolean) → removes empty values
+      const next = JSON.parse(JSON.stringify(prev));
+      const setNested = (obj, path, val) => {
+        const parts = path.replace(/\[(\d+)\]/g, (m, p1) => `.${p1}`).split(".").filter(Boolean);
+        let cur = obj;
+        for (let i = 0; i < parts.length - 1; i++) {
+          if (cur[parts[i]] === undefined) cur[parts[i]] = {};
+          cur = cur[parts[i]];
+        }
+        cur[parts[parts.length - 1]] = val;
+      };
+      //replace(/\[(\d+)\]/g...) → turns [2] into .2
+      // split(".") → splits into array pieces
+      // filter(Boolean) → removes empty values
 
-              if (!next[section]) next[section] = {};
-              setNested(next[section], fieldPath, value);
-              return next;
+      if (!next[section]) next[section] = {};
+      setNested(next[section], fieldPath, value);
+      return next;
     });
   };
 
@@ -135,7 +131,7 @@ function SalaryStructure() {
       console.log("Saving payload to backend:", payload);
 
       // integrate real save:
-      // await axiosPrivate.put(`/orgs/${organizationId}/policies/${section}`, payload);
+      await axiosPrivate.put(`/orgs/${organizationId}/policies/${section}/`, payload);
 
       setOriginalData((prev) => {
         const next = JSON.parse(JSON.stringify(prev || policyData));
@@ -152,7 +148,7 @@ function SalaryStructure() {
   };
 
   const handleCancel = (section) => {
-    console.log(section,"")
+    console.log(section, "")
     if (!originalData) return;
     console.log("section")
     setPolicyData((prev) => {
@@ -162,7 +158,7 @@ function SalaryStructure() {
     });
     setEditMode((prev) => ({ ...prev, [section]: false }));
   };
-if (loading)
+  if (loading)
     return (
       <div className="flex justify-center items-center h-64">
         <ThreeDots />

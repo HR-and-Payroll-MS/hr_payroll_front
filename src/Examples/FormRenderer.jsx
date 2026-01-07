@@ -10,9 +10,9 @@ import AlertModal from "../Components/Modals/AlertModal";
 export default function FormRenderer({ savedForm, employeeId: propEmployeeId }) {
   const { axiosPrivate } = useAuth();
   const { id: routeEmployeeId } = useParams();
-  
-  // Using logic from your original snippet:
-  const employeeId = 20; 
+
+  // Use prop or route param
+  const employeeId = propEmployeeId || routeEmployeeId;
 
   const [answers, setAnswers] = useState({});
   const [alertConfig, setAlertConfig] = useState({
@@ -20,11 +20,11 @@ export default function FormRenderer({ savedForm, employeeId: propEmployeeId }) 
     type: "error",
     message: ""
   });
-  
+
   const [finalScore, setFinalScore] = useState(null);
   const [report, setReport] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(""); 
+  const [submitStatus, setSubmitStatus] = useState("");
   const [isCalculated, setIsCalculated] = useState(false);
 
   const showAlert = (type, msg) => {
@@ -148,11 +148,11 @@ export default function FormRenderer({ savedForm, employeeId: propEmployeeId }) 
 
   return (
     <div className="mx-auto h-full p-6 bg-white dark:bg-slate-900 rounded border-slate-200 dark:border-slate-800 transition-colors">
-      <AlertModal 
-        isOpen={alertConfig.isOpen} 
-        close={() => setAlertConfig(prev => ({ ...prev, isOpen: false }))} 
-        type={alertConfig.type} 
-        message={alertConfig.message} 
+      <AlertModal
+        isOpen={alertConfig.isOpen}
+        close={() => setAlertConfig(prev => ({ ...prev, isOpen: false }))}
+        type={alertConfig.type}
+        message={alertConfig.message}
       />
 
       <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-slate-800">
@@ -234,8 +234,8 @@ export default function FormRenderer({ savedForm, employeeId: propEmployeeId }) 
       {/* ACTION AREA */}
       <div className="mt-10 pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <div className="text-left">
-           {submitStatus === "success" && <p className="text-emerald-500 text-[10px] font-bold uppercase tracking-tight">Report Saved</p>}
-           {submitStatus === "error" && <p className="text-red-500 text-[10px] font-bold uppercase tracking-tight">Submit Error</p>}
+          {submitStatus === "success" && <p className="text-emerald-500 text-[10px] font-bold uppercase tracking-tight">Report Saved</p>}
+          {submitStatus === "error" && <p className="text-red-500 text-[10px] font-bold uppercase tracking-tight">Submit Error</p>}
         </div>
 
         <div className="flex gap-4">
@@ -250,11 +250,10 @@ export default function FormRenderer({ savedForm, employeeId: propEmployeeId }) 
             <button
               onClick={handleFinalSubmit}
               disabled={submitting}
-              className={`px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 shadow-md ${
-                submitting
+              className={`px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 shadow-md ${submitting
                   ? "bg-slate-200 text-slate-400 cursor-not-allowed"
                   : "bg-emerald-600 text-white hover:bg-emerald-500"
-              }`}
+                }`}
             >
               {submitting ? "Processing..." : "Submit Report"}
             </button>
@@ -274,7 +273,7 @@ export default function FormRenderer({ savedForm, employeeId: propEmployeeId }) 
               {finalScore}%
             </h2>
           </div>
-          
+
           {/* Show MetricCards only after calculation */}
           <MetricCards />
         </div>

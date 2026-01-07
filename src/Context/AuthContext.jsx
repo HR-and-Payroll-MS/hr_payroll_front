@@ -130,7 +130,7 @@ export function AuthContextProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, isAuthLoading, login, logout, searchEmployees, loading, axiosPrivate }}>
+    <AuthContext.Provider value={{ auth, setAuth, isAuthLoading, login, logout, searchEmployees, loading, axiosPrivate, refreshAccessToken: onRefresh }}>
       {children}
     </AuthContext.Provider>
   );
