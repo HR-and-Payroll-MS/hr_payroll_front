@@ -9,7 +9,7 @@ Thank you for contributing to the HR & Payroll Management System! This guide wil
 GitHub only counts contributions to your profile when:
 
 1. **Your commit email matches a verified email on your GitHub account**
-2. The commits are made to the default branch (or gh-pages)
+2. The commits are made to the default branch (main or master)
 3. The repository is not a fork (or you're committing to your own fork)
 
 **Most common issue**: Using an email address that isn't verified on your GitHub account.
@@ -148,7 +148,7 @@ docs: Update API documentation
    - Make sure the email from step 1 is listed and has a green checkmark
 
 3. **Check if you're committing to the right branch**:
-   - Contributions only count on the default branch (usually `main` or `master`)
+   - For this repository, contributions only count on the default branch (usually `main` or `master`)
    - Check with: `git branch --show-current`
 
 4. **Wait up to 24 hours**:

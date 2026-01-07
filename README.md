@@ -35,10 +35,11 @@ npm run preview
 
 ### Quick Setup for Contributors
 
-Make sure your Git email is configured with a verified GitHub email:
+Make sure your Git email is configured with an email that's verified on your GitHub account:
 
 ```bash
-git config --global user.email "your-verified-email@example.com"
+# Use an email that you've verified at https://github.com/settings/emails
+git config --global user.email "your-github-verified-email@gmail.com"
 ```
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed setup instructions and troubleshooting.
