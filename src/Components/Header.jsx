@@ -31,22 +31,14 @@ function Header({ Title, subTitle, now, prev, children, className ,bg=""}) {
             >
               {prev}
             </span>
-            <Icon className="w-4 h-4 mx-1 rotate-180" name="ChevronLeft" /> 
-            {now}
-          </p>
-        )}
-
-        {/* Flexible Subtitle */}
-        {renderContent(subTitle, "text-xs flex dark:text-slate-400 text-gray-500 font-semibold")}
-      </div>
-
-      {children && (
-        <div className="flex items-center gap-3">
-          {children}
+    <div className='mb-7 flex justify-between items-center'>
+        <div>
+            <h1 className='text-3xl font-semibold dark:text-gray-100 text-gray-800'>{Title}</h1>
+            <p className='text-gray-600 dark:text-gray-400 mt-2'>{subTitle}</p>
         </div>
-      )}
+        {/* Placeholder for Bell/User functionality if not already present in Sidebar/Topbar */}
     </div>
-  )
+  );
 }
 
 export default Header;

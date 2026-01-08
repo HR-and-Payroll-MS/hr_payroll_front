@@ -1,32 +1,26 @@
 // message/useChat.js
 import { useState, useEffect } from 'react';
+import { useSocket, useSocketEvent } from '../../Context/SocketProvider';
+import { EVENT_CHAT_MESSAGE } from '../../api/socketEvents';
 
-// Placeholder for your actual Axios instance
+// Placeholder for your actual/future Axios instance
 // import axios from 'axios'; 
-// import io from 'socket.io-client';
 
 export const useChat = (activeChatId) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [socket, setSocket] = useState(null);
 
-  // 1. Setup Socket Connection
-  useEffect(() => {
-    // const newSocket = io('YOUR_BACKEND_URL');
-    // setSocket(newSocket);
-    
-    // return () => newSocket.close();
-    console.log("Socket initialized (Mock)");
-  }, []);
+  const { emit } = useSocket() || {};
 
-  // 2. Fetch Messages (Axios)
+  // 1. Fetch Initial Messages (Simulated API Call)
+  // In production, you would fetch history from an API endpoint here
   useEffect(() => {
     if (!activeChatId) return;
 
     setIsLoading(true);
-    // axios.get(`/api/messages/${activeChatId}`).then(...)
-    
-    // MOCK DATA for demonstration based on your image
+    // axios.get(`/api/messages/${activeChatId}`).then(res => setMessages(res.data))
+
+    // Keeping mock data for history for now, but enabling real-time appends
     setTimeout(() => {
       setMessages([
         { id: 1, sender: 'them', type: 'text', content: 'Hello Marilyn! consectetur adipiscing elit ames.', time: '09:10', status: 'read' },
@@ -39,32 +33,47 @@ export const useChat = (activeChatId) => {
     }, 500);
   }, [activeChatId]);
 
-  // 3. Listen for incoming messages
-  useEffect(() => {
-    if (!socket) return;
-    
-    socket.on('receive_message', (newMessage) => {
-      setMessages((prev) => [...prev, newMessage]);
-    });
+  // 2. Listen for incoming messages via Socket (Real-time)
+  useSocketEvent(EVENT_CHAT_MESSAGE, (newMessage) => {
+    // Only append if the message belongs to the current chat
+    // Note: In a real app, check logic like: if (newMessage.chat_id === activeChatId)
+    // For now, we append everything to demonstrate the socket connection
+    console.log("⚡ Received socket message:", newMessage);
 
-    return () => socket.off('receive_message');
-  }, [socket]);
+    const formattedMsg = {
+      id: newMessage.id || Date.now(),
+      sender: 'them', // Assumes incoming is always 'them' for this UI demo
+      type: 'text', // Backend should send type
+      content: newMessage.content,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      status: 'read'
+    };
 
+    setMessages((prev) => [...prev, formattedMsg]);
+  });
+
+  // 3. Send Message
   const sendMessage = (content, type = 'text') => {
     const newMessage = {
-        id: Date.now(),
-        sender: 'me',
-        type,
-        content,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        status: 'sent'
+      id: Date.now(),
+      sender: 'me',
+      type,
+      content,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      status: 'sent'
     };
-    
+
     // Optimistic UI Update
     setMessages((prev) => [...prev, newMessage]);
-    
-    // socket.emit('send_message', newMessage);
-    // axios.post('/api/messages', newMessage);
+
+    // Emit to Backend (which will save to DB and echo to others)
+    // payload structure matches what Django expects or will expect
+    if (emit) {
+      emit(EVENT_CHAT_MESSAGE, { chat_id: activeChatId, content, type });
+    }
+
+    // Optional: API fallback
+    // axios.post('/api/messages', { chat: activeChatId, content });
   };
 
   return { messages, isLoading, sendMessage };

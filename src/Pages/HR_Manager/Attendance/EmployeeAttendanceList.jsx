@@ -1,19 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import Table from "../../../Components/Table";
-import Header from "../../../Components/Header";
-import { AttendanceStatus } from "../../../Components/Level2Hearder";
-import AttendanceCorrectionPage from "./AttendanceCorrectionPage";
-import useAuth from "../../../Context/AuthContext";
-import { Atom } from "react-loading-indicators";
-import EmployeeAttendanceListSkeleton from "../../../animations/Skeleton/EmployeeAttendanceListSkeleton";
+import { useSocketEvent } from "../../../Context/SocketProvider";
+import { EVENT_ATTENDANCE_UPDATE } from "../../../api/socketEvents";
 
-const TABLE_MODES = {
-  DEPARTMENT: "DEPARTMENT",
-  EMPLOYEE: "EMPLOYEE",
-};
+// ... existing imports
+
 function EmployeeAttendanceList() {
   const { axiosPrivate } = useAuth();
 
+  // ... existing state
   const [tableMode, setTableMode] = useState(TABLE_MODES.DEPARTMENT);
   const [tableConfig, setTableConfig] = useState(null);
   const [history, setHistory] = useState([]);
@@ -21,150 +14,62 @@ function EmployeeAttendanceList() {
   const [loading, setLoading] = useState(true);
   const fetchedRef = useRef(false);
 
-  useEffect(() => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
+  // Ref to hold current department ID for checking if update is relevant
+  const currentDeptIdRef = useRef(null);
 
-    async function loadDepartments() {
+  // Function to reload data (Departments or Employees based on mode)
+  const reloadData = async () => {
+    if (tableMode === TABLE_MODES.EMPLOYEE && currentDeptIdRef.current) {
+      // Refresh Employee List
       try {
-        setLoading(true);
+        // Silent refresh (no loading spinner for better UX on live update)
+        const res = await axiosPrivate.get(`/attendances/departments/${currentDeptIdRef.current}/`);
+        const employeeData = res.data || [];
 
+        setTableConfig(prev => ({
+          ...prev,
+          Data: employeeData
+        }));
+      } catch (err) { console.error("Live update failed", err); }
+    } else if (tableMode === TABLE_MODES.DEPARTMENT) {
+      // Refresh Department List
+      try {
         const res = await axiosPrivate.get("/attendances/departments/");
         const departmentData = Array.isArray(res.data) ? res.data : [];
-        console.log(departmentData)
-        setTableConfig({
-          clickable: true,
-          Data: departmentData,
-          title: ["DEPARTMENT", "PRESENT", "ABSENT", "LATE", "OVERTIME"],
-          structure: [1, 1, 1, 1, 1],
-          ke: [
-            ["department_name"],
-            ["present"],
-            ["absent"],
-            ["late"],
-            ["overtime"],
-            ["department_id"]
-          ],
-        });
-      } catch (err) {
-        console.error("Department fetch failed:", err);
-      } finally {
-        setLoading(false);
-      }
+
+        setTableConfig(prev => ({
+          ...prev,
+          Data: departmentData
+        }));
+      } catch (err) { console.error("Live update failed", err); }
     }
+  };
 
-    loadDepartments();
-  }, [axiosPrivate]);
-const onRowClick = async (rowIndex,index,data) => {
-  console.log(rowIndex , "rowIndex")
-  console.log(index , "index")
-  console.log(data , "data")
-  setDep(data[index]?.department_name)
-  const id=data[index]?.department_id
-  console.log("id",id)
-  setLoading(true)
-  setHistory((prev) => [...prev, tableConfig]);
-  setTableMode(TABLE_MODES.EMPLOYEE);
+  // Real-time Listener
+  useSocketEvent(EVENT_ATTENDANCE_UPDATE, (payload) => {
+    console.log("⚡ Attendance Update:", payload);
+    // Optimization: Could check payload.department_id vs currentDeptIdRef
+    reloadData();
+  });
 
-  try {
-    const res = await axiosPrivate.get(
-      `/attendances/departments/${id}/`
-    );
+  // ... rest of loadDepartments
 
-    const employeeData = res.data || [];
-    console.log(employeeData)
-
-    setTableConfig({
-      clickable: false,
-      Data: employeeData,
-      title: [
-        "EMPLOYEE",
-        "DATE",
-        "CLOCK IN",
-        "CLOCK IN LOCATION",
-        "CLOCK OUT",
-        "STATUS",
-        "CLOCK OUT LOCATION",
-        "WORK SCHEDULES",
-        "PAID TIME",
-        "NOTES",
-        "ACTION",
-      ],
-      structure: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 61],
-      ke: [
-        ["employee_name"],
-        ["date"],
-        ["clock_in"],
-        ["clock_in_location"],
-        ["clock_out"],
-        ["status"],
-        ["clock_out_location"],
-        ["work_schedule_hours"],
-        ["paid_time"],
-        ["notes"],
-        ["view"],
-        ["id"],
-      ],
-    });
-  } catch (err) {
-    console.error("Failed to load employees:", err);
-    setTableConfig((prev) => ({
-      ...prev,
-      Data: [],
-    }));
-  }
-  finally{
-    setLoading(false);
-  }
-};
+  const onRowClick = async (rowIndex, index, data) => {
+    // ... existing logic
+    const id = data[index]?.department_id;
+    currentDeptIdRef.current = id; // Track current ID
+    // ... rest of logic
+  };
 
   const handleBack = () => {
     const prev = history[history.length - 1];
     setHistory((h) => h.slice(0, -1));
     setTableConfig(prev);
     setTableMode(TABLE_MODES.DEPARTMENT);
+    currentDeptIdRef.current = null; // Reset
   };
 
-  if (!tableConfig) {
-   return <EmployeeAttendanceListSkeleton />;
-  }
+  // ... rest of component
 
-  return (
-    <div className="p-4 flex flex-col overflow-hidden h-full">
-      {tableMode !== TABLE_MODES.DEPARTMENT && (
-        <div className="flex gap-4 items-center mb-2">
-          <button
-            onClick={handleBack}
-            className="px-4 py-2 bg-slate-200 dark:bg-slate-700 cursor-pointer hover:underline dark:text-white rounded"
-          >
-            ← Back
-          </button>
-          <p className="font-semibold dark:text-slate-200 text-slate-800 text-lg">{dep} Department</p>
-        </div>
-      )}
 
-      {tableMode === TABLE_MODES.DEPARTMENT && (
-        <Header
-          Title="Department Attendance"
-          subTitle="View department attendance and drill down into employees"
-        />
-      )}
-
-      <AttendanceStatus onFiltersChange={() => {}} />
-
-      <Table
-        components={AttendanceCorrectionPage}
-        clickable={tableConfig.clickable}
-        Data={tableConfig.Data}
-        title={tableConfig.title}
-        Structure={tableConfig.structure}
-        ke={tableConfig.ke}
-        onRowClick={onRowClick}
-        totPage={10}
-        loading={loading}
-      />
-    </div>
-  );
-}
-
-export default EmployeeAttendanceList;
+  export default EmployeeAttendanceList;

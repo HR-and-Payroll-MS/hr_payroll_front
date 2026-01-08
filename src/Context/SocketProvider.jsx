@@ -9,6 +9,9 @@ export function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    // Only connect if we have an access token
+    if (!auth.accessToken) return;
+
     disconnectSocket();
     const s = connectSocket();
 
@@ -18,7 +21,7 @@ export function SocketProvider({ children }) {
       s.on("connect_error", async (err) => {
         if (err.message === "jwt_expired" || err.message === "unauthorized") {
           console.log("Socket auth error, refreshing token...");
-          await refreshAccessToken(); // Trigger context refresh
+          await refreshAccessToken();
         }
       });
     }
@@ -29,32 +32,26 @@ export function SocketProvider({ children }) {
     };
   }, [auth.accessToken, refreshAccessToken]);
 
-  if (!socket) {
-    return (
-      <SocketContext.Provider value={null}>
-        {children}
-      </SocketContext.Provider>
-    );
-  }
+  // Context value structure
+  const value = {
+    socket,
+    isConnected: !!socket?.connected,
+
+    emit: (event, payload) => {
+      if (socket) socket.emit(event, payload);
+    },
+
+    on: (event, callback) => {
+      if (socket) socket.on(event, callback);
+    },
+
+    off: (event, callback) => {
+      if (socket) socket.off(event, callback);
+    },
+  };
 
   return (
-    <SocketContext.Provider
-      value={{
-        socket,
-
-        emit: (event, payload) => {
-          socket.emit(event, payload);
-        },
-
-        on: (event, callback) => {
-          socket.on(event, callback);
-        },
-
-        off: (event, callback) => {
-          socket.off(event, callback);
-        },
-      }}
-    >
+    <SocketContext.Provider value={value}>
       {children}
     </SocketContext.Provider>
   );
@@ -64,68 +61,23 @@ export function useSocket() {
   return useContext(SocketContext);
 }
 
+/**
+ * Custom hook to subscribe to a specific socket event.
+ * Automatically handles mounting/unmounting of the listener.
+ * 
+ * @param {string} event - The event name to listen for
+ * @param {function} callback - The handler function
+ */
+export function useSocketEvent(event, callback) {
+  const { socket } = useSocket() || {};
 
+  useEffect(() => {
+    if (!socket || !callback) return;
 
+    socket.on(event, callback);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { createContext, useContext, useEffect, useMemo } from "react";
-// import { connectSocket, disconnectSocket, getSocket } from "../api/socket";
-
-// const SocketContext = createContext(null);
-
-// export function SocketProvider({ children }) {
-//   useEffect(() => {
-//     connectSocket(); // connect once globally
-
-//     return () => {
-//       disconnectSocket(); // cleanup on app unload
-//     };
-//   }, []);
-
-//   const value = useMemo(() => {
-//     const socket = getSocket();
-//     if (!socket) return null;
-
-//     return {
-//       socket,
-
-//       emit: (event, payload) => {
-//         socket.emit(event, payload);
-//       },
-
-//       on: (event, callback) => {
-//         socket.on(event, callback);
-//       },
-
-//       off: (event, callback) => {
-//         socket.off(event, callback);
-//       },
-//     };
-//   }, []);
-
-//   return (
-//     <SocketContext.Provider value={value}>
-//       {children}
-//     </SocketContext.Provider>
-//   );
-// }
-
-// export function useSocket() {
-//   return useContext(SocketContext);
-// }
+    return () => {
+      socket.off(event, callback);
+    };
+  }, [socket, event, callback]);
+}
