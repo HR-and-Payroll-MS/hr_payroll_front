@@ -11,6 +11,8 @@ import ViewerLoader from './ViewerLoader';
 import PayslipTemplate2 from '../../../Components/PayslipTemplate2';
 import ClockoutModal from '../../../Components/Modals/ClockoutModal';
 import useAuth from '../../../Context/AuthContext';
+import { useSocketEvent } from '../../../Context/SocketProvider';
+import { EVENT_PAYROLL_PROGRESS } from '../../../api/socketEvents';
 
 function GeneratePayroll() {
   const { axiosPrivate } = useAuth();
@@ -141,8 +143,40 @@ function GeneratePayroll() {
 
   const currentStatus = activeCycle?.status?.toLowerCase() || 'draft';
 
+  // Real-time Progress Listener
+  const [progressMsg, setProgressMsg] = useState("");
+  const [progressPercent, setProgressPercent] = useState(0);
+
+  useSocketEvent(EVENT_PAYROLL_PROGRESS, (payload) => {
+    // payload: { cycle_id, status, total, processed, percentage }
+    if (activeCycle && payload.cycle_id == activeCycle.id) {
+      setSyncing(true); // Ensure loading state is on
+      setProgressMsg(`Processing ${payload.processed} / ${payload.total}`);
+      setProgressPercent(payload.percentage);
+
+      if (payload.percentage >= 100) {
+        setTimeout(() => {
+          setSyncing(false);
+          setProgressMsg("");
+          setProgressPercent(0);
+          window.location.reload(); // Or re-fetch slips
+        }, 1000);
+      }
+    }
+  });
+
   return (
-    <div className="h-full dark:bg-slate-900 flex flex-col w-full text-slate-900 font-sans">
+    <div className="h-full dark:bg-slate-900 flex flex-col w-full text-slate-900 font-sans relative">
+      {/* Global Progress Overlay */}
+      {syncing && (
+        <div className="absolute inset-x-0 top-0 h-1 bg-blue-100 z-50">
+          <div
+            className="h-full bg-blue-600 transition-all duration-300 ease-out"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      )}
+
       <Header className={"bg-white dark:shadow-slate-900 dark:shadow-md dark:inset-shadow-xs dark:inset-shadow-slate-600 dark:bg-slate-800 px-6"} Title={"Payroll Processor"}
         subTitle={
           <div className="flex items-center text-sm text-slate-500">
